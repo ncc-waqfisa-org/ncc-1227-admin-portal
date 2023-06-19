@@ -11,9 +11,10 @@ import { updateProgramById } from "../src/CustomAPI";
 interface Props {
   program?: Program;
   programName: string;
+  programArName: string;
   universityID: string | undefined;
-  availability: number;
   requirements: string;
+  requirementsAr: string;
   isDeactivated: boolean;
 }
 
@@ -26,9 +27,10 @@ export default function ProgramFormComponent({ program }: Props) {
 
   const initialValues = {
     programName: program?.name ?? "",
+    programNameAr: program?.nameAr ?? "",
     universityID: program?.universityID ?? undefined,
-    availability: program?.availability ?? 0,
     requirements: program?.requirements ?? "",
+    requirementsAr: program?.requirementsAr ?? "",
     isDeactivated: program?.isDeactivated ?? false,
   };
 
@@ -38,9 +40,10 @@ export default function ProgramFormComponent({ program }: Props) {
         initialValues={initialValues}
         validationSchema={yup.object({
           programName: yup.string().required(`${tErrors("requiredField")}`),
+          programNameAr: yup.string().required(`${tErrors("requiredField")}`),
           universityID: yup.string().required(`${tErrors("requiredField")}`),
-          availability: yup.number().required(`${tErrors("requiredField")}`),
           requirements: yup.string().required(`${tErrors("requiredField")}`),
+          requirementsAr: yup.string().required(`${tErrors("requiredField")}`),
         })}
         onSubmit={async (values, actions) => {
           let getPrograms = await getProgramsFromUniID(values.universityID!);
@@ -57,12 +60,14 @@ export default function ProgramFormComponent({ program }: Props) {
               input: {
                 id: program.id,
                 name: values.programName,
+                nameAr: values.programNameAr,
                 requirements: values.requirements,
-                availability: values.availability,
+                requirementsAr: values.requirementsAr,
                 isDeactivated: values.isDeactivated,
                 _version: program._version,
               },
             };
+
             await toast
               .promise(
                 updateProgramById(programVariables).catch((error) => {
@@ -92,8 +97,9 @@ export default function ProgramFormComponent({ program }: Props) {
                   addProgramToUni(
                     values.universityID!,
                     values.programName,
-                    values.availability,
+                    values.programNameAr,
                     values.requirements,
+                    values.requirementsAr,
                     values.isDeactivated
                   ).catch((error) => {
                     throw error;
@@ -145,6 +151,23 @@ export default function ProgramFormComponent({ program }: Props) {
                   errors.programName}
               </label>
             </div>
+            <div className="flex flex-col">
+              <label className="label">{t("programNameAr")}</label>
+              <Field
+                name="programNameAr"
+                type="text"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className={`input input-bordered input-primary ${
+                  errors.programNameAr && "input-error"
+                }`}
+              />
+              <label className="label-text-alt text-error">
+                {errors.programNameAr &&
+                  touched.programNameAr &&
+                  errors.programNameAr}
+              </label>
+            </div>
 
             <div className="flex flex-col">
               <label className="label">{t("universityID")}</label>
@@ -178,25 +201,6 @@ export default function ProgramFormComponent({ program }: Props) {
             </div>
 
             <div className="flex justify-between gap-4 ">
-              <div className="flex flex-col grow">
-                <label className="label">{t("availability")}</label>
-                <Field
-                  name="availability"
-                  type="number"
-                  min="0"
-                  placeholder="Availability"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  className={`input input-bordered input-primary ${
-                    errors.availability && "input-error"
-                  }`}
-                />
-                <label className="label-text-alt text-error">
-                  {errors.availability &&
-                    touched.availability &&
-                    errors.availability}
-                </label>
-              </div>
               <div
                 dir="ltr"
                 className="flex flex-col items-center justify-between"
@@ -238,6 +242,28 @@ export default function ProgramFormComponent({ program }: Props) {
                 {errors.requirements &&
                   touched.requirements &&
                   errors.requirements}
+              </label>
+            </div>
+
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text">{t("programArRequirements")}</span>
+              </label>
+              <textarea
+                className="h-24 textarea textarea-bordered"
+                placeholder={
+                  program?.requirementsAr ??
+                  "Enter the program requirements here"
+                }
+                name="requirements"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.requirements}
+              ></textarea>
+              <label className="label-text-alt text-error">
+                {errors.requirementsAr &&
+                  touched.requirementsAr &&
+                  errors.requirementsAr}
               </label>
             </div>
 

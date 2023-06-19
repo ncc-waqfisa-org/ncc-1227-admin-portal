@@ -11,4 +11,8 @@ export const StudentsTableHeaders = [
   "",
 ];
 
-export const EducationTableHeaders = ["tableUniName", "tableUniPrograms"];
+export const EducationTableHeaders = [
+  "tableUniName",
+  "availability",
+  "tableUniPrograms",
+];

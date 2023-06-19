@@ -60,6 +60,8 @@ const Education = () => {
 
   const initialValues = {
     universityName: "",
+    universityArName: "",
+    universityAvailability: 0,
   };
 
   useEffect(() => {
@@ -254,6 +256,13 @@ const Education = () => {
                   universityName: yup
                     .string()
                     .required(`${tErrors("requiredField")}`),
+                  universityArName: yup
+                    .string()
+                    .required(`${tErrors("requiredField")}`),
+                  universityAvailability: yup
+                    .number()
+                    .integer()
+                    .required(`${tErrors("requiredField")}`),
                 })}
                 onSubmit={async (values) => {
                   let uniFound = universityList
@@ -270,11 +279,13 @@ const Education = () => {
                     setIsSubmitted(true);
                     toast
                       .promise(
-                        addNewUniversity(values.universityName).catch(
-                          (error) => {
-                            throw error;
-                          }
-                        ),
+                        addNewUniversity(
+                          values.universityName,
+                          values.universityArName,
+                          values.universityAvailability
+                        ).catch((error) => {
+                          throw error;
+                        }),
                         {
                           loading: "Loading...",
                           success: () => {
@@ -324,6 +335,44 @@ const Education = () => {
                         {errors.universityName &&
                           touched.universityName &&
                           errors.universityName}
+                      </label>
+                    </div>
+                    <div className="flex flex-col">
+                      <label className="label">
+                        {t("addUniversityArName")}
+                      </label>
+                      <Field
+                        name="universityArName"
+                        type="text"
+                        placeholder=""
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        className={`input input-bordered input-primary ${
+                          errors.universityArName && "input-error"
+                        }`}
+                      />
+                      <label className="label-text-alt text-error">
+                        {errors.universityArName &&
+                          touched.universityArName &&
+                          errors.universityArName}
+                      </label>
+                    </div>
+                    <div className="flex flex-col">
+                      <label className="label">{t("availability")}</label>
+                      <Field
+                        name="universityAvailability"
+                        type="number"
+                        placeholder=""
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        className={`input input-bordered input-primary ${
+                          errors.universityAvailability && "input-error"
+                        }`}
+                      />
+                      <label className="label-text-alt text-error">
+                        {errors.universityAvailability &&
+                          touched.universityAvailability &&
+                          errors.universityAvailability}
                       </label>
                     </div>
                     <button
@@ -376,6 +425,13 @@ const Education = () => {
                           push(`education/universities/${datum.id}`)
                         }
                       >{`${datum.name}`}</div>
+                    </td>
+                    <td key={datum.id} className="bg-transparent">
+                      <div
+                        className={`flex justify-between hover:cursor-pointer ${
+                          datum.isDeactivated && "text-gray-400"
+                        }`}
+                      >{`${datum.availability}`}</div>
                     </td>
                     <td
                       className="overflow-x-scroll bg-transparent "

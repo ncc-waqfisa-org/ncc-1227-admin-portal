@@ -15,13 +15,18 @@ interface IUseEducationContext {
   universityList: University[] | undefined;
   universityPrograms: University | undefined;
   programsList: Program[] | undefined;
-  addNewUniversity: (name: string) => Promise<University | undefined>;
+  addNewUniversity: (
+    name: string,
+    nameAr: string,
+    availability: number
+  ) => Promise<University | undefined>;
   getProgramsFromUniID: (id: string) => Promise<University | undefined>;
   addProgramToUni: (
     uniID: string,
     programName: string,
-    availability: number,
+    programNameAr: string,
     requirements: string,
+    requirementsAr: string,
     isDeactivated: boolean
   ) => Promise<Program | undefined>;
   syncUniList: () => Promise<void>;
@@ -93,6 +98,8 @@ function useProviderEducation() {
           createdAt
           updatedAt
           name
+          nameAr
+          availability
           isDeactivated
           Programs {
             items {
@@ -103,7 +110,9 @@ function useProviderEducation() {
               createdAt
               availability
               name
+              nameAr
               requirements
+              requirementsAr
               universityID
               universityProgramsId
               updatedAt
@@ -157,11 +166,13 @@ function useProviderEducation() {
   }
 
   async function addNewUniversity(
-    uniName?: string
+    uniName?: string,
+    uniArName?: string,
+    uniAvailability?: number
   ): Promise<University | undefined> {
     let query = `
     mutation CreateUniversity {
-      createUniversity(input: {name: "${uniName}"}) {
+      createUniversity(input: {name: "${uniName}", nameAr: "${uniArName}", availability: ${uniAvailability}}) {
         _version
         id
         name
@@ -197,13 +208,20 @@ function useProviderEducation() {
   async function addProgramToUni(
     uniID: string,
     programName: string,
-    availability: number,
+    programNameAr: string,
     requirements: string,
+    requirementsAr: string,
     isDeactivated: boolean
   ): Promise<Program | undefined> {
     let query = `
     mutation CreateProgramForUniversity {
-      createProgram(input: {universityID: "${uniID}", name: "${programName}", availability: ${availability}, requirements: "${requirements}", universityProgramsId: "${uniID}", isDeactivated: ${isDeactivated}}) {
+      createProgram(input: {universityID: "${uniID}",
+       name: "${programName}",
+       nameAr: "${programNameAr}",
+       requirements: "${requirements}",
+       requirementsAr: "${requirementsAr}",
+       universityProgramsId: "${uniID}", 
+       isDeactivated: ${isDeactivated}}) {
         name
         _deleted
         _lastChangedAt

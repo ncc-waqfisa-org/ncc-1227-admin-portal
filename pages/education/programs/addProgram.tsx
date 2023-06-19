@@ -38,9 +38,10 @@ const AddProgram = () => {
           {/* fields */}
           <ProgramFormComponent
             programName={""}
+            programArName={""}
             universityID={undefined}
-            availability={0}
             requirements={""}
+            requirementsAr={""}
             isDeactivated={false}
           ></ProgramFormComponent>
         </div>

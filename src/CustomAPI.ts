@@ -190,7 +190,9 @@ export async function listAllPrograms() {
       items {
         id
         name
+        nameAr
         requirements
+        requirementsAr
         universityID
         universityProgramsId
         updatedAt
@@ -204,6 +206,8 @@ export async function listAllPrograms() {
           _deleted
           _version
           name
+          nameAr
+          availability
         }
       }
     }
@@ -631,9 +635,13 @@ export async function getProgramById(id: string): Promise<Program | undefined> {
       id
       isDeactivated
       name
+      nameAr
       requirements
+      requirementsAr
       university {
         name
+        nameAr
+        availability
         isDeactivated
         id
       }
@@ -684,9 +692,11 @@ export async function getUniversityByID(
     getUniversity(id: "${id}") {
       _version
       name
+      nameAr
       updatedAt
       id
       createdAt
+      availability
       _lastChangedAt
       _deleted
       isDeactivated 
@@ -694,7 +704,9 @@ export async function getUniversityByID(
         items {
           isDeactivated
           name
+          nameAr
           requirements
+          requirementsAr
           universityID
           universityProgramsId
           updatedAt

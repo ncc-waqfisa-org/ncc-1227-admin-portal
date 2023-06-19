@@ -26,6 +26,8 @@ export default function UniversityFormComponent({ university }: Props) {
 
   const initialValues = {
     universityName: university?.name ?? "",
+    universityArName: university?.nameAr ?? "",
+    universityAvailability: university?.availability ?? "",
     isDeactivated: university?.isDeactivated ?? false,
   };
 
@@ -35,6 +37,13 @@ export default function UniversityFormComponent({ university }: Props) {
         initialValues={initialValues}
         validationSchema={yup.object({
           universityName: yup.string().required(`${tErrors("requiredField")}`),
+          universityArName: yup
+            .string()
+            .required(`${tErrors("requiredField")}`),
+          universityAvailability: yup
+            .number()
+            .integer()
+            .required(`${tErrors("requiredField")}`),
         })}
         onSubmit={async (values, actions) => {
           setIsLoading(true);
@@ -43,6 +52,8 @@ export default function UniversityFormComponent({ university }: Props) {
               input: {
                 id: university.id,
                 name: values.universityName,
+                nameAr: values.universityArName,
+                availability: Number(values.universityAvailability),
                 isDeactivated: values.isDeactivated,
                 _version: university?._version,
               },
@@ -116,6 +127,51 @@ export default function UniversityFormComponent({ university }: Props) {
                     {errors.universityName &&
                       touched.universityName &&
                       errors.universityName}
+                  </label>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between gap-10 ">
+                <div className="text-base font-medium">
+                  {t("tableUniArName")}
+                </div>
+                <div>
+                  <Field
+                    name="universityArName"
+                    type="text"
+                    placeholder="University Name"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    className={`input input-bordered input-primary ${
+                      errors.universityArName && "input-error"
+                    }`}
+                  />
+                  <label className="label-text-alt text-error">
+                    {errors.universityArName &&
+                      touched.universityArName &&
+                      errors.universityArName}
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-between">
+              <div className="flex items-center justify-between gap-10 ">
+                <div className="text-base font-medium">{t("availability")}</div>
+                <div>
+                  <Field
+                    name="universityAvailability"
+                    type="text"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    className={`input input-bordered input-primary ${
+                      errors.universityAvailability && "input-error"
+                    }`}
+                  />
+                  <label className="label-text-alt text-error">
+                    {errors.universityAvailability &&
+                      touched.universityAvailability &&
+                      errors.universityAvailability}
                   </label>
                 </div>
               </div>
