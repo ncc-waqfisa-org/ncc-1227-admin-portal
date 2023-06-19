@@ -1,0 +1,25 @@
+{
+  "studentLogHistory": "Student Log History",
+  "studentLogHistorySubtitle": "View all logs made by the student for this application.",
+  "reason": "Reason",
+  "date": "Date",
+  "history": "History",
+  "view": "View",
+  "logHistory": "Log History",
+  "studentInformation": "Student Information",
+  "applicationDetails": "Application Details",
+  "reasonForChange": "Reason for change",
+  "updatedAt": "Updated at",
+  "back": "Back",
+
+  "changes": "Changes",
+  "field": "Field",
+  "update": "Update",
+  "GPA": "GPA",
+  "primaryProgram": "Primary Program",
+  "secondaryProgram": "Secondary Program",
+  "cprDocument": "CPR Document",
+  "transcriptDocument": "Transcript Document",
+  "acceptanceDocument": "Acceptance Document",
+  "signedContractDocument": "Signed Contract Document"
+}

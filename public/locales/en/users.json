@@ -1,0 +1,11 @@
+{
+  "adminTitle": "Administrators",
+  "adminSubtitle": "View a list of users.",
+  "search": "Search",
+  "addUser": "+ Add User",
+  "signUpAdmin": "Sign Up New Admin",
+  "cpr": "CPR",
+  "fullName": "Full Name",
+  "email": "Email",
+  "addAdminButton": "Add Admin"
+}

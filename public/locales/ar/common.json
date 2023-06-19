@@ -1,0 +1,19 @@
+{
+  "dashboardTitle": "ملخص الطلبات",
+  "dashboardSubtitle": "نظرة عامة على التسجيل للدفعة الحالية.",
+  "allApplicationsButton": "جميع الطلبات",
+  "exportCSV": "تصدير CSV",
+  "totalApplications": "إجمالي الطلبات",
+  "applicationsThisMonth": "طلبات هذا الشهر",
+  "pendingApplications": "الطلبات المعلقة",
+  "reportsAndGraphsTitle": "التقارير والرسوم البيانية",
+  "reportsAndGraphsSubtitle": "نظرة عامة على جميع البيانات.",
+  "weeklySummary": "ملخص أسبوعي",
+  "topUniversities": "أفضل الجامعات",
+  "gpaSummary": "ملخص المعدل التراكمي",
+  "topProgram": "أفضل البرامج",
+  "manualReport": "تقرير يدوي",
+  "search":"بحث",
+  "all":"الكل",
+  "apply":"تطبيق"
+}

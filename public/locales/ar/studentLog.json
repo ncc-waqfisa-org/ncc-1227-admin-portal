@@ -1,0 +1,25 @@
+{
+  "studentLogHistory": "سجل تعديلات الطلبة",
+  "studentLogHistorySubtitle": "عرض جميع السجلات التي قام بها الطالب لهذا الطلب.",
+  "reason": "السبب",
+  "date": "التاريخ",
+  "history": "التعديلات",
+  "view": "عرض",
+  "logHistory": "سجل التعديلات",
+  "studentInformation": "بيانات الطالب",
+  "applicationDetails": "تفاصيل الطلب",
+  "reasonForChange": "سبب التغيير",
+  "updatedAt": "تم التحديث في",
+  "back": "رجوع",
+
+  "changes": "التغييرات",
+  "field": "حقل",
+  "update": "تحديث",
+  "GPA": "المعدل التراكمي",
+  "primaryProgram": "البرنامج الأساسي",
+  "secondaryProgram": "البرنامج الثانوي",
+  "cprDocument": "مستند الرقم الشخصي",
+  "transcriptDocument": "مستند كشف الدرجات",
+  "acceptanceDocument": "مستند خطاب القبول",
+  "signedContractDocument": "مستند العقد الموقع"
+}

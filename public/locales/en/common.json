@@ -1,0 +1,19 @@
+{
+  "dashboardTitle": "Application Summary",
+  "dashboardSubtitle": "An overview of enrollment for the current batch.",
+  "allApplicationsButton": "All Applications",
+  "exportCSV": "Export CSV",
+  "totalApplications": "Total applications",
+  "applicationsThisMonth": "Applications this month",
+  "pendingApplications": "Pending applications",
+  "reportsAndGraphsTitle": "Reports & Graphs",
+  "reportsAndGraphsSubtitle": "An overview of all data.",
+  "weeklySummary": "Weekly Summary",
+  "topUniversities": "Top Universities",
+  "gpaSummary": "GPA Summary",
+  "topProgram": "Top Programs",
+  "createReport": "Create Report",
+  "search":"Search",
+  "all":"All",
+  "apply":"Apply"
+}

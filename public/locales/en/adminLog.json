@@ -1,0 +1,19 @@
+{
+  "adminLogTitle": "Admin Log History",
+  "adminLogSubtitle": "View all logs made by other admins.",
+  "tableAdminLogName": "Name",
+  "tableAdminLogCPR": "CPR",
+  "tableAdminLogDate": "Date",
+  "tableAdminLogHistory": "History",
+  "adminInformation": "Admin Information",
+  "applicationDetails": "Application Details",
+  "tableApplicationField": "Application Field",
+  "tableApplicationValue": "Value",
+  "sendEmailButton": "Send Email",
+  "backButton": "Back",
+  "reasonForChange": "Reason for change",
+  "updatedAt": "Updated At",
+  "loadMoreLogs": "Load more logs",
+  "reachedTheEnd": "Your reached the end of the logs",
+  "noData": "Sorry! No data to display"
+}
