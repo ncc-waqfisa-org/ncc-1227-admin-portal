@@ -27,5 +27,7 @@
   "all": "الكل",
   "aUniversityAlreadyExistsWithTheSameName": "يوجد بالفعل جامعة بنفس هذا الاسم",
   "universitySuccessfullyAdded": "تم اضافة الجامعة بنجاح",
+  "noPrograms": "لا توجد برامج",
+  "programNameAr": "اسم البرنامج العربي",
   "search": "بحث"
 }

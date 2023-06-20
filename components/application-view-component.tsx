@@ -47,7 +47,7 @@ export default function ViewApplication({
   const [isLoading, setIsLoading] = useState(false);
 
   const { user } = useAuth();
-  const { push, replace, asPath } = useRouter();
+  const { push, replace, asPath, locale } = useRouter();
   const { syncApplications } = useStudent();
   const { t } = useTranslation("applicationLog");
   const { t: tErrors } = useTranslation("errors");
@@ -263,14 +263,9 @@ export default function ViewApplication({
                   <td>{t("status")}</td>
                   <td>
                     <div className="flex items-center gap-8 ">
-                      {/* <div className="text-sm font-semibold ">
-                        {application.status === Status.ELIGIBLE
-                          ? tA.t(Status.REVIEW)
-                          : tA.t(`${application.status}`)}
-                      </div> */}
                       {!readOnly && application.status !== Status.WITHDRAWN && (
                         <Field
-                          className="border rounded-xl"
+                          className=" select select-bordered rounded-xl"
                           as="select"
                           name="applicationStatus"
                           value={values.applicationStatus}
@@ -341,9 +336,17 @@ export default function ViewApplication({
                 </tr>
                 <tr>
                   <td>{t("primaryProgram")}</td>
-                  <td className="flex flex-col gap-2">
+                  <td className="flex flex-col gap-2 overflow-x-scroll">
                     <div>
-                      {`${primaryProgram?.program?.name} - ${primaryProgram?.program?.university?.name}`}
+                      {`${
+                        locale == "ar"
+                          ? primaryProgram?.program?.nameAr
+                          : primaryProgram?.program?.name
+                      } - ${
+                        locale == "ar"
+                          ? primaryProgram?.program?.university?.nameAr
+                          : primaryProgram?.program?.university?.name
+                      }`}
                     </div>
                     <div className="flex items-center gap-3">
                       <p className="stat-desc">{t("acceptanceLetter")}</p>
@@ -355,9 +358,17 @@ export default function ViewApplication({
                 </tr>
                 <tr>
                   <td>{t("secondaryProgram")}</td>
-                  <td className="flex flex-col gap-2">
+                  <td className="flex flex-col gap-2 overflow-x-scroll">
                     <div>
-                      {`${secondaryProgram?.program?.name} - ${secondaryProgram?.program?.university?.name}`}
+                      {`${
+                        locale == "ar"
+                          ? secondaryProgram?.program?.nameAr
+                          : secondaryProgram?.program?.name
+                      } - ${
+                        locale == "ar"
+                          ? secondaryProgram?.program?.university?.nameAr
+                          : secondaryProgram?.program?.university?.name
+                      }`}
                     </div>
                     <div className="flex items-center gap-3">
                       <p className="stat-desc">{t("acceptanceLetter")}</p>
@@ -387,21 +398,11 @@ export default function ViewApplication({
                     }
                   </td>
                 </tr>
-                {/* <tr>
-                  <td>{t("signedContract")}</td>
-                  <td>
-                    {
-                      <GetStorageLinkComponent
-                        storageKey={downloadLinks.signedContractDoc}
-                      ></GetStorageLinkComponent>
-                    }
-                  </td>
-                </tr> */}
                 <tr>
                   <td>{t("studentLog")}</td>
                   <td>
                     <Link
-                      className="link link-primary"
+                      className="btn btn-ghost btn-sm text-primary hover:bg-primary/20"
                       href={`/studentLogs/${application.id}`}
                     >
                       {t("view")}
@@ -412,7 +413,7 @@ export default function ViewApplication({
                   <td>{t("adminLogs")}</td>
                   <td>
                     <Link
-                      className="link link-primary"
+                      className="btn btn-ghost btn-sm text-primary hover:bg-primary/20"
                       href={`/applications/applicationHistory/${application.id}`}
                     >
                       {t("view")}

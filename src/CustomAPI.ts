@@ -805,8 +805,10 @@ export async function getAllApplicationsAPI(
             program {
               id
               name
+              nameAr
               university {
                 name
+                nameAr
                 id
               }
             }

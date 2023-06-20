@@ -237,8 +237,7 @@ const Applications = () => {
                   </div>
                   <div>
                     <Field
-                      dir="ltr"
-                      className="input input-bordered min-w-[10rem]"
+                      className="select select-bordered min-w-[10rem]"
                       as="select"
                       name="applicationStatus"
                       onChange={handleChange}
@@ -262,8 +261,7 @@ const Applications = () => {
                   </div>
                   <div>
                     <Field
-                      dir="ltr"
-                      className="input input-bordered min-w-[10rem]"
+                      className="select select-bordered min-w-[10rem]"
                       as="select"
                       name="schoolType"
                       onChange={handleChange}
@@ -287,8 +285,7 @@ const Applications = () => {
                   </div>
                   <div>
                     <Field
-                      dir="ltr"
-                      className="input input-bordered"
+                      className="select select-bordered"
                       as="select"
                       name="university"
                       onChange={handleChange}
@@ -297,7 +294,7 @@ const Applications = () => {
                       <option value={""}>{common("all")}</option>
                       {universityList?.map((uni) => (
                         <option key={`${uni.id}`} value={`${uni.name}`}>
-                          {uni.name}
+                          {locale == "ar" ? uni.nameAr : uni.name}
                         </option>
                       ))}
                     </Field>
@@ -311,8 +308,7 @@ const Applications = () => {
                   </div>
                   <div>
                     <Field
-                      dir="ltr"
-                      className="input input-bordered"
+                      className="select select-bordered"
                       as="select"
                       name="program"
                       onChange={handleChange}
@@ -321,7 +317,7 @@ const Applications = () => {
                       <option value={""}>{common("all")}</option>
                       {programsList?.map((program, index) => (
                         <option key={index} value={`${program.name}`}>
-                          {program.name}
+                          {locale == "ar" ? program.nameAr : program.name}
                         </option>
                       ))}
                     </Field>
@@ -494,10 +490,15 @@ const Applications = () => {
                       <div className="flex flex-col gap-4 ">
                         {datum.programs?.items.map(
                           (value: any, index: number) => (
-                            <div
-                              key={index}
-                              className=""
-                            >{`${value?.program?.name} - ${value?.program?.university?.name}`}</div>
+                            <div key={index} className="">{`${
+                              locale == "ar"
+                                ? value?.program?.nameAr
+                                : value?.program?.name
+                            } - ${
+                              locale == "ar"
+                                ? value?.program?.university?.nameAr
+                                : value?.program?.university?.name
+                            }`}</div>
                           )
                         )}
                       </div>

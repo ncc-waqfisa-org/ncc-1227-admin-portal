@@ -35,7 +35,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 
 const Education = () => {
   const { universityList, addNewUniversity, syncUniList } = useEducation();
-  const { push } = useRouter();
+  const { push, locale } = useRouter();
   const { t } = useTranslation("education");
   const { t: common } = useTranslation("common");
   const { t: tErrors } = useTranslation("errors");
@@ -87,12 +87,11 @@ const Education = () => {
 
   useEffect(() => {
     function paginate() {
-      setShownData(
-        resultList?.slice(
-          (currentPage - 1) * elementPerPage,
-          currentPage * elementPerPage
-        )
+      const tempShowData = resultList?.slice(
+        (currentPage - 1) * elementPerPage,
+        currentPage * elementPerPage
       );
+      setShownData(tempShowData);
     }
 
     paginate();
@@ -122,11 +121,13 @@ const Education = () => {
   function search(searchValue: string, isDisabled: string) {
     let searchUniResult = universityList
       ?.filter((value) => {
-        let sameUniName = value.name
+        let sameUniName = (locale == "ar" ? value.nameAr : value.name)
           ?.toLowerCase()
           .includes(searchValue.toLowerCase());
         let haveProgramWithName = value.Programs?.items?.filter((prog) =>
-          prog?.name?.toLowerCase().includes(searchValue.toLowerCase())
+          (locale == "ar" ? prog?.nameAr : prog?.name)
+            ?.toLowerCase()
+            .includes(searchValue.toLowerCase())
         );
         let isThereAnyPrograms = (haveProgramWithName ?? []).length > 0;
 
@@ -197,7 +198,7 @@ const Education = () => {
                 <div>
                   <Field
                     dir="ltr"
-                    className="input input-bordered"
+                    className="select select-bordered"
                     as="select"
                     name="activeStatus"
                     onChange={handleChange}
@@ -220,12 +221,12 @@ const Education = () => {
               </button>
               <div className="flex gap-4 ">
                 <div className="h-full w-[1px] bg-gray-300"></div>
-                <div
+                <button
                   className="min-w-[8rem] px-4 py-2 border-2 border-anzac-400 rounded-xl bg-anzac-400 text-white text-xs font-bold hover:cursor-pointer"
                   onClick={() => setIsSubmitted(!isSubmitted)}
                 >
                   {t("addUniversityButton")}
-                </div>
+                </button>
                 <SecondaryButton
                   name={t("addProgramsButton")}
                   buttonClick={() => {
@@ -416,7 +417,10 @@ const Education = () => {
                       datum.isDeactivated && " bg-gray-200"
                     }`}
                   >
-                    <td key={datum.id} className="bg-transparent">
+                    <td
+                      key={`${datum.id}-isDeactivated`}
+                      className="bg-transparent"
+                    >
                       <div
                         className={`flex justify-between hover:cursor-pointer ${
                           datum.isDeactivated && "text-gray-400"
@@ -424,19 +428,19 @@ const Education = () => {
                         onClick={() =>
                           push(`education/universities/${datum.id}`)
                         }
-                      >{`${datum.name}`}</div>
+                      >{`${locale == "ar" ? datum.nameAr : datum.name}`}</div>
                     </td>
-                    <td key={datum.id} className="bg-transparent">
+                    <td
+                      key={`${datum.id}-availability`}
+                      className="bg-transparent"
+                    >
                       <div
                         className={`flex justify-between hover:cursor-pointer ${
                           datum.isDeactivated && "text-gray-400"
                         }`}
                       >{`${datum.availability}`}</div>
                     </td>
-                    <td
-                      className="overflow-x-scroll bg-transparent "
-                      key={index}
-                    >
+                    <td className="overflow-x-scroll bg-transparent ">
                       {datum.Programs?.items
                         ?.sort((a: any, b: any) => {
                           let bD = b.isDeactivated === true ? -1 : 1;
@@ -453,13 +457,13 @@ const Education = () => {
                               push(`/education/programs/${program.id}`);
                             }}
                           >
-                            {program?.name}
+                            {locale == "ar" ? program?.nameAr : program?.name}
                           </div>
                         ))}
 
                       {datum.Programs?.items.length === 0 && (
                         <div className="badge badge-error text-error-content">
-                          No Programs
+                          {t("noPrograms")}
                         </div>
                       )}
                     </td>
