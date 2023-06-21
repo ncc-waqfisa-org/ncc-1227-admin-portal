@@ -7,6 +7,7 @@ import { Toaster } from "react-hot-toast";
 import ProgramFormComponent from "../../../components/program-form-component";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "react-i18next";
+import { useRouter } from "next/router";
 
 interface Props {
   program: Program;
@@ -32,6 +33,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 };
 export default function ProgramInfo({ program }: Props) {
   const { t } = useTranslation("education");
+  const { locale } = useRouter();
 
   return (
     <div>
@@ -39,19 +41,18 @@ export default function ProgramInfo({ program }: Props) {
         <Toaster />
         <div className="mb-8 ">
           <div className="text-2xl font-semibold ">
-            {t("programTitle")}: {program.name}
-          </div>
-          <div className="text-base font-medium text-gray-500 ">
-            {t("programTitle")} ID: {program.id}
+            {t("programTitle")}:{" "}
+            {locale == "ar" ? program.nameAr : program.name}
           </div>
         </div>
         <div>
           <ProgramFormComponent
             program={program}
             programName={program.name ?? ""}
+            programArName={program.nameAr ?? ""}
             universityID={program.universityID}
-            availability={program.availability ?? 0}
             requirements={program.requirements ?? ""}
+            requirementsAr={program.requirementsAr ?? ""}
             isDeactivated={program.isDeactivated ?? false}
           ></ProgramFormComponent>
         </div>

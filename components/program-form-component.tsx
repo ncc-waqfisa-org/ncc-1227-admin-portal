@@ -19,7 +19,7 @@ interface Props {
 }
 
 export default function ProgramFormComponent({ program }: Props) {
-  const { push, back } = useRouter();
+  const { locale, back } = useRouter();
   const { t } = useTranslation("education");
   const { t: tErrors } = useTranslation("errors");
   const { universityList, addProgramToUni, getProgramsFromUniID, syncUniList } =
@@ -132,18 +132,18 @@ export default function ProgramFormComponent({ program }: Props) {
           isSubmitting,
           isValid,
         }) => (
-          <Form className="flex flex-col gap-3">
+          <Form className="flex flex-col gap-3 max-w-3xl">
             <div className="flex flex-col">
               <label className="label">{t("programName")}</label>
               <Field
                 name="programName"
                 type="text"
-                placeholder="Program Name"
                 onChange={handleChange}
                 onBlur={handleBlur}
                 className={`input input-bordered input-primary ${
                   errors.programName && "input-error"
                 }`}
+                value={values.programName}
               />
               <label className="label-text-alt text-error">
                 {errors.programName &&
@@ -161,6 +161,7 @@ export default function ProgramFormComponent({ program }: Props) {
                 className={`input input-bordered input-primary ${
                   errors.programNameAr && "input-error"
                 }`}
+                value={values.programNameAr}
               />
               <label className="label-text-alt text-error">
                 {errors.programNameAr &&
@@ -172,24 +173,22 @@ export default function ProgramFormComponent({ program }: Props) {
             <div className="flex flex-col">
               <label className="label">{t("universityID")}</label>
               <Field
-                dir="ltr"
                 disabled={program}
                 as="select"
                 name="universityID"
-                placeholder="University ID"
                 onChange={(event: any) => {
                   handleChange(event);
                 }}
                 onBlur={handleBlur}
-                className={`input input-bordered input-primary ${
-                  errors.universityID && "input-error"
+                className={`select select-bordered select-primary ${
+                  errors.universityID && "select-error"
                 }`}
                 value={values.universityID}
               >
                 <option value={undefined}>Select</option>
                 {universityList?.map((uni) => (
                   <option key={uni.id} value={uni.id}>
-                    {uni?.name}
+                    {locale == "ar" ? uni?.nameAr : uni?.name}
                   </option>
                 ))}
               </Field>
@@ -209,7 +208,6 @@ export default function ProgramFormComponent({ program }: Props) {
                 <Field
                   name="isDeactivated"
                   type="checkbox"
-                  placeholder="Availability"
                   onChange={handleChange}
                   onBlur={handleBlur}
                   className={` checkbox text-orange-50 checkbox-warning ${
@@ -230,9 +228,6 @@ export default function ProgramFormComponent({ program }: Props) {
               </label>
               <textarea
                 className="h-24 textarea textarea-bordered"
-                placeholder={
-                  program?.requirements ?? "Enter the program requirements here"
-                }
                 name="requirements"
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -251,14 +246,10 @@ export default function ProgramFormComponent({ program }: Props) {
               </label>
               <textarea
                 className="h-24 textarea textarea-bordered"
-                placeholder={
-                  program?.requirementsAr ??
-                  "Enter the program requirements here"
-                }
-                name="requirements"
+                name="requirementsAr"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={values.requirements}
+                value={values.requirementsAr}
               ></textarea>
               <label className="label-text-alt text-error">
                 {errors.requirementsAr &&

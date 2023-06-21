@@ -17,7 +17,7 @@ interface Props {
 }
 
 export default function UniversityFormComponent({ university }: Props) {
-  const { push, back } = useRouter();
+  const { push, back, locale } = useRouter();
   const { syncUniList } = useEducation();
   const { t } = useTranslation("education");
   const { t: tErrors } = useTranslation("errors");
@@ -109,17 +109,17 @@ export default function UniversityFormComponent({ university }: Props) {
           isValid,
         }) => (
           <Form className="flex flex-col gap-6">
-            <div className="flex justify-between ">
-              <div className="flex items-center justify-between gap-10 ">
+            <div className="flex justify-between gap-6">
+              <div className="flex items-center justify-between gap-10 grow">
                 <div className="text-base font-medium">{t("tableUniName")}</div>
-                <div>
+                <div className="grow">
                   <Field
                     name="universityName"
                     type="text"
                     placeholder="University Name"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    className={`input input-bordered input-primary ${
+                    className={`input w-full input-bordered input-primary ${
                       errors.universityName && "input-error"
                     }`}
                   />
@@ -131,18 +131,18 @@ export default function UniversityFormComponent({ university }: Props) {
                 </div>
               </div>
 
-              <div className="flex items-center justify-between gap-10 ">
+              <div className="flex items-center justify-between gap-10 grow">
                 <div className="text-base font-medium">
                   {t("tableUniArName")}
                 </div>
-                <div>
+                <div className="grow">
                   <Field
                     name="universityArName"
                     type="text"
                     placeholder="University Name"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    className={`input input-bordered input-primary ${
+                    className={`input w-full input-bordered input-primary ${
                       errors.universityArName && "input-error"
                     }`}
                   />
@@ -211,7 +211,7 @@ export default function UniversityFormComponent({ university }: Props) {
                   <tbody>
                     {(university?.Programs?.items?.length ?? 0) == 0 && (
                       <tr className="">
-                        <td className="text-error">No Programs</td>
+                        <td className="text-error">{t("noPrograms")}</td>
                         <td className="text-error">-</td>
                       </tr>
                     )}
@@ -233,7 +233,9 @@ export default function UniversityFormComponent({ university }: Props) {
                               key={program?.id}
                             >
                               <td className="bg-transparent">
-                                {program?.name}
+                                {locale == "ar"
+                                  ? program?.nameAr
+                                  : program?.name}
                               </td>
                               <td className="bg-transparent ">
                                 <div

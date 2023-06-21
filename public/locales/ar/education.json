@@ -5,13 +5,14 @@
   "addUniversityButton": "اضافة جامعة",
   "addProgramsButton": "إضافة برنامج",
   "addNewUniversity": "اضافة جامعة جديدة",
-  "addUniversityName": "اسم الجامعة",
+  "addUniversityName": "اسم الجامعة الانجليزي",
   "addUniversityArName": "اسم الجامعة العربي",
   "tableUniName": "الاسم",
   "tableUniArName": "الاسم العربي",
   "tableUniPrograms": "البرامج",
   "addProgramSubtitle": "إضافة برنامج جديد لجامعة معينة.",
-  "programName": "إسم البرنامج",
+  "programName": "إسم البرنامج الانجليزي",
+  "programNameAr": "اسم البرنامج العربي",
   "universityID": "معرف الجامعة",
   "availability": "التوفر",
   "deactivate": "تعطيل؟",
@@ -27,5 +28,6 @@
   "all": "الكل",
   "aUniversityAlreadyExistsWithTheSameName": "يوجد بالفعل جامعة بنفس هذا الاسم",
   "universitySuccessfullyAdded": "تم اضافة الجامعة بنجاح",
+  "noPrograms": "لا توجد برامج",
   "search": "بحث"
 }

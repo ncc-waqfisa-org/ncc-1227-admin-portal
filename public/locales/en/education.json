@@ -27,5 +27,7 @@
   "all": "All",
   "aUniversityAlreadyExistsWithTheSameName": "A university already exists with the same name",
   "universitySuccessfullyAdded": "University successfully added",
+  "noPrograms": "No programs",
+  "programNameAr": "Arabic program name",
   "search": "Search"
 }

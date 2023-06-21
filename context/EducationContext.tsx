@@ -144,6 +144,7 @@ function useProviderEducation() {
       listPrograms(limit: 99999999) {
         items {
           name
+          nameAr
           id
           universityID
           universityProgramsId

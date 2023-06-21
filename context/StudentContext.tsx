@@ -265,8 +265,10 @@ export async function getApplicationByIdAPI(
           acceptanceLetterDoc
           program {
             name
+            nameAr
             university {
               name
+              nameAr
             }
           }
         }

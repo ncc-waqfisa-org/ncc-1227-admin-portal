@@ -32,9 +32,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 };
 
 export default function UniversityInfo({ getUni }: Props) {
-  const router = useRouter();
-
-  const { id } = router.query;
+  const { locale } = useRouter();
   const { t } = useTranslation("education");
 
   return (
@@ -42,8 +40,9 @@ export default function UniversityInfo({ getUni }: Props) {
       <PageComponent title={"UniversityInfo"}>
         <Toaster />
         <div className="mb-8 ">
-          <div className="text-2xl font-semibold ">{t("universityTitle")}</div>
-          <div className="text-base font-medium text-gray-500 ">ID - {id}</div>
+          <div className="text-2xl font-semibold ">{`${t("universityTitle")}: ${
+            locale == "ar" ? getUni?.nameAr : getUni?.name
+          }`}</div>
         </div>
 
         <UniversityFormComponent university={getUni}></UniversityFormComponent>
