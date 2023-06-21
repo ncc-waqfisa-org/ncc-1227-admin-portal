@@ -5,5 +5,8 @@
   "resetPassword": "Reset Password",
   "enterValidationCode": "Please enter the validation code",
   "enterCPRNumber": "Enter your CPR number",
-  "getValidation": "Get Validation Code"
+  "getValidation": "Get Validation Code",
+  "otpCode": "OTP code",
+  "newPassword": "New password",
+  "otpIsSentTo": "The OTP has been sent to the email associated with the following CPR"
 }
