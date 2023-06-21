@@ -56,7 +56,7 @@ export function giveMeTopUniversities(
       id: key,
       name:
         programs.find((p) => p?.university?.id === key)?.university?.name ??
-        "Null",
+        "-",
       count: value,
     };
 

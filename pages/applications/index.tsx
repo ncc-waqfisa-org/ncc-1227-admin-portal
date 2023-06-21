@@ -294,7 +294,7 @@ const Applications = () => {
                       <option value={""}>{common("all")}</option>
                       {universityList?.map((uni) => (
                         <option key={`${uni.id}`} value={`${uni.name}`}>
-                          {locale == "ar" ? uni.nameAr : uni.name}
+                          {locale == "ar" ? uni.nameAr ?? "-" : uni.name}
                         </option>
                       ))}
                     </Field>
@@ -317,7 +317,9 @@ const Applications = () => {
                       <option value={""}>{common("all")}</option>
                       {programsList?.map((program, index) => (
                         <option key={index} value={`${program.name}`}>
-                          {locale == "ar" ? program.nameAr : program.name}
+                          {locale == "ar"
+                            ? program.nameAr ?? "-"
+                            : program.name}
                         </option>
                       ))}
                     </Field>
@@ -492,11 +494,11 @@ const Applications = () => {
                           (value: any, index: number) => (
                             <div key={index} className="">{`${
                               locale == "ar"
-                                ? value?.program?.nameAr
+                                ? value?.program?.nameAr ?? "-"
                                 : value?.program?.name
                             } - ${
                               locale == "ar"
-                                ? value?.program?.university?.nameAr
+                                ? value?.program?.university?.nameAr ?? "-"
                                 : value?.program?.university?.name
                             }`}</div>
                           )

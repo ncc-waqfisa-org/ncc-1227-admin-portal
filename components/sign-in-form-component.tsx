@@ -89,7 +89,7 @@ export default function SignInFormComponent() {
                       }`}
                     />
                   </div>
-                  <Link href={"/resetPassword"}>Forget Password?</Link>
+                  <Link href={"/resetPassword"}>{t("forgetPassword")}</Link>
                   <button
                     type="submit"
                     className={`btn btn-primary ${isSubmitting && "loading"}`}

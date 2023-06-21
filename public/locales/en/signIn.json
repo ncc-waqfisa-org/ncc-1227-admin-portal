@@ -8,5 +8,6 @@
   "getValidation": "Get Validation Code",
   "otpCode": "OTP code",
   "newPassword": "New password",
+  "forgetPassword": "Forget password?",
   "otpIsSentTo": "The OTP has been sent to the email associated with the following CPR"
 }

@@ -234,7 +234,7 @@ export default function UniversityFormComponent({ university }: Props) {
                             >
                               <td className="bg-transparent">
                                 {locale == "ar"
-                                  ? program?.nameAr
+                                  ? program?.nameAr ?? "-"
                                   : program?.name}
                               </td>
                               <td className="bg-transparent ">

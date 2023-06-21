@@ -42,7 +42,7 @@ export default function ProgramInfo({ program }: Props) {
         <div className="mb-8 ">
           <div className="text-2xl font-semibold ">
             {t("programTitle")}:{" "}
-            {locale == "ar" ? program.nameAr : program.name}
+            {locale == "ar" ? program.nameAr ?? "-" : program.name}
           </div>
         </div>
         <div>

@@ -188,7 +188,7 @@ export default function ProgramFormComponent({ program }: Props) {
                 <option value={undefined}>Select</option>
                 {universityList?.map((uni) => (
                   <option key={uni.id} value={uni.id}>
-                    {locale == "ar" ? uni?.nameAr : uni?.name}
+                    {locale == "ar" ? uni?.nameAr ?? "-" : uni?.name}
                   </option>
                 ))}
               </Field>

@@ -121,11 +121,11 @@ const Education = () => {
   function search(searchValue: string, isDisabled: string) {
     let searchUniResult = universityList
       ?.filter((value) => {
-        let sameUniName = (locale == "ar" ? value.nameAr : value.name)
+        let sameUniName = (locale == "ar" ? value.nameAr ?? "-" : value.name)
           ?.toLowerCase()
           .includes(searchValue.toLowerCase());
         let haveProgramWithName = value.Programs?.items?.filter((prog) =>
-          (locale == "ar" ? prog?.nameAr : prog?.name)
+          (locale == "ar" ? prog?.nameAr ?? "-" : prog?.name)
             ?.toLowerCase()
             .includes(searchValue.toLowerCase())
         );
@@ -428,7 +428,9 @@ const Education = () => {
                         onClick={() =>
                           push(`education/universities/${datum.id}`)
                         }
-                      >{`${locale == "ar" ? datum.nameAr : datum.name}`}</div>
+                      >{`${
+                        locale == "ar" ? datum.nameAr ?? "-" : datum.name
+                      }`}</div>
                     </td>
                     <td
                       key={`${datum.id}-availability`}
@@ -457,7 +459,9 @@ const Education = () => {
                               push(`/education/programs/${program.id}`);
                             }}
                           >
-                            {locale == "ar" ? program?.nameAr : program?.name}
+                            {locale == "ar"
+                              ? program?.nameAr ?? "-"
+                              : program?.name}
                           </div>
                         ))}
 

@@ -41,7 +41,7 @@ export default function UniversityInfo({ getUni }: Props) {
         <Toaster />
         <div className="mb-8 ">
           <div className="text-2xl font-semibold ">{`${t("universityTitle")}: ${
-            locale == "ar" ? getUni?.nameAr : getUni?.name
+            locale == "ar" ? getUni?.nameAr ?? "-" : getUni?.name
           }`}</div>
         </div>
 

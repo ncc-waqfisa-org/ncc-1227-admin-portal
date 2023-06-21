@@ -340,11 +340,11 @@ export default function ViewApplication({
                     <div>
                       {`${
                         locale == "ar"
-                          ? primaryProgram?.program?.nameAr
+                          ? primaryProgram?.program?.nameAr ?? "-"
                           : primaryProgram?.program?.name
                       } - ${
                         locale == "ar"
-                          ? primaryProgram?.program?.university?.nameAr
+                          ? primaryProgram?.program?.university?.nameAr ?? "-"
                           : primaryProgram?.program?.university?.name
                       }`}
                     </div>
@@ -362,11 +362,11 @@ export default function ViewApplication({
                     <div>
                       {`${
                         locale == "ar"
-                          ? secondaryProgram?.program?.nameAr
+                          ? secondaryProgram?.program?.nameAr ?? "-"
                           : secondaryProgram?.program?.name
                       } - ${
                         locale == "ar"
-                          ? secondaryProgram?.program?.university?.nameAr
+                          ? secondaryProgram?.program?.university?.nameAr ?? "-"
                           : secondaryProgram?.program?.university?.name
                       }`}
                     </div>
