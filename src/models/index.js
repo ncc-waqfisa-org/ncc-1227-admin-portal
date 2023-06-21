@@ -11,11 +11,6 @@ const Status = {
   "WITHDRAWN": "WITHDRAWN"
 };
 
-const Language = {
-  "ARABIC": "ARABIC",
-  "ENGLISH": "ENGLISH"
-};
-
 const Gender = {
   "FEMALE": "FEMALE",
   "MALE": "MALE"
@@ -33,22 +28,27 @@ const FamilyIncome = {
   "OVER_1000": "OVER_1000"
 };
 
-const { Attachment, Application, ProgramChoice, Program, University, AdminLog, StudentLog, Admin, ParentInfo, Student } = initSchema(schema);
+const Language = {
+  "ARABIC": "ARABIC",
+  "ENGLISH": "ENGLISH"
+};
+
+const { Attachment, Application, AdminLog, Admin, StudentLog, Student, ParentInfo, ProgramChoice, Program, University } = initSchema(schema);
 
 export {
   Attachment,
   Application,
+  AdminLog,
+  Admin,
+  StudentLog,
+  Student,
+  ParentInfo,
   ProgramChoice,
   Program,
   University,
-  AdminLog,
-  StudentLog,
-  Admin,
-  ParentInfo,
-  Student,
   Status,
-  Language,
   Gender,
   SchoolType,
-  FamilyIncome
+  FamilyIncome,
+  Language
 };

@@ -1,5 +1,9 @@
 {
   "signIn": "Sign In",
   "cpr": "CPR",
-  "password": "Password"
+  "password": "Password",
+  "resetPassword": "Reset Password",
+  "enterValidationCode": "Please enter the validation code",
+  "enterCPRNumber": "Enter your CPR number",
+  "getValidation": "Get Validation Code"
 }

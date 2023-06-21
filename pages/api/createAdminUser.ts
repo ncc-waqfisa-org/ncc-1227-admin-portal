@@ -81,6 +81,10 @@ export default async function handler(
             Name: "email",
             Value: signUpValues.email,
           },
+          {
+            Name: "email_verified",
+            Value: "True",
+          },
         ],
         Username: signUpValues.cpr,
       };

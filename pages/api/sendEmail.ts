@@ -24,7 +24,7 @@ export default async function handler(
 
   await NextCors(req, res, {
     methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
-    origin: "https://graceful-medovik-220176.netlify.app", //! TODO add correct url
+    origin: "https://admin.waqfisa.bh",
     optionsSuccessStatus: 200,
   });
 

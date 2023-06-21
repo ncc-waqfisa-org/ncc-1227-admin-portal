@@ -4,6 +4,7 @@ import * as yup from "yup";
 import { useAuth } from "../hooks/use-auth";
 import Image from "next/image";
 import { LangSwitcher } from "./langSwitcher";
+import Link from "next/link";
 
 interface ISignInForm {
   cpr: string;
@@ -88,6 +89,7 @@ export default function SignInFormComponent() {
                       }`}
                     />
                   </div>
+                  <Link href={"/resetPassword"}>Forget Password?</Link>
                   <button
                     type="submit"
                     className={`btn btn-primary ${isSubmitting && "loading"}`}
