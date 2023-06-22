@@ -249,12 +249,19 @@ export type Admin = {
   fullName?: string | null,
   email?: string | null,
   AdminLogs?: ModelAdminLogConnection | null,
+  role?: AdminRole | null,
   createdAt: string,
   updatedAt: string,
   _version: number,
   _deleted?: boolean | null,
   _lastChangedAt: number,
 };
+
+export enum AdminRole {
+  ADMIN = "ADMIN",
+  SUPER_ADMIN = "SUPER_ADMIN",
+}
+
 
 export type ModelStudentLogConnection = {
   __typename: "ModelStudentLogConnection",
@@ -661,21 +668,29 @@ export type CreateAdminInput = {
   cpr: string,
   fullName?: string | null,
   email?: string | null,
+  role?: AdminRole | null,
   _version?: number | null,
 };
 
 export type ModelAdminConditionInput = {
   fullName?: ModelStringInput | null,
   email?: ModelStringInput | null,
+  role?: ModelAdminRoleInput | null,
   and?: Array< ModelAdminConditionInput | null > | null,
   or?: Array< ModelAdminConditionInput | null > | null,
   not?: ModelAdminConditionInput | null,
+};
+
+export type ModelAdminRoleInput = {
+  eq?: AdminRole | null,
+  ne?: AdminRole | null,
 };
 
 export type UpdateAdminInput = {
   cpr: string,
   fullName?: string | null,
   email?: string | null,
+  role?: AdminRole | null,
   _version?: number | null,
 };
 
@@ -946,6 +961,7 @@ export type ModelAdminFilterInput = {
   cpr?: ModelStringInput | null,
   fullName?: ModelStringInput | null,
   email?: ModelStringInput | null,
+  role?: ModelAdminRoleInput | null,
   and?: Array< ModelAdminFilterInput | null > | null,
   or?: Array< ModelAdminFilterInput | null > | null,
   not?: ModelAdminFilterInput | null,
@@ -1186,6 +1202,7 @@ export type ModelSubscriptionAdminFilterInput = {
   cpr?: ModelSubscriptionStringInput | null,
   fullName?: ModelSubscriptionStringInput | null,
   email?: ModelSubscriptionStringInput | null,
+  role?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionAdminFilterInput | null > | null,
   or?: Array< ModelSubscriptionAdminFilterInput | null > | null,
 };
@@ -1959,6 +1976,7 @@ export type CreateAdminLogMutation = {
       cpr: string,
       fullName?: string | null,
       email?: string | null,
+      role?: AdminRole | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -1994,6 +2012,7 @@ export type UpdateAdminLogMutation = {
       cpr: string,
       fullName?: string | null,
       email?: string | null,
+      role?: AdminRole | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -2029,6 +2048,7 @@ export type DeleteAdminLogMutation = {
       cpr: string,
       fullName?: string | null,
       email?: string | null,
+      role?: AdminRole | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -2217,6 +2237,7 @@ export type CreateAdminMutation = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+    role?: AdminRole | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -2241,6 +2262,7 @@ export type UpdateAdminMutation = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+    role?: AdminRole | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -2265,6 +2287,7 @@ export type DeleteAdminMutation = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+    role?: AdminRole | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -3107,6 +3130,7 @@ export type GetAdminLogQuery = {
       cpr: string,
       fullName?: string | null,
       email?: string | null,
+      role?: AdminRole | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -3311,6 +3335,7 @@ export type GetAdminQuery = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+    role?: AdminRole | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -3335,6 +3360,7 @@ export type ListAdminsQuery = {
       cpr: string,
       fullName?: string | null,
       email?: string | null,
+      role?: AdminRole | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -3361,6 +3387,7 @@ export type SyncAdminsQuery = {
       cpr: string,
       fullName?: string | null,
       email?: string | null,
+      role?: AdminRole | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -4439,6 +4466,7 @@ export type OnCreateAdminLogSubscription = {
       cpr: string,
       fullName?: string | null,
       email?: string | null,
+      role?: AdminRole | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -4473,6 +4501,7 @@ export type OnUpdateAdminLogSubscription = {
       cpr: string,
       fullName?: string | null,
       email?: string | null,
+      role?: AdminRole | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -4507,6 +4536,7 @@ export type OnDeleteAdminLogSubscription = {
       cpr: string,
       fullName?: string | null,
       email?: string | null,
+      role?: AdminRole | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -4691,6 +4721,7 @@ export type OnCreateAdminSubscription = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+    role?: AdminRole | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -4714,6 +4745,7 @@ export type OnUpdateAdminSubscription = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+    role?: AdminRole | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -4737,6 +4769,7 @@ export type OnDeleteAdminSubscription = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+    role?: AdminRole | null,
     createdAt: string,
     updatedAt: string,
     _version: number,

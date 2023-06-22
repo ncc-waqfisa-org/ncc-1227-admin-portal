@@ -11,6 +11,11 @@ const Status = {
   "WITHDRAWN": "WITHDRAWN"
 };
 
+const AdminRole = {
+  "ADMIN": "ADMIN",
+  "SUPER_ADMIN": "SUPER_ADMIN"
+};
+
 const Gender = {
   "FEMALE": "FEMALE",
   "MALE": "MALE"
@@ -47,6 +52,7 @@ export {
   Program,
   University,
   Status,
+  AdminRole,
   Gender,
   SchoolType,
   FamilyIncome,
