@@ -13,6 +13,8 @@ import {
 import { createAdmin, deleteAdmin } from "../../src/graphql/mutations";
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 
+require("dotenv").config({ path: ".env" });
+
 type Data = {
   createdUser: AWS.CognitoIdentityServiceProvider.UserType | undefined;
   error?: any;

@@ -22,6 +22,7 @@
     "aws-sdk": "^2.1274.0",
     "chart.js": "^4.0.1",
     "daisyui": "^2.42.1",
+    "dotenv": "^16.3.1",
     "eslint": "8.28.0",
     "eslint-config-next": "13.0.5",
     "formik": "^2.2.9",
