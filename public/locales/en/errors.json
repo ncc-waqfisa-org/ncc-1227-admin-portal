@@ -1,4 +1,5 @@
 {
+  "accessDenied": "Access denied",
   "requiredField": "Required field",
   "passwordMustMatch": "Password must match",
   "cprShouldBe9": "CPR should be 9 numbers",

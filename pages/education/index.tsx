@@ -11,6 +11,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetStaticProps } from "next";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "../../hooks/use-auth";
 
 interface InitialFilterValues {
   search: string;
@@ -36,6 +37,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 const Education = () => {
   const { universityList, addNewUniversity, syncUniList } = useEducation();
   const { push, locale } = useRouter();
+  const { isSuperAdmin } = useAuth();
   const { t } = useTranslation("education");
   const { t: common } = useTranslation("common");
   const { t: tErrors } = useTranslation("errors");
@@ -219,21 +221,23 @@ const Education = () => {
               >
                 {t("applyButton")}
               </button>
-              <div className="flex gap-4 ">
-                <div className="h-full w-[1px] bg-gray-300"></div>
-                <button
-                  className="min-w-[8rem] px-4 py-2 border-2 border-anzac-400 rounded-xl bg-anzac-400 text-white text-xs font-bold hover:cursor-pointer"
-                  onClick={() => setIsSubmitted(!isSubmitted)}
-                >
-                  {t("addUniversityButton")}
-                </button>
-                <SecondaryButton
-                  name={t("addProgramsButton")}
-                  buttonClick={() => {
-                    push("/education/programs/addProgram");
-                  }}
-                ></SecondaryButton>
-              </div>
+              {isSuperAdmin && (
+                <div className="flex gap-4 ">
+                  <div className="h-full w-[1px] bg-gray-300"></div>
+                  <button
+                    className="min-w-[8rem] px-4 py-2 border-2 border-anzac-400 rounded-xl bg-anzac-400 text-white text-xs font-bold hover:cursor-pointer"
+                    onClick={() => setIsSubmitted(!isSubmitted)}
+                  >
+                    {t("addUniversityButton")}
+                  </button>
+                  <SecondaryButton
+                    name={t("addProgramsButton")}
+                    buttonClick={() => {
+                      push("/education/programs/addProgram");
+                    }}
+                  ></SecondaryButton>
+                </div>
+              )}
             </div>
           </Form>
         )}

@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import { useEducation } from "../context/EducationContext";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "../hooks/use-auth";
 
 interface Props {
   university: University | undefined;
@@ -18,6 +19,7 @@ interface Props {
 
 export default function UniversityFormComponent({ university }: Props) {
   const { push, back, locale } = useRouter();
+  const { isSuperAdmin } = useAuth();
   const { syncUniList } = useEducation();
   const { t } = useTranslation("education");
   const { t: tErrors } = useTranslation("errors");
@@ -119,6 +121,7 @@ export default function UniversityFormComponent({ university }: Props) {
                     placeholder="University Name"
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    disabled={!isSuperAdmin}
                     className={`input w-full input-bordered input-primary ${
                       errors.universityName && "input-error"
                     }`}
@@ -139,6 +142,7 @@ export default function UniversityFormComponent({ university }: Props) {
                   <Field
                     name="universityArName"
                     type="text"
+                    disabled={!isSuperAdmin}
                     placeholder="University Name"
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -162,6 +166,7 @@ export default function UniversityFormComponent({ university }: Props) {
                   <Field
                     name="universityAvailability"
                     type="text"
+                    disabled={!isSuperAdmin}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     className={`input input-bordered input-primary ${
@@ -182,6 +187,7 @@ export default function UniversityFormComponent({ university }: Props) {
                   <Field
                     name="isDeactivated"
                     type="checkbox"
+                    disabled={!isSuperAdmin}
                     placeholder="Deactivate?"
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -256,15 +262,17 @@ export default function UniversityFormComponent({ university }: Props) {
               </div>
             </div>
 
-            <button
-              type="submit"
-              className={`btn btn-primary text-white ${
-                isSubmitting && "loading"
-              }`}
-              disabled={isSubmitting || isLoading || !isValid}
-            >
-              {t("saveButton")}
-            </button>
+            {isSuperAdmin && (
+              <button
+                type="submit"
+                className={`btn btn-primary text-white ${
+                  isSubmitting && "loading"
+                }`}
+                disabled={isSubmitting || isLoading || !isValid}
+              >
+                {t("saveButton")}
+              </button>
+            )}
           </Form>
         )}
       </Formik>

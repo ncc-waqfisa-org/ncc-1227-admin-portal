@@ -13,7 +13,9 @@
   "gpaSummary": "GPA Summary",
   "topProgram": "Top Programs",
   "createReport": "Create Report",
-  "search":"Search",
-  "all":"All",
-  "apply":"Apply"
+  "search": "Search",
+  "all": "All",
+  "administrator": "Administrator",
+  "superAdministrator": "Super Administrator",
+  "apply": "Apply"
 }

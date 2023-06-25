@@ -46,7 +46,7 @@ export default function ViewApplication({
   // const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { user } = useAuth();
+  const { user, isSuperAdmin } = useAuth();
   const { push, replace, asPath, locale } = useRouter();
   const { syncApplications } = useStudent();
   const { t } = useTranslation("applicationLog");
@@ -241,12 +241,13 @@ export default function ViewApplication({
                   <td className="flex items-center gap-8">
                     {application.isEmailSent === true ? t("yes") : t("no")}
                     <div>
-                      {application.status === Status.APPROVED && (
-                        <PrimaryButton
-                          name={tA.t("sendEmail")}
-                          buttonClick={sendApprovedEmail}
-                        ></PrimaryButton>
-                      )}
+                      {application.status === Status.APPROVED &&
+                        isSuperAdmin && (
+                          <PrimaryButton
+                            name={tA.t("sendEmail")}
+                            buttonClick={sendApprovedEmail}
+                          ></PrimaryButton>
+                        )}
                     </div>
                   </td>
                 </tr>
@@ -270,6 +271,7 @@ export default function ViewApplication({
                           name="applicationStatus"
                           value={values.applicationStatus}
                           onBlur={handleBlur}
+                          disabled={!isSuperAdmin}
                         >
                           <option
                             disabled={application.status === Status.REVIEW}
