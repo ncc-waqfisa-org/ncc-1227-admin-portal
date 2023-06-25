@@ -109,7 +109,7 @@ function useProvideAuth() {
    */
   async function checkIfCprExist(cpr: string): Promise<boolean> {
     const tempAdmin = await getAdminByCPR(cpr);
-    return tempAdmin?.cpr !== null;
+    return tempAdmin?.cpr !== undefined;
   }
 
   /**
