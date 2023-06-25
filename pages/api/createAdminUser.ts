@@ -10,7 +10,6 @@ import {
   DeleteAdminMutation,
   DeleteAdminMutationVariables,
 } from "../../src/API";
-import aws from "../../src/aws-exports";
 import { createAdmin, deleteAdmin } from "../../src/graphql/mutations";
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 
@@ -22,7 +21,7 @@ type Data = {
 AWS.config.update({
   accessKeyId: process.env.CONFIG_ACCESS_KEY_ID,
   secretAccessKey: process.env.CONFIG_SECRET_ACCESS_KEY,
-  region: aws.aws_project_region,
+  region: process.env.NCC_AWS_REGION,
 });
 
 const aws_cognito = new AWS.CognitoIdentityServiceProvider();
@@ -78,7 +77,7 @@ export default async function handler(
     let signUpValues: ISignUpForm = JSON.parse(req.body);
     const cognitoParams: AWS.CognitoIdentityServiceProvider.AdminCreateUserRequest =
       {
-        UserPoolId: aws.aws_user_pools_id,
+        UserPoolId: process.env.NCC_AWS_USER_POOL ?? "",
         UserAttributes: [
           {
             Name: "email",
