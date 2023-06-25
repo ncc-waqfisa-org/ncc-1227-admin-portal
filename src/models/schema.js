@@ -482,6 +482,15 @@ export const schema = {
                         ]
                     }
                 },
+                "role": {
+                    "name": "role",
+                    "isArray": false,
+                    "type": {
+                        "enum": "AdminRole"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -1424,6 +1433,13 @@ export const schema = {
                 "WITHDRAWN"
             ]
         },
+        "AdminRole": {
+            "name": "AdminRole",
+            "values": [
+                "ADMIN",
+                "SUPER_ADMIN"
+            ]
+        },
         "Gender": {
             "name": "Gender",
             "values": [
@@ -1457,5 +1473,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.3.2",
-    "version": "4785be7341fc2dc23cf4e7d9bcda7568"
+    "version": "b3e395dac054a8e94d9ed0ce4523c2b7"
 };

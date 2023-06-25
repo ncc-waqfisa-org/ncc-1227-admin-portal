@@ -1,4 +1,5 @@
 {
+  "accessDenied": "غير مصرح بالدخول",
   "requiredField": "الحقل مطلوب",
   "passwordMustMatch": "كلمة المرور يجب ان تتطابق",
   "cprShouldBe9": "الرقم الشخصي يجب ان يكون ٩ ارقام",

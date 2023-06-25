@@ -10,6 +10,7 @@ import { Admin } from "../../src/API";
 import { GetStaticProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "../../hooks/use-auth";
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const { locale } = ctx;
@@ -30,6 +31,7 @@ const Users = () => {
   const admins = useAppContext();
   const { t } = useTranslation("users");
   const { push } = useRouter();
+  const { isSuperAdmin } = useAuth();
 
   const [searchValue, setSearchValue] = useState("");
   const [adminList, setAdminList] = useState<Admin[]>([]);
@@ -89,10 +91,12 @@ const Users = () => {
                 name={t("search")}
                 buttonClick={search}
               ></PrimaryButton>
-              <SecondaryButton
-                name={t("addUser")}
-                buttonClick={() => push("/users/addUsers")}
-              ></SecondaryButton>
+              {isSuperAdmin && (
+                <SecondaryButton
+                  name={t("addUser")}
+                  buttonClick={() => push("/users/addUsers")}
+                ></SecondaryButton>
+              )}
             </div>
           </div>
         </div>
@@ -105,6 +109,7 @@ const Users = () => {
                 key={admin?.cpr}
                 fullName={`${admin?.fullName}`}
                 userName={`${admin?.cpr}`}
+                role={admin?.role}
               ></UsersCardInfo>
             ))}
           </div>

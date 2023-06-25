@@ -514,6 +514,7 @@ export const getAdminLog = /* GraphQL */ `
         cpr
         fullName
         email
+        role
         createdAt
         updatedAt
         _version
@@ -706,6 +707,7 @@ export const getAdmin = /* GraphQL */ `
         nextToken
         startedAt
       }
+      role
       createdAt
       updatedAt
       _version
@@ -733,6 +735,7 @@ export const listAdmins = /* GraphQL */ `
         cpr
         fullName
         email
+        role
         createdAt
         updatedAt
         _version
@@ -761,6 +764,7 @@ export const syncAdmins = /* GraphQL */ `
         cpr
         fullName
         email
+        role
         createdAt
         updatedAt
         _version

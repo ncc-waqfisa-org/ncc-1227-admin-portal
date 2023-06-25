@@ -642,6 +642,7 @@ export const onCreateAdminLog = /* GraphQL */ `
         cpr
         fullName
         email
+        role
         createdAt
         updatedAt
         _version
@@ -671,6 +672,7 @@ export const onUpdateAdminLog = /* GraphQL */ `
         cpr
         fullName
         email
+        role
         createdAt
         updatedAt
         _version
@@ -700,6 +702,7 @@ export const onDeleteAdminLog = /* GraphQL */ `
         cpr
         fullName
         email
+        role
         createdAt
         updatedAt
         _version
@@ -870,6 +873,7 @@ export const onCreateAdmin = /* GraphQL */ `
         nextToken
         startedAt
       }
+      role
       createdAt
       updatedAt
       _version
@@ -888,6 +892,7 @@ export const onUpdateAdmin = /* GraphQL */ `
         nextToken
         startedAt
       }
+      role
       createdAt
       updatedAt
       _version
@@ -906,6 +911,7 @@ export const onDeleteAdmin = /* GraphQL */ `
         nextToken
         startedAt
       }
+      role
       createdAt
       updatedAt
       _version

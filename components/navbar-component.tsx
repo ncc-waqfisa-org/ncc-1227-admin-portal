@@ -15,8 +15,9 @@ import { LangSwitcher } from "./langSwitcher";
 import { useRouter } from "next/router";
 
 export default function NavbarComponent() {
-  const { signOut, isSignedIn, user, admin } = useAuth();
+  const { signOut, isSignedIn, user, admin, isSuperAdmin } = useAuth();
   const { t } = useTranslation("pageTitles");
+  const { t: tCommon } = useTranslation("common");
   const router = useRouter();
   function goBack() {
     router.back();
@@ -31,7 +32,7 @@ export default function NavbarComponent() {
         <div className="max-w-[200px] flex justify-center">
           <LangSwitcher></LangSwitcher>
         </div>
-        <div className=" max-w-[200px] ">
+           <div className=" max-w-[200px] ">
           <Image
             className=""
             src="/logo.svg"
@@ -40,11 +41,28 @@ export default function NavbarComponent() {
             height={100}
           />
         </div>
-        <div className="flex flex-col items-center justify-center p-3 text-center rounded-lg bg-zinc-100">
-          <p className="text-zinc-500">{admin?.fullName}</p>
-          <p className="text-zinc-500">{user?.getUsername()}</p>
+        <div
+          className={`flex flex-col items-center justify-center p-3 text-center rounded-lg ${
+            isSuperAdmin ? "bg-anzac-100" : "bg-blue-100"
+          }`}
+        >
+          <p
+            className={`${
+              isSuperAdmin ? "text-anzac-500" : "text-blue-500"
+            } text-xs`}
+          >
+            {isSuperAdmin
+              ? tCommon("superAdministrator")
+              : tCommon("administrator")}
+          </p>
+          <p className={isSuperAdmin ? "text-anzac-500" : "text-blue-500"}>
+            {admin?.fullName}
+          </p>
+          <p className={isSuperAdmin ? "text-anzac-500" : "text-blue-500"}>
+            {user?.getUsername()}
+          </p>
         </div>
-
+     
         <NavBarButton
           name={t("Dashboard")}
           icon={
@@ -78,6 +96,7 @@ export default function NavbarComponent() {
           icon={
             <HiOutlineUsers className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
           }
+          disabled={!isSuperAdmin}
           linkTo={"/users"}
         ></NavBarButton>
         <NavBarButton

@@ -11,6 +11,11 @@ export enum Status {
   WITHDRAWN = "WITHDRAWN"
 }
 
+export enum AdminRole {
+  ADMIN = "ADMIN",
+  SUPER_ADMIN = "SUPER_ADMIN"
+}
+
 export enum Gender {
   FEMALE = "FEMALE",
   MALE = "MALE"
@@ -176,6 +181,7 @@ type EagerAdmin = {
   readonly fullName?: string | null;
   readonly email?: string | null;
   readonly AdminLogs?: (AdminLog | null)[] | null;
+  readonly role?: AdminRole | keyof typeof AdminRole | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -189,6 +195,7 @@ type LazyAdmin = {
   readonly fullName?: string | null;
   readonly email?: string | null;
   readonly AdminLogs: AsyncCollection<AdminLog>;
+  readonly role?: AdminRole | keyof typeof AdminRole | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

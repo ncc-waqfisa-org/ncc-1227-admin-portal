@@ -13,7 +13,9 @@
   "gpaSummary": "ملخص المعدل التراكمي",
   "topProgram": "أفضل البرامج",
   "manualReport": "تقرير يدوي",
-  "search":"بحث",
-  "all":"الكل",
-  "apply":"تطبيق"
+  "search": "بحث",
+  "all": "الكل",
+  "administrator": "مشرف",
+  "superAdministrator": "مدير",
+  "apply": "تطبيق"
 }

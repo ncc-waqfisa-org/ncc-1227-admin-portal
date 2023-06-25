@@ -204,6 +204,9 @@ export const daysOfWeekNames = [
   "Saturday",
 ];
 
+export const SUPER_ADMIN = "SUPER_ADMIN";
+export const ADMIN = "ADMIN";
+
 export function formatDate(date: Date): string {
   const year: number = date.getFullYear();
   const month: number = date.getMonth() + 1;

@@ -7,6 +7,7 @@ import * as yup from "yup";
 import { useEducation } from "../context/EducationContext";
 import { Program, UpdateProgramMutationVariables } from "../src/API";
 import { updateProgramById } from "../src/CustomAPI";
+import { useAuth } from "../hooks/use-auth";
 
 interface Props {
   program?: Program;
@@ -20,6 +21,7 @@ interface Props {
 
 export default function ProgramFormComponent({ program }: Props) {
   const { locale, back } = useRouter();
+  const { isSuperAdmin } = useAuth();
   const { t } = useTranslation("education");
   const { t: tErrors } = useTranslation("errors");
   const { universityList, addProgramToUni, getProgramsFromUniID, syncUniList } =
@@ -144,6 +146,7 @@ export default function ProgramFormComponent({ program }: Props) {
                   errors.programName && "input-error"
                 }`}
                 value={values.programName}
+                disabled={!isSuperAdmin}
               />
               <label className="label-text-alt text-error">
                 {errors.programName &&
@@ -162,6 +165,7 @@ export default function ProgramFormComponent({ program }: Props) {
                   errors.programNameAr && "input-error"
                 }`}
                 value={values.programNameAr}
+                disabled={!isSuperAdmin}
               />
               <label className="label-text-alt text-error">
                 {errors.programNameAr &&
@@ -173,7 +177,7 @@ export default function ProgramFormComponent({ program }: Props) {
             <div className="flex flex-col">
               <label className="label">{t("universityID")}</label>
               <Field
-                disabled={program}
+                disabled={program || !isSuperAdmin}
                 as="select"
                 name="universityID"
                 onChange={(event: any) => {
@@ -210,9 +214,11 @@ export default function ProgramFormComponent({ program }: Props) {
                   type="checkbox"
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  disabled={!isSuperAdmin}
                   className={` checkbox text-orange-50 checkbox-warning ${
                     errors.isDeactivated && "input-error"
                   }`}
+                  value={values.isDeactivated}
                 />
                 <label className="label-text-alt text-error">
                   {errors.isDeactivated &&
@@ -232,6 +238,7 @@ export default function ProgramFormComponent({ program }: Props) {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.requirements}
+                disabled={!isSuperAdmin}
               ></textarea>
               <label className="label-text-alt text-error">
                 {errors.requirements &&
@@ -250,6 +257,7 @@ export default function ProgramFormComponent({ program }: Props) {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.requirementsAr}
+                disabled={!isSuperAdmin}
               ></textarea>
               <label className="label-text-alt text-error">
                 {errors.requirementsAr &&
@@ -258,13 +266,15 @@ export default function ProgramFormComponent({ program }: Props) {
               </label>
             </div>
 
-            <button
-              type="submit"
-              className={`btn btn-primary ${isSubmitting && "loading"}`}
-              disabled={isSubmitting || !isValid}
-            >
-              {program ? t("saveButton") : t("submitButton")}
-            </button>
+            {isSuperAdmin && (
+              <button
+                type="submit"
+                className={`btn btn-primary ${isSubmitting && "loading"}`}
+                disabled={isSubmitting || !isValid}
+              >
+                {program ? t("saveButton") : t("submitButton")}
+              </button>
+            )}
           </Form>
         )}
       </Formik>

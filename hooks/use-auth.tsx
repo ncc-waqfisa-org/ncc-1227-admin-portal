@@ -14,6 +14,7 @@ import { Admin, GetAdminQuery, GetAdminQueryVariables } from "../src/API";
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { useRouter } from "next/router";
 import { getAdmin } from "../src/graphql/queries";
+import { SUPER_ADMIN } from "../src/Helpers";
 
 Auth.configure({ ...config, ssr: true });
 
@@ -21,6 +22,7 @@ interface IUseAuthContext {
   user: CognitoUser | undefined;
   admin: Admin | undefined;
   isSignedIn: boolean;
+  isSuperAdmin: boolean;
   isInitializing: boolean;
   isChangePasswordRequired: boolean;
   signIn: (cpr: string, password: string) => Promise<CognitoUser | undefined>;
@@ -32,6 +34,7 @@ const defaultState: IUseAuthContext = {
   user: undefined,
   admin: undefined,
   isSignedIn: false,
+  isSuperAdmin: false,
   isInitializing: true,
   isChangePasswordRequired: false,
   signIn: async () => undefined,
@@ -54,6 +57,9 @@ function useProvideAuth() {
   const [user, setUser] = useState<CognitoUser | undefined>(defaultState.user);
   const [admin, setAdmin] = useState<Admin | undefined>(defaultState.admin);
   const [isSignedIn, setIsSignedIn] = useState(defaultState.isSignedIn);
+  const [isSuperAdmin, setIsSuperAdmin] = useState<boolean>(
+    defaultState.isSuperAdmin
+  );
   const [isInitializing, setIsInitializing] = useState(
     defaultState.isInitializing
   );
@@ -90,7 +96,10 @@ function useProvideAuth() {
       query: getAdmin,
       variables: queryInput,
     })) as GraphQLResult<GetAdminQuery>;
-    setAdmin(res.data ? (res.data.getAdmin as Admin) : undefined);
+    const tempAdmin = res.data ? (res.data.getAdmin as Admin) : undefined;
+
+    setAdmin(tempAdmin);
+    setIsSuperAdmin(tempAdmin?.role === SUPER_ADMIN);
 
     return res.data?.getAdmin != null;
   }
@@ -198,6 +207,7 @@ function useProvideAuth() {
     user,
     admin,
     isSignedIn,
+    isSuperAdmin,
     signIn,
     signOut,
     checkIfCprExist,
