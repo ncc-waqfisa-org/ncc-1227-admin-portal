@@ -7,6 +7,7 @@ import { Admin, Application, Program, Status } from "./API";
 export interface TopGraphData {
   id: string;
   name: string;
+  nameAr: string;
   count: number;
 }
 
@@ -57,6 +58,9 @@ export function giveMeTopUniversities(
       name:
         programs.find((p) => p?.university?.id === key)?.university?.name ??
         "-",
+      nameAr:
+        programs.find((p) => p?.university?.id === key)?.university?.nameAr ??
+        "-",
       count: value,
     };
 
@@ -81,6 +85,7 @@ export function giveMeTopProgram(
     let tempTop: TopGraphData = {
       id: key,
       name: `${program?.name} - ${program?.university?.name}`,
+      nameAr: `${program?.nameAr} - ${program?.university?.nameAr}`,
       count: value,
     };
 

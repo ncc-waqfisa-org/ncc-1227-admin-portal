@@ -13,6 +13,7 @@ import { useAuth } from "../hooks/use-auth";
 import { useTranslation } from "react-i18next";
 import { LangSwitcher } from "./langSwitcher";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 export default function NavbarComponent() {
   const { signOut, isSignedIn, user, admin, isSuperAdmin } = useAuth();
@@ -35,7 +36,7 @@ export default function NavbarComponent() {
         <div className="max-w-[200px] flex justify-center">
           <LangSwitcher></LangSwitcher>
         </div>
-        <div className=" max-w-[200px] ">
+        <Link href="/" className=" max-w-[200px] ">
           <Image
             className=""
             src="/logo.svg"
@@ -43,7 +44,7 @@ export default function NavbarComponent() {
             width={200}
             height={100}
           />
-        </div>
+        </Link>
         <div
           className={`flex flex-col items-center justify-center p-3 text-center rounded-lg ${
             isSuperAdmin ? "bg-anzac-100" : "bg-blue-100"

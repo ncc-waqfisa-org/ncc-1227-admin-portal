@@ -42,7 +42,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 };
 
 const Home = () => {
-  const { push } = useRouter();
+  const { push, locale } = useRouter();
   const { applications, batch, updateBatch } = useStudent();
   const { t } = useTranslation("common");
   const { t: application } = useTranslation("applications");
@@ -240,7 +240,9 @@ const Home = () => {
             </LargeBarGraphInfo>
             <LargeDonutGraphInfo
               title={t("topUniversities")}
-              labels={topUniversitiesGraph.map((p) => p.name)}
+              labels={topUniversitiesGraph.map((p) =>
+                locale == "ar" ? p.nameAr : p.name
+              )}
               data={topUniversitiesGraph.map((p) => p.count)}
             >
               <CSVLink
@@ -292,7 +294,9 @@ const Home = () => {
             </LargeBarGraphInfo>
             <LargeDonutGraphInfo
               title={t("topProgram")}
-              labels={topProgramsGraph.map((p) => p.name)}
+              labels={topProgramsGraph.map((p) =>
+                locale == "ar" ? p.nameAr : p.name
+              )}
               data={topProgramsGraph.map((p) => p.count)}
             >
               <CSVLink
