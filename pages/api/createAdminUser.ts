@@ -75,26 +75,26 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   if (req.method === "POST") {
-    let signUpValues = JSON.parse(req.body);
-    const cognitoParams: AWS.CognitoIdentityServiceProvider.AdminCreateUserRequest =
-      {
-        UserPoolId: process.env.NCC_AWS_USER_POOL ?? "",
-        UserAttributes: [
-          {
-            Name: "email",
-            Value: signUpValues.email,
-          },
-          {
-            Name: "email_verified",
-            Value: "True",
-          },
-        ],
-        Username: signUpValues.cpr,
-      };
-
-    const signUpCommand = aws_cognito.adminCreateUser(cognitoParams);
-
     try {
+      let signUpValues = JSON.parse(req.body);
+      const cognitoParams: AWS.CognitoIdentityServiceProvider.AdminCreateUserRequest =
+        {
+          UserPoolId: process.env.NCC_AWS_USER_POOL ?? "",
+          UserAttributes: [
+            {
+              Name: "email",
+              Value: signUpValues.email,
+            },
+            {
+              Name: "email_verified",
+              Value: "True",
+            },
+          ],
+          Username: signUpValues.cpr,
+        };
+
+      const signUpCommand = aws_cognito.adminCreateUser(cognitoParams);
+
       return await addAdminToDB(
         signUpValues.cpr,
         signUpValues.fullName,
