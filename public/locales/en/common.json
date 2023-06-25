@@ -15,7 +15,8 @@
   "createReport": "Create Report",
   "search": "Search",
   "all": "All",
-  "administrator": "Administrator",
-  "superAdministrator": "Super Administrator",
+  "ADMIN": "Admin",
+  "SUPER_ADMIN": "Super Admin",
+  "loading": "Loading...",
   "apply": "Apply"
 }

@@ -27,6 +27,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         "studentLog",
         "applicationLog",
         "applications",
+        "common",
         "errors",
       ])),
     },

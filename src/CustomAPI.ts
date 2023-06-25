@@ -17,6 +17,8 @@ import {
   Program,
   StudentLog,
   University,
+  UpdateAdminMutation,
+  UpdateAdminMutationVariables,
   UpdateApplicationMutation,
   UpdateApplicationMutationVariables,
   UpdateAttachmentMutation,
@@ -39,6 +41,7 @@ import {
   createAdminLog,
   updateProgram,
   updateUniversity,
+  updateAdmin,
 } from "./graphql/mutations";
 
 /* -------------------------------------------------------------------------- */
@@ -285,6 +288,25 @@ export async function updateApplicationInDB(
 }
 
 /**
+ * This function updates an admin in a database using GraphQL.
+ * @param {UpdateAdminMutationVariables} mutationVars - mutationVars is a variable of type
+ * UpdateAdminMutationVariables that contains the input values required for the updateAdmin mutation.
+ * These input values include the ID of the admin to be updated and any fields that need to be updated.
+ * The mutationVars variable is passed as an argument to the updateAdminInDB function
+ * @returns a Promise that resolves to an object of type `UpdateAdminMutation` or `undefined`.
+ */
+export async function updateAdminInDB(
+  mutationVars: UpdateAdminMutationVariables
+): Promise<UpdateAdminMutation | undefined> {
+  let res = (await API.graphql({
+    query: updateAdmin,
+    variables: mutationVars,
+  })) as GraphQLResult<UpdateAdminMutation>;
+
+  return res.data;
+}
+
+/**
  * It takes in a variable of type CreateProgramChoiceMutationVariables and returns a promise of type
  * CreateProgramChoiceMutation or undefined
  * @param {CreateProgramChoiceMutationVariables} mutationVars - CreateProgramChoiceMutationVariables
@@ -431,6 +453,7 @@ export async function getAdminByCPR(id: string): Promise<Admin | undefined> {
       cpr
       _version
       email
+      role
       fullName
     }
   }
@@ -442,7 +465,7 @@ export async function getAdminByCPR(id: string): Promise<Admin | undefined> {
     return undefined;
   }
 
-  let admin = res.data as Admin;
+  let admin = res.data.getAdmin as Admin;
 
   return admin;
 }

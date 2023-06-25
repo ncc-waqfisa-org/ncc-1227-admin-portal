@@ -19,6 +19,7 @@ export default function NavbarComponent() {
   const { t } = useTranslation("pageTitles");
   const { t: tCommon } = useTranslation("common");
   const router = useRouter();
+  const isHomePage = router.pathname === "/";
   function goBack() {
     router.back();
   }
@@ -26,13 +27,15 @@ export default function NavbarComponent() {
   return (
     <div className="flex flex-col justify-between p-4 py-24 bg-nccGray-50">
       <div className="flex flex-col gap-4">
-        <button className="btn btn-ghost" onClick={goBack}>
-          {t("Back")}
-        </button>
+        {!isHomePage && (
+          <button className="btn btn-ghost" onClick={goBack}>
+            {t("Back")}
+          </button>
+        )}
         <div className="max-w-[200px] flex justify-center">
           <LangSwitcher></LangSwitcher>
         </div>
-           <div className=" max-w-[200px] ">
+        <div className=" max-w-[200px] ">
           <Image
             className=""
             src="/logo.svg"
@@ -51,9 +54,7 @@ export default function NavbarComponent() {
               isSuperAdmin ? "text-anzac-500" : "text-blue-500"
             } text-xs`}
           >
-            {isSuperAdmin
-              ? tCommon("superAdministrator")
-              : tCommon("administrator")}
+            {isSuperAdmin ? tCommon("SUPER_ADMIN") : tCommon("ADMIN")}
           </p>
           <p className={isSuperAdmin ? "text-anzac-500" : "text-blue-500"}>
             {admin?.fullName}
@@ -62,7 +63,7 @@ export default function NavbarComponent() {
             {user?.getUsername()}
           </p>
         </div>
-     
+
         <NavBarButton
           name={t("Dashboard")}
           icon={
@@ -91,14 +92,15 @@ export default function NavbarComponent() {
           }
           linkTo={"/students"}
         ></NavBarButton>
-        <NavBarButton
-          name={t("Admins")}
-          icon={
-            <HiOutlineUsers className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
-          }
-          disabled={!isSuperAdmin}
-          linkTo={"/users"}
-        ></NavBarButton>
+        {isSuperAdmin && (
+          <NavBarButton
+            name={t("Admins")}
+            icon={
+              <HiOutlineUsers className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
+            }
+            linkTo={"/users"}
+          ></NavBarButton>
+        )}
         <NavBarButton
           name={t("Logs")}
           icon={

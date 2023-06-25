@@ -4,8 +4,13 @@
   "search": "ابحث",
   "addUser": "+ إضافة مستخدم",
   "signUpAdmin": "تسجيل مسؤول جديد",
+  "editAdmin": "تحرير المسؤول",
   "cpr": "الرقم الشخصي",
   "fullName": "الاسم الكامل",
   "email": "البريد الإلكتروني",
-  "addAdminButton": "إضافة مسؤول"
+  "role": "الدور",
+  "ADMIN": "مشرف",
+  "SUPER_ADMIN": "مدير",
+  "addAdminButton": "إضافة مسؤول",
+  "updateAdminButton": "تحديث المسؤول"
 }

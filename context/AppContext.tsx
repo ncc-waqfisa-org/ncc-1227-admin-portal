@@ -8,18 +8,19 @@ import {
   useEffect,
   useState,
 } from "react";
-import { ListAdminsQuery, ListAdminsQueryVariables } from "../src/API";
+import { Admin, ListAdminsQuery, ListAdminsQueryVariables } from "../src/API";
 import { listAdmins } from "../src/graphql/queries";
+import { compareAdmins } from "../src/Helpers";
 
 // interface for all the values & functions
 interface IUseAppContext {
-  admins: ListAdminsQuery | undefined;
+  admins: Admin[];
   syncAdmins: () => Promise<void>;
 }
 
 // the default state for all the values & functions
 const defaultState: IUseAppContext = {
-  admins: undefined,
+  admins: [],
   syncAdmins: function (): Promise<void> {
     throw new Error("Function not implemented.");
   },
@@ -39,7 +40,7 @@ export const AppProvider: FC<PropsWithChildren> = ({ children }) => {
 
 //NOTE: declare vars and functions here
 function useProviderApp() {
-  const [admins, setAdmins] = useState<ListAdminsQuery | undefined>(undefined);
+  const [admins, setAdmins] = useState<Admin[]>([]);
 
   useEffect(() => {
     getAdmins();
@@ -56,9 +57,10 @@ function useProviderApp() {
       variables: queryInput,
     })) as GraphQLResult<ListAdminsQuery>;
 
-    setAdmins(res.data);
-
-    return res.data;
+    const tempAdmins = (res.data?.listAdmins?.items ?? []) as Admin[];
+    tempAdmins.sort(compareAdmins);
+    setAdmins(tempAdmins);
+    return tempAdmins;
   }
 
   async function syncAdmins() {

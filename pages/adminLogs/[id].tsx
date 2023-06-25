@@ -26,6 +26,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         "pageTitles",
         "signIn",
         "applicationLog",
+        "common",
         "errors",
       ])),
     },

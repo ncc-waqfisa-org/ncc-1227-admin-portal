@@ -21,6 +21,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
         "users",
         "pageTitles",
         "signIn",
+        "errors",
         "common",
       ])),
     },
@@ -28,8 +29,9 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 };
 
 const Users = () => {
-  const admins = useAppContext();
+  const { admins } = useAppContext();
   const { t } = useTranslation("users");
+  const { t: tErrors } = useTranslation("errors");
   const { push } = useRouter();
   const { isSuperAdmin } = useAuth();
 
@@ -38,7 +40,7 @@ const Users = () => {
   const [resultList, setResultList] = useState<Admin[]>([]);
 
   useEffect(() => {
-    let temp = admins.admins?.listAdmins?.items as Admin[];
+    let temp = admins;
     setResultList(temp);
     setAdminList(temp);
     return () => {};
@@ -60,67 +62,76 @@ const Users = () => {
 
   return (
     <PageComponent title={"Users"}>
-      <div className="">
-        <div className="mb-4 ">
-          <div className="mb-6 ">
-            <div className="text-2xl font-semibold ">{t("adminTitle")}</div>
-            <div className="text-base font-medium text-gray-500 ">
-              {t("adminSubtitle")}
-            </div>
-          </div>
-
-          {/* administrators search bar */}
-          <div className="flex justify-between gap-4 p-6 border  rounded-xl border-nccGray-50 bg-nccGray-50">
-            <div className="w-full ">
-              <SearchBarComponent
-                searchChange={(value) => {
-                  setSearchValue(value);
-
-                  if (value === "") {
-                    resetList();
-                  }
-                }}
-                onSubmit={(value: string) => {
-                  setSearchValue(value);
-                  search();
-                }}
-              />
-            </div>
-            <div className="flex gap-4 ">
-              <PrimaryButton
-                name={t("search")}
-                buttonClick={search}
-              ></PrimaryButton>
-              {isSuperAdmin && (
-                <SecondaryButton
-                  name={t("addUser")}
-                  buttonClick={() => push("/users/addUsers")}
-                ></SecondaryButton>
-              )}
-            </div>
-          </div>
+      {!isSuperAdmin && (
+        <div>
+          <p className="text-error text-xl font-bold text-center p-8">
+            {tErrors("accessDenied")}
+          </p>
         </div>
+      )}
+      {isSuperAdmin && (
+        <div className="">
+          <div className="mb-4 ">
+            <div className="mb-6 ">
+              <div className="text-2xl font-semibold ">{t("adminTitle")}</div>
+              <div className="text-base font-medium text-gray-500 ">
+                {t("adminSubtitle")}
+              </div>
+            </div>
 
-        {/* grid table of users*/}
-        {resultList?.length > 0 ? (
-          <div className="grid grid-cols-1  md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5 gap-y-4 gap-x-3">
-            {resultList?.map((admin) => (
-              <UsersCardInfo
-                key={admin?.cpr}
-                fullName={`${admin?.fullName}`}
-                userName={`${admin?.cpr}`}
-                role={admin?.role}
-              ></UsersCardInfo>
-            ))}
-          </div>
-        ) : (
-          <div className=" flex justify-center items-center border border-nccGray-100 rounded-xl bg-nccGray-100 p-8">
-            <div className=" text-base font-medium">
-              Sorry! There are no admins at the moment.
+            {/* administrators search bar */}
+            <div className="flex justify-between gap-4 p-6 border  rounded-xl border-nccGray-50 bg-nccGray-50">
+              <div className="w-full ">
+                <SearchBarComponent
+                  searchChange={(value) => {
+                    setSearchValue(value);
+
+                    if (value === "") {
+                      resetList();
+                    }
+                  }}
+                  onSubmit={(value: string) => {
+                    setSearchValue(value);
+                    search();
+                  }}
+                />
+              </div>
+              <div className="flex gap-4 ">
+                <PrimaryButton
+                  name={t("search")}
+                  buttonClick={search}
+                ></PrimaryButton>
+                {isSuperAdmin && (
+                  <SecondaryButton
+                    name={t("addUser")}
+                    buttonClick={() => push("/users/addUsers")}
+                  ></SecondaryButton>
+                )}
+              </div>
             </div>
           </div>
-        )}
-      </div>
+
+          {/* grid table of users*/}
+          {resultList?.length > 0 ? (
+            <div className="grid grid-cols-1  md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5 gap-y-4 gap-x-3">
+              {resultList?.map((admin) => (
+                <UsersCardInfo
+                  key={admin?.cpr}
+                  fullName={`${admin?.fullName}`}
+                  userName={`${admin?.cpr}`}
+                  role={admin?.role}
+                ></UsersCardInfo>
+              ))}
+            </div>
+          ) : (
+            <div className=" flex justify-center items-center border border-nccGray-100 rounded-xl bg-nccGray-100 p-8">
+              <div className=" text-base font-medium">
+                Sorry! There are no admins at the moment.
+              </div>
+            </div>
+          )}
+        </div>
+      )}
     </PageComponent>
   );
 };

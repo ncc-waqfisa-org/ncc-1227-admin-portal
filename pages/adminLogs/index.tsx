@@ -27,6 +27,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         "adminLog",
         "pageTitles",
         "signIn",
+        "common",
       ])),
     },
   };

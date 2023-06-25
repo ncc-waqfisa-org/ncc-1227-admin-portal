@@ -4,6 +4,7 @@ import AWS from "aws-sdk";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { ISignUpForm } from "../../components/sign-up-form-component";
 import {
+  AdminRole,
   CreateAdminMutation,
   CreateAdminMutationVariables,
   DeleteAdminMutation,
@@ -29,13 +30,15 @@ const aws_cognito = new AWS.CognitoIdentityServiceProvider();
 async function addAdminToDB(
   cpr: string,
   fullName: string,
-  email: string
+  email: string,
+  role: AdminRole
 ): Promise<CreateAdminMutation | undefined> {
   let queryInput: CreateAdminMutationVariables = {
     input: {
       cpr: cpr,
       fullName: fullName,
       email: email,
+      role: role,
       _version: undefined,
     },
   };
@@ -95,7 +98,8 @@ export default async function handler(
       return await addAdminToDB(
         signUpValues.cpr,
         signUpValues.fullName,
-        signUpValues.email
+        signUpValues.email,
+        signUpValues.role
       )
         .then(async (createdDbAdmin) => {
           return await signUpCommand

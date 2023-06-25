@@ -12,6 +12,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
       ...(await serverSideTranslations(locale ?? "en", [
         "pageTitles",
         "signIn",
+        "common",
         "changePassword",
       ])),
     },

@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { Application, Program, Status } from "./API";
+import { Admin, Application, Program, Status } from "./API";
 
 /* -------------------------------------------------------------------------- */
 /*                                  INTERFACE                                 */
@@ -206,6 +206,18 @@ export const daysOfWeekNames = [
 
 export const SUPER_ADMIN = "SUPER_ADMIN";
 export const ADMIN = "ADMIN";
+
+export function compareAdmins(a: Admin, b: Admin): number {
+  // Sort by role, with "SUPER_ADMIN" first
+  if (a.role === SUPER_ADMIN && b.role !== SUPER_ADMIN) {
+    return -1; // a should come before b
+  } else if (a.role !== SUPER_ADMIN && b.role === SUPER_ADMIN) {
+    return 1; // b should come before a
+  }
+
+  // Sort alphabetically by fullName
+  return (a.fullName ?? "").localeCompare(b.fullName ?? "");
+}
 
 export function formatDate(date: Date): string {
   const year: number = date.getFullYear();

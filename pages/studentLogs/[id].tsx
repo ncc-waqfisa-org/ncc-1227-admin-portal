@@ -18,6 +18,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       ...(await serverSideTranslations(locale ?? "en", [
         "pageTitles",
         "signIn",
+        "common",
         "studentLog",
       ])),
     },

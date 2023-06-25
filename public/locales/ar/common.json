@@ -15,7 +15,8 @@
   "manualReport": "تقرير يدوي",
   "search": "بحث",
   "all": "الكل",
-  "administrator": "مشرف",
-  "superAdministrator": "مدير",
+  "ADMIN": "مشرف",
+  "SUPER_ADMIN": "مدير",
+  "loading": "الرجاء الانتظار...",
   "apply": "تطبيق"
 }

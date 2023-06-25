@@ -44,6 +44,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         "applications",
         "pageTitles",
         "signIn",
+        "common",
         "errors",
       ])),
     },

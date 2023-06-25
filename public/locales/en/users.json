@@ -4,8 +4,13 @@
   "search": "Search",
   "addUser": "+ Add User",
   "signUpAdmin": "Sign Up New Admin",
+  "editAdmin": "Edit Admin",
   "cpr": "CPR",
   "fullName": "Full Name",
   "email": "Email",
-  "addAdminButton": "Add Admin"
+  "role": "Role",
+  "ADMIN": "Admin",
+  "SUPER_ADMIN": "Super Admin",
+  "addAdminButton": "Add Admin",
+  "updateAdminButton": "Update Admin"
 }

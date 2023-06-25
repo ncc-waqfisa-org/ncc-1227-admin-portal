@@ -6,6 +6,7 @@ import NavbarComponent from "./navbar-component";
 import SignInFormComponent from "./sign-in-form-component";
 
 import Image from "next/image";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   title: string;
@@ -13,6 +14,8 @@ interface Props {
 
 export const PageComponent: FC<PropsWithChildren<Props>> = (props) => {
   const { isSignedIn, user, isInitializing: init } = useAuth();
+
+  const { t: tCommon } = useTranslation("common");
 
   const isInitializing = init ?? true;
 
@@ -58,7 +61,7 @@ export const PageComponent: FC<PropsWithChildren<Props>> = (props) => {
           {isInitializing ? (
             <div className="flex items-center justify-center w-full h-full bg-gray-200 animate-pulse">
               <div className="btn btn-ghost hover:bg-transparent loading">
-                Loading...
+                {` ${tCommon("loading")} `}
               </div>
             </div>
           ) : (

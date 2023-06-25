@@ -9,17 +9,14 @@ import {
 import { Auth, CognitoUser } from "@aws-amplify/auth";
 import config from "../src/aws-exports";
 import { toast } from "react-hot-toast";
-import { API } from "aws-amplify";
-import { Admin, GetAdminQuery, GetAdminQueryVariables } from "../src/API";
-import { GraphQLResult } from "@aws-amplify/api-graphql";
+import { Admin, AdminRole } from "../src/API";
 import { useRouter } from "next/router";
-import { getAdmin } from "../src/graphql/queries";
-import { SUPER_ADMIN } from "../src/Helpers";
+import { getAdminByCPR } from "../src/CustomAPI";
 
 Auth.configure({ ...config, ssr: true });
 
 interface IUseAuthContext {
-  user: CognitoUser | undefined;
+  user: CognitoUser | undefined | null;
   admin: Admin | undefined;
   isSignedIn: boolean;
   isSuperAdmin: boolean;
@@ -31,7 +28,7 @@ interface IUseAuthContext {
 }
 
 const defaultState: IUseAuthContext = {
-  user: undefined,
+  user: null,
   admin: undefined,
   isSignedIn: false,
   isSuperAdmin: false,
@@ -54,7 +51,9 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
 export const useAuth = () => useContext(AuthContext);
 
 function useProvideAuth() {
-  const [user, setUser] = useState<CognitoUser | undefined>(defaultState.user);
+  const [user, setUser] = useState<CognitoUser | undefined | null>(
+    defaultState.user
+  );
   const [admin, setAdmin] = useState<Admin | undefined>(defaultState.admin);
   const [isSignedIn, setIsSignedIn] = useState(defaultState.isSignedIn);
   const [isSuperAdmin, setIsSuperAdmin] = useState<boolean>(
@@ -70,6 +69,26 @@ function useProvideAuth() {
   const { push } = useRouter();
 
   useEffect(() => {
+    async function getAuthUser(): Promise<void> {
+      try {
+        const authUser = await Auth.currentAuthenticatedUser();
+        if (authUser) {
+          await checkAuthUser(authUser).then((isAdmin) => {
+            if (isAdmin) {
+              setUser(authUser);
+            }
+          });
+        }
+        setIsInitializing(false);
+      } catch (error) {
+        setIsSignedIn(false);
+        setUser(null);
+        setAdmin(undefined);
+        setIsSuperAdmin(false);
+        setIsInitializing(false);
+      }
+    }
+
     // NOTE: check for user or risk an infinite loop
     if (!user) {
       // On component mount
@@ -80,38 +99,40 @@ function useProvideAuth() {
   }, [user]);
 
   /**
-   * This function checks if a given CPR number exists in a GraphQL query and returns a boolean value.
-   * @param {string} cpr - The `cpr` parameter is a string representing a CPR number, which is a unique
-   * identification number assigned to individuals. The function `checkIfCprExist` takes this
-   * parameter and checks if there is an existing record in the database with the same CPR number.
-   * @returns The function `checkIfCprExist` returns a Promise that resolves to a boolean value. The
-   * boolean value indicates whether or not a record with the given CPR number exists in the database.
+   * This function checks if a CPR number exists for an admin and returns a boolean value.
+   * @param {string} cpr - cpr is a string parameter that represents a CPR number, which is a unique
+   * identification number assigned to individuals in Denmark. The function is checking if this CPR
+   * number already exists in the system by calling the getAdminByCPR function and returning a boolean
+   * value indicating whether or not the CPR number exists.
+   * @returns a Promise that resolves to a boolean value. The boolean value indicates whether or not an
+   * admin with the given CPR exists.
    */
   async function checkIfCprExist(cpr: string): Promise<boolean> {
-    let queryInput: GetAdminQueryVariables = {
-      cpr: cpr,
-    };
-
-    let res = (await API.graphql({
-      query: getAdmin,
-      variables: queryInput,
-    })) as GraphQLResult<GetAdminQuery>;
-    const tempAdmin = res.data ? (res.data.getAdmin as Admin) : undefined;
-
-    setAdmin(tempAdmin);
-    setIsSuperAdmin(tempAdmin?.role === SUPER_ADMIN);
-
-    return res.data?.getAdmin != null;
+    const tempAdmin = await getAdminByCPR(cpr);
+    return tempAdmin?.cpr !== null;
   }
 
+  /**
+   * This function checks if a user is authenticated and sets their admin status accordingly.
+   * @param {CognitoUser} user - The parameter `user` is of type `CognitoUser`, which is likely an object
+   * representing a user in an Amazon Cognito user pool.
+   * @returns a Promise that resolves to a boolean value indicating whether the user is authenticated or
+   * not.
+   */
   async function checkAuthUser(user: CognitoUser): Promise<boolean> {
-    let isAdmin = await checkIfCprExist(user.getUsername());
-    if (!isAdmin) {
+    let tempAdmin = await getAdminByCPR(user.getUsername());
+    if (tempAdmin === undefined) {
       Auth.signOut();
       setIsSignedIn(false);
-      setUser(undefined);
+      setUser(null);
+      setAdmin(undefined);
+      setIsSuperAdmin(false);
+    } else {
+      setAdmin(tempAdmin);
+      setIsSuperAdmin(tempAdmin.role === AdminRole.SUPER_ADMIN);
+      setIsSignedIn(true);
     }
-    return isAdmin;
+    return tempAdmin !== undefined;
   }
 
   /**
@@ -124,7 +145,6 @@ function useProvideAuth() {
       if (authUser) {
         await checkAuthUser(authUser).then((isAdmin) => {
           if (isAdmin) {
-            setIsSignedIn(true);
             setUser(authUser);
           }
         });
@@ -132,7 +152,9 @@ function useProvideAuth() {
       setIsInitializing(false);
     } catch (error) {
       setIsSignedIn(false);
-      setUser(undefined);
+      setUser(null);
+      setAdmin(undefined);
+      setIsSuperAdmin(false);
       setIsInitializing(false);
     }
   }
@@ -149,11 +171,14 @@ function useProvideAuth() {
     toast.promise(
       checkIfCprExist(cpr).then(async (cprExist) => {
         if (cprExist) {
-          const cognitoUser = await Auth.signIn(cpr, password).catch(
-            (error) => {
+          const cognitoUser = await Auth.signIn(cpr, password)
+            .then(async (res) => {
+              await getAuthUser();
+              return res;
+            })
+            .catch((error) => {
               throw error;
-            }
-          );
+            });
 
           setIsSignedIn(true);
           setUser(cognitoUser);
@@ -162,9 +187,6 @@ function useProvideAuth() {
               push("../changePassword");
             }
           }
-
-          // ! TODO - stop user from being able to go to different pages when they haven't changed temp password
-
           return cognitoUser;
         } else {
           throw new Error("CPR does not exist");
@@ -189,7 +211,9 @@ function useProvideAuth() {
     toast.promise(
       Auth.signOut().then(() => {
         setIsSignedIn(false);
-        setUser(undefined);
+        setUser(null);
+        setAdmin(undefined);
+        setIsSuperAdmin(false);
       }),
       {
         loading: "Signing Out...",
