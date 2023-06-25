@@ -15,7 +15,7 @@ export interface ISignUpForm {
   cpr: string;
   fullName: string;
   email: string;
-  role: AdminRole;
+  role: AdminRole | null | undefined;
 }
 
 interface Props {
@@ -54,7 +54,7 @@ const SignUpFormComponent: FC<Props> = ({ admin }) => {
             throw new Error("Failed to process admin account");
           }
 
-          await fetch("../../api/createAdminUser", {
+          await fetch("/api/createAdminUser", {
             method: "POST",
             body: JSON.stringify(values),
           })
@@ -141,6 +141,7 @@ const SignUpFormComponent: FC<Props> = ({ admin }) => {
                   fullName: yup
                     .string()
                     .required(`${tErrors("requiredField")}`),
+                  role: yup.string().required(`${tErrors("requiredField")}`),
                 })}
                 onSubmit={async (values, actions) => {
                   if (admin) {

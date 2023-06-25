@@ -30,7 +30,7 @@ async function addAdminToDB(
   cpr: string,
   fullName: string,
   email: string,
-  role: AdminRole
+  role: AdminRole | null | undefined
 ): Promise<CreateAdminMutation | undefined> {
   let queryInput: CreateAdminMutationVariables = {
     input: {
