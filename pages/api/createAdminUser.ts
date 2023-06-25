@@ -1,8 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import { API } from "aws-amplify";
+import { API, graphqlOperation } from "aws-amplify";
 import AWS from "aws-sdk";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { ISignUpForm } from "../../components/sign-up-form-component";
+
 import {
   AdminRole,
   CreateAdminMutation,
@@ -32,24 +32,23 @@ async function addAdminToDB(
   cpr: string,
   fullName: string,
   email: string,
-  role: AdminRole | null | undefined
-): Promise<CreateAdminMutation | undefined> {
-  let queryInput: CreateAdminMutationVariables = {
-    input: {
-      cpr: cpr,
-      fullName: fullName,
-      email: email,
-      role: role,
-      _version: undefined,
-    },
-  };
+  role: string
+) {
+  const query = `
+  mutation MyMutation {
+    createAdmin(input: {cpr: "${cpr}", role: ${role}, fullName: "${fullName}", email: "${email}"}) {
+      cpr
+      fullName
+      email
+      role
+      _deleted
+      _version
+    }
+  }`;
 
-  let res = (await API.graphql({
-    query: createAdmin,
-    variables: queryInput,
-  })) as GraphQLResult<CreateAdminMutation>;
+  let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;
 
-  return res.data;
+  return res.data?.createAdmin;
 }
 
 async function deleteAdminFromDB(
@@ -76,7 +75,7 @@ export default async function handler(
   res: NextApiResponse<Data>
 ) {
   if (req.method === "POST") {
-    let signUpValues: ISignUpForm = JSON.parse(req.body);
+    let signUpValues = JSON.parse(req.body);
     const cognitoParams: AWS.CognitoIdentityServiceProvider.AdminCreateUserRequest =
       {
         UserPoolId: process.env.NCC_AWS_USER_POOL ?? "",

@@ -54,9 +54,18 @@ const SignUpFormComponent: FC<Props> = ({ admin }) => {
             throw new Error("Failed to process admin account");
           }
 
+          const bodyData = {
+            cpr: values.cpr,
+            fullName: values.fullName,
+            email: values.email,
+            role: values.role as string,
+          };
+
+          const jsonData = JSON.stringify(bodyData);
+
           await fetch("/api/createAdminUser", {
             method: "POST",
-            body: JSON.stringify(values),
+            body: jsonData,
           })
             .then(async (values) => {
               let res = await values.json();
