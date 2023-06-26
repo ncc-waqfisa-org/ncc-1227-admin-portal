@@ -37,8 +37,10 @@ export default function SignInFormComponent() {
         </div>
         <div className="flex flex-col w-full max-w-md p-10 bg-white shadow-2xl rounded-2xl shadow-primary-focus/20">
           <div className="flex flex-col items-center w-full gap-6">
-            <LangSwitcher></LangSwitcher>
-            <div className="text-xl font-bold ">{t("signIn")}</div>
+            <div className="flex justify-between items-center w-full">
+              <div className="text-xl font-bold ">{t("signIn")}</div>
+              <LangSwitcher></LangSwitcher>
+            </div>
             <Formik
               initialValues={initialValues}
               validationSchema={yup.object({
