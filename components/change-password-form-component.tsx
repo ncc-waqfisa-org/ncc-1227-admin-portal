@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import { useAuth } from "../hooks/use-auth";
 import { useTranslation } from "react-i18next";
+import { LangSwitcher } from "./langSwitcher";
 
 export interface IChangePasswordForm {
   newPassword: string;
@@ -35,17 +36,22 @@ export default function ChangePasswordFormComponent() {
 
   return (
     <div>
-      <div className="p-4 border rounded-xl">
+      <div className="p-4 border rounded-xl min-w-[25rem]">
         <div className="flex flex-col justify-between">
-          <div className="flex items-center justify-center mb-4 text-xl font-bold ">
-            {t("changePassword")}
+          <div className="flex gap-2 justify-between items-center">
+            <div className="flex items-center justify-center text-xl font-bold ">
+              {t("changePassword")}
+            </div>
+            <LangSwitcher></LangSwitcher>
           </div>
+
           <div className="">
             <Formik
               initialValues={initialValues}
               validationSchema={yup.object({
                 newPassword: yup
                   .string()
+                  .min(8, `${tErrors("min8")}`)
                   .required(`${tErrors("requiredField")}`),
               })}
               onSubmit={async (values, actions) => {
@@ -78,8 +84,6 @@ export default function ChangePasswordFormComponent() {
                     <label className="label">{t("newPassword")}</label>
                     <Field
                       name="newPassword"
-                      type="password"
-                      placeholder="New password"
                       onChange={handleChange}
                       onBlur={handleBlur}
                       value={values.newPassword}
@@ -87,7 +91,7 @@ export default function ChangePasswordFormComponent() {
                         errors.newPassword && "input-error"
                       }`}
                     />
-                    <label className="label-text-alt text-error">
+                    <label className="label-text-alt text-error mt-2">
                       {errors.newPassword &&
                         touched.newPassword &&
                         errors.newPassword}

@@ -14,6 +14,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
         "signIn",
         "common",
         "changePassword",
+        "errors",
       ])),
     },
   };
