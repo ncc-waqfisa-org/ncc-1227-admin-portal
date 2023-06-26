@@ -1,5 +1,3 @@
-import AWS from "aws-sdk";
-
 import { createContext, FC, PropsWithChildren, useContext } from "react";
 
 // interface for all the values & functions

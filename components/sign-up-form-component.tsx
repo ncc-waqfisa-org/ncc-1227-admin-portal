@@ -47,9 +47,7 @@ const SignUpFormComponent: FC<Props> = ({ admin }) => {
         if (exist) {
           throw new Error("CPR already exists");
         }
-
         let findEmail = admins.find((value) => value?.email === values.email);
-
         if (findEmail?.email !== undefined) {
           throw new Error(
             "The email given is already linked to an existing account"
@@ -58,54 +56,36 @@ const SignUpFormComponent: FC<Props> = ({ admin }) => {
           if (findEmail !== null && findEmail !== undefined) {
             throw new Error("Failed to process admin account");
           }
-
-          // create in the backend
-          const mutationVariables: CreateAdminMutationVariables = {
-            input: {
-              cpr: values.cpr,
-              fullName: values.fullName,
-              email: values.email,
-              role: values.role,
-            },
+          const bodyData = {
+            cpr: values.cpr,
+            fullName: values.fullName,
+            email: values.email,
+            role: values.role,
           };
+          const jsonData = JSON.stringify(bodyData);
 
-          // if resolved
-          await createAdminInDB(mutationVariables).then(async (resolved) => {
-            if (resolved?.createAdmin?.cpr) {
-              // trigger create admin api function
-              const bodyData = {
-                cpr: values.cpr,
-                email: values.email,
-              };
-
-              const jsonData = JSON.stringify(bodyData);
-
-              const req = new Request("/api/createAdminUser", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: jsonData,
-              });
-
-              await fetch(req)
-                .then(async (values) => {
-                  let res = await values.json();
-                  if (values.status === 200) {
-                    syncAdmins();
-                    push("/users");
-                  } else {
-                    throw new Error(`${res.error.message}`);
-                  }
-                })
-                .catch((e) => {
-                  console.warn(e);
-                  throw new Error(e.message);
-                });
-            } else {
-              throw new Error("System could not create admin");
-            }
+          const req = new Request("/api/createAdminUser", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: jsonData,
           });
+
+          await fetch(req)
+            .then(async (values) => {
+              let res = await values.json();
+              if (values.status === 200) {
+                syncAdmins();
+                push("/users");
+              } else {
+                throw new Error(`${res.error.message}`);
+              }
+            })
+            .catch((error) => {
+              console.log("createAdminUser => error", error);
+              throw new Error(`${error}`);
+            });
         }
       });
     } catch (err) {
