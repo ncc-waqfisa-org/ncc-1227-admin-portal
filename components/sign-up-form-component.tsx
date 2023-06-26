@@ -8,13 +8,8 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import { useAppContext } from "../context/AppContext";
 import { useTranslation } from "react-i18next";
-import {
-  Admin,
-  AdminRole,
-  CreateAdminMutationVariables,
-  UpdateAdminMutationVariables,
-} from "../src/API";
-import { createAdminInDB, updateAdminInDB } from "../src/CustomAPI";
+import { Admin, AdminRole, UpdateAdminMutationVariables } from "../src/API";
+import { updateAdminInDB } from "../src/CustomAPI";
 
 export interface ISignUpForm {
   cpr: string;
@@ -29,7 +24,11 @@ interface Props {
 
 const SignUpFormComponent: FC<Props> = ({ admin }) => {
   const { push } = useRouter();
-  const { checkIfCprExist, isSuperAdmin } = useAuth();
+  const {
+    checkIfCprExist,
+    isSuperAdmin,
+    admin: currentSignedAdmin,
+  } = useAuth();
   const { admins, syncAdmins } = useAppContext();
   const { t } = useTranslation("users");
   const { t: tErrors } = useTranslation("errors");
@@ -236,6 +235,7 @@ const SignUpFormComponent: FC<Props> = ({ admin }) => {
                           name="role"
                           onChange={handleChange}
                           value={values.role}
+                          disabled={currentSignedAdmin?.cpr === admin?.cpr}
                         >
                           {Object.keys(AdminRole).map((role) => (
                             <option value={role} key={role}>

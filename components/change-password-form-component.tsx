@@ -12,7 +12,7 @@ export interface IChangePasswordForm {
 }
 
 export default function ChangePasswordFormComponent() {
-  const { push } = useRouter();
+  const { push, reload } = useRouter();
   const { user } = useAuth();
   const { t } = useTranslation("changePassword");
   const { t: tErrors } = useTranslation("errors");
@@ -24,7 +24,7 @@ export default function ChangePasswordFormComponent() {
   async function changePasswordInCognito(password: string) {
     user?.completeNewPasswordChallenge(password, null, {
       onSuccess(session) {
-        push("/");
+        push("/").then(() => reload());
         return session;
       },
       onFailure: () => {
