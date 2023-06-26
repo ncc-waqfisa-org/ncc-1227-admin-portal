@@ -8,8 +8,13 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import { useAppContext } from "../context/AppContext";
 import { useTranslation } from "react-i18next";
-import { Admin, AdminRole, UpdateAdminMutationVariables } from "../src/API";
-import { updateAdminInDB } from "../src/CustomAPI";
+import {
+  Admin,
+  AdminRole,
+  CreateAdminMutationVariables,
+  UpdateAdminMutationVariables,
+} from "../src/API";
+import { createAdminInDB, updateAdminInDB } from "../src/CustomAPI";
 
 export interface ISignUpForm {
   cpr: string;
@@ -54,32 +59,53 @@ const SignUpFormComponent: FC<Props> = ({ admin }) => {
             throw new Error("Failed to process admin account");
           }
 
-          const bodyData = {
-            cpr: values.cpr,
-            fullName: values.fullName,
-            email: values.email,
-            role: values.role as string,
+          // create in the backend
+          const mutationVariables: CreateAdminMutationVariables = {
+            input: {
+              cpr: values.cpr,
+              fullName: values.fullName,
+              email: values.email,
+              role: values.role,
+            },
           };
 
-          const jsonData = JSON.stringify(bodyData);
+          // if resolved
+          await createAdminInDB(mutationVariables).then(async (resolved) => {
+            if (resolved?.createAdmin?.cpr) {
+              // trigger create admin api function
+              const bodyData = {
+                cpr: values.cpr,
+                email: values.email,
+              };
 
-          await fetch("/api/createAdminUser", {
-            method: "POST",
-            body: jsonData,
-          })
-            .then(async (values) => {
-              let res = await values.json();
-              if (values.status === 200) {
-                syncAdmins();
-                push("/users");
-              } else {
-                throw new Error(`${res.error.message}`);
-              }
-            })
-            .catch((error) => {
-              console.log("createAdminUser => error", error);
-              throw new Error(`${error}`);
-            });
+              const jsonData = JSON.stringify(bodyData);
+
+              const req = new Request("/api/createAdminUser", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: jsonData,
+              });
+
+              await fetch(req)
+                .then(async (values) => {
+                  let res = await values.json();
+                  if (values.status === 200) {
+                    syncAdmins();
+                    push("/users");
+                  } else {
+                    throw new Error(`${res.error.message}`);
+                  }
+                })
+                .catch((e) => {
+                  console.warn(e);
+                  throw new Error(e.message);
+                });
+            } else {
+              throw new Error("System could not create admin");
+            }
+          });
         }
       });
     } catch (err) {

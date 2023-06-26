@@ -6,6 +6,8 @@ import {
   Application,
   CreateAdminLogMutation,
   CreateAdminLogMutationVariables,
+  CreateAdminMutation,
+  CreateAdminMutationVariables,
   CreateApplicationMutation,
   CreateApplicationMutationVariables,
   CreateAttachmentMutation,
@@ -42,6 +44,7 @@ import {
   updateProgram,
   updateUniversity,
   updateAdmin,
+  createAdmin,
 } from "./graphql/mutations";
 
 /* -------------------------------------------------------------------------- */
@@ -235,6 +238,25 @@ export async function createAttachmentInDB(
     query: createAttachment,
     variables: mutationVars,
   })) as GraphQLResult<CreateAttachmentMutation>;
+
+  return res.data;
+}
+
+/**
+ * This function creates an admin in a database using GraphQL and returns the result.
+ * @param {CreateAdminMutationVariables} mutationVars - CreateAdminMutationVariables is a type of
+ * variable that contains the input values required for the createAdmin mutation. It includes fields
+ * such as name, email, and password. The createAdminInDB function takes in these variables as a
+ * parameter to create a new admin in the database using the createAdmin mutation.
+ * @returns a Promise that resolves to a CreateAdminMutation object or undefined.
+ */
+export async function createAdminInDB(
+  mutationVars: CreateAdminMutationVariables
+): Promise<CreateAdminMutation | undefined> {
+  let res = (await API.graphql({
+    query: createAdmin,
+    variables: mutationVars,
+  })) as GraphQLResult<CreateAdminMutation>;
 
   return res.data;
 }

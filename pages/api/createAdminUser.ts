@@ -20,28 +20,28 @@ AWS.config.update({
 
 const aws_cognito = new AWS.CognitoIdentityServiceProvider();
 
-async function addAdminToDB(
-  cpr: string,
-  fullName: string,
-  email: string,
-  role: string
-) {
-  const query = `
-  mutation MyMutation {
-    createAdmin(input: {cpr: "${cpr}", role: ${role}, fullName: "${fullName}", email: "${email}"}) {
-      cpr
-      fullName
-      email
-      role
-      _deleted
-      _version
-    }
-  }`;
+// async function addAdminToDB(
+//   cpr: string,
+//   fullName: string,
+//   email: string,
+//   role: string
+// ) {
+//   const query = `
+//   mutation MyMutation {
+//     createAdmin(input: {cpr: "${cpr}", role: ${role}, fullName: "${fullName}", email: "${email}"}) {
+//       cpr
+//       fullName
+//       email
+//       role
+//       _deleted
+//       _version
+//     }
+//   }`;
 
-  let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;
+//   let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;
 
-  return res.data?.createAdmin;
-}
+//   return res.data?.createAdmin;
+// }
 
 async function deleteAdminFromDB(
   cpr: string,
@@ -68,9 +68,7 @@ async function deleteAdminFromDB(
 
 interface RequestData {
   cpr: string;
-  fullName: string;
   email: string;
-  role: string;
 }
 
 export default async function handler(
@@ -99,35 +97,24 @@ export default async function handler(
 
       const signUpCommand = aws_cognito.adminCreateUser(cognitoParams);
 
-      return await addAdminToDB(
-        requestData.cpr,
-        requestData.fullName,
-        requestData.email,
-        requestData.role
-      )
-        .then(async (createdDbAdmin) => {
-          return await signUpCommand
-            .promise()
-            .then(async (createdUser) => {
-              return res.status(200).json({ createdUser: createdUser.User });
-            })
-            .catch(async (err) => {
-              await deleteAdminFromDB(
-                requestData.cpr,
-                createdDbAdmin?.createAdmin?._version ?? 1
-              );
-              return res
-                .status(500)
-                .json({ createdUser: undefined, error: err });
-            });
+      return await signUpCommand
+        .promise()
+        .then(async (createdUser) => {
+          return res
+            .status(200)
+            .json({ success: true, createdUser: createdUser.User });
         })
-        .catch((err) => {
-          console.log(err);
-          return res.status(500).json({ createdUser: undefined, error: err });
+        .catch(async (err) => {
+          await deleteAdminFromDB(requestData.cpr, 1);
+          return res
+            .status(500)
+            .json({ success: false, createdUser: undefined, error: err });
         });
     } catch (err) {
       console.log(err);
-      return res.status(500).json({ createdUser: undefined, error: err });
+      return res
+        .status(500)
+        .json({ success: false, createdUser: undefined, error: err });
     }
   }
 }
