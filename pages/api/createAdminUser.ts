@@ -9,19 +9,22 @@ import {
 } from "../../src/API";
 import { createAdmin, deleteAdmin } from "../../src/graphql/mutations";
 import { GraphQLResult } from "@aws-amplify/api-graphql";
-import { API } from "aws-amplify";
+import { Amplify } from "aws-amplify";
 import {
   AdminCreateUserRequest,
   AdminCreateUserResponse,
   CognitoIdentityProvider,
 } from "@aws-sdk/client-cognito-identity-provider";
 import { AwsCredentialIdentity } from "@aws-sdk/types";
+import awsExports from "../../src/aws-exports";
 require("dotenv").config({ path: ".env" });
 
 const credentials: AwsCredentialIdentity = {
   accessKeyId: process.env.CONFIG_ACCESS_KEY_ID ?? "",
   secretAccessKey: process.env.CONFIG_SECRET_ACCESS_KEY ?? "",
 };
+
+Amplify.configure({ ...awsExports, ssr: true });
 
 const aws_cognito = new CognitoIdentityProvider({
   credentials: credentials,
@@ -64,7 +67,7 @@ async function addAdminToDB(
       _version: undefined,
     },
   };
-  let res = (await API.graphql({
+  let res = (await Amplify.API.graphql({
     query: createAdmin,
     variables: queryInput,
   })) as GraphQLResult<CreateAdminMutation>;
@@ -92,7 +95,7 @@ async function deleteAdminFromDB(
       _version: version,
     },
   };
-  let res = (await API.graphql({
+  let res = (await Amplify.API.graphql({
     query: deleteAdmin,
     variables: queryInput,
   })) as GraphQLResult<DeleteAdminMutation>;
