@@ -83,6 +83,7 @@ const SignUpFormComponent: FC<Props> = ({ admin }) => {
         }
       });
     } catch (err) {
+      console.log("error creating admin account", err);
       throw err;
     }
   }
@@ -115,6 +116,7 @@ const SignUpFormComponent: FC<Props> = ({ admin }) => {
         });
       });
     } catch (err) {
+      console.log("error updating admin account", err);
       throw err;
     }
   }
@@ -153,22 +155,26 @@ const SignUpFormComponent: FC<Props> = ({ admin }) => {
                   role: yup.string().required(`${tErrors("requiredField")}`),
                 })}
                 onSubmit={async (values, actions) => {
-                  if (admin) {
-                    await toast.promise(editAdminUser(values), {
-                      loading: "Loading...",
-                      success: "Admin account edited successfully",
-                      error: (error) => {
-                        return `${error.message}`;
-                      },
-                    });
-                  } else {
-                    await toast.promise(createAdminUser(values), {
-                      loading: "Loading...",
-                      success: "Admin account created successfully",
-                      error: (error) => {
-                        return `${error.message}`;
-                      },
-                    });
+                  try {
+                    if (admin) {
+                      await toast.promise(editAdminUser(values), {
+                        loading: "Loading...",
+                        success: "Admin account edited successfully",
+                        error: (error) => {
+                          return `${error.message}`;
+                        },
+                      });
+                    } else {
+                      await toast.promise(createAdminUser(values), {
+                        loading: "Loading...",
+                        success: "Admin account created successfully",
+                        error: (error) => {
+                          return `${error.message}`;
+                        },
+                      });
+                    }
+                  } catch (error) {
+                    console.log(error, "Error while submitting admin form");
                   }
 
                   actions.setSubmitting(false);

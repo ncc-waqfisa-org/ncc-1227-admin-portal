@@ -4,21 +4,13 @@ import AWS from "aws-sdk";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import {
-  AdminRole,
-  CreateAdminMutation,
-  CreateAdminMutationVariables,
   DeleteAdminMutation,
   DeleteAdminMutationVariables,
 } from "../../src/API";
-import { createAdmin, deleteAdmin } from "../../src/graphql/mutations";
+import { deleteAdmin } from "../../src/graphql/mutations";
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 
 require("dotenv").config({ path: ".env" });
-
-type Data = {
-  createdUser: AWS.CognitoIdentityServiceProvider.UserType | undefined;
-  error?: any;
-};
 
 AWS.config.update({
   accessKeyId: process.env.CONFIG_ACCESS_KEY_ID,
@@ -70,36 +62,48 @@ async function deleteAdminFromDB(
   return res.data?.deleteAdmin != null;
 }
 
+/* -------------------------------------------------------------------------- */
+/*                                   Handler                                  */
+/* -------------------------------------------------------------------------- */
+
+interface RequestData {
+  cpr: string;
+  fullName: string;
+  email: string;
+  role: string;
+}
+
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse
 ) {
   if (req.method === "POST") {
     try {
-      let signUpValues = JSON.parse(req.body);
+      let requestData: RequestData = JSON.parse(req.body) as RequestData;
+
       const cognitoParams: AWS.CognitoIdentityServiceProvider.AdminCreateUserRequest =
         {
           UserPoolId: process.env.NCC_AWS_USER_POOL ?? "",
           UserAttributes: [
             {
               Name: "email",
-              Value: signUpValues.email,
+              Value: requestData.email,
             },
             {
               Name: "email_verified",
               Value: "True",
             },
           ],
-          Username: signUpValues.cpr,
+          Username: requestData.cpr,
         };
 
       const signUpCommand = aws_cognito.adminCreateUser(cognitoParams);
 
       return await addAdminToDB(
-        signUpValues.cpr,
-        signUpValues.fullName,
-        signUpValues.email,
-        signUpValues.role
+        requestData.cpr,
+        requestData.fullName,
+        requestData.email,
+        requestData.role
       )
         .then(async (createdDbAdmin) => {
           return await signUpCommand
@@ -109,7 +113,7 @@ export default async function handler(
             })
             .catch(async (err) => {
               await deleteAdminFromDB(
-                signUpValues.cpr,
+                requestData.cpr,
                 createdDbAdmin?.createAdmin?._version ?? 1
               );
               return res
