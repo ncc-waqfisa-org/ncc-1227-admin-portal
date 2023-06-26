@@ -16,6 +16,7 @@ import {
   CognitoIdentityProvider,
 } from "@aws-sdk/client-cognito-identity-provider";
 import { AwsCredentialIdentity } from "@aws-sdk/types";
+require("dotenv").config({ path: ".env" });
 
 const credentials: AwsCredentialIdentity = {
   accessKeyId: process.env.CONFIG_ACCESS_KEY_ID ?? "",
