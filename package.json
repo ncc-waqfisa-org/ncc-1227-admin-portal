@@ -12,6 +12,7 @@
     "@aws-amplify/ui-react": "^4.1.0",
     "@aws-sdk/client-cognito-identity-provider": "^3.359.0",
     "@aws-sdk/types": "^3.226.0",
+    "@azure/msal-node": "^1.18.0",
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/typography": "^0.5.8",
     "@types/lodash": "^4.14.191",

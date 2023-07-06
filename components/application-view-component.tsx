@@ -79,20 +79,23 @@ export default function ViewApplication({
       fetch("../../api/sendEmail", {
         method: "POST",
         body: JSON.stringify(emailData),
-      }).then(async (res) => {
-        if (res.status === 200) {
-          await updateEmailSentToApplication({
-            applicationId: application.id,
-            version: application._version,
-
-            isEmailSent: true,
-          }).then((val) => {
-            if (val) {
-              replace(asPath);
-            }
-          });
-        }
-      }),
+      })
+        .then(async (res) => {
+          if (res.status === 200) {
+            await updateEmailSentToApplication({
+              applicationId: application.id,
+              version: application._version,
+              isEmailSent: true,
+            }).then((val) => {
+              if (val) {
+                replace(asPath);
+              }
+            });
+          }
+        })
+        .catch((err) => {
+          throw err;
+        }),
       {
         loading: "Sending email...",
         success: "Email sent to user!",
@@ -150,13 +153,24 @@ export default function ViewApplication({
                 error: "Failed to update application",
               })
               .then(async (value) => {
-                // setIsEditing(false);
-
                 if (values.applicationStatus === Status.REJECTED) {
                   await toast.promise(
                     fetch("../../api/sendEmail", {
                       method: "POST",
                       body: JSON.stringify(rejectEmailData),
+                    }).then(async (res) => {
+                      if (res.status === 200) {
+                        await updateEmailSentToApplication({
+                          applicationId: application.id,
+                          version:
+                            value?.updateApplication?._version ??
+                            application._version,
+
+                          isEmailSent: true,
+                        });
+                      } else {
+                        throw new Error("Failed to send email");
+                      }
                     }),
                     {
                       loading: "Sending email...",
@@ -164,15 +178,6 @@ export default function ViewApplication({
                       error: "Failed to send email to user",
                     }
                   );
-
-                  await updateEmailSentToApplication({
-                    applicationId: application.id,
-                    version:
-                      value?.updateApplication?._version ??
-                      application._version,
-
-                    isEmailSent: true,
-                  });
                 }
 
                 if (
