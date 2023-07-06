@@ -25,7 +25,7 @@ export function nccApprovedEmailTemplate(logo: string, userName: string) {
                   </td>
                 </tr>
               </table>
-              <hr style="margin-top:1.5rem;margin-bottom:1.5rem;width:100%;border:none;border-top:1px solid #eaeaea" /><a href="mailto:nccxfthm1227@gmail.com" target="_blank" style="margin-left:auto;margin-right:auto;display:inline-block;width:100%;border-radius:0.375rem;background-color:rgb(201, 141, 75);color:#fff;font-size:16px;font-weight:bold;text-decoration:none;text-align:center;padding:0px 0px;line-height:100%;max-width:100%"><span></span><span style="color:#fff;font-size:16px;font-weight:bold;text-decoration:none;text-align:center;display:inline-block;padding:10px 0px;max-width:100%;line-height:120%;text-transform:none;mso-padding-alt:0px;mso-text-raise:0">Contact Support</span><span></span></a>
+              <hr style="margin-top:1.5rem;margin-bottom:1.5rem;width:100%;border:none;border-top:1px solid #eaeaea" /><a href="mailto:info@waqfisa.bh" target="_blank" style="margin-left:auto;margin-right:auto;display:inline-block;width:100%;border-radius:0.375rem;background-color:rgb(201, 141, 75);color:#fff;font-size:16px;font-weight:bold;text-decoration:none;text-align:center;padding:0px 0px;line-height:100%;max-width:100%"><span></span><span style="color:#fff;font-size:16px;font-weight:bold;text-decoration:none;text-align:center;display:inline-block;padding:10px 0px;max-width:100%;line-height:120%;text-transform:none;mso-padding-alt:0px;mso-text-raise:0">Contact Support</span><span></span></a>
             </td>
           </tr>
         </tbody>
@@ -63,7 +63,7 @@ export function nccRejectedEmailTemplate(logo: string, userName: string) {
                   </td>
                 </tr>
               </table>
-              <hr style="margin-top:1.5rem;margin-bottom:1.5rem;width:100%;border:none;border-top:1px solid #eaeaea" /><a href="mailto:nccxfthm1227@gmail.com" target="_blank" style="margin-left:auto;margin-right:auto;display:inline-block;width:100%;border-radius:0.375rem;background-color:rgb(201, 141, 75);color:#fff;font-size:16px;font-weight:bold;text-decoration:none;text-align:center;padding:0px 0px;line-height:100%;max-width:100%"><span></span><span style="color:#fff;font-size:16px;font-weight:bold;text-decoration:none;text-align:center;display:inline-block;padding:10px 0px;max-width:100%;line-height:120%;text-transform:none;mso-padding-alt:0px;mso-text-raise:0">Contact Support</span><span></span></a>
+              <hr style="margin-top:1.5rem;margin-bottom:1.5rem;width:100%;border:none;border-top:1px solid #eaeaea" /><a href="mailto:info@waqfisa.bh" target="_blank" style="margin-left:auto;margin-right:auto;display:inline-block;width:100%;border-radius:0.375rem;background-color:rgb(201, 141, 75);color:#fff;font-size:16px;font-weight:bold;text-decoration:none;text-align:center;padding:0px 0px;line-height:100%;max-width:100%"><span></span><span style="color:#fff;font-size:16px;font-weight:bold;text-decoration:none;text-align:center;display:inline-block;padding:10px 0px;max-width:100%;line-height:120%;text-transform:none;mso-padding-alt:0px;mso-text-raise:0">Contact Support</span><span></span></a>
             </td>
           </tr>
         </tbody>
