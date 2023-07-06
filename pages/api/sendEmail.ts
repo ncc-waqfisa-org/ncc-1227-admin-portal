@@ -119,12 +119,8 @@ export default async function handler(
             `/v1.0/users/${process.env.OUTLOOK_USERNAME}/sendMail`,
           options
         )
-          .then((sendResponse) => {
-            if (sendResponse.status === 200) {
-              res.status(200).json({ success: true });
-            } else {
-              res.status(500).json({ success: false, message: sendResponse });
-            }
+          .then(() => {
+            res.status(200).json({ success: true });
           })
           .catch((error) => {
             console.log(error);
@@ -164,12 +160,8 @@ export default async function handler(
             `/v1.0/users/${process.env.OUTLOOK_USERNAME}/sendMail`,
           options
         )
-          .then((sendResponse) => {
-            if (sendResponse.status === 200) {
-              res.status(200).json({ success: true });
-            } else {
-              res.status(500).json({ success: false, message: sendResponse });
-            }
+          .then(() => {
+            res.status(200).json({ success: true });
           })
           .catch((error) => {
             console.log(error);
