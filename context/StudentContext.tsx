@@ -10,12 +10,10 @@ import {
 import { Application, Student } from "../src/API";
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 
-import { IDateRange } from "../src/Helpers";
 import { getAllApplicationsAPI } from "../src/CustomAPI";
 
 // interface for all the values & functions
 interface IUseStudentContext {
-  students: Student[] | undefined;
   applications: Application[] | undefined;
   applicationById: Application | undefined;
   getApplicationByID: (id: string) => void;
@@ -27,7 +25,6 @@ interface IUseStudentContext {
 
 // the default state for all the values & functions
 const defaultState: IUseStudentContext = {
-  students: undefined,
   applications: undefined,
   applicationById: undefined,
   getApplicationByID: () => {},
@@ -61,10 +58,6 @@ export const StudentProvider: FC<PropsWithChildren> = ({ children }) => {
 
 //NOTE: declare vars and functions here
 function useProviderStudent() {
-  const [students, setStudents] = useState<Student[] | undefined>(
-    defaultState.students
-  );
-
   const [applications, setApplications] = useState<Application[] | undefined>(
     defaultState.applications
   );
@@ -74,12 +67,6 @@ function useProviderStudent() {
   const [applicationById, setApplicationById] = useState<
     Application | undefined
   >(undefined);
-
-  useEffect(() => {
-    getStudents();
-
-    return () => {};
-  }, []);
 
   useEffect(
     () => {
@@ -96,30 +83,6 @@ function useProviderStudent() {
 
   function updateBatch(newBatch: number) {
     setBatch(newBatch);
-  }
-
-  async function getStudents(): Promise<Student[] | undefined> {
-    let query = `
-    query ListStudents {
-      listStudents(limit: 99999999) {
-        items {
-          cpr
-          email
-          fullName
-        }
-      }
-    }       
-    `;
-
-    let res = (await API.graphql(
-      graphqlOperation(query)
-    )) as GraphQLResult<any>;
-
-    let tempStudents = res.data;
-    let temp: Student[] = (tempStudents.listStudents?.items ?? []) as Student[];
-
-    setStudents(temp);
-    return temp;
   }
 
   // add programs to uni
@@ -216,7 +179,6 @@ function useProviderStudent() {
 
   // NOTE: return all the values & functions you want to export
   return {
-    students,
     applications,
     applicationById,
     getApplicationByID,

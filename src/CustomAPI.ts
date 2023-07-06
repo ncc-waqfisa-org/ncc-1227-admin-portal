@@ -863,6 +863,7 @@ export async function getAllApplicationsAPI(
         updatedAt
         student {
           householdIncome
+          fullName
         }
       }
     }
@@ -925,6 +926,7 @@ export async function getAllApprovedApplicationsAPI(
         updatedAt
         student {
           householdIncome
+          fullName
         }
       }
     }

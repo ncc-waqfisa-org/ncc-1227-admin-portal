@@ -102,13 +102,13 @@ export default function NavbarComponent() {
             linkTo={"/users"}
           ></NavBarButton>
         )}
-        <NavBarButton
+        {/* <NavBarButton
           name={t("Logs")}
           icon={
             <HiOutlineClipboardList className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
           }
           linkTo={"/adminLogs"}
-        ></NavBarButton>
+        ></NavBarButton> */}
         <NavBarButton
           name={t("Support")}
           disabled

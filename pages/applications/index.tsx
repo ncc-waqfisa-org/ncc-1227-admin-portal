@@ -51,7 +51,7 @@ const Applications = () => {
     program: "",
   };
 
-  const { applications, students, batch, updateBatch } = useStudent();
+  const { applications, batch, updateBatch } = useStudent();
   const { universityList, programsList } = useEducation();
   const { push, locale } = useRouter();
   const { t } = useTranslation("applications");
@@ -137,15 +137,12 @@ const Applications = () => {
     setCurrentPage(currentPage - 1);
   }
 
-  function findStudentName(id: string) {
-    return students?.find((value) => value.cpr === id)?.fullName;
-  }
   // Table Data Pagination
 
   function filter(values: InitialFilterValues) {
     let filteredApplications = sortedApplications?.filter(
       (element) =>
-        (findStudentName(element.studentCPR)
+        (element.student?.fullName
           ?.toLowerCase()
           .includes(values.search.toLowerCase()) ||
           element.studentCPR
@@ -447,9 +444,7 @@ const Applications = () => {
                     </th>
                     <td className="sticky left-14">
                       <div className="flex flex-col justify-between ">
-                        <div className="text-sm font-semibold ">{`${findStudentName(
-                          datum.studentCPR
-                        )}`}</div>
+                        <div className="text-sm font-semibold ">{`${datum.student?.fullName}`}</div>
                         <div className="text-sm ">{`${datum.studentCPR}`}</div>
                       </div>
                     </td>

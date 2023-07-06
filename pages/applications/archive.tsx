@@ -54,7 +54,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 const ArchivePage: FC<Props> = ({ applications: initialApplications }) => {
   const { t } = useTranslation("applications");
 
-  const { students } = useStudent();
   const { push, locale } = useRouter();
 
   const [batch, setBatch] = useState<number>(defaultBatch);
@@ -157,10 +156,6 @@ const ArchivePage: FC<Props> = ({ applications: initialApplications }) => {
 
   function goPrevPage() {
     setCurrentPage(currentPage - 1);
-  }
-
-  function findStudentName(id: string) {
-    return students?.find((value) => value.cpr === id)?.fullName;
   }
 
   return (
@@ -296,9 +291,7 @@ const ArchivePage: FC<Props> = ({ applications: initialApplications }) => {
                     </th>
                     <td>
                       <div className="flex flex-col justify-between ">
-                        <div className="text-sm font-semibold ">{`${findStudentName(
-                          datum.studentCPR
-                        )}`}</div>
+                        <div className="text-sm font-semibold ">{`${datum.student?.fullName}`}</div>
                         <div className="text-sm ">{`${datum.studentCPR}`}</div>
                       </div>
                     </td>
