@@ -1,6 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { Application } from "../../src/API";
-import { getAllApplicationsWithPaginationAPI } from "../../src/CustomAPI";
+import {
+  IApplicationsWithNextToken,
+  getAllApplicationsWithPaginationAPI,
+} from "../../src/CustomAPI";
 
 type Data = {
   applications: Application[];
@@ -19,7 +22,8 @@ async function getAllApplications(batch: number) {
   const applicationList: Application[] = [];
 
   do {
-    const result = await getAllApplicationsWithPaginationAPI(batch, nextToken);
+    const result: IApplicationsWithNextToken =
+      await getAllApplicationsWithPaginationAPI(batch, nextToken);
     applicationList.push(...result.applications);
     nextToken = result.nextToken;
   } while (nextToken);
