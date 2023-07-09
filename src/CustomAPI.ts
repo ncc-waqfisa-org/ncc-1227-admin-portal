@@ -884,24 +884,26 @@ export async function getAllApplicationsAPI(
   return temp;
 }
 
+async function getAllApplications(batch: number) {
+  var nextToken: string | null = null;
+  const applicationList: Application[] = [];
+
+  do {
+    const result: IApplicationsWithNextToken =
+      await getAllApplicationsWithPaginationAPI(batch, nextToken);
+    applicationList.push(...result.applications);
+    nextToken = result.nextToken;
+  } while (nextToken);
+  return applicationList;
+}
+
 export async function getAllApplicationsLambda(
   batch: number
 ): Promise<Application[]> {
   try {
-    const res = await fetch("/api/getAllApplications", {
-      method: "POST",
-      body: JSON.stringify({
-        batch: batch,
-      }),
-    });
+    const _applications: Application[] = await getAllApplications(batch);
 
-    if (res.status === 200) {
-      const data = await res.json();
-      return data.applications as Application[];
-    } else {
-      console.log("error retrieving all applications", res);
-      return [];
-    }
+    return _applications;
   } catch (error) {
     console.log("error retrieving all applications", error);
     return [];
