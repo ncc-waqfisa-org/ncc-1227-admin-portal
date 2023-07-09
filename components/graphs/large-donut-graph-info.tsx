@@ -1,11 +1,13 @@
 import React, { FC, PropsWithChildren } from "react";
 import { Doughnut } from "react-chartjs-2";
 import PrimaryButton from "./../primary-button";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   title: string;
   labels: string[];
   data: number[];
+  loading: boolean;
 }
 
 export const LargeDonutGraphInfo: FC<PropsWithChildren<Props>> = ({
@@ -13,7 +15,10 @@ export const LargeDonutGraphInfo: FC<PropsWithChildren<Props>> = ({
   labels,
   data,
   children,
+  loading,
 }) => {
+  const { t } = useTranslation("common");
+
   const graphData = {
     labels: labels ?? [],
     datasets: [
@@ -42,19 +47,25 @@ export const LargeDonutGraphInfo: FC<PropsWithChildren<Props>> = ({
         {title}
         {children}
       </div>
-      <div className="flex items-center justify-center grow">
-        <Doughnut
-          data={graphData}
-          options={{
-            maintainAspectRatio: false,
-            elements: {
-              arc: {
-                borderWidth: 3,
+      {loading ? (
+        <div className="min-h-[12.8rem] flex justify-center items-center animate-pulse bg-black/10 rounded-md">
+          <p>{t("loading")}</p>
+        </div>
+      ) : (
+        <div className="flex items-center justify-center grow">
+          <Doughnut
+            data={graphData}
+            options={{
+              maintainAspectRatio: false,
+              elements: {
+                arc: {
+                  borderWidth: 3,
+                },
               },
-            },
-          }}
-        />
-      </div>
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import { ChartData } from "chart.js";
 import React from "react";
 import { Line } from "react-chartjs-2";
+import { useTranslation } from "react-i18next";
 
 export enum GraphColor {
   RED,
@@ -13,6 +14,7 @@ interface Props {
   graphNum: number;
   graph: ChartData<"line", number[], string>;
   color: GraphColor;
+  loading?: boolean;
 }
 
 export default function MiniGraphInfo({
@@ -20,7 +22,9 @@ export default function MiniGraphInfo({
   graphNum,
   graph,
   color,
+  loading,
 }: Props) {
+  const { t } = useTranslation("common");
   const data = graph;
 
   const options = {
@@ -66,10 +70,18 @@ export default function MiniGraphInfo({
     >
       <div className="flex flex-col w-full">
         <div className="text-xs font-semibold text-gray-600 ">{title}</div>
-        <div className="flex justify-between p-4 grow">
-          <div className="w-8 text-2xl ">{graphNum}</div>
-          <Line data={data} className="" options={options} />
-        </div>
+        {loading ? (
+          <div className="min-h-[12.8rem] flex justify-center items-center animate-pulse bg-black/10 rounded-md">
+            <p>{t("loading")}</p>
+          </div>
+        ) : (
+          <div className="flex flex-col justify-between w-full p-4">
+            <div className="w-8 text-2xl ">{graphNum}</div>
+            <div className="max-h-[9rem] w-full">
+              <Line data={data} className="" options={options} />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

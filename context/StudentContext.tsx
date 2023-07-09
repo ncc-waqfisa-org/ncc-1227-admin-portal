@@ -10,7 +10,7 @@ import {
 import { Application, Student } from "../src/API";
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 
-import { getAllApplicationsAPI } from "../src/CustomAPI";
+import { getAllApplicationsLambda } from "../src/CustomAPI";
 
 // interface for all the values & functions
 interface IUseStudentContext {
@@ -21,6 +21,7 @@ interface IUseStudentContext {
   batch: number;
   updateBatch: (batch: number) => void;
   syncApplications: () => Promise<void>;
+  applicationsBeingFetched: boolean;
 }
 
 // the default state for all the values & functions
@@ -38,6 +39,7 @@ const defaultState: IUseStudentContext = {
   getStudentInfo: function (cpr: string): Promise<Student | undefined> {
     throw new Error("Function not implemented.");
   },
+  applicationsBeingFetched: false,
 };
 
 // creating the app contexts
@@ -68,6 +70,10 @@ function useProviderStudent() {
     Application | undefined
   >(undefined);
 
+  const [applicationsBeingFetched, setApplicationsBeingFetched] = useState(
+    defaultState.applicationsBeingFetched
+  );
+
   useEffect(
     () => {
       // Run this
@@ -85,11 +91,14 @@ function useProviderStudent() {
     setBatch(newBatch);
   }
 
-  // add programs to uni
-  async function getAllApplications(
-    batch: number
-  ): Promise<Application[] | undefined> {
-    let tempApplicationList = await getAllApplicationsAPI(batch);
+  async function getAllApplications(batch: number): Promise<Application[]> {
+    // let tempApplicationList = await getAllApplicationsAPI(batch);
+    setApplicationsBeingFetched(true);
+    let tempApplicationList = await getAllApplicationsLambda(batch).finally(
+      () => {
+        setApplicationsBeingFetched(false);
+      }
+    );
     setApplications(tempApplicationList);
     return tempApplicationList;
   }
@@ -186,6 +195,7 @@ function useProviderStudent() {
     updateBatch: updateBatch,
     syncApplications,
     getStudentInfo,
+    applicationsBeingFetched,
   };
 }
 

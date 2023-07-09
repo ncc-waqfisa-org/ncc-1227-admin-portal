@@ -884,6 +884,104 @@ export async function getAllApplicationsAPI(
   return temp;
 }
 
+export async function getAllApplicationsLambda(
+  batch: number
+): Promise<Application[]> {
+  try {
+    const res = await fetch("/api/getAllApplications", {
+      method: "POST",
+      body: JSON.stringify({
+        batch: batch,
+      }),
+    });
+
+    if (res.status === 200) {
+      const data = await res.json();
+      return data.applications as Application[];
+    } else {
+      console.log("error retrieving all applications", res);
+      return [];
+    }
+  } catch (error) {
+    console.log("error retrieving all applications", error);
+    return [];
+  }
+}
+
+export interface IApplicationsWithNextToken {
+  applications: Application[];
+  nextToken: string | null;
+}
+
+export async function getAllApplicationsWithPaginationAPI(
+  batch: number,
+  nextToken?: string | null
+): Promise<IApplicationsWithNextToken> {
+  let query = `
+  query ListAllApplications {
+    applicationsByBatchAndStatus(batch: ${batch}, limit: 1000, nextToken: ${
+    nextToken ? `"${nextToken}"` : null
+  }) {
+      items {
+        _version
+        _deleted
+        schoolType
+        batch
+        dateTime
+        applicationAttachmentId
+        attachmentID
+        gpa
+        id
+        isEmailSent
+        status
+        studentCPR
+        programs {
+          items {
+            _deleted
+            id
+            programID
+            program {
+              id
+              name
+              nameAr
+              university {
+                name
+                nameAr
+                id
+              }
+            }
+          }
+        }
+        createdAt
+        updatedAt
+        student {
+          householdIncome
+          fullName
+        }
+      }
+        nextToken
+    }
+  }  
+`;
+
+  let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;
+
+  if (res.data === null) {
+    throw new Error("Failed to get all applications");
+  }
+
+  let tempApplicationList = res.data;
+  let temp: Application[] = (tempApplicationList?.applicationsByBatchAndStatus
+    ?.items ?? []) as Application[];
+
+  const functionResult: IApplicationsWithNextToken = {
+    applications: temp,
+    nextToken: tempApplicationList?.applicationsByBatchAndStatus.nextToken,
+  };
+
+  return functionResult;
+}
+
 /**
  * This function retrieves all approved applications for a given batch from a GraphQL API.
  * @param {number} batch - The batch number for which to retrieve all approved applications.

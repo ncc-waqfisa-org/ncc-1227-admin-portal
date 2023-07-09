@@ -1,5 +1,6 @@
 import React, { FC, PropsWithChildren } from "react";
 import { Bar } from "react-chartjs-2";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   title: string;
@@ -9,6 +10,7 @@ interface Props {
   max?: number;
   labels: string[];
   data: number[];
+  loading?: boolean;
 }
 
 export const LargeBarGraphInfo: FC<PropsWithChildren<Props>> = ({
@@ -20,7 +22,10 @@ export const LargeBarGraphInfo: FC<PropsWithChildren<Props>> = ({
   labels,
   data,
   children,
+  loading,
 }) => {
+  const { t } = useTranslation("common");
+
   const graph = {
     labels: labels,
     datasets: [
@@ -69,9 +74,15 @@ export const LargeBarGraphInfo: FC<PropsWithChildren<Props>> = ({
         {title}
         {children}
       </div>
-      <div className="flex items-center justify-center mt-1 grow">
-        <Bar data={graph} options={options} />
-      </div>
+      {loading ? (
+        <div className="min-h-[12.8rem] flex justify-center items-center animate-pulse bg-black/10 rounded-md">
+          <p>{t("loading")}</p>
+        </div>
+      ) : (
+        <div className="flex items-center justify-center mt-1 grow">
+          <Bar data={graph} options={options} />
+        </div>
+      )}
     </div>
   );
 };

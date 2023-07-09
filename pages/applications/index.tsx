@@ -51,7 +51,8 @@ const Applications = () => {
     program: "",
   };
 
-  const { applications, batch, updateBatch } = useStudent();
+  const { applications, batch, updateBatch, applicationsBeingFetched } =
+    useStudent();
   const { universityList, programsList } = useEducation();
   const { push, locale } = useRouter();
   const { t } = useTranslation("applications");
@@ -347,7 +348,11 @@ const Applications = () => {
       </div>
 
       {/* applications table with pagination*/}
-      {(shownData?.length ?? 0) > 0 ? (
+      {applicationsBeingFetched ? (
+        <div className="min-h-[12.8rem] flex justify-center items-center animate-pulse bg-black/10 rounded-md">
+          <p>{t("loading")}</p>
+        </div>
+      ) : (shownData?.length ?? 0) > 0 ? (
         <div>
           <div dir="ltr" className="w-full h-screen overflow-x-auto">
             <table className="table w-full ">
