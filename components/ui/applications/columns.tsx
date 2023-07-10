@@ -10,6 +10,7 @@ import { Application, Status } from "../../../src/API";
 import { Badge } from "../badge";
 import Link from "next/link";
 import { Button } from "../button";
+import { useTranslation } from "react-i18next";
 
 export const columns: ColumnDef<Application>[] = [
   {
@@ -161,12 +162,21 @@ export const columns: ColumnDef<Application>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Program choices" />
     ),
-    cell: ({ row }) => (
+    cell: ({ row, table }) => (
       <div className="flex flex-col justify-start min-w-[28rem]">
-        {row.original.programs?.items.map((value: any, index: number) => (
+        {row.original.programs?.items?.map((value, index: number) => (
           <div key={index} className="flex gap-2">
             <p>{`${index + 1}- `}</p>
-            <div className="">{`${value?.program?.name} - ${value?.program?.university?.name}`}</div>
+
+            <div className="">{`${
+              (table.options.meta as any)?.locale === "ar"
+                ? value?.program?.nameAr
+                : value?.program?.name
+            } - ${
+              (table.options.meta as any)?.locale === "ar"
+                ? value?.program?.university?.nameAr
+                : value?.program?.university?.name
+            }`}</div>
           </div>
         ))}
       </div>

@@ -24,7 +24,7 @@ export function DataTableToolbar<TData>({
   const { batch } = useStudent();
 
   return (
-    <div className="flex items-center justify-between">
+    <div dir="ltr" className="flex items-center justify-between">
       <div className="flex items-center flex-1 space-x-2">
         <Input
           placeholder="Filter students by cpr..."

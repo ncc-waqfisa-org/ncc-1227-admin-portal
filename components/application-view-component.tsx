@@ -279,6 +279,14 @@ export default function ViewApplication({
                           disabled={!isSuperAdmin}
                         >
                           <option
+                            disabled={
+                              application.status === Status.NOT_COMPLETED
+                            }
+                            value={Status.NOT_COMPLETED}
+                          >
+                            {tA.t("NOT_COMPLETED")}
+                          </option>
+                          <option
                             disabled={application.status === Status.REVIEW}
                             value={Status.REVIEW}
                           >

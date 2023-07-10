@@ -44,6 +44,8 @@ export function DataTable<TData, TValue>({
   );
   const [sorting, setSorting] = React.useState<SortingState>([]);
 
+  const { locale } = useRouter();
+
   const table = useReactTable({
     data,
     columns,
@@ -65,6 +67,9 @@ export function DataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
+    meta: {
+      locale: locale ?? "en",
+    },
   });
 
   return (
