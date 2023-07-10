@@ -959,6 +959,8 @@ export async function getAllApplicationsWithPaginationAPI(
         student {
           householdIncome
           fullName
+          email
+          phone
         }
       }
         nextToken
