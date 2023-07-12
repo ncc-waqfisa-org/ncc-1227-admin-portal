@@ -269,15 +269,24 @@ export default function ViewApplication({
                   <td>{t("status")}</td>
                   <td>
                     <div className="flex items-center gap-8 ">
-                      {!readOnly && application.status !== Status.WITHDRAWN && (
+                      {!readOnly && (
                         <Field
                           className=" select select-bordered rounded-xl"
                           as="select"
                           name="applicationStatus"
                           value={values.applicationStatus}
                           onBlur={handleBlur}
-                          disabled={!isSuperAdmin}
+                          disabled={
+                            !isSuperAdmin ||
+                            application.status === Status.WITHDRAWN
+                          }
                         >
+                          <option
+                            disabled={application.status === Status.WITHDRAWN}
+                            value={Status.WITHDRAWN}
+                          >
+                            {tA.t("WITHDRAWN")}
+                          </option>
                           <option
                             disabled={
                               application.status === Status.NOT_COMPLETED
@@ -312,6 +321,7 @@ export default function ViewApplication({
                           </option>
                         </Field>
                       )}
+
                       {application.status !== values.applicationStatus && (
                         <div className="flex items-center gap-2 text-sm font-semibold text-gray-400">
                           <span>{tA.t(`${application.status}`)}</span>
