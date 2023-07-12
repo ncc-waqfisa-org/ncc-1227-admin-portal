@@ -10,6 +10,7 @@ import {
 import { ListUniversitiesQuery, Program, University } from "../src/API";
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { getUniversityByID } from "../src/CustomAPI";
+import { useAuth } from "../hooks/use-auth";
 
 interface IUseEducationContext {
   universityList: University[] | undefined;
@@ -69,17 +70,21 @@ function useProviderEducation() {
     University | undefined
   >(undefined);
 
+  const { isSignedIn } = useAuth();
+
   useEffect(
     () => {
       // Run this
-      getUniList();
-      listAllPrograms();
+      if (isSignedIn) {
+        getUniList();
+        listAllPrograms();
+      }
       // on destroy
       return () => {};
     },
 
     // Rerun whenever anything here changes
-    []
+    [isSignedIn]
   );
 
   async function syncUniList() {

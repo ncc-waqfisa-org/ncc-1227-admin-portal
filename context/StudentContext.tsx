@@ -11,6 +11,7 @@ import { Application, Student } from "../src/API";
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 
 import { getAllApplicationsLambda } from "../src/CustomAPI";
+import { useAuth } from "../hooks/use-auth";
 
 // interface for all the values & functions
 interface IUseStudentContext {
@@ -74,17 +75,21 @@ function useProviderStudent() {
     defaultState.applicationsBeingFetched
   );
 
+  const { isSignedIn } = useAuth();
+
   useEffect(
     () => {
       // Run this
-      getAllApplications(batch);
+      if (isSignedIn) {
+        getAllApplications(batch);
+      }
 
       // on destroy
       return () => {};
     },
 
     // Re-run whenever anything here changes
-    [batch]
+    [batch, isSignedIn]
   );
 
   function updateBatch(newBatch: number) {

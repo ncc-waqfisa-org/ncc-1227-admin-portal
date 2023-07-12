@@ -11,6 +11,7 @@ import {
 import { Admin, ListAdminsQuery, ListAdminsQueryVariables } from "../src/API";
 import { listAdmins } from "../src/graphql/queries";
 import { compareAdmins } from "../src/Helpers";
+import { useAuth } from "../hooks/use-auth";
 
 // interface for all the values & functions
 interface IUseAppContext {
@@ -41,11 +42,13 @@ export const AppProvider: FC<PropsWithChildren> = ({ children }) => {
 //NOTE: declare vars and functions here
 function useProviderApp() {
   const [admins, setAdmins] = useState<Admin[]>([]);
-
+  const { isSignedIn } = useAuth();
   useEffect(() => {
-    getAdmins();
+    if (isSignedIn) {
+      getAdmins();
+    }
     return () => {};
-  }, []);
+  }, [isSignedIn]);
 
   async function getAdmins() {
     let queryInput: ListAdminsQueryVariables = {
