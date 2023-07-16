@@ -196,7 +196,6 @@ export default function ViewApplication({
 
                     await syncUpdatedApplication(updatedApplication);
 
-                    // syncApplications();
                     push("/applications");
                     return logValue;
                   })
@@ -276,8 +275,7 @@ export default function ViewApplication({
                           </option>
                           <option
                             disabled={
-                              application.status === Status.NOT_COMPLETED ||
-                              !isSuperAdmin
+                              application.status === Status.NOT_COMPLETED
                             }
                             value={Status.NOT_COMPLETED}
                           >
