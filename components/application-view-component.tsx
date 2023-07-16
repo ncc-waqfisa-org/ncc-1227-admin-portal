@@ -7,18 +7,12 @@ import {
   Status,
   UpdateApplicationMutationVariables,
 } from "../src/API";
-import PrimaryButton from "./primary-button";
 import * as yup from "yup";
-import {
-  createAdminLogInDB,
-  updateApplicationInDB,
-  updateEmailSentToApplication,
-} from "../src/CustomAPI";
+import { createAdminLogInDB, updateApplicationInDB } from "../src/CustomAPI";
 import toast from "react-hot-toast";
 import { useAuth } from "../hooks/use-auth";
 import { useRouter } from "next/router";
 import GetStorageLinkComponent from "./get-storage-link-component";
-import { ISendEmail } from "../pages/api/sendEmail";
 import { useStudent } from "../context/StudentContext";
 import { useTranslation } from "react-i18next";
 
@@ -47,8 +41,8 @@ export default function ViewApplication({
   const [isLoading, setIsLoading] = useState(false);
 
   const { user, isSuperAdmin } = useAuth();
-  const { push, replace, asPath, locale } = useRouter();
-  const { syncApplications } = useStudent();
+  const { push, locale } = useRouter();
+  const { syncUpdatedApplication } = useStudent();
   const { t } = useTranslation("applicationLog");
   const { t: tErrors } = useTranslation("errors");
   const tA = useTranslation("applications");
@@ -66,13 +60,13 @@ export default function ViewApplication({
     readOnly: false,
   };
 
-  let emailData: ISendEmail = {
-    status:
-      application.status === Status.APPROVED ? application.status : undefined,
-    email: application.student?.email ?? undefined,
-    studentName: application.student?.fullName ?? undefined,
-    id: application.id,
-  };
+  // let emailData: ISendEmail = {
+  //   status:
+  //     application.status === Status.APPROVED ? application.status : undefined,
+  //   email: application.student?.email ?? undefined,
+  //   studentName: application.student?.fullName ?? undefined,
+  //   id: application.id,
+  // };
 
   // async function sendApprovedEmail() {
   //   await toast.promise(
@@ -196,10 +190,15 @@ export default function ViewApplication({
                 };
 
                 await createAdminLogInDB(createAdminLogVariables)
-                  .then(async (value) => {
-                    syncApplications();
+                  .then(async (logValue) => {
+                    const updatedApplication =
+                      value?.updateApplication as Application;
+
+                    await syncUpdatedApplication(updatedApplication);
+
+                    // syncApplications();
                     push("/applications");
-                    return value;
+                    return logValue;
                   })
                   .catch((err) => {
                     console.log(err);
@@ -215,7 +214,6 @@ export default function ViewApplication({
         {({
           values,
           errors,
-          touched,
           handleChange,
           handleBlur,
           isSubmitting,

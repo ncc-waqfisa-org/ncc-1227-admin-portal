@@ -1,4 +1,4 @@
-import { Cross2Icon } from "@radix-ui/react-icons";
+import { ReloadIcon, Cross2Icon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
 
 import { Button, buttonVariants } from "../button";
@@ -11,6 +11,12 @@ import { CSVLink } from "react-csv";
 import { Application, ProgramChoice } from "../../../src/API";
 import { useStudent } from "../../../context/StudentContext";
 import { cn } from "../../../src/utils";
+import {
+  Tooltip,
+  TooltipProvider,
+  TooltipTrigger,
+  TooltipContent,
+} from "../tooltip";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -21,7 +27,7 @@ export function DataTableToolbar<TData>({
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
 
-  const { batch } = useStudent();
+  const { batch, applicationsBeingFetched, syncApplications } = useStudent();
 
   return (
     <div dir="ltr" className="flex items-center justify-between">
@@ -55,13 +61,24 @@ export function DataTableToolbar<TData>({
         )}
       </div>
       <div className="flex items-center gap-1">
-        {/* <Button
-          className="h-8"
-          variant={"outline"}
-          onClick={() => }
-        >
-          Export CSV
-        </Button> */}
+        {!applicationsBeingFetched && (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <Button
+                  variant="outline"
+                  onClick={() => syncApplications()}
+                  className="h-8"
+                >
+                  <ReloadIcon className="w-4 h-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Refresh</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
         {(table.getIsSomeRowsSelected() || table.getIsAllRowsSelected()) && (
           <CSVLink
             className={`${cn(buttonVariants({ variant: "outline" }))} h-8`}

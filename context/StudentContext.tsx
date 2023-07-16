@@ -22,6 +22,7 @@ interface IUseStudentContext {
   batch: number;
   updateBatch: (batch: number) => void;
   syncApplications: () => Promise<void>;
+  syncUpdatedApplication: (updatedApplication: Application) => Promise<void>;
   applicationsBeingFetched: boolean;
 }
 
@@ -41,6 +42,11 @@ const defaultState: IUseStudentContext = {
     throw new Error("Function not implemented.");
   },
   applicationsBeingFetched: false,
+  syncUpdatedApplication: function (
+    updatedApplication: Application
+  ): Promise<void> {
+    throw new Error("Function not implemented.");
+  },
 };
 
 // creating the app contexts
@@ -122,6 +128,29 @@ function useProviderStudent() {
     await getAllApplications(batch);
   }
 
+  /**
+   * The function syncUpdatedApplication updates the status of an application in a list of
+   * applications.
+   * @param {Application} updatedApplication - The `updatedApplication` parameter is an object of type
+   * `Application` that represents the updated application.
+   */
+  async function syncUpdatedApplication(updatedApplication: Application) {
+    const tempApplications: Application[] = [...(applications ?? [])];
+
+    const appIndex = tempApplications.findIndex(
+      (app) => app.id === updatedApplication.id
+    );
+
+    const tempApp: Application = {
+      ...tempApplications[appIndex],
+      status: updatedApplication.status,
+    };
+
+    tempApplications.splice(appIndex, 1, tempApp);
+
+    setApplications(tempApplications);
+  }
+
   async function getStudentInfo(cpr: string): Promise<Student | undefined> {
     let query = `
     query GetStudent {
@@ -201,6 +230,7 @@ function useProviderStudent() {
     syncApplications,
     getStudentInfo,
     applicationsBeingFetched,
+    syncUpdatedApplication,
   };
 }
 
