@@ -17,6 +17,7 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "../tooltip";
+import { useTranslation } from "react-i18next";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -29,11 +30,13 @@ export function DataTableToolbar<TData>({
 
   const { batch, applicationsBeingFetched, syncApplications } = useStudent();
 
+  const { t } = useTranslation("applications");
+
   return (
-    <div dir="ltr" className="flex items-center justify-between">
-      <div className="flex items-center flex-1 space-x-2">
+    <div className="flex items-center justify-between">
+      <div className="flex items-center flex-1 gap-1">
         <Input
-          placeholder="Filter students by cpr..."
+          placeholder={t("filterStudents") ?? "Filter students by cpr..."}
           value={
             (table.getColumn("studentCPR")?.getFilterValue() as string) ?? ""
           }
@@ -45,7 +48,7 @@ export function DataTableToolbar<TData>({
         {table.getColumn("status") && (
           <DataTableFacetedFilter
             column={table.getColumn("status")}
-            title="Status"
+            title={t("Status") ?? "Status"}
             options={statuses}
           />
         )}
@@ -55,7 +58,7 @@ export function DataTableToolbar<TData>({
             onClick={() => table.resetColumnFilters()}
             className="h-8 px-2 lg:px-3"
           >
-            Reset
+            {t("reset")}
             <Cross2Icon className="w-4 h-4 ml-2" />
           </Button>
         )}
@@ -74,7 +77,7 @@ export function DataTableToolbar<TData>({
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Refresh</p>
+                <p>{t("refresh")}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -115,7 +118,7 @@ export function DataTableToolbar<TData>({
               table.toggleAllRowsSelected(false);
             }}
           >
-            Export CSV
+            {t("exportAllAsCSV")}
           </CSVLink>
         )}
 
@@ -126,7 +129,7 @@ export function DataTableToolbar<TData>({
             table.toggleAllRowsSelected(!table.getIsAllRowsSelected())
           }
         >
-          Select All
+          {t("selectAll")}
         </Button>
         <DataTableViewOptions table={table} />
       </div>

@@ -20,6 +20,8 @@ import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem } from "../form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { useTranslation } from "react-i18next";
+import { useRouter } from "next/router";
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>;
@@ -43,15 +45,18 @@ export function DataTablePagination<TData>({
     table.setPageIndex(page);
   }
 
+  const { t } = useTranslation("applications");
+  const { locale } = useRouter();
+
   return (
-    <div dir="ltr" className="flex flex-wrap items-center justify-between px-2">
+    <div className="flex flex-wrap items-center justify-between px-2">
       <div className="flex-1 text-sm text-muted-foreground">
-        {table.getFilteredSelectedRowModel().rows.length} of{" "}
-        {table.getFilteredRowModel().rows.length} row(s) selected.
+        {table.getFilteredSelectedRowModel().rows.length} {t("of")}{" "}
+        {table.getFilteredRowModel().rows.length} {t("row")} {t("selected")}.
       </div>
-      <div className="flex flex-wrap items-center space-x-6 lg:space-x-8">
-        <div className="flex items-center space-x-2">
-          <p className="text-sm font-medium">Rows per page</p>
+      <div className="flex flex-wrap items-center gap-6 lg:gap-8">
+        <div className="flex items-center gap-2">
+          <p className="text-sm font-medium">{t("rowsPerPage")}</p>
           <Select
             value={`${table.getState().pagination.pageSize}`}
             onValueChange={(value) => {
@@ -71,10 +76,10 @@ export function DataTablePagination<TData>({
           </Select>
         </div>
         <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-          Page {table.getState().pagination.pageIndex + 1} of{" "}
+          {t("page")} {table.getState().pagination.pageIndex + 1} {t("of")}{" "}
           {table.getPageCount()}
         </div>
-        <div className="flex items-center space-x-2">
+        <div dir="ltr" className="flex items-center space-x-2">
           <Button
             variant="outline"
             className="hidden w-8 h-8 p-0 lg:flex"

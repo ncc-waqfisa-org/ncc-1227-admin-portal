@@ -5,12 +5,10 @@ import { Checkbox } from "../checkbox";
 import { schoolTypes, statuses } from "./data/data";
 
 import { DataTableColumnHeader } from "./data-table-column-header";
-import { DataTableRowActions } from "./data-table-row-actions";
 import { Application, Status } from "../../../src/API";
 import { Badge } from "../badge";
 import Link from "next/link";
 import { Button } from "../button";
-import { useTranslation } from "react-i18next";
 
 export const columns: ColumnDef<Application>[] = [
   {
@@ -234,8 +232,4 @@ export const columns: ColumnDef<Application>[] = [
     enableHiding: false,
     enablePinning: true,
   },
-  // {
-  //   id: "actions",
-  //   cell: ({ row }) => <DataTableRowActions row={row} />,
-  // },
 ];

@@ -1,34 +1,27 @@
-import { Field, Form, Formik } from "formik";
 import { GetStaticProps } from "next";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { CSVLink } from "react-csv";
 import { Toaster } from "react-hot-toast";
-import { BsFillEyeFill } from "react-icons/bs";
-import { HiOutlineClipboardList } from "react-icons/hi";
 import { PageComponent } from "../../components/page-component";
-import { StudentsTableHeaders } from "../../constants/table-headers";
 import { useEducation } from "../../context/EducationContext";
 import { useStudent } from "../../context/StudentContext";
-import { Application, ProgramChoice, SchoolType, Status } from "../../src/API";
+import { Application, Status } from "../../src/API";
 import { getStatusOrder } from "../../src/Helpers";
 import { BatchSelectorComponent } from "../../components/batch-selector-component";
-import { columns } from "../../components/ui/applications/columns";
 
-import {
-  TableCaption,
-  TableHeader,
-  Table,
-  TableRow,
-  TableHead,
-  TableCell,
-  TableBody,
-  TableFooter,
-} from "../../components/ui/table";
+import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "../../components/ui/applications/data-table";
+import { Checkbox } from "../../components/ui/checkbox";
+import { Badge } from "../../components/ui/badge";
+import { Button } from "../../components/ui/button";
+import { DataTableColumnHeader } from "../../components/ui/applications/data-table-column-header";
+import {
+  statuses,
+  schoolTypes,
+} from "../../components/ui/applications/data/data";
 
 interface InitialFilterValues {
   search: string;
@@ -185,6 +178,225 @@ const Applications = () => {
     setShownData(sortedApplications);
     setSelectedApplication([]);
   }
+
+  const columns: ColumnDef<Application>[] = [
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={table.getIsAllPageRowsSelected()}
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+          className="translate-y-[2px]"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+          className="translate-y-[2px] mr-3"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+      enablePinning: true,
+    },
+    {
+      accessorKey: "studentCPR",
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title={t("student")}
+          className="min-w-[10rem]"
+        />
+      ),
+      cell: ({ row }) => (
+        <Link
+          href={`/applications/${row.original.id}`}
+          className="min-w-[10rem] hover:text-anzac-400"
+        >
+          <p className="font-semibold">{row.original.student?.fullName}</p>
+          <div className="">{row.getValue("studentCPR")}</div>
+        </Link>
+      ),
+      enableSorting: false,
+      enableHiding: false,
+      enablePinning: true,
+    },
+    {
+      accessorKey: "status",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t("Status")} />
+      ),
+      cell: ({ row }) => {
+        const status = statuses.find(
+          (status) => status.value === row.getValue("status")
+        );
+
+        if (!status) {
+          return null;
+        }
+
+        return (
+          <Badge
+            variant={
+              status.value === Status.REJECTED ||
+              status.value === Status.ELIGIBLE ||
+              status.value === Status.APPROVED
+                ? "destructive"
+                : "outline"
+            }
+            className={`flex gap-2 items-center justify-start ${
+              (status.value === Status.WITHDRAWN ||
+                status.value === Status.NOT_COMPLETED) &&
+              "bg-slate-200"
+            } ${status.value === Status.REVIEW && "bg-amber-100"} ${
+              status.value === Status.ELIGIBLE &&
+              "bg-blue-500 hover:bg-blue-500"
+            } ${
+              status.value === Status.APPROVED &&
+              "bg-green-500 hover:bg-green-500"
+            }`}
+          >
+            {status.icon && <status.icon className={`w-4 h-4`} />}
+            <span className="">{t(status.value)}</span>
+          </Badge>
+        );
+      },
+      filterFn: (row, id, value) => {
+        return value.includes(row.getValue(id));
+      },
+    },
+    {
+      accessorKey: "gpa",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t("tableTitleGpa")} />
+      ),
+      cell: ({ row }) => {
+        return (
+          <div className="flex space-x-2">
+            <span className="max-w-[500px] truncate font-medium">
+              {row.getValue("gpa")}
+            </span>
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "schoolType",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={t("schoolType")} />
+      ),
+      cell: ({ row }) => {
+        const schoolType = schoolTypes.find(
+          (schoolType) => schoolType.value === row.getValue("schoolType")
+        );
+
+        if (!schoolType) {
+          return null;
+        }
+
+        return (
+          <div className="flex items-center gap-2">
+            {schoolType.icon && (
+              <schoolType.icon className="w-4 h-4 text-muted-foreground" />
+            )}
+            <span>{t(schoolType.value)}</span>
+          </div>
+        );
+      },
+      filterFn: (row, id, value) => {
+        return value.includes(row.getValue(id));
+      },
+    },
+    {
+      id: "programs",
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title={t("tableTitleEducation")}
+        />
+      ),
+      cell: ({ row, table }) => (
+        <div className="flex flex-col justify-start min-w-[28rem]">
+          {row.original.programs?.items?.map((value, index: number) => (
+            <div key={index} className="flex gap-2">
+              <p>{`${index + 1}- `}</p>
+
+              <div className="">{`${
+                (table.options.meta as any)?.locale === "ar"
+                  ? value?.program?.nameAr
+                  : value?.program?.name
+              } - ${
+                (table.options.meta as any)?.locale === "ar"
+                  ? value?.program?.university?.nameAr
+                  : value?.program?.university?.name
+              }`}</div>
+            </div>
+          ))}
+        </div>
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: "dateTime",
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title={t("tableTitleApplicationDate")}
+        />
+      ),
+      cell: ({ row }) => {
+        return (
+          <div className="flex space-x-2">
+            <span className="max-w-[500px] truncate font-medium">
+              {Intl.DateTimeFormat(locale, {
+                timeStyle: "short",
+                dateStyle: "medium",
+              }).format(new Date(row.original.dateTime))}
+            </span>
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "updatedAt",
+      header: ({ column }) => (
+        <DataTableColumnHeader
+          column={column}
+          title={t("tableTitleLastUpdate")}
+        />
+      ),
+      cell: ({ row }) => {
+        return (
+          <div className="flex space-x-2">
+            <span className="max-w-[500px] truncate font-medium">
+              {Intl.DateTimeFormat(locale, {
+                timeStyle: "short",
+                dateStyle: "medium",
+              }).format(new Date(row.original.updatedAt))}
+            </span>
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "view",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title={common("view")} />
+      ),
+      cell: ({ row }) => (
+        <Link href={`/applications/${row.original.id}`}>
+          <Button variant={"outline"}>{common("view")}</Button>
+        </Link>
+      ),
+      enableSorting: false,
+      enableHiding: false,
+      enablePinning: true,
+    },
+  ];
 
   return (
     <PageComponent title={"Applications"}>
