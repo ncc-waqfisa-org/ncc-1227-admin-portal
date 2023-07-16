@@ -263,20 +263,21 @@ export default function ViewApplication({
                           name="applicationStatus"
                           value={values.applicationStatus}
                           onBlur={handleBlur}
-                          disabled={
-                            !isSuperAdmin ||
-                            application.status === Status.WITHDRAWN
-                          }
+                          disabled={application.status === Status.WITHDRAWN}
                         >
                           <option
-                            disabled={application.status === Status.WITHDRAWN}
+                            disabled={
+                              application.status === Status.WITHDRAWN ||
+                              !isSuperAdmin
+                            }
                             value={Status.WITHDRAWN}
                           >
                             {tA.t("WITHDRAWN")}
                           </option>
                           <option
                             disabled={
-                              application.status === Status.NOT_COMPLETED
+                              application.status === Status.NOT_COMPLETED ||
+                              !isSuperAdmin
                             }
                             value={Status.NOT_COMPLETED}
                           >
@@ -295,13 +296,19 @@ export default function ViewApplication({
                             {tA.t("ELIGIBLE")}
                           </option>
                           <option
-                            disabled={application.status === Status.APPROVED}
+                            disabled={
+                              application.status === Status.APPROVED ||
+                              !isSuperAdmin
+                            }
                             value={Status.APPROVED}
                           >
                             {tA.t("APPROVED")}
                           </option>
                           <option
-                            disabled={application.status === Status.REJECTED}
+                            disabled={
+                              application.status === Status.REJECTED ||
+                              !isSuperAdmin
+                            }
                             value={Status.REJECTED}
                           >
                             {tA.t("REJECTED")}
