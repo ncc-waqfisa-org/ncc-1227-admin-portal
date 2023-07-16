@@ -112,24 +112,24 @@ export const columns: ColumnDef<Application>[] = [
       );
     },
   },
-  {
-    accessorKey: "isEmailSent",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Email Sent" />
-    ),
-    cell: ({ row }) => {
-      return (
-        <div className="flex space-x-2">
-          <Badge
-            variant={row.original.isEmailSent ? "default" : "outline"}
-            className="max-w-[500px] truncate font-medium"
-          >
-            {row.original.isEmailSent ? "Yes" : "No"}
-          </Badge>
-        </div>
-      );
-    },
-  },
+  // {
+  //   accessorKey: "isEmailSent",
+  //   header: ({ column }) => (
+  //     <DataTableColumnHeader column={column} title="Email Sent" />
+  //   ),
+  //   cell: ({ row }) => {
+  //     return (
+  //       <div className="flex space-x-2">
+  //         <Badge
+  //           variant={row.original.isEmailSent ? "default" : "outline"}
+  //           className="max-w-[500px] truncate font-medium"
+  //         >
+  //           {row.original.isEmailSent ? "Yes" : "No"}
+  //         </Badge>
+  //       </div>
+  //     );
+  //   },
+  // },
   {
     accessorKey: "schoolType",
     header: ({ column }) => (

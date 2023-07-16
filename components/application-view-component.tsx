@@ -74,49 +74,38 @@ export default function ViewApplication({
     id: application.id,
   };
 
-  async function sendApprovedEmail() {
-    await toast.promise(
-      fetch("../../api/sendEmail", {
-        method: "POST",
-        body: JSON.stringify(emailData),
-      })
-        .then(async (res) => {
-          if (res.status === 200) {
-            await updateEmailSentToApplication({
-              applicationId: application.id,
-              version: application._version,
-              isEmailSent: true,
-            }).then((val) => {
-              if (val) {
-                replace(asPath);
-              }
-            });
-          }
-        })
-        .catch((err) => {
-          throw err;
-        }),
-      {
-        loading: "Sending email...",
-        success: "Email sent to user!",
-        error: "Failed to send email to user",
-      }
-    );
-  }
+  // async function sendApprovedEmail() {
+  //   await toast.promise(
+  //     fetch("../../api/sendEmail", {
+  //       method: "POST",
+  //       body: JSON.stringify(emailData),
+  //     })
+  //       .then(async (res) => {
+  //         if (res.status === 200) {
+  //           await updateEmailSentToApplication({
+  //             applicationId: application.id,
+  //             version: application._version,
+  //             isEmailSent: true,
+  //           }).then((val) => {
+  //             if (val) {
+  //               replace(asPath);
+  //             }
+  //           });
+  //         }
+  //       })
+  //       .catch((err) => {
+  //         throw err;
+  //       }),
+  //     {
+  //       loading: "Sending email...",
+  //       success: "Email sent to user!",
+  //       error: "Failed to send email to user",
+  //     }
+  //   );
+  // }
 
   return (
     <div className="mx-auto overflow-x-auto">
-      <div className="flex justify-end gap-4 m-4">
-        {/* {!readOnly && (
-          <PrimaryButton
-            name={!isEditing ? tA.t("edit") : tA.t("close")}
-            buttonClick={function (): void {
-              setIsEditing(!isEditing);
-            }}
-          ></PrimaryButton>
-        )} */}
-      </div>
-
       <Formik
         initialValues={initialValues}
         validationSchema={yup.object({
@@ -124,16 +113,16 @@ export default function ViewApplication({
         })}
         onSubmit={async (values, actions) => {
           setIsLoading(true);
-          let rejectEmailData: ISendEmail = {
-            status:
-              values.applicationStatus === Status.APPROVED ||
-              values.applicationStatus === Status.REJECTED
-                ? values.applicationStatus
-                : undefined,
-            email: application.student?.email ?? undefined,
-            studentName: application.student?.fullName ?? undefined,
-            id: application.id,
-          };
+          // let rejectEmailData: ISendEmail = {
+          //   status:
+          //     values.applicationStatus === Status.APPROVED ||
+          //     values.applicationStatus === Status.REJECTED
+          //       ? values.applicationStatus
+          //       : undefined,
+          //   email: application.student?.email ?? undefined,
+          //   studentName: application.student?.fullName ?? undefined,
+          //   id: application.id,
+          // };
 
           let updateVariables: UpdateApplicationMutationVariables = {
             input: {
@@ -153,46 +142,46 @@ export default function ViewApplication({
                 error: "Failed to update application",
               })
               .then(async (value) => {
-                if (values.applicationStatus === Status.REJECTED) {
-                  await toast.promise(
-                    fetch("../../api/sendEmail", {
-                      method: "POST",
-                      body: JSON.stringify(rejectEmailData),
-                    }).then(async (res) => {
-                      if (res.status === 200) {
-                        await updateEmailSentToApplication({
-                          applicationId: application.id,
-                          version:
-                            value?.updateApplication?._version ??
-                            application._version,
+                // if (values.applicationStatus === Status.REJECTED) {
+                //   await toast.promise(
+                //     fetch("../../api/sendEmail", {
+                //       method: "POST",
+                //       body: JSON.stringify(rejectEmailData),
+                //     }).then(async (res) => {
+                //       if (res.status === 200) {
+                //         await updateEmailSentToApplication({
+                //           applicationId: application.id,
+                //           version:
+                //             value?.updateApplication?._version ??
+                //             application._version,
 
-                          isEmailSent: true,
-                        });
-                      } else {
-                        throw new Error("Failed to send email");
-                      }
-                    }),
-                    {
-                      loading: "Sending email...",
-                      success: "Email sent to user!",
-                      error: "Failed to send email to user",
-                    }
-                  );
-                }
+                //           isEmailSent: true,
+                //         });
+                //       } else {
+                //         throw new Error("Failed to send email");
+                //       }
+                //     }),
+                //     {
+                //       loading: "Sending email...",
+                //       success: "Email sent to user!",
+                //       error: "Failed to send email to user",
+                //     }
+                //   );
+                // }
 
-                if (
-                  (values.applicationStatus === Status.APPROVED ||
-                    values.applicationStatus === Status.ELIGIBLE) &&
-                  application.status === Status.REJECTED
-                ) {
-                  await updateEmailSentToApplication({
-                    applicationId: application.id,
-                    version:
-                      value?.updateApplication?._version ??
-                      application._version,
-                    isEmailSent: false,
-                  });
-                }
+                // if (
+                //   (values.applicationStatus === Status.APPROVED ||
+                //     values.applicationStatus === Status.ELIGIBLE) &&
+                //   application.status === Status.REJECTED
+                // ) {
+                //   await updateEmailSentToApplication({
+                //     applicationId: application.id,
+                //     version:
+                //       value?.updateApplication?._version ??
+                //       application._version,
+                //     isEmailSent: false,
+                //   });
+                // }
 
                 let createAdminLogVariables: CreateAdminLogMutationVariables = {
                   input: {
@@ -241,7 +230,7 @@ export default function ViewApplication({
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                {/* <tr>
                   <td>{t("emailHasBeenSent")}</td>
                   <td className="flex items-center gap-8">
                     {application.isEmailSent === true ? t("yes") : t("no")}
@@ -255,7 +244,7 @@ export default function ViewApplication({
                         )}
                     </div>
                   </td>
-                </tr>
+                </tr> */}
                 <tr>
                   <td>{t("createdAt")}</td>
                   <td>
