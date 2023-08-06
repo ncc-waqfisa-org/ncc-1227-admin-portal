@@ -17,9 +17,11 @@
     "lspace",
     "msal",
     "nextjs",
+    "papaparse",
     "rspace",
     "Salman",
     "tailwindcss",
-    "tanstack"
+    "tanstack",
+    "unparse"
   ]
 }

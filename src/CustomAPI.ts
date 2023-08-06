@@ -884,6 +884,18 @@ export async function getAllApplicationsAPI(
   return temp;
 }
 
+export async function getAllApplicationsForCorrections(batch: number) {
+  var nextToken: string | null = null;
+  const applicationList: Application[] = [];
+
+  do {
+    const result: IApplicationsWithNextToken =
+      await getAllApplicationsForCorrectionWithPaginationAPI(batch, nextToken);
+    applicationList.push(...result.applications);
+    nextToken = result.nextToken;
+  } while (nextToken);
+  return applicationList;
+}
 async function getAllApplications(batch: number) {
   var nextToken: string | null = null;
   const applicationList: Application[] = [];
@@ -915,6 +927,43 @@ export interface IApplicationsWithNextToken {
   nextToken: string | null;
 }
 
+export async function getAllApplicationsForCorrectionWithPaginationAPI(
+  batch: number,
+  nextToken?: string | null
+): Promise<IApplicationsWithNextToken> {
+  let query = `
+  query ListAllApplications {
+    applicationsByBatchAndStatus(batch: ${batch}, limit: 1000, nextToken: ${
+    nextToken ? `"${nextToken}"` : null
+  }) {
+      items {
+        _version
+        gpa
+        id
+        studentCPR
+      }
+        nextToken
+    }
+  }  
+`;
+
+  let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;
+
+  if (res.data === null) {
+    throw new Error("Failed to get all applications");
+  }
+
+  let tempApplicationList = res.data;
+  let temp: Application[] = (tempApplicationList?.applicationsByBatchAndStatus
+    ?.items ?? []) as Application[];
+
+  const functionResult: IApplicationsWithNextToken = {
+    applications: temp,
+    nextToken: tempApplicationList?.applicationsByBatchAndStatus.nextToken,
+  };
+
+  return functionResult;
+}
 export async function getAllApplicationsWithPaginationAPI(
   batch: number,
   nextToken?: string | null
