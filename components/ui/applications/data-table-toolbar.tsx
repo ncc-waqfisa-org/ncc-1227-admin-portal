@@ -102,6 +102,8 @@ export function DataTableToolbar<TData>({
                   phone: app.student?.phone,
                   gpa: app.gpa,
                   status: app.status,
+                  familyIncome: app.student?.familyIncome,
+                  familyMembers: app.student?.ParentInfo?.numberOfFamilyMembers,
                   date: Intl.DateTimeFormat("en", {
                     timeStyle: "short",
                     dateStyle: "medium",

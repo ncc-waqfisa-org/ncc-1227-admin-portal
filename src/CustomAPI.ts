@@ -973,45 +973,49 @@ export async function getAllApplicationsWithPaginationAPI(
     applicationsByBatchAndStatus(batch: ${batch}, limit: 1000, nextToken: ${
     nextToken ? `"${nextToken}"` : null
   }) {
-      items {
-        _version
-        _deleted
-        schoolType
-        batch
-        dateTime
-        applicationAttachmentId
-        attachmentID
-        gpa
-        id
-        isEmailSent
-        status
-        studentCPR
-        programs {
-          items {
-            _deleted
+    items {
+      _version
+      _deleted
+      schoolType
+      batch
+      dateTime
+      applicationAttachmentId
+      attachmentID
+      gpa
+      id
+      isEmailSent
+      status
+      studentCPR
+      programs {
+        items {
+          _deleted
+          id
+          programID
+          program {
             id
-            programID
-            program {
-              id
+            name
+            nameAr
+            university {
               name
               nameAr
-              university {
-                name
-                nameAr
-                id
-              }
+              id
             }
           }
         }
-        createdAt
-        updatedAt
-        student {
-          householdIncome
-          fullName
-          email
-          phone
+      }
+      createdAt
+      updatedAt
+      student {
+        householdIncome
+        fullName
+        email
+        phone
+        familyIncome
+        ParentInfo {
+          numberOfFamilyMembers
         }
       }
+    }
         nextToken
     }
   }  

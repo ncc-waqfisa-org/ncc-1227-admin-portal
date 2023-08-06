@@ -119,6 +119,9 @@ const Home = () => {
                               gpa: app.gpa,
                               status: app.status,
                               studentCPR: app.studentCPR,
+                              familyIncome: app.student?.familyIncome,
+                              familyMembers:
+                                app.student?.ParentInfo?.numberOfFamilyMembers,
                               dateTime: app.dateTime,
                               primaryProgramID:
                                 sortedProgramChoices?.[0]?.program?.id,
