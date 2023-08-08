@@ -120,6 +120,7 @@ const Home = () => {
                               status: app.status,
                               studentCPR: app.studentCPR,
                               gender: app.student?.gender,
+                              schoolType: app.schoolType,
                               familyIncome: app.student?.familyIncome,
                               familyMembers:
                                 app.student?.ParentInfo?.numberOfFamilyMembers,

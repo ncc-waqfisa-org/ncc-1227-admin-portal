@@ -33,7 +33,7 @@ export function DataTableToolbar<TData>({
   const { t } = useTranslation("applications");
 
   return (
-    <div className="flex items-center justify-between flex-wrap">
+    <div className="flex flex-wrap items-center justify-between">
       <div className="flex items-center flex-1 gap-1">
         <Input
           placeholder={t("filterStudents") ?? "Filter students by cpr..."}
@@ -103,6 +103,7 @@ export function DataTableToolbar<TData>({
                   phone: app.student?.phone,
                   gpa: app.gpa,
                   status: app.status,
+                  schoolType: app.schoolType,
                   familyIncome: app.student?.familyIncome,
                   familyMembers: app.student?.ParentInfo?.numberOfFamilyMembers,
                   date: Intl.DateTimeFormat("en", {
