@@ -1011,6 +1011,7 @@ export async function getAllApplicationsWithPaginationAPI(
         email
         phone
         familyIncome
+        gender
         ParentInfo {
           numberOfFamilyMembers
         }
