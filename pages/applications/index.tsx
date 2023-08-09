@@ -320,21 +320,23 @@ const Applications = () => {
       ),
       cell: ({ row, table }) => (
         <div className="flex flex-col justify-start min-w-[28rem]">
-          {row.original.programs?.items?.map((value, index: number) => (
-            <div key={index} className="flex gap-2">
-              <p>{`${index + 1}- `}</p>
+          {row.original.programs?.items
+            ?.sort((a, b) => (a?.choiceOrder ?? 0) - (b?.choiceOrder ?? 0))
+            .map((value, index: number) => (
+              <div key={index} className="flex gap-2">
+                <p>{`${index + 1}- `}</p>
 
-              <div className="">{`${
-                (table.options.meta as any)?.locale === "ar"
-                  ? value?.program?.nameAr
-                  : value?.program?.name
-              } - ${
-                (table.options.meta as any)?.locale === "ar"
-                  ? value?.program?.university?.nameAr
-                  : value?.program?.university?.name
-              }`}</div>
-            </div>
-          ))}
+                <div className="">{`${
+                  (table.options.meta as any)?.locale === "ar"
+                    ? value?.program?.nameAr
+                    : value?.program?.name
+                } - ${
+                  (table.options.meta as any)?.locale === "ar"
+                    ? value?.program?.university?.nameAr
+                    : value?.program?.university?.name
+                }`}</div>
+              </div>
+            ))}
         </div>
       ),
       enableSorting: false,

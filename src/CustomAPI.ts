@@ -991,6 +991,7 @@ export async function getAllApplicationsWithPaginationAPI(
           _deleted
           id
           programID
+          choiceOrder
           program {
             id
             name
