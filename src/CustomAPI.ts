@@ -1013,6 +1013,8 @@ export async function getAllApplicationsWithPaginationAPI(
         phone
         familyIncome
         gender
+        nationality
+        graduationDate 
         ParentInfo {
           numberOfFamilyMembers
         }

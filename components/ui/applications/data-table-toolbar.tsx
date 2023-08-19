@@ -101,6 +101,8 @@ export function DataTableToolbar<TData>({
                   gender: app.student?.gender,
                   email: app.student?.email,
                   phone: app.student?.phone,
+                  nationality: app.student?.nationality,
+                  graduationDate: app.student?.graduationDate,
                   gpa: app.gpa,
                   status: app.status,
                   schoolType: app.schoolType,
