@@ -20,7 +20,7 @@ exports.handler = async (event) => {
         const parentData = requestBody.parentInfo.input;
         const username = studentData.cpr;
         const email = studentData.email;
-        const password = studentData.password;
+        const password = requestBody.password;
 
         const userExists = await getUserFromDynamoDB(username);
         if (userExists) {
@@ -31,7 +31,7 @@ exports.handler = async (event) => {
         }
 
         await saveStudentToDynamoDB(studentData);
-        await saveUserToCognito(username, email, password);
+        await signUpUserToCognito(username, email, password);
         await saveParentToDynamoDB(parentData);
         return {
             statusCode: 200,
@@ -53,11 +53,11 @@ exports.handler = async (event) => {
     }
 };
 
-async function saveUserToCognito(username, email, password) {
+async function signUpUserToCognito(username, email, password) {
+    console.log(username, email, password);
     const params = {
-        UserPoolId: 'us-east-1_ovqLD9Axf',
+        ClientId: '41ci7tn8aleem14rrr5gs7tkbs',
         Username: username,
-       // TemporaryPassword: password,
         Password: password,
         UserAttributes: [
             {
@@ -66,8 +66,9 @@ async function saveUserToCognito(username, email, password) {
             },
         ],
     };
-    await cognito.adminCreateUser(params).promise();
+    await cognito.signUp(params).promise();
 }
+
 
 async function getUserFromDynamoDB(username) {
     const params = {
