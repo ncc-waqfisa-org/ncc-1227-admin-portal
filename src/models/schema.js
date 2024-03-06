@@ -113,13 +113,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "studentCPR": {
-                    "name": "studentCPR",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "adminLogs": {
                     "name": "adminLogs",
                     "isArray": true,
@@ -186,21 +179,6 @@ export const schema = {
                         ]
                     }
                 },
-                "student": {
-                    "name": "student",
-                    "isArray": false,
-                    "type": {
-                        "model": "Student"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetNames": [
-                            "studentCPR"
-                        ]
-                    }
-                },
                 "dateTime": {
                     "name": "dateTime",
                     "isArray": false,
@@ -231,10 +209,61 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "studentCPR": {
+                    "name": "studentCPR",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "student": {
+                    "name": "student",
+                    "isArray": false,
+                    "type": {
+                        "model": "Student"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "studentCPR"
+                        ]
+                    }
+                },
+                "batchID": {
+                    "name": "batchID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "batch": {
                     "name": "batch",
                     "isArray": false,
                     "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "batchRelation": {
+                    "name": "batchRelation",
+                    "isArray": false,
+                    "type": {
+                        "model": "Batch"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "batchID"
+                        ]
+                    }
+                },
+                "score": {
+                    "name": "score",
+                    "isArray": false,
+                    "type": "Float",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -270,6 +299,10 @@ export const schema = {
                     "properties": {}
                 },
                 {
+                    "type": "searchable",
+                    "properties": {}
+                },
+                {
                     "type": "key",
                     "properties": {
                         "name": "byDateTime",
@@ -292,6 +325,15 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
+                        "name": "byBatchRelation",
+                        "fields": [
+                            "batchID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
                         "name": "byBatch",
                         "fields": [
                             "batch",
@@ -300,734 +342,14 @@ export const schema = {
                     }
                 },
                 {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "AdminLog": {
-            "name": "AdminLog",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "applicationID": {
-                    "name": "applicationID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "adminCPR": {
-                    "name": "adminCPR",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "dateTime": {
-                    "name": "dateTime",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "snapshot": {
-                    "name": "snapshot",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "reason": {
-                    "name": "reason",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "admin": {
-                    "name": "admin",
-                    "isArray": false,
-                    "type": {
-                        "model": "Admin"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetNames": [
-                            "adminCPR"
-                        ]
-                    }
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "applicationAdminLogsId": {
-                    "name": "applicationAdminLogsId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "adminAdminLogsCpr": {
-                    "name": "adminAdminLogsCpr",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                }
-            },
-            "syncable": true,
-            "pluralName": "AdminLogs",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
                     "type": "key",
                     "properties": {
-                        "name": "gsi-Application.adminLogs",
+                        "name": "byScore",
                         "fields": [
-                            "applicationAdminLogsId"
+                            "score",
+                            "status"
                         ]
                     }
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "Admin": {
-            "name": "Admin",
-            "fields": {
-                "cpr": {
-                    "name": "cpr",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "fullName": {
-                    "name": "fullName",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "email": {
-                    "name": "email",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "AdminLogs": {
-                    "name": "AdminLogs",
-                    "isArray": true,
-                    "type": {
-                        "model": "AdminLog"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": [
-                            "adminAdminLogsCpr"
-                        ]
-                    }
-                },
-                "role": {
-                    "name": "role",
-                    "isArray": false,
-                    "type": {
-                        "enum": "AdminRole"
-                    },
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "Admins",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "fields": [
-                            "cpr"
-                        ]
-                    }
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "StudentLog": {
-            "name": "StudentLog",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "applicationID": {
-                    "name": "applicationID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "studentCPR": {
-                    "name": "studentCPR",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "dateTime": {
-                    "name": "dateTime",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "snapshot": {
-                    "name": "snapshot",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "reason": {
-                    "name": "reason",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "student": {
-                    "name": "student",
-                    "isArray": false,
-                    "type": {
-                        "model": "Student"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetNames": [
-                            "studentCPR"
-                        ]
-                    }
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "applicationStudentLogsId": {
-                    "name": "applicationStudentLogsId",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "studentStudentLogsCpr": {
-                    "name": "studentStudentLogsCpr",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                }
-            },
-            "syncable": true,
-            "pluralName": "StudentLogs",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "name": "gsi-Application.studentLogs",
-                        "fields": [
-                            "applicationStudentLogsId"
-                        ]
-                    }
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "Student": {
-            "name": "Student",
-            "fields": {
-                "cpr": {
-                    "name": "cpr",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "cprDoc": {
-                    "name": "cprDoc",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "fullName": {
-                    "name": "fullName",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "email": {
-                    "name": "email",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "phone": {
-                    "name": "phone",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "gender": {
-                    "name": "gender",
-                    "isArray": false,
-                    "type": {
-                        "enum": "Gender"
-                    },
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "nationality": {
-                    "name": "nationality",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "schoolName": {
-                    "name": "schoolName",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "schoolType": {
-                    "name": "schoolType",
-                    "isArray": false,
-                    "type": {
-                        "enum": "SchoolType"
-                    },
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "specialization": {
-                    "name": "specialization",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "placeOfBirth": {
-                    "name": "placeOfBirth",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "studentOrderAmongSiblings": {
-                    "name": "studentOrderAmongSiblings",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "householdIncome": {
-                    "name": "householdIncome",
-                    "isArray": false,
-                    "type": "Float",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "familyIncome": {
-                    "name": "familyIncome",
-                    "isArray": false,
-                    "type": {
-                        "enum": "FamilyIncome"
-                    },
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "familyIncomeProofDoc": {
-                    "name": "familyIncomeProofDoc",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "familyIncomeProofDocs": {
-                    "name": "familyIncomeProofDocs",
-                    "isArray": true,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
-                },
-                "preferredLanguage": {
-                    "name": "preferredLanguage",
-                    "isArray": false,
-                    "type": {
-                        "enum": "Language"
-                    },
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "graduationDate": {
-                    "name": "graduationDate",
-                    "isArray": false,
-                    "type": "AWSDate",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "address": {
-                    "name": "address",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "applications": {
-                    "name": "applications",
-                    "isArray": true,
-                    "type": {
-                        "model": "Application"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": [
-                            "student"
-                        ]
-                    }
-                },
-                "ParentInfo": {
-                    "name": "ParentInfo",
-                    "isArray": false,
-                    "type": {
-                        "model": "ParentInfo"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "HAS_ONE",
-                        "associatedWith": [
-                            "id"
-                        ],
-                        "targetNames": [
-                            "parentInfoID"
-                        ]
-                    }
-                },
-                "parentInfoID": {
-                    "name": "parentInfoID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "StudentLogs": {
-                    "name": "StudentLogs",
-                    "isArray": true,
-                    "type": {
-                        "model": "StudentLog"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": [
-                            "studentStudentLogsCpr"
-                        ]
-                    }
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "Students",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "fields": [
-                            "cpr"
-                        ]
-                    }
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "ParentInfo": {
-            "name": "ParentInfo",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "guardianFullName": {
-                    "name": "guardianFullName",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "relation": {
-                    "name": "relation",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "guardianCPR": {
-                    "name": "guardianCPR",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "primaryMobile": {
-                    "name": "primaryMobile",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "secondaryMobile": {
-                    "name": "secondaryMobile",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "fatherFullName": {
-                    "name": "fatherFullName",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "fatherCPR": {
-                    "name": "fatherCPR",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "motherFullName": {
-                    "name": "motherFullName",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "motherCPR": {
-                    "name": "motherCPR",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "numberOfFamilyMembers": {
-                    "name": "numberOfFamilyMembers",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "address": {
-                    "name": "address",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "ParentInfos",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
                 },
                 {
                     "type": "auth",
@@ -1371,6 +693,20 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "isExtended": {
+                    "name": "isExtended",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "extendedTo": {
+                    "name": "extendedTo",
+                    "isArray": false,
+                    "type": "AWSDate",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "isTrashed": {
                     "name": "isTrashed",
                     "isArray": false,
@@ -1403,6 +739,867 @@ export const schema = {
                     "properties": {}
                 },
                 {
+                    "type": "searchable",
+                    "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "AdminLog": {
+            "name": "AdminLog",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "applicationID": {
+                    "name": "applicationID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "adminCPR": {
+                    "name": "adminCPR",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "dateTime": {
+                    "name": "dateTime",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "snapshot": {
+                    "name": "snapshot",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "reason": {
+                    "name": "reason",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "admin": {
+                    "name": "admin",
+                    "isArray": false,
+                    "type": {
+                        "model": "Admin"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "adminCPR"
+                        ]
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "applicationAdminLogsId": {
+                    "name": "applicationAdminLogsId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "adminAdminLogsCpr": {
+                    "name": "adminAdminLogsCpr",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            },
+            "syncable": true,
+            "pluralName": "AdminLogs",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "gsi-Application.adminLogs",
+                        "fields": [
+                            "applicationAdminLogsId"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "StudentLog": {
+            "name": "StudentLog",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "applicationID": {
+                    "name": "applicationID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "studentCPR": {
+                    "name": "studentCPR",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "dateTime": {
+                    "name": "dateTime",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "snapshot": {
+                    "name": "snapshot",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "reason": {
+                    "name": "reason",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "student": {
+                    "name": "student",
+                    "isArray": false,
+                    "type": {
+                        "model": "Student"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "studentCPR"
+                        ]
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "applicationStudentLogsId": {
+                    "name": "applicationStudentLogsId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "studentStudentLogsCpr": {
+                    "name": "studentStudentLogsCpr",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            },
+            "syncable": true,
+            "pluralName": "StudentLogs",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "gsi-Application.studentLogs",
+                        "fields": [
+                            "applicationStudentLogsId"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "Admin": {
+            "name": "Admin",
+            "fields": {
+                "cpr": {
+                    "name": "cpr",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "fullName": {
+                    "name": "fullName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "email": {
+                    "name": "email",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "AdminLogs": {
+                    "name": "AdminLogs",
+                    "isArray": true,
+                    "type": {
+                        "model": "AdminLog"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "adminAdminLogsCpr"
+                        ]
+                    }
+                },
+                "role": {
+                    "name": "role",
+                    "isArray": false,
+                    "type": {
+                        "enum": "AdminRole"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Admins",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "fields": [
+                            "cpr"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "ParentInfo": {
+            "name": "ParentInfo",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "guardianFullName": {
+                    "name": "guardianFullName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "relation": {
+                    "name": "relation",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "guardianCPR": {
+                    "name": "guardianCPR",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "primaryMobile": {
+                    "name": "primaryMobile",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "secondaryMobile": {
+                    "name": "secondaryMobile",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "fatherFullName": {
+                    "name": "fatherFullName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "fatherCPR": {
+                    "name": "fatherCPR",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "motherFullName": {
+                    "name": "motherFullName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "motherCPR": {
+                    "name": "motherCPR",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "numberOfFamilyMembers": {
+                    "name": "numberOfFamilyMembers",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "address": {
+                    "name": "address",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "ParentInfos",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "Student": {
+            "name": "Student",
+            "fields": {
+                "cpr": {
+                    "name": "cpr",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "cprDoc": {
+                    "name": "cprDoc",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "fullName": {
+                    "name": "fullName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "email": {
+                    "name": "email",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "phone": {
+                    "name": "phone",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "gender": {
+                    "name": "gender",
+                    "isArray": false,
+                    "type": {
+                        "enum": "Gender"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "nationalityCategory": {
+                    "name": "nationalityCategory",
+                    "isArray": false,
+                    "type": {
+                        "enum": "Nationality"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "nationality": {
+                    "name": "nationality",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "schoolName": {
+                    "name": "schoolName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "schoolType": {
+                    "name": "schoolType",
+                    "isArray": false,
+                    "type": {
+                        "enum": "SchoolType"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "specialization": {
+                    "name": "specialization",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "placeOfBirth": {
+                    "name": "placeOfBirth",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "studentOrderAmongSiblings": {
+                    "name": "studentOrderAmongSiblings",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "householdIncome": {
+                    "name": "householdIncome",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "familyIncome": {
+                    "name": "familyIncome",
+                    "isArray": false,
+                    "type": {
+                        "enum": "FamilyIncome"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "familyIncomeProofDoc": {
+                    "name": "familyIncomeProofDoc",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "familyIncomeProofDocs": {
+                    "name": "familyIncomeProofDocs",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
+                "preferredLanguage": {
+                    "name": "preferredLanguage",
+                    "isArray": false,
+                    "type": {
+                        "enum": "Language"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "graduationDate": {
+                    "name": "graduationDate",
+                    "isArray": false,
+                    "type": "AWSDate",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "address": {
+                    "name": "address",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "applications": {
+                    "name": "applications",
+                    "isArray": true,
+                    "type": {
+                        "model": "Application"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "student"
+                        ]
+                    }
+                },
+                "ParentInfo": {
+                    "name": "ParentInfo",
+                    "isArray": false,
+                    "type": {
+                        "model": "ParentInfo"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "HAS_ONE",
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "parentInfoID"
+                        ]
+                    }
+                },
+                "parentInfoID": {
+                    "name": "parentInfoID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "StudentLogs": {
+                    "name": "StudentLogs",
+                    "isArray": true,
+                    "type": {
+                        "model": "StudentLog"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "studentStudentLogsCpr"
+                        ]
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Students",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "fields": [
+                            "cpr"
+                        ]
+                    }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "Batch": {
+            "name": "Batch",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "batch": {
+                    "name": "batch",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createApplicationStartDate": {
+                    "name": "createApplicationStartDate",
+                    "isArray": false,
+                    "type": "AWSDate",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createApplicationEndDate": {
+                    "name": "createApplicationEndDate",
+                    "isArray": false,
+                    "type": "AWSDate",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "updateApplicationEndDate": {
+                    "name": "updateApplicationEndDate",
+                    "isArray": false,
+                    "type": "AWSDate",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "signUpStartDate": {
+                    "name": "signUpStartDate",
+                    "isArray": false,
+                    "type": "AWSDate",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "signUpEndDate": {
+                    "name": "signUpEndDate",
+                    "isArray": false,
+                    "type": "AWSDate",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "applications": {
+                    "name": "applications",
+                    "isArray": true,
+                    "type": {
+                        "model": "Application"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "batchRelation"
+                        ]
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "Batches",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "fields": [
+                            "id"
+                        ]
+                    }
+                },
+                {
                     "type": "auth",
                     "properties": {
                         "rules": [
@@ -1422,6 +1619,13 @@ export const schema = {
         }
     },
     "enums": {
+        "AdminRole": {
+            "name": "AdminRole",
+            "values": [
+                "ADMIN",
+                "SUPER_ADMIN"
+            ]
+        },
         "Status": {
             "name": "Status",
             "values": [
@@ -1433,11 +1637,11 @@ export const schema = {
                 "WITHDRAWN"
             ]
         },
-        "AdminRole": {
-            "name": "AdminRole",
+        "Language": {
+            "name": "Language",
             "values": [
-                "ADMIN",
-                "SUPER_ADMIN"
+                "ARABIC",
+                "ENGLISH"
             ]
         },
         "Gender": {
@@ -1454,24 +1658,26 @@ export const schema = {
                 "PUBLIC"
             ]
         },
+        "Nationality": {
+            "name": "Nationality",
+            "values": [
+                "BAHRAINI",
+                "NON_BAHRAINI"
+            ]
+        },
         "FamilyIncome": {
             "name": "FamilyIncome",
             "values": [
                 "LESS_THAN_500",
                 "BETWEEN_500_AND_700",
                 "BETWEEN_700_AND_1000",
+                "LESS_THAN_1500",
+                "MORE_THAN_1500",
                 "OVER_1000"
-            ]
-        },
-        "Language": {
-            "name": "Language",
-            "values": [
-                "ARABIC",
-                "ENGLISH"
             ]
         }
     },
     "nonModels": {},
-    "codegenVersion": "3.3.2",
-    "version": "b3e395dac054a8e94d9ed0ce4523c2b7"
+    "codegenVersion": "3.4.4",
+    "version": "e986bc2d295cc5ba816906043bf3cc14"
 };

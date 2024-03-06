@@ -19,6 +19,7 @@ export type ModelAttachmentConditionInput = {
   and?: Array< ModelAttachmentConditionInput | null > | null,
   or?: Array< ModelAttachmentConditionInput | null > | null,
   not?: ModelAttachmentConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelStringInput = {
@@ -61,6 +62,13 @@ export type ModelSizeInput = {
   between?: Array< number | null > | null,
 };
 
+export type ModelBooleanInput = {
+  ne?: boolean | null,
+  eq?: boolean | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
 export type Attachment = {
   __typename: "Attachment",
   id: string,
@@ -94,12 +102,14 @@ export type CreateApplicationInput = {
   gpa?: number | null,
   status?: Status | null,
   attachmentID?: string | null,
-  studentCPR: string,
   dateTime: string,
   isEmailSent?: boolean | null,
   schoolName?: string | null,
   schoolType?: SchoolType | null,
+  studentCPR: string,
+  batchID: string,
   batch?: number | null,
+  score?: number | null,
   _version?: number | null,
   applicationAttachmentId?: string | null,
 };
@@ -124,15 +134,18 @@ export type ModelApplicationConditionInput = {
   gpa?: ModelFloatInput | null,
   status?: ModelStatusInput | null,
   attachmentID?: ModelStringInput | null,
-  studentCPR?: ModelStringInput | null,
   dateTime?: ModelStringInput | null,
   isEmailSent?: ModelBooleanInput | null,
   schoolName?: ModelStringInput | null,
   schoolType?: ModelSchoolTypeInput | null,
+  studentCPR?: ModelStringInput | null,
+  batchID?: ModelIDInput | null,
   batch?: ModelIntInput | null,
+  score?: ModelFloatInput | null,
   and?: Array< ModelApplicationConditionInput | null > | null,
   or?: Array< ModelApplicationConditionInput | null > | null,
   not?: ModelApplicationConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
   applicationAttachmentId?: ModelIDInput | null,
 };
 
@@ -153,28 +166,9 @@ export type ModelStatusInput = {
   ne?: Status | null,
 };
 
-export type ModelBooleanInput = {
-  ne?: boolean | null,
-  eq?: boolean | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-};
-
 export type ModelSchoolTypeInput = {
   eq?: SchoolType | null,
   ne?: SchoolType | null,
-};
-
-export type ModelIntInput = {
-  ne?: number | null,
-  eq?: number | null,
-  le?: number | null,
-  lt?: number | null,
-  ge?: number | null,
-  gt?: number | null,
-  between?: Array< number | null > | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
 };
 
 export type ModelIDInput = {
@@ -193,23 +187,38 @@ export type ModelIDInput = {
   size?: ModelSizeInput | null,
 };
 
+export type ModelIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
 export type Application = {
   __typename: "Application",
   id: string,
   gpa?: number | null,
   status?: Status | null,
   attachmentID?: string | null,
-  studentCPR: string,
   adminLogs?: ModelAdminLogConnection | null,
   studentLogs?: ModelStudentLogConnection | null,
   attachment?: Attachment | null,
   programs?: ModelProgramChoiceConnection | null,
-  student?: Student | null,
   dateTime: string,
   isEmailSent?: boolean | null,
   schoolName?: string | null,
   schoolType?: SchoolType | null,
+  studentCPR: string,
+  student?: Student | null,
+  batchID: string,
   batch?: number | null,
+  batchRelation?: Batch | null,
+  score?: number | null,
   createdAt: string,
   updatedAt: string,
   _version: number,
@@ -296,6 +305,7 @@ export type Student = {
   email?: string | null,
   phone?: string | null,
   gender?: Gender | null,
+  nationalityCategory?: Nationality | null,
   nationality?: string | null,
   schoolName?: string | null,
   schoolType?: SchoolType | null,
@@ -326,10 +336,18 @@ export enum Gender {
 }
 
 
+export enum Nationality {
+  BAHRAINI = "BAHRAINI",
+  NON_BAHRAINI = "NON_BAHRAINI",
+}
+
+
 export enum FamilyIncome {
   LESS_THAN_500 = "LESS_THAN_500",
   BETWEEN_500_AND_700 = "BETWEEN_500_AND_700",
   BETWEEN_700_AND_1000 = "BETWEEN_700_AND_1000",
+  LESS_THAN_1500 = "LESS_THAN_1500",
+  MORE_THAN_1500 = "MORE_THAN_1500",
   OVER_1000 = "OVER_1000",
 }
 
@@ -422,6 +440,8 @@ export type University = {
   Programs?: ModelProgramConnection | null,
   availability?: number | null,
   isDeactivated?: boolean | null,
+  isExtended?: boolean | null,
+  extendedTo?: string | null,
   isTrashed?: boolean | null,
   createdAt: string,
   updatedAt: string,
@@ -437,17 +457,36 @@ export type ModelProgramConnection = {
   startedAt?: number | null,
 };
 
+export type Batch = {
+  __typename: "Batch",
+  id: string,
+  batch?: number | null,
+  createApplicationStartDate?: string | null,
+  createApplicationEndDate?: string | null,
+  updateApplicationEndDate?: string | null,
+  signUpStartDate?: string | null,
+  signUpEndDate?: string | null,
+  applications?: ModelApplicationConnection | null,
+  createdAt: string,
+  updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
+};
+
 export type UpdateApplicationInput = {
   id: string,
   gpa?: number | null,
   status?: Status | null,
   attachmentID?: string | null,
-  studentCPR?: string | null,
   dateTime?: string | null,
   isEmailSent?: boolean | null,
   schoolName?: string | null,
   schoolType?: SchoolType | null,
+  studentCPR?: string | null,
+  batchID?: string | null,
   batch?: number | null,
+  score?: number | null,
   _version?: number | null,
   applicationAttachmentId?: string | null,
 };
@@ -476,6 +515,7 @@ export type ModelProgramChoiceConditionInput = {
   and?: Array< ModelProgramChoiceConditionInput | null > | null,
   or?: Array< ModelProgramChoiceConditionInput | null > | null,
   not?: ModelProgramChoiceConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
   applicationProgramsId?: ModelIDInput | null,
   programApplicationsId?: ModelIDInput | null,
 };
@@ -522,6 +562,7 @@ export type ModelProgramConditionInput = {
   and?: Array< ModelProgramConditionInput | null > | null,
   or?: Array< ModelProgramConditionInput | null > | null,
   not?: ModelProgramConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
   universityProgramsId?: ModelIDInput | null,
 };
 
@@ -550,6 +591,8 @@ export type CreateUniversityInput = {
   nameAr?: string | null,
   availability?: number | null,
   isDeactivated?: boolean | null,
+  isExtended?: boolean | null,
+  extendedTo?: string | null,
   isTrashed?: boolean | null,
   _version?: number | null,
 };
@@ -559,10 +602,13 @@ export type ModelUniversityConditionInput = {
   nameAr?: ModelStringInput | null,
   availability?: ModelIntInput | null,
   isDeactivated?: ModelBooleanInput | null,
+  isExtended?: ModelBooleanInput | null,
+  extendedTo?: ModelStringInput | null,
   isTrashed?: ModelBooleanInput | null,
   and?: Array< ModelUniversityConditionInput | null > | null,
   or?: Array< ModelUniversityConditionInput | null > | null,
   not?: ModelUniversityConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type UpdateUniversityInput = {
@@ -571,6 +617,8 @@ export type UpdateUniversityInput = {
   nameAr?: string | null,
   availability?: number | null,
   isDeactivated?: boolean | null,
+  isExtended?: boolean | null,
+  extendedTo?: string | null,
   isTrashed?: boolean | null,
   _version?: number | null,
 };
@@ -601,6 +649,7 @@ export type ModelAdminLogConditionInput = {
   and?: Array< ModelAdminLogConditionInput | null > | null,
   or?: Array< ModelAdminLogConditionInput | null > | null,
   not?: ModelAdminLogConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
   applicationAdminLogsId?: ModelIDInput | null,
   adminAdminLogsCpr?: ModelStringInput | null,
 };
@@ -643,6 +692,7 @@ export type ModelStudentLogConditionInput = {
   and?: Array< ModelStudentLogConditionInput | null > | null,
   or?: Array< ModelStudentLogConditionInput | null > | null,
   not?: ModelStudentLogConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
   applicationStudentLogsId?: ModelIDInput | null,
   studentStudentLogsCpr?: ModelStringInput | null,
 };
@@ -679,6 +729,7 @@ export type ModelAdminConditionInput = {
   and?: Array< ModelAdminConditionInput | null > | null,
   or?: Array< ModelAdminConditionInput | null > | null,
   not?: ModelAdminConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelAdminRoleInput = {
@@ -730,6 +781,7 @@ export type ModelParentInfoConditionInput = {
   and?: Array< ModelParentInfoConditionInput | null > | null,
   or?: Array< ModelParentInfoConditionInput | null > | null,
   not?: ModelParentInfoConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type UpdateParentInfoInput = {
@@ -760,6 +812,7 @@ export type CreateStudentInput = {
   email?: string | null,
   phone?: string | null,
   gender?: Gender | null,
+  nationalityCategory?: Nationality | null,
   nationality?: string | null,
   schoolName?: string | null,
   schoolType?: SchoolType | null,
@@ -783,6 +836,7 @@ export type ModelStudentConditionInput = {
   email?: ModelStringInput | null,
   phone?: ModelStringInput | null,
   gender?: ModelGenderInput | null,
+  nationalityCategory?: ModelNationalityInput | null,
   nationality?: ModelStringInput | null,
   schoolName?: ModelStringInput | null,
   schoolType?: ModelSchoolTypeInput | null,
@@ -800,11 +854,17 @@ export type ModelStudentConditionInput = {
   and?: Array< ModelStudentConditionInput | null > | null,
   or?: Array< ModelStudentConditionInput | null > | null,
   not?: ModelStudentConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelGenderInput = {
   eq?: Gender | null,
   ne?: Gender | null,
+};
+
+export type ModelNationalityInput = {
+  eq?: Nationality | null,
+  ne?: Nationality | null,
 };
 
 export type ModelFamilyIncomeInput = {
@@ -824,6 +884,7 @@ export type UpdateStudentInput = {
   email?: string | null,
   phone?: string | null,
   gender?: Gender | null,
+  nationalityCategory?: Nationality | null,
   nationality?: string | null,
   schoolName?: string | null,
   schoolType?: SchoolType | null,
@@ -846,6 +907,302 @@ export type DeleteStudentInput = {
   _version?: number | null,
 };
 
+export type CreateBatchInput = {
+  id?: string | null,
+  batch?: number | null,
+  createApplicationStartDate?: string | null,
+  createApplicationEndDate?: string | null,
+  updateApplicationEndDate?: string | null,
+  signUpStartDate?: string | null,
+  signUpEndDate?: string | null,
+  _version?: number | null,
+};
+
+export type ModelBatchConditionInput = {
+  batch?: ModelIntInput | null,
+  createApplicationStartDate?: ModelStringInput | null,
+  createApplicationEndDate?: ModelStringInput | null,
+  updateApplicationEndDate?: ModelStringInput | null,
+  signUpStartDate?: ModelStringInput | null,
+  signUpEndDate?: ModelStringInput | null,
+  and?: Array< ModelBatchConditionInput | null > | null,
+  or?: Array< ModelBatchConditionInput | null > | null,
+  not?: ModelBatchConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type UpdateBatchInput = {
+  id: string,
+  batch?: number | null,
+  createApplicationStartDate?: string | null,
+  createApplicationEndDate?: string | null,
+  updateApplicationEndDate?: string | null,
+  signUpStartDate?: string | null,
+  signUpEndDate?: string | null,
+  _version?: number | null,
+};
+
+export type DeleteBatchInput = {
+  id: string,
+  _version?: number | null,
+};
+
+export type SearchableApplicationFilterInput = {
+  id?: SearchableIDFilterInput | null,
+  gpa?: SearchableFloatFilterInput | null,
+  attachmentID?: SearchableStringFilterInput | null,
+  dateTime?: SearchableStringFilterInput | null,
+  isEmailSent?: SearchableBooleanFilterInput | null,
+  schoolName?: SearchableStringFilterInput | null,
+  studentCPR?: SearchableStringFilterInput | null,
+  batchID?: SearchableIDFilterInput | null,
+  batch?: SearchableIntFilterInput | null,
+  score?: SearchableFloatFilterInput | null,
+  createdAt?: SearchableStringFilterInput | null,
+  updatedAt?: SearchableStringFilterInput | null,
+  _version?: SearchableIntFilterInput | null,
+  _deleted?: SearchableBooleanFilterInput | null,
+  _lastChangedAt?: SearchableIntFilterInput | null,
+  applicationAttachmentId?: SearchableIDFilterInput | null,
+  status?: SearchableStringFilterInput | null,
+  schoolType?: SearchableStringFilterInput | null,
+  and?: Array< SearchableApplicationFilterInput | null > | null,
+  or?: Array< SearchableApplicationFilterInput | null > | null,
+  not?: SearchableApplicationFilterInput | null,
+};
+
+export type SearchableIDFilterInput = {
+  ne?: string | null,
+  gt?: string | null,
+  lt?: string | null,
+  gte?: string | null,
+  lte?: string | null,
+  eq?: string | null,
+  match?: string | null,
+  matchPhrase?: string | null,
+  matchPhrasePrefix?: string | null,
+  multiMatch?: string | null,
+  exists?: boolean | null,
+  wildcard?: string | null,
+  regexp?: string | null,
+  range?: Array< string | null > | null,
+};
+
+export type SearchableFloatFilterInput = {
+  ne?: number | null,
+  gt?: number | null,
+  lt?: number | null,
+  gte?: number | null,
+  lte?: number | null,
+  eq?: number | null,
+  range?: Array< number | null > | null,
+};
+
+export type SearchableStringFilterInput = {
+  ne?: string | null,
+  gt?: string | null,
+  lt?: string | null,
+  gte?: string | null,
+  lte?: string | null,
+  eq?: string | null,
+  match?: string | null,
+  matchPhrase?: string | null,
+  matchPhrasePrefix?: string | null,
+  multiMatch?: string | null,
+  exists?: boolean | null,
+  wildcard?: string | null,
+  regexp?: string | null,
+  range?: Array< string | null > | null,
+};
+
+export type SearchableBooleanFilterInput = {
+  eq?: boolean | null,
+  ne?: boolean | null,
+};
+
+export type SearchableIntFilterInput = {
+  ne?: number | null,
+  gt?: number | null,
+  lt?: number | null,
+  gte?: number | null,
+  lte?: number | null,
+  eq?: number | null,
+  range?: Array< number | null > | null,
+};
+
+export type SearchableApplicationSortInput = {
+  field?: SearchableApplicationSortableFields | null,
+  direction?: SearchableSortDirection | null,
+};
+
+export enum SearchableApplicationSortableFields {
+  id = "id",
+  gpa = "gpa",
+  attachmentID = "attachmentID",
+  dateTime = "dateTime",
+  isEmailSent = "isEmailSent",
+  schoolName = "schoolName",
+  studentCPR = "studentCPR",
+  batchID = "batchID",
+  batch = "batch",
+  score = "score",
+  createdAt = "createdAt",
+  updatedAt = "updatedAt",
+  _version = "_version",
+  _deleted = "_deleted",
+  _lastChangedAt = "_lastChangedAt",
+  applicationAttachmentId = "applicationAttachmentId",
+}
+
+
+export enum SearchableSortDirection {
+  asc = "asc",
+  desc = "desc",
+}
+
+
+export type SearchableApplicationAggregationInput = {
+  name: string,
+  type: SearchableAggregateType,
+  field: SearchableApplicationAggregateField,
+};
+
+export enum SearchableAggregateType {
+  terms = "terms",
+  avg = "avg",
+  min = "min",
+  max = "max",
+  sum = "sum",
+}
+
+
+export enum SearchableApplicationAggregateField {
+  id = "id",
+  gpa = "gpa",
+  status = "status",
+  attachmentID = "attachmentID",
+  dateTime = "dateTime",
+  isEmailSent = "isEmailSent",
+  schoolName = "schoolName",
+  schoolType = "schoolType",
+  studentCPR = "studentCPR",
+  batchID = "batchID",
+  batch = "batch",
+  score = "score",
+  createdAt = "createdAt",
+  updatedAt = "updatedAt",
+  _version = "_version",
+  _deleted = "_deleted",
+  _lastChangedAt = "_lastChangedAt",
+  applicationAttachmentId = "applicationAttachmentId",
+}
+
+
+export type SearchableApplicationConnection = {
+  __typename: "SearchableApplicationConnection",
+  items:  Array<Application | null >,
+  nextToken?: string | null,
+  total?: number | null,
+  aggregateItems:  Array<SearchableAggregateResult | null >,
+};
+
+export type SearchableAggregateResult = {
+  __typename: "SearchableAggregateResult",
+  name: string,
+  result?: SearchableAggregateGenericResult | null,
+};
+
+export type SearchableAggregateGenericResult = SearchableAggregateScalarResult | SearchableAggregateBucketResult
+
+
+export type SearchableAggregateScalarResult = {
+  __typename: "SearchableAggregateScalarResult",
+  value: number,
+};
+
+export type SearchableAggregateBucketResult = {
+  __typename: "SearchableAggregateBucketResult",
+  buckets?:  Array<SearchableAggregateBucketResultItem | null > | null,
+};
+
+export type SearchableAggregateBucketResultItem = {
+  __typename: "SearchableAggregateBucketResultItem",
+  key: string,
+  doc_count: number,
+};
+
+export type SearchableUniversityFilterInput = {
+  id?: SearchableIDFilterInput | null,
+  name?: SearchableStringFilterInput | null,
+  nameAr?: SearchableStringFilterInput | null,
+  availability?: SearchableIntFilterInput | null,
+  isDeactivated?: SearchableBooleanFilterInput | null,
+  isExtended?: SearchableBooleanFilterInput | null,
+  extendedTo?: SearchableStringFilterInput | null,
+  isTrashed?: SearchableBooleanFilterInput | null,
+  createdAt?: SearchableStringFilterInput | null,
+  updatedAt?: SearchableStringFilterInput | null,
+  _version?: SearchableIntFilterInput | null,
+  _deleted?: SearchableBooleanFilterInput | null,
+  _lastChangedAt?: SearchableIntFilterInput | null,
+  and?: Array< SearchableUniversityFilterInput | null > | null,
+  or?: Array< SearchableUniversityFilterInput | null > | null,
+  not?: SearchableUniversityFilterInput | null,
+};
+
+export type SearchableUniversitySortInput = {
+  field?: SearchableUniversitySortableFields | null,
+  direction?: SearchableSortDirection | null,
+};
+
+export enum SearchableUniversitySortableFields {
+  id = "id",
+  name = "name",
+  nameAr = "nameAr",
+  availability = "availability",
+  isDeactivated = "isDeactivated",
+  isExtended = "isExtended",
+  extendedTo = "extendedTo",
+  isTrashed = "isTrashed",
+  createdAt = "createdAt",
+  updatedAt = "updatedAt",
+  _version = "_version",
+  _deleted = "_deleted",
+  _lastChangedAt = "_lastChangedAt",
+}
+
+
+export type SearchableUniversityAggregationInput = {
+  name: string,
+  type: SearchableAggregateType,
+  field: SearchableUniversityAggregateField,
+};
+
+export enum SearchableUniversityAggregateField {
+  id = "id",
+  name = "name",
+  nameAr = "nameAr",
+  availability = "availability",
+  isDeactivated = "isDeactivated",
+  isExtended = "isExtended",
+  extendedTo = "extendedTo",
+  isTrashed = "isTrashed",
+  createdAt = "createdAt",
+  updatedAt = "updatedAt",
+  _version = "_version",
+  _deleted = "_deleted",
+  _lastChangedAt = "_lastChangedAt",
+}
+
+
+export type SearchableUniversityConnection = {
+  __typename: "SearchableUniversityConnection",
+  items:  Array<University | null >,
+  nextToken?: string | null,
+  total?: number | null,
+  aggregateItems:  Array<SearchableAggregateResult | null >,
+};
+
 export type ModelAttachmentFilterInput = {
   id?: ModelIDInput | null,
   cprDoc?: ModelStringInput | null,
@@ -855,6 +1212,7 @@ export type ModelAttachmentFilterInput = {
   and?: Array< ModelAttachmentFilterInput | null > | null,
   or?: Array< ModelAttachmentFilterInput | null > | null,
   not?: ModelAttachmentFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelAttachmentConnection = {
@@ -869,15 +1227,18 @@ export type ModelApplicationFilterInput = {
   gpa?: ModelFloatInput | null,
   status?: ModelStatusInput | null,
   attachmentID?: ModelStringInput | null,
-  studentCPR?: ModelStringInput | null,
   dateTime?: ModelStringInput | null,
   isEmailSent?: ModelBooleanInput | null,
   schoolName?: ModelStringInput | null,
   schoolType?: ModelSchoolTypeInput | null,
+  studentCPR?: ModelStringInput | null,
+  batchID?: ModelIDInput | null,
   batch?: ModelIntInput | null,
+  score?: ModelFloatInput | null,
   and?: Array< ModelApplicationFilterInput | null > | null,
   or?: Array< ModelApplicationFilterInput | null > | null,
   not?: ModelApplicationFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
   applicationAttachmentId?: ModelIDInput | null,
 };
 
@@ -890,6 +1251,7 @@ export type ModelProgramChoiceFilterInput = {
   and?: Array< ModelProgramChoiceFilterInput | null > | null,
   or?: Array< ModelProgramChoiceFilterInput | null > | null,
   not?: ModelProgramChoiceFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
   applicationProgramsId?: ModelIDInput | null,
   programApplicationsId?: ModelIDInput | null,
 };
@@ -907,6 +1269,7 @@ export type ModelProgramFilterInput = {
   and?: Array< ModelProgramFilterInput | null > | null,
   or?: Array< ModelProgramFilterInput | null > | null,
   not?: ModelProgramFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
   universityProgramsId?: ModelIDInput | null,
 };
 
@@ -916,10 +1279,13 @@ export type ModelUniversityFilterInput = {
   nameAr?: ModelStringInput | null,
   availability?: ModelIntInput | null,
   isDeactivated?: ModelBooleanInput | null,
+  isExtended?: ModelBooleanInput | null,
+  extendedTo?: ModelStringInput | null,
   isTrashed?: ModelBooleanInput | null,
   and?: Array< ModelUniversityFilterInput | null > | null,
   or?: Array< ModelUniversityFilterInput | null > | null,
   not?: ModelUniversityFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelUniversityConnection = {
@@ -939,6 +1305,7 @@ export type ModelAdminLogFilterInput = {
   and?: Array< ModelAdminLogFilterInput | null > | null,
   or?: Array< ModelAdminLogFilterInput | null > | null,
   not?: ModelAdminLogFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
   applicationAdminLogsId?: ModelIDInput | null,
   adminAdminLogsCpr?: ModelStringInput | null,
 };
@@ -953,6 +1320,7 @@ export type ModelStudentLogFilterInput = {
   and?: Array< ModelStudentLogFilterInput | null > | null,
   or?: Array< ModelStudentLogFilterInput | null > | null,
   not?: ModelStudentLogFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
   applicationStudentLogsId?: ModelIDInput | null,
   studentStudentLogsCpr?: ModelStringInput | null,
 };
@@ -965,6 +1333,7 @@ export type ModelAdminFilterInput = {
   and?: Array< ModelAdminFilterInput | null > | null,
   or?: Array< ModelAdminFilterInput | null > | null,
   not?: ModelAdminFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export enum ModelSortDirection {
@@ -996,6 +1365,7 @@ export type ModelParentInfoFilterInput = {
   and?: Array< ModelParentInfoFilterInput | null > | null,
   or?: Array< ModelParentInfoFilterInput | null > | null,
   not?: ModelParentInfoFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelParentInfoConnection = {
@@ -1012,6 +1382,7 @@ export type ModelStudentFilterInput = {
   email?: ModelStringInput | null,
   phone?: ModelStringInput | null,
   gender?: ModelGenderInput | null,
+  nationalityCategory?: ModelNationalityInput | null,
   nationality?: ModelStringInput | null,
   schoolName?: ModelStringInput | null,
   schoolType?: ModelSchoolTypeInput | null,
@@ -1029,11 +1400,33 @@ export type ModelStudentFilterInput = {
   and?: Array< ModelStudentFilterInput | null > | null,
   or?: Array< ModelStudentFilterInput | null > | null,
   not?: ModelStudentFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelStudentConnection = {
   __typename: "ModelStudentConnection",
   items:  Array<Student | null >,
+  nextToken?: string | null,
+  startedAt?: number | null,
+};
+
+export type ModelBatchFilterInput = {
+  id?: ModelIDInput | null,
+  batch?: ModelIntInput | null,
+  createApplicationStartDate?: ModelStringInput | null,
+  createApplicationEndDate?: ModelStringInput | null,
+  updateApplicationEndDate?: ModelStringInput | null,
+  signUpStartDate?: ModelStringInput | null,
+  signUpEndDate?: ModelStringInput | null,
+  and?: Array< ModelBatchFilterInput | null > | null,
+  or?: Array< ModelBatchFilterInput | null > | null,
+  not?: ModelBatchFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelBatchConnection = {
+  __typename: "ModelBatchConnection",
+  items:  Array<Batch | null >,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -1065,6 +1458,7 @@ export type ModelSubscriptionAttachmentFilterInput = {
   schoolCertificate?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionAttachmentFilterInput | null > | null,
   or?: Array< ModelSubscriptionAttachmentFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelSubscriptionIDInput = {
@@ -1102,14 +1496,17 @@ export type ModelSubscriptionApplicationFilterInput = {
   gpa?: ModelSubscriptionFloatInput | null,
   status?: ModelSubscriptionStringInput | null,
   attachmentID?: ModelSubscriptionStringInput | null,
-  studentCPR?: ModelSubscriptionStringInput | null,
   dateTime?: ModelSubscriptionStringInput | null,
   isEmailSent?: ModelSubscriptionBooleanInput | null,
   schoolName?: ModelSubscriptionStringInput | null,
   schoolType?: ModelSubscriptionStringInput | null,
+  studentCPR?: ModelSubscriptionStringInput | null,
+  batchID?: ModelSubscriptionIDInput | null,
   batch?: ModelSubscriptionIntInput | null,
+  score?: ModelSubscriptionFloatInput | null,
   and?: Array< ModelSubscriptionApplicationFilterInput | null > | null,
   or?: Array< ModelSubscriptionApplicationFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelSubscriptionFloatInput = {
@@ -1149,6 +1546,7 @@ export type ModelSubscriptionProgramChoiceFilterInput = {
   acceptanceLetterDoc?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionProgramChoiceFilterInput | null > | null,
   or?: Array< ModelSubscriptionProgramChoiceFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelSubscriptionProgramFilterInput = {
@@ -1163,6 +1561,7 @@ export type ModelSubscriptionProgramFilterInput = {
   isTrashed?: ModelSubscriptionBooleanInput | null,
   and?: Array< ModelSubscriptionProgramFilterInput | null > | null,
   or?: Array< ModelSubscriptionProgramFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelSubscriptionUniversityFilterInput = {
@@ -1171,9 +1570,12 @@ export type ModelSubscriptionUniversityFilterInput = {
   nameAr?: ModelSubscriptionStringInput | null,
   availability?: ModelSubscriptionIntInput | null,
   isDeactivated?: ModelSubscriptionBooleanInput | null,
+  isExtended?: ModelSubscriptionBooleanInput | null,
+  extendedTo?: ModelSubscriptionStringInput | null,
   isTrashed?: ModelSubscriptionBooleanInput | null,
   and?: Array< ModelSubscriptionUniversityFilterInput | null > | null,
   or?: Array< ModelSubscriptionUniversityFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelSubscriptionAdminLogFilterInput = {
@@ -1185,6 +1587,7 @@ export type ModelSubscriptionAdminLogFilterInput = {
   reason?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionAdminLogFilterInput | null > | null,
   or?: Array< ModelSubscriptionAdminLogFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelSubscriptionStudentLogFilterInput = {
@@ -1196,6 +1599,7 @@ export type ModelSubscriptionStudentLogFilterInput = {
   reason?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionStudentLogFilterInput | null > | null,
   or?: Array< ModelSubscriptionStudentLogFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelSubscriptionAdminFilterInput = {
@@ -1205,6 +1609,7 @@ export type ModelSubscriptionAdminFilterInput = {
   role?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionAdminFilterInput | null > | null,
   or?: Array< ModelSubscriptionAdminFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelSubscriptionParentInfoFilterInput = {
@@ -1222,6 +1627,7 @@ export type ModelSubscriptionParentInfoFilterInput = {
   address?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionParentInfoFilterInput | null > | null,
   or?: Array< ModelSubscriptionParentInfoFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelSubscriptionStudentFilterInput = {
@@ -1231,6 +1637,7 @@ export type ModelSubscriptionStudentFilterInput = {
   email?: ModelSubscriptionStringInput | null,
   phone?: ModelSubscriptionStringInput | null,
   gender?: ModelSubscriptionStringInput | null,
+  nationalityCategory?: ModelSubscriptionStringInput | null,
   nationality?: ModelSubscriptionStringInput | null,
   schoolName?: ModelSubscriptionStringInput | null,
   schoolType?: ModelSubscriptionStringInput | null,
@@ -1247,6 +1654,20 @@ export type ModelSubscriptionStudentFilterInput = {
   parentInfoID?: ModelSubscriptionIDInput | null,
   and?: Array< ModelSubscriptionStudentFilterInput | null > | null,
   or?: Array< ModelSubscriptionStudentFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelSubscriptionBatchFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  batch?: ModelSubscriptionIntInput | null,
+  createApplicationStartDate?: ModelSubscriptionStringInput | null,
+  createApplicationEndDate?: ModelSubscriptionStringInput | null,
+  updateApplicationEndDate?: ModelSubscriptionStringInput | null,
+  signUpStartDate?: ModelSubscriptionStringInput | null,
+  signUpEndDate?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionBatchFilterInput | null > | null,
+  or?: Array< ModelSubscriptionBatchFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
 };
 
 export type CreateAttachmentMutationVariables = {
@@ -1324,7 +1745,6 @@ export type CreateApplicationMutation = {
     gpa?: number | null,
     status?: Status | null,
     attachmentID?: string | null,
-    studentCPR: string,
     adminLogs?:  {
       __typename: "ModelAdminLogConnection",
       nextToken?: string | null,
@@ -1353,6 +1773,11 @@ export type CreateApplicationMutation = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+    dateTime: string,
+    isEmailSent?: boolean | null,
+    schoolName?: string | null,
+    schoolType?: SchoolType | null,
+    studentCPR: string,
     student?:  {
       __typename: "Student",
       cpr: string,
@@ -1361,6 +1786,7 @@ export type CreateApplicationMutation = {
       email?: string | null,
       phone?: string | null,
       gender?: Gender | null,
+      nationalityCategory?: Nationality | null,
       nationality?: string | null,
       schoolName?: string | null,
       schoolType?: SchoolType | null,
@@ -1381,11 +1807,24 @@ export type CreateApplicationMutation = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
     } | null,
-    dateTime: string,
-    isEmailSent?: boolean | null,
-    schoolName?: string | null,
-    schoolType?: SchoolType | null,
+    batchID: string,
     batch?: number | null,
+    batchRelation?:  {
+      __typename: "Batch",
+      id: string,
+      batch?: number | null,
+      createApplicationStartDate?: string | null,
+      createApplicationEndDate?: string | null,
+      updateApplicationEndDate?: string | null,
+      signUpStartDate?: string | null,
+      signUpEndDate?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null,
+    score?: number | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -1407,7 +1846,6 @@ export type UpdateApplicationMutation = {
     gpa?: number | null,
     status?: Status | null,
     attachmentID?: string | null,
-    studentCPR: string,
     adminLogs?:  {
       __typename: "ModelAdminLogConnection",
       nextToken?: string | null,
@@ -1436,6 +1874,11 @@ export type UpdateApplicationMutation = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+    dateTime: string,
+    isEmailSent?: boolean | null,
+    schoolName?: string | null,
+    schoolType?: SchoolType | null,
+    studentCPR: string,
     student?:  {
       __typename: "Student",
       cpr: string,
@@ -1444,6 +1887,7 @@ export type UpdateApplicationMutation = {
       email?: string | null,
       phone?: string | null,
       gender?: Gender | null,
+      nationalityCategory?: Nationality | null,
       nationality?: string | null,
       schoolName?: string | null,
       schoolType?: SchoolType | null,
@@ -1464,11 +1908,24 @@ export type UpdateApplicationMutation = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
     } | null,
-    dateTime: string,
-    isEmailSent?: boolean | null,
-    schoolName?: string | null,
-    schoolType?: SchoolType | null,
+    batchID: string,
     batch?: number | null,
+    batchRelation?:  {
+      __typename: "Batch",
+      id: string,
+      batch?: number | null,
+      createApplicationStartDate?: string | null,
+      createApplicationEndDate?: string | null,
+      updateApplicationEndDate?: string | null,
+      signUpStartDate?: string | null,
+      signUpEndDate?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null,
+    score?: number | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -1490,7 +1947,6 @@ export type DeleteApplicationMutation = {
     gpa?: number | null,
     status?: Status | null,
     attachmentID?: string | null,
-    studentCPR: string,
     adminLogs?:  {
       __typename: "ModelAdminLogConnection",
       nextToken?: string | null,
@@ -1519,6 +1975,11 @@ export type DeleteApplicationMutation = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+    dateTime: string,
+    isEmailSent?: boolean | null,
+    schoolName?: string | null,
+    schoolType?: SchoolType | null,
+    studentCPR: string,
     student?:  {
       __typename: "Student",
       cpr: string,
@@ -1527,6 +1988,7 @@ export type DeleteApplicationMutation = {
       email?: string | null,
       phone?: string | null,
       gender?: Gender | null,
+      nationalityCategory?: Nationality | null,
       nationality?: string | null,
       schoolName?: string | null,
       schoolType?: SchoolType | null,
@@ -1547,11 +2009,24 @@ export type DeleteApplicationMutation = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
     } | null,
-    dateTime: string,
-    isEmailSent?: boolean | null,
-    schoolName?: string | null,
-    schoolType?: SchoolType | null,
+    batchID: string,
     batch?: number | null,
+    batchRelation?:  {
+      __typename: "Batch",
+      id: string,
+      batch?: number | null,
+      createApplicationStartDate?: string | null,
+      createApplicationEndDate?: string | null,
+      updateApplicationEndDate?: string | null,
+      signUpStartDate?: string | null,
+      signUpEndDate?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null,
+    score?: number | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -1596,12 +2071,14 @@ export type CreateProgramChoiceMutation = {
       gpa?: number | null,
       status?: Status | null,
       attachmentID?: string | null,
-      studentCPR: string,
       dateTime: string,
       isEmailSent?: boolean | null,
       schoolName?: string | null,
       schoolType?: SchoolType | null,
+      studentCPR: string,
+      batchID: string,
       batch?: number | null,
+      score?: number | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -1656,12 +2133,14 @@ export type UpdateProgramChoiceMutation = {
       gpa?: number | null,
       status?: Status | null,
       attachmentID?: string | null,
-      studentCPR: string,
       dateTime: string,
       isEmailSent?: boolean | null,
       schoolName?: string | null,
       schoolType?: SchoolType | null,
+      studentCPR: string,
+      batchID: string,
       batch?: number | null,
+      score?: number | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -1716,12 +2195,14 @@ export type DeleteProgramChoiceMutation = {
       gpa?: number | null,
       status?: Status | null,
       attachmentID?: string | null,
-      studentCPR: string,
       dateTime: string,
       isEmailSent?: boolean | null,
       schoolName?: string | null,
       schoolType?: SchoolType | null,
+      studentCPR: string,
+      batchID: string,
       batch?: number | null,
+      score?: number | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -1763,6 +2244,8 @@ export type CreateProgramMutation = {
       nameAr?: string | null,
       availability?: number | null,
       isDeactivated?: boolean | null,
+      isExtended?: boolean | null,
+      extendedTo?: string | null,
       isTrashed?: boolean | null,
       createdAt: string,
       updatedAt: string,
@@ -1808,6 +2291,8 @@ export type UpdateProgramMutation = {
       nameAr?: string | null,
       availability?: number | null,
       isDeactivated?: boolean | null,
+      isExtended?: boolean | null,
+      extendedTo?: string | null,
       isTrashed?: boolean | null,
       createdAt: string,
       updatedAt: string,
@@ -1853,6 +2338,8 @@ export type DeleteProgramMutation = {
       nameAr?: string | null,
       availability?: number | null,
       isDeactivated?: boolean | null,
+      isExtended?: boolean | null,
+      extendedTo?: string | null,
       isTrashed?: boolean | null,
       createdAt: string,
       updatedAt: string,
@@ -1894,6 +2381,8 @@ export type CreateUniversityMutation = {
     } | null,
     availability?: number | null,
     isDeactivated?: boolean | null,
+    isExtended?: boolean | null,
+    extendedTo?: string | null,
     isTrashed?: boolean | null,
     createdAt: string,
     updatedAt: string,
@@ -1921,6 +2410,8 @@ export type UpdateUniversityMutation = {
     } | null,
     availability?: number | null,
     isDeactivated?: boolean | null,
+    isExtended?: boolean | null,
+    extendedTo?: string | null,
     isTrashed?: boolean | null,
     createdAt: string,
     updatedAt: string,
@@ -1948,6 +2439,8 @@ export type DeleteUniversityMutation = {
     } | null,
     availability?: number | null,
     isDeactivated?: boolean | null,
+    isExtended?: boolean | null,
+    extendedTo?: string | null,
     isTrashed?: boolean | null,
     createdAt: string,
     updatedAt: string,
@@ -2087,6 +2580,7 @@ export type CreateStudentLogMutation = {
       email?: string | null,
       phone?: string | null,
       gender?: Gender | null,
+      nationalityCategory?: Nationality | null,
       nationality?: string | null,
       schoolName?: string | null,
       schoolType?: SchoolType | null,
@@ -2139,6 +2633,7 @@ export type UpdateStudentLogMutation = {
       email?: string | null,
       phone?: string | null,
       gender?: Gender | null,
+      nationalityCategory?: Nationality | null,
       nationality?: string | null,
       schoolName?: string | null,
       schoolType?: SchoolType | null,
@@ -2191,6 +2686,7 @@ export type DeleteStudentLogMutation = {
       email?: string | null,
       phone?: string | null,
       gender?: Gender | null,
+      nationalityCategory?: Nationality | null,
       nationality?: string | null,
       schoolName?: string | null,
       schoolType?: SchoolType | null,
@@ -2394,6 +2890,7 @@ export type CreateStudentMutation = {
     email?: string | null,
     phone?: string | null,
     gender?: Gender | null,
+    nationalityCategory?: Nationality | null,
     nationality?: string | null,
     schoolName?: string | null,
     schoolType?: SchoolType | null,
@@ -2460,6 +2957,7 @@ export type UpdateStudentMutation = {
     email?: string | null,
     phone?: string | null,
     gender?: Gender | null,
+    nationalityCategory?: Nationality | null,
     nationality?: string | null,
     schoolName?: string | null,
     schoolType?: SchoolType | null,
@@ -2526,6 +3024,7 @@ export type DeleteStudentMutation = {
     email?: string | null,
     phone?: string | null,
     gender?: Gender | null,
+    nationalityCategory?: Nationality | null,
     nationality?: string | null,
     schoolName?: string | null,
     schoolType?: SchoolType | null,
@@ -2575,6 +3074,193 @@ export type DeleteStudentMutation = {
     _version: number,
     _deleted?: boolean | null,
     _lastChangedAt: number,
+  } | null,
+};
+
+export type CreateBatchMutationVariables = {
+  input: CreateBatchInput,
+  condition?: ModelBatchConditionInput | null,
+};
+
+export type CreateBatchMutation = {
+  createBatch?:  {
+    __typename: "Batch",
+    id: string,
+    batch?: number | null,
+    createApplicationStartDate?: string | null,
+    createApplicationEndDate?: string | null,
+    updateApplicationEndDate?: string | null,
+    signUpStartDate?: string | null,
+    signUpEndDate?: string | null,
+    applications?:  {
+      __typename: "ModelApplicationConnection",
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type UpdateBatchMutationVariables = {
+  input: UpdateBatchInput,
+  condition?: ModelBatchConditionInput | null,
+};
+
+export type UpdateBatchMutation = {
+  updateBatch?:  {
+    __typename: "Batch",
+    id: string,
+    batch?: number | null,
+    createApplicationStartDate?: string | null,
+    createApplicationEndDate?: string | null,
+    updateApplicationEndDate?: string | null,
+    signUpStartDate?: string | null,
+    signUpEndDate?: string | null,
+    applications?:  {
+      __typename: "ModelApplicationConnection",
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type DeleteBatchMutationVariables = {
+  input: DeleteBatchInput,
+  condition?: ModelBatchConditionInput | null,
+};
+
+export type DeleteBatchMutation = {
+  deleteBatch?:  {
+    __typename: "Batch",
+    id: string,
+    batch?: number | null,
+    createApplicationStartDate?: string | null,
+    createApplicationEndDate?: string | null,
+    updateApplicationEndDate?: string | null,
+    signUpStartDate?: string | null,
+    signUpEndDate?: string | null,
+    applications?:  {
+      __typename: "ModelApplicationConnection",
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type SearchApplicationsQueryVariables = {
+  filter?: SearchableApplicationFilterInput | null,
+  sort?: Array< SearchableApplicationSortInput | null > | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  from?: number | null,
+  aggregates?: Array< SearchableApplicationAggregationInput | null > | null,
+};
+
+export type SearchApplicationsQuery = {
+  searchApplications?:  {
+    __typename: "SearchableApplicationConnection",
+    items:  Array< {
+      __typename: "Application",
+      id: string,
+      gpa?: number | null,
+      status?: Status | null,
+      attachmentID?: string | null,
+      dateTime: string,
+      isEmailSent?: boolean | null,
+      schoolName?: string | null,
+      schoolType?: SchoolType | null,
+      studentCPR: string,
+      batchID: string,
+      batch?: number | null,
+      score?: number | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      applicationAttachmentId?: string | null,
+    } | null >,
+    nextToken?: string | null,
+    total?: number | null,
+    aggregateItems:  Array< {
+      __typename: "SearchableAggregateResult",
+      name: string,
+      result: ( {
+          __typename: "SearchableAggregateScalarResult",
+          value: number,
+        } | {
+          __typename: "SearchableAggregateBucketResult",
+          buckets?:  Array< {
+            __typename: string,
+            key: string,
+            doc_count: number,
+          } | null > | null,
+        }
+      ) | null,
+    } | null >,
+  } | null,
+};
+
+export type SearchUniversitiesQueryVariables = {
+  filter?: SearchableUniversityFilterInput | null,
+  sort?: Array< SearchableUniversitySortInput | null > | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  from?: number | null,
+  aggregates?: Array< SearchableUniversityAggregationInput | null > | null,
+};
+
+export type SearchUniversitiesQuery = {
+  searchUniversities?:  {
+    __typename: "SearchableUniversityConnection",
+    items:  Array< {
+      __typename: "University",
+      id: string,
+      name?: string | null,
+      nameAr?: string | null,
+      availability?: number | null,
+      isDeactivated?: boolean | null,
+      isExtended?: boolean | null,
+      extendedTo?: string | null,
+      isTrashed?: boolean | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    total?: number | null,
+    aggregateItems:  Array< {
+      __typename: "SearchableAggregateResult",
+      name: string,
+      result: ( {
+          __typename: "SearchableAggregateScalarResult",
+          value: number,
+        } | {
+          __typename: "SearchableAggregateBucketResult",
+          buckets?:  Array< {
+            __typename: string,
+            key: string,
+            doc_count: number,
+          } | null > | null,
+        }
+      ) | null,
+    } | null >,
   } | null,
 };
 
@@ -2664,7 +3350,6 @@ export type GetApplicationQuery = {
     gpa?: number | null,
     status?: Status | null,
     attachmentID?: string | null,
-    studentCPR: string,
     adminLogs?:  {
       __typename: "ModelAdminLogConnection",
       nextToken?: string | null,
@@ -2693,6 +3378,11 @@ export type GetApplicationQuery = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+    dateTime: string,
+    isEmailSent?: boolean | null,
+    schoolName?: string | null,
+    schoolType?: SchoolType | null,
+    studentCPR: string,
     student?:  {
       __typename: "Student",
       cpr: string,
@@ -2701,6 +3391,7 @@ export type GetApplicationQuery = {
       email?: string | null,
       phone?: string | null,
       gender?: Gender | null,
+      nationalityCategory?: Nationality | null,
       nationality?: string | null,
       schoolName?: string | null,
       schoolType?: SchoolType | null,
@@ -2721,11 +3412,24 @@ export type GetApplicationQuery = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
     } | null,
-    dateTime: string,
-    isEmailSent?: boolean | null,
-    schoolName?: string | null,
-    schoolType?: SchoolType | null,
+    batchID: string,
     batch?: number | null,
+    batchRelation?:  {
+      __typename: "Batch",
+      id: string,
+      batch?: number | null,
+      createApplicationStartDate?: string | null,
+      createApplicationEndDate?: string | null,
+      updateApplicationEndDate?: string | null,
+      signUpStartDate?: string | null,
+      signUpEndDate?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null,
+    score?: number | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -2750,12 +3454,14 @@ export type ListApplicationsQuery = {
       gpa?: number | null,
       status?: Status | null,
       attachmentID?: string | null,
-      studentCPR: string,
       dateTime: string,
       isEmailSent?: boolean | null,
       schoolName?: string | null,
       schoolType?: SchoolType | null,
+      studentCPR: string,
+      batchID: string,
       batch?: number | null,
+      score?: number | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -2784,12 +3490,14 @@ export type SyncApplicationsQuery = {
       gpa?: number | null,
       status?: Status | null,
       attachmentID?: string | null,
-      studentCPR: string,
       dateTime: string,
       isEmailSent?: boolean | null,
       schoolName?: string | null,
       schoolType?: SchoolType | null,
+      studentCPR: string,
+      batchID: string,
       batch?: number | null,
+      score?: number | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -2836,12 +3544,14 @@ export type GetProgramChoiceQuery = {
       gpa?: number | null,
       status?: Status | null,
       attachmentID?: string | null,
-      studentCPR: string,
       dateTime: string,
       isEmailSent?: boolean | null,
       schoolName?: string | null,
       schoolType?: SchoolType | null,
+      studentCPR: string,
+      batchID: string,
       batch?: number | null,
+      score?: number | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -2941,6 +3651,8 @@ export type GetProgramQuery = {
       nameAr?: string | null,
       availability?: number | null,
       isDeactivated?: boolean | null,
+      isExtended?: boolean | null,
+      extendedTo?: string | null,
       isTrashed?: boolean | null,
       createdAt: string,
       updatedAt: string,
@@ -3046,6 +3758,8 @@ export type GetUniversityQuery = {
     } | null,
     availability?: number | null,
     isDeactivated?: boolean | null,
+    isExtended?: boolean | null,
+    extendedTo?: string | null,
     isTrashed?: boolean | null,
     createdAt: string,
     updatedAt: string,
@@ -3071,6 +3785,8 @@ export type ListUniversitiesQuery = {
       nameAr?: string | null,
       availability?: number | null,
       isDeactivated?: boolean | null,
+      isExtended?: boolean | null,
+      extendedTo?: string | null,
       isTrashed?: boolean | null,
       createdAt: string,
       updatedAt: string,
@@ -3100,6 +3816,8 @@ export type SyncUniversitiesQuery = {
       nameAr?: string | null,
       availability?: number | null,
       isDeactivated?: boolean | null,
+      isExtended?: boolean | null,
+      extendedTo?: string | null,
       isTrashed?: boolean | null,
       createdAt: string,
       updatedAt: string,
@@ -3229,6 +3947,7 @@ export type GetStudentLogQuery = {
       email?: string | null,
       phone?: string | null,
       gender?: Gender | null,
+      nationalityCategory?: Nationality | null,
       nationality?: string | null,
       schoolName?: string | null,
       schoolType?: SchoolType | null,
@@ -3508,6 +4227,7 @@ export type GetStudentQuery = {
     email?: string | null,
     phone?: string | null,
     gender?: Gender | null,
+    nationalityCategory?: Nationality | null,
     nationality?: string | null,
     schoolName?: string | null,
     schoolType?: SchoolType | null,
@@ -3579,6 +4299,7 @@ export type ListStudentsQuery = {
       email?: string | null,
       phone?: string | null,
       gender?: Gender | null,
+      nationalityCategory?: Nationality | null,
       nationality?: string | null,
       schoolName?: string | null,
       schoolType?: SchoolType | null,
@@ -3622,6 +4343,7 @@ export type SyncStudentsQuery = {
       email?: string | null,
       phone?: string | null,
       gender?: Gender | null,
+      nationalityCategory?: Nationality | null,
       nationality?: string | null,
       schoolName?: string | null,
       schoolType?: SchoolType | null,
@@ -3636,6 +4358,94 @@ export type SyncStudentsQuery = {
       graduationDate?: string | null,
       address?: string | null,
       parentInfoID?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type GetBatchQueryVariables = {
+  id: string,
+};
+
+export type GetBatchQuery = {
+  getBatch?:  {
+    __typename: "Batch",
+    id: string,
+    batch?: number | null,
+    createApplicationStartDate?: string | null,
+    createApplicationEndDate?: string | null,
+    updateApplicationEndDate?: string | null,
+    signUpStartDate?: string | null,
+    signUpEndDate?: string | null,
+    applications?:  {
+      __typename: "ModelApplicationConnection",
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type ListBatchesQueryVariables = {
+  id?: string | null,
+  filter?: ModelBatchFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  sortDirection?: ModelSortDirection | null,
+};
+
+export type ListBatchesQuery = {
+  listBatches?:  {
+    __typename: "ModelBatchConnection",
+    items:  Array< {
+      __typename: "Batch",
+      id: string,
+      batch?: number | null,
+      createApplicationStartDate?: string | null,
+      createApplicationEndDate?: string | null,
+      updateApplicationEndDate?: string | null,
+      signUpStartDate?: string | null,
+      signUpEndDate?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncBatchesQueryVariables = {
+  filter?: ModelBatchFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncBatchesQuery = {
+  syncBatches?:  {
+    __typename: "ModelBatchConnection",
+    items:  Array< {
+      __typename: "Batch",
+      id: string,
+      batch?: number | null,
+      createApplicationStartDate?: string | null,
+      createApplicationEndDate?: string | null,
+      updateApplicationEndDate?: string | null,
+      signUpStartDate?: string | null,
+      signUpEndDate?: string | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -3665,12 +4475,14 @@ export type ApplicationsByIdAndDateTimeQuery = {
       gpa?: number | null,
       status?: Status | null,
       attachmentID?: string | null,
-      studentCPR: string,
       dateTime: string,
       isEmailSent?: boolean | null,
       schoolName?: string | null,
       schoolType?: SchoolType | null,
+      studentCPR: string,
+      batchID: string,
       batch?: number | null,
+      score?: number | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -3701,12 +4513,51 @@ export type ApplicationsByStudentCPRAndGpaQuery = {
       gpa?: number | null,
       status?: Status | null,
       attachmentID?: string | null,
-      studentCPR: string,
       dateTime: string,
       isEmailSent?: boolean | null,
       schoolName?: string | null,
       schoolType?: SchoolType | null,
+      studentCPR: string,
+      batchID: string,
       batch?: number | null,
+      score?: number | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      applicationAttachmentId?: string | null,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type ApplicationsByBatchIDQueryVariables = {
+  batchID: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelApplicationFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ApplicationsByBatchIDQuery = {
+  applicationsByBatchID?:  {
+    __typename: "ModelApplicationConnection",
+    items:  Array< {
+      __typename: "Application",
+      id: string,
+      gpa?: number | null,
+      status?: Status | null,
+      attachmentID?: string | null,
+      dateTime: string,
+      isEmailSent?: boolean | null,
+      schoolName?: string | null,
+      schoolType?: SchoolType | null,
+      studentCPR: string,
+      batchID: string,
+      batch?: number | null,
+      score?: number | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -3737,12 +4588,52 @@ export type ApplicationsByBatchAndStatusQuery = {
       gpa?: number | null,
       status?: Status | null,
       attachmentID?: string | null,
-      studentCPR: string,
       dateTime: string,
       isEmailSent?: boolean | null,
       schoolName?: string | null,
       schoolType?: SchoolType | null,
+      studentCPR: string,
+      batchID: string,
       batch?: number | null,
+      score?: number | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      applicationAttachmentId?: string | null,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type ApplicationsByScoreAndStatusQueryVariables = {
+  score: number,
+  status?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelApplicationFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ApplicationsByScoreAndStatusQuery = {
+  applicationsByScoreAndStatus?:  {
+    __typename: "ModelApplicationConnection",
+    items:  Array< {
+      __typename: "Application",
+      id: string,
+      gpa?: number | null,
+      status?: Status | null,
+      attachmentID?: string | null,
+      dateTime: string,
+      isEmailSent?: boolean | null,
+      schoolName?: string | null,
+      schoolType?: SchoolType | null,
+      studentCPR: string,
+      batchID: string,
+      batch?: number | null,
+      score?: number | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -3826,7 +4717,6 @@ export type OnCreateApplicationSubscription = {
     gpa?: number | null,
     status?: Status | null,
     attachmentID?: string | null,
-    studentCPR: string,
     adminLogs?:  {
       __typename: "ModelAdminLogConnection",
       nextToken?: string | null,
@@ -3855,6 +4745,11 @@ export type OnCreateApplicationSubscription = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+    dateTime: string,
+    isEmailSent?: boolean | null,
+    schoolName?: string | null,
+    schoolType?: SchoolType | null,
+    studentCPR: string,
     student?:  {
       __typename: "Student",
       cpr: string,
@@ -3863,6 +4758,7 @@ export type OnCreateApplicationSubscription = {
       email?: string | null,
       phone?: string | null,
       gender?: Gender | null,
+      nationalityCategory?: Nationality | null,
       nationality?: string | null,
       schoolName?: string | null,
       schoolType?: SchoolType | null,
@@ -3883,11 +4779,24 @@ export type OnCreateApplicationSubscription = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
     } | null,
-    dateTime: string,
-    isEmailSent?: boolean | null,
-    schoolName?: string | null,
-    schoolType?: SchoolType | null,
+    batchID: string,
     batch?: number | null,
+    batchRelation?:  {
+      __typename: "Batch",
+      id: string,
+      batch?: number | null,
+      createApplicationStartDate?: string | null,
+      createApplicationEndDate?: string | null,
+      updateApplicationEndDate?: string | null,
+      signUpStartDate?: string | null,
+      signUpEndDate?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null,
+    score?: number | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -3908,7 +4817,6 @@ export type OnUpdateApplicationSubscription = {
     gpa?: number | null,
     status?: Status | null,
     attachmentID?: string | null,
-    studentCPR: string,
     adminLogs?:  {
       __typename: "ModelAdminLogConnection",
       nextToken?: string | null,
@@ -3937,6 +4845,11 @@ export type OnUpdateApplicationSubscription = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+    dateTime: string,
+    isEmailSent?: boolean | null,
+    schoolName?: string | null,
+    schoolType?: SchoolType | null,
+    studentCPR: string,
     student?:  {
       __typename: "Student",
       cpr: string,
@@ -3945,6 +4858,7 @@ export type OnUpdateApplicationSubscription = {
       email?: string | null,
       phone?: string | null,
       gender?: Gender | null,
+      nationalityCategory?: Nationality | null,
       nationality?: string | null,
       schoolName?: string | null,
       schoolType?: SchoolType | null,
@@ -3965,11 +4879,24 @@ export type OnUpdateApplicationSubscription = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
     } | null,
-    dateTime: string,
-    isEmailSent?: boolean | null,
-    schoolName?: string | null,
-    schoolType?: SchoolType | null,
+    batchID: string,
     batch?: number | null,
+    batchRelation?:  {
+      __typename: "Batch",
+      id: string,
+      batch?: number | null,
+      createApplicationStartDate?: string | null,
+      createApplicationEndDate?: string | null,
+      updateApplicationEndDate?: string | null,
+      signUpStartDate?: string | null,
+      signUpEndDate?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null,
+    score?: number | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -3990,7 +4917,6 @@ export type OnDeleteApplicationSubscription = {
     gpa?: number | null,
     status?: Status | null,
     attachmentID?: string | null,
-    studentCPR: string,
     adminLogs?:  {
       __typename: "ModelAdminLogConnection",
       nextToken?: string | null,
@@ -4019,6 +4945,11 @@ export type OnDeleteApplicationSubscription = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+    dateTime: string,
+    isEmailSent?: boolean | null,
+    schoolName?: string | null,
+    schoolType?: SchoolType | null,
+    studentCPR: string,
     student?:  {
       __typename: "Student",
       cpr: string,
@@ -4027,6 +4958,7 @@ export type OnDeleteApplicationSubscription = {
       email?: string | null,
       phone?: string | null,
       gender?: Gender | null,
+      nationalityCategory?: Nationality | null,
       nationality?: string | null,
       schoolName?: string | null,
       schoolType?: SchoolType | null,
@@ -4047,11 +4979,24 @@ export type OnDeleteApplicationSubscription = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
     } | null,
-    dateTime: string,
-    isEmailSent?: boolean | null,
-    schoolName?: string | null,
-    schoolType?: SchoolType | null,
+    batchID: string,
     batch?: number | null,
+    batchRelation?:  {
+      __typename: "Batch",
+      id: string,
+      batch?: number | null,
+      createApplicationStartDate?: string | null,
+      createApplicationEndDate?: string | null,
+      updateApplicationEndDate?: string | null,
+      signUpStartDate?: string | null,
+      signUpEndDate?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null,
+    score?: number | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -4095,12 +5040,14 @@ export type OnCreateProgramChoiceSubscription = {
       gpa?: number | null,
       status?: Status | null,
       attachmentID?: string | null,
-      studentCPR: string,
       dateTime: string,
       isEmailSent?: boolean | null,
       schoolName?: string | null,
       schoolType?: SchoolType | null,
+      studentCPR: string,
+      batchID: string,
       batch?: number | null,
+      score?: number | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -4154,12 +5101,14 @@ export type OnUpdateProgramChoiceSubscription = {
       gpa?: number | null,
       status?: Status | null,
       attachmentID?: string | null,
-      studentCPR: string,
       dateTime: string,
       isEmailSent?: boolean | null,
       schoolName?: string | null,
       schoolType?: SchoolType | null,
+      studentCPR: string,
+      batchID: string,
       batch?: number | null,
+      score?: number | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -4213,12 +5162,14 @@ export type OnDeleteProgramChoiceSubscription = {
       gpa?: number | null,
       status?: Status | null,
       attachmentID?: string | null,
-      studentCPR: string,
       dateTime: string,
       isEmailSent?: boolean | null,
       schoolName?: string | null,
       schoolType?: SchoolType | null,
+      studentCPR: string,
+      batchID: string,
       batch?: number | null,
+      score?: number | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -4259,6 +5210,8 @@ export type OnCreateProgramSubscription = {
       nameAr?: string | null,
       availability?: number | null,
       isDeactivated?: boolean | null,
+      isExtended?: boolean | null,
+      extendedTo?: string | null,
       isTrashed?: boolean | null,
       createdAt: string,
       updatedAt: string,
@@ -4303,6 +5256,8 @@ export type OnUpdateProgramSubscription = {
       nameAr?: string | null,
       availability?: number | null,
       isDeactivated?: boolean | null,
+      isExtended?: boolean | null,
+      extendedTo?: string | null,
       isTrashed?: boolean | null,
       createdAt: string,
       updatedAt: string,
@@ -4347,6 +5302,8 @@ export type OnDeleteProgramSubscription = {
       nameAr?: string | null,
       availability?: number | null,
       isDeactivated?: boolean | null,
+      isExtended?: boolean | null,
+      extendedTo?: string | null,
       isTrashed?: boolean | null,
       createdAt: string,
       updatedAt: string,
@@ -4387,6 +5344,8 @@ export type OnCreateUniversitySubscription = {
     } | null,
     availability?: number | null,
     isDeactivated?: boolean | null,
+    isExtended?: boolean | null,
+    extendedTo?: string | null,
     isTrashed?: boolean | null,
     createdAt: string,
     updatedAt: string,
@@ -4413,6 +5372,8 @@ export type OnUpdateUniversitySubscription = {
     } | null,
     availability?: number | null,
     isDeactivated?: boolean | null,
+    isExtended?: boolean | null,
+    extendedTo?: string | null,
     isTrashed?: boolean | null,
     createdAt: string,
     updatedAt: string,
@@ -4439,6 +5400,8 @@ export type OnDeleteUniversitySubscription = {
     } | null,
     availability?: number | null,
     isDeactivated?: boolean | null,
+    isExtended?: boolean | null,
+    extendedTo?: string | null,
     isTrashed?: boolean | null,
     createdAt: string,
     updatedAt: string,
@@ -4574,6 +5537,7 @@ export type OnCreateStudentLogSubscription = {
       email?: string | null,
       phone?: string | null,
       gender?: Gender | null,
+      nationalityCategory?: Nationality | null,
       nationality?: string | null,
       schoolName?: string | null,
       schoolType?: SchoolType | null,
@@ -4625,6 +5589,7 @@ export type OnUpdateStudentLogSubscription = {
       email?: string | null,
       phone?: string | null,
       gender?: Gender | null,
+      nationalityCategory?: Nationality | null,
       nationality?: string | null,
       schoolName?: string | null,
       schoolType?: SchoolType | null,
@@ -4676,6 +5641,7 @@ export type OnDeleteStudentLogSubscription = {
       email?: string | null,
       phone?: string | null,
       gender?: Gender | null,
+      nationalityCategory?: Nationality | null,
       nationality?: string | null,
       schoolName?: string | null,
       schoolType?: SchoolType | null,
@@ -4872,6 +5838,7 @@ export type OnCreateStudentSubscription = {
     email?: string | null,
     phone?: string | null,
     gender?: Gender | null,
+    nationalityCategory?: Nationality | null,
     nationality?: string | null,
     schoolName?: string | null,
     schoolType?: SchoolType | null,
@@ -4937,6 +5904,7 @@ export type OnUpdateStudentSubscription = {
     email?: string | null,
     phone?: string | null,
     gender?: Gender | null,
+    nationalityCategory?: Nationality | null,
     nationality?: string | null,
     schoolName?: string | null,
     schoolType?: SchoolType | null,
@@ -5002,6 +5970,7 @@ export type OnDeleteStudentSubscription = {
     email?: string | null,
     phone?: string | null,
     gender?: Gender | null,
+    nationalityCategory?: Nationality | null,
     nationality?: string | null,
     schoolName?: string | null,
     schoolType?: SchoolType | null,
@@ -5043,6 +6012,87 @@ export type OnDeleteStudentSubscription = {
     parentInfoID?: string | null,
     StudentLogs?:  {
       __typename: "ModelStudentLogConnection",
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnCreateBatchSubscriptionVariables = {
+  filter?: ModelSubscriptionBatchFilterInput | null,
+};
+
+export type OnCreateBatchSubscription = {
+  onCreateBatch?:  {
+    __typename: "Batch",
+    id: string,
+    batch?: number | null,
+    createApplicationStartDate?: string | null,
+    createApplicationEndDate?: string | null,
+    updateApplicationEndDate?: string | null,
+    signUpStartDate?: string | null,
+    signUpEndDate?: string | null,
+    applications?:  {
+      __typename: "ModelApplicationConnection",
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnUpdateBatchSubscriptionVariables = {
+  filter?: ModelSubscriptionBatchFilterInput | null,
+};
+
+export type OnUpdateBatchSubscription = {
+  onUpdateBatch?:  {
+    __typename: "Batch",
+    id: string,
+    batch?: number | null,
+    createApplicationStartDate?: string | null,
+    createApplicationEndDate?: string | null,
+    updateApplicationEndDate?: string | null,
+    signUpStartDate?: string | null,
+    signUpEndDate?: string | null,
+    applications?:  {
+      __typename: "ModelApplicationConnection",
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnDeleteBatchSubscriptionVariables = {
+  filter?: ModelSubscriptionBatchFilterInput | null,
+};
+
+export type OnDeleteBatchSubscription = {
+  onDeleteBatch?:  {
+    __typename: "Batch",
+    id: string,
+    batch?: number | null,
+    createApplicationStartDate?: string | null,
+    createApplicationEndDate?: string | null,
+    updateApplicationEndDate?: string | null,
+    signUpStartDate?: string | null,
+    signUpEndDate?: string | null,
+    applications?:  {
+      __typename: "ModelApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,

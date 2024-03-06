@@ -43,6 +43,53 @@
       "service": "Cognito"
     }
   },
+  "function": {
+    "signUp": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "updateStudentEmail": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_signUp_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "signUp"
+        }
+      ]
+    },
+    "AMPLIFY_function_signUp_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "signUp"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateStudentEmail_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateStudentEmail"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateStudentEmail_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateStudentEmail"
+        }
+      ]
+    }
+  },
   "storage": {
     "nccStorage": {
       "dependsOn": [],
