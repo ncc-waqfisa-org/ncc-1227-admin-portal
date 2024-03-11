@@ -104,6 +104,7 @@ type EagerApplication = {
   readonly batch?: number | null;
   readonly batchRelation?: Batch | null;
   readonly score?: number | null;
+  readonly adminPoints?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly applicationAttachmentId?: string | null;
@@ -132,6 +133,7 @@ type LazyApplication = {
   readonly batch?: number | null;
   readonly batchRelation: AsyncItem<Batch | undefined>;
   readonly score?: number | null;
+  readonly adminPoints?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly applicationAttachmentId?: string | null;
@@ -192,6 +194,7 @@ type EagerProgram = {
   };
   readonly id: string;
   readonly name?: string | null;
+  readonly minimumGPA?: number | null;
   readonly requirements?: string | null;
   readonly nameAr?: string | null;
   readonly requirementsAr?: string | null;
@@ -213,6 +216,7 @@ type LazyProgram = {
   };
   readonly id: string;
   readonly name?: string | null;
+  readonly minimumGPA?: number | null;
   readonly requirements?: string | null;
   readonly nameAr?: string | null;
   readonly requirementsAr?: string | null;

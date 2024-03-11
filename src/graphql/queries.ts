@@ -37,6 +37,7 @@ export const searchApplications = /* GraphQL */ `query SearchApplications(
       batchID
       batch
       score
+      adminPoints
       createdAt
       updatedAt
       _version
@@ -69,63 +70,6 @@ export const searchApplications = /* GraphQL */ `query SearchApplications(
 ` as GeneratedQuery<
   APITypes.SearchApplicationsQueryVariables,
   APITypes.SearchApplicationsQuery
->;
-export const searchUniversities = /* GraphQL */ `query SearchUniversities(
-  $filter: SearchableUniversityFilterInput
-  $sort: [SearchableUniversitySortInput]
-  $limit: Int
-  $nextToken: String
-  $from: Int
-  $aggregates: [SearchableUniversityAggregationInput]
-) {
-  searchUniversities(
-    filter: $filter
-    sort: $sort
-    limit: $limit
-    nextToken: $nextToken
-    from: $from
-    aggregates: $aggregates
-  ) {
-    items {
-      id
-      name
-      nameAr
-      availability
-      isDeactivated
-      isExtended
-      extendedTo
-      isTrashed
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-    nextToken
-    total
-    aggregateItems {
-      name
-      result {
-        ... on SearchableAggregateScalarResult {
-          value
-        }
-        ... on SearchableAggregateBucketResult {
-          buckets {
-            key
-            doc_count
-            __typename
-          }
-        }
-      }
-      __typename
-    }
-    __typename
-  }
-}
-` as GeneratedQuery<
-  APITypes.SearchUniversitiesQueryVariables,
-  APITypes.SearchUniversitiesQuery
 >;
 export const getAttachment = /* GraphQL */ `query GetAttachment($id: ID!) {
   getAttachment(id: $id) {
@@ -294,6 +238,7 @@ export const getApplication = /* GraphQL */ `query GetApplication($id: ID!) {
       __typename
     }
     score
+    adminPoints
     createdAt
     updatedAt
     _version
@@ -326,6 +271,7 @@ export const listApplications = /* GraphQL */ `query ListApplications(
       batchID
       batch
       score
+      adminPoints
       createdAt
       updatedAt
       _version
@@ -368,6 +314,7 @@ export const syncApplications = /* GraphQL */ `query SyncApplications(
       batchID
       batch
       score
+      adminPoints
       createdAt
       updatedAt
       _version
@@ -393,6 +340,7 @@ export const getProgramChoice = /* GraphQL */ `query GetProgramChoice($id: ID!) 
     program {
       id
       name
+      minimumGPA
       requirements
       nameAr
       requirementsAr
@@ -421,6 +369,7 @@ export const getProgramChoice = /* GraphQL */ `query GetProgramChoice($id: ID!) 
       batchID
       batch
       score
+      adminPoints
       createdAt
       updatedAt
       _version
@@ -515,6 +464,7 @@ export const getProgram = /* GraphQL */ `query GetProgram($id: ID!) {
   getProgram(id: $id) {
     id
     name
+    minimumGPA
     requirements
     nameAr
     requirementsAr
@@ -565,6 +515,7 @@ export const listPrograms = /* GraphQL */ `query ListPrograms(
     items {
       id
       name
+      minimumGPA
       requirements
       nameAr
       requirementsAr
@@ -604,6 +555,7 @@ export const syncPrograms = /* GraphQL */ `query SyncPrograms(
     items {
       id
       name
+      minimumGPA
       requirements
       nameAr
       requirementsAr
@@ -1427,6 +1379,7 @@ export const applicationsByIdAndDateTime = /* GraphQL */ `query ApplicationsById
       batchID
       batch
       score
+      adminPoints
       createdAt
       updatedAt
       _version
@@ -1473,6 +1426,7 @@ export const applicationsByStudentCPRAndGpa = /* GraphQL */ `query ApplicationsB
       batchID
       batch
       score
+      adminPoints
       createdAt
       updatedAt
       _version
@@ -1517,6 +1471,7 @@ export const applicationsByBatchID = /* GraphQL */ `query ApplicationsByBatchID(
       batchID
       batch
       score
+      adminPoints
       createdAt
       updatedAt
       _version
@@ -1563,6 +1518,7 @@ export const applicationsByBatchAndStatus = /* GraphQL */ `query ApplicationsByB
       batchID
       batch
       score
+      adminPoints
       createdAt
       updatedAt
       _version
@@ -1609,6 +1565,7 @@ export const applicationsByScoreAndStatus = /* GraphQL */ `query ApplicationsByS
       batchID
       batch
       score
+      adminPoints
       createdAt
       updatedAt
       _version

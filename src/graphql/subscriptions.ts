@@ -159,6 +159,7 @@ export const onCreateApplication = /* GraphQL */ `subscription OnCreateApplicati
       __typename
     }
     score
+    adminPoints
     createdAt
     updatedAt
     _version
@@ -260,6 +261,7 @@ export const onUpdateApplication = /* GraphQL */ `subscription OnUpdateApplicati
       __typename
     }
     score
+    adminPoints
     createdAt
     updatedAt
     _version
@@ -361,6 +363,7 @@ export const onDeleteApplication = /* GraphQL */ `subscription OnDeleteApplicati
       __typename
     }
     score
+    adminPoints
     createdAt
     updatedAt
     _version
@@ -384,6 +387,7 @@ export const onCreateProgramChoice = /* GraphQL */ `subscription OnCreateProgram
     program {
       id
       name
+      minimumGPA
       requirements
       nameAr
       requirementsAr
@@ -412,6 +416,7 @@ export const onCreateProgramChoice = /* GraphQL */ `subscription OnCreateProgram
       batchID
       batch
       score
+      adminPoints
       createdAt
       updatedAt
       _version
@@ -446,6 +451,7 @@ export const onUpdateProgramChoice = /* GraphQL */ `subscription OnUpdateProgram
     program {
       id
       name
+      minimumGPA
       requirements
       nameAr
       requirementsAr
@@ -474,6 +480,7 @@ export const onUpdateProgramChoice = /* GraphQL */ `subscription OnUpdateProgram
       batchID
       batch
       score
+      adminPoints
       createdAt
       updatedAt
       _version
@@ -508,6 +515,7 @@ export const onDeleteProgramChoice = /* GraphQL */ `subscription OnDeleteProgram
     program {
       id
       name
+      minimumGPA
       requirements
       nameAr
       requirementsAr
@@ -536,6 +544,7 @@ export const onDeleteProgramChoice = /* GraphQL */ `subscription OnDeleteProgram
       batchID
       batch
       score
+      adminPoints
       createdAt
       updatedAt
       _version
@@ -564,6 +573,7 @@ export const onCreateProgram = /* GraphQL */ `subscription OnCreateProgram($filt
   onCreateProgram(filter: $filter) {
     id
     name
+    minimumGPA
     requirements
     nameAr
     requirementsAr
@@ -609,6 +619,7 @@ export const onUpdateProgram = /* GraphQL */ `subscription OnUpdateProgram($filt
   onUpdateProgram(filter: $filter) {
     id
     name
+    minimumGPA
     requirements
     nameAr
     requirementsAr
@@ -654,6 +665,7 @@ export const onDeleteProgram = /* GraphQL */ `subscription OnDeleteProgram($filt
   onDeleteProgram(filter: $filter) {
     id
     name
+    minimumGPA
     requirements
     nameAr
     requirementsAr

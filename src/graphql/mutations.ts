@@ -163,6 +163,7 @@ export const createApplication = /* GraphQL */ `mutation CreateApplication(
       __typename
     }
     score
+    adminPoints
     createdAt
     updatedAt
     _version
@@ -265,6 +266,7 @@ export const updateApplication = /* GraphQL */ `mutation UpdateApplication(
       __typename
     }
     score
+    adminPoints
     createdAt
     updatedAt
     _version
@@ -367,6 +369,7 @@ export const deleteApplication = /* GraphQL */ `mutation DeleteApplication(
       __typename
     }
     score
+    adminPoints
     createdAt
     updatedAt
     _version
@@ -391,6 +394,7 @@ export const createProgramChoice = /* GraphQL */ `mutation CreateProgramChoice(
     program {
       id
       name
+      minimumGPA
       requirements
       nameAr
       requirementsAr
@@ -419,6 +423,7 @@ export const createProgramChoice = /* GraphQL */ `mutation CreateProgramChoice(
       batchID
       batch
       score
+      adminPoints
       createdAt
       updatedAt
       _version
@@ -454,6 +459,7 @@ export const updateProgramChoice = /* GraphQL */ `mutation UpdateProgramChoice(
     program {
       id
       name
+      minimumGPA
       requirements
       nameAr
       requirementsAr
@@ -482,6 +488,7 @@ export const updateProgramChoice = /* GraphQL */ `mutation UpdateProgramChoice(
       batchID
       batch
       score
+      adminPoints
       createdAt
       updatedAt
       _version
@@ -517,6 +524,7 @@ export const deleteProgramChoice = /* GraphQL */ `mutation DeleteProgramChoice(
     program {
       id
       name
+      minimumGPA
       requirements
       nameAr
       requirementsAr
@@ -545,6 +553,7 @@ export const deleteProgramChoice = /* GraphQL */ `mutation DeleteProgramChoice(
       batchID
       batch
       score
+      adminPoints
       createdAt
       updatedAt
       _version
@@ -576,6 +585,7 @@ export const createProgram = /* GraphQL */ `mutation CreateProgram(
   createProgram(input: $input, condition: $condition) {
     id
     name
+    minimumGPA
     requirements
     nameAr
     requirementsAr
@@ -624,6 +634,7 @@ export const updateProgram = /* GraphQL */ `mutation UpdateProgram(
   updateProgram(input: $input, condition: $condition) {
     id
     name
+    minimumGPA
     requirements
     nameAr
     requirementsAr
@@ -672,6 +683,7 @@ export const deleteProgram = /* GraphQL */ `mutation DeleteProgram(
   deleteProgram(input: $input, condition: $condition) {
     id
     name
+    minimumGPA
     requirements
     nameAr
     requirementsAr

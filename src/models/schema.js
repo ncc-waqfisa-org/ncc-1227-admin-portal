@@ -267,6 +267,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "adminPoints": {
+                    "name": "adminPoints",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -510,6 +517,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "minimumGPA": {
+                    "name": "minimumGPA",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "requirements": {
                     "name": "requirements",
                     "isArray": false,
@@ -736,10 +750,6 @@ export const schema = {
             "attributes": [
                 {
                     "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "searchable",
                     "properties": {}
                 },
                 {
@@ -1679,5 +1689,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "e986bc2d295cc5ba816906043bf3cc14"
+    "version": "41d0a2ad1d01637e325ac646f89754e1"
 };

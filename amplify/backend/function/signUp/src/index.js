@@ -14,41 +14,84 @@ const cognito = new AWS.CognitoIdentityServiceProvider();
  */
 exports.handler = async (event) => {
     console.log(event);
+
+    let username = "";
+
+
     try {
-        const requestBody = event;
+        const requestBody = JSON.parse(event.body);
         const studentData = requestBody.student.input;
         const parentData = requestBody.parentInfo.input;
-        const username = studentData.cpr;
+        username = studentData.cpr;
         const email = studentData.email;
         const password = requestBody.password;
 
         const userExists = await getUserFromDynamoDB(username);
         if (userExists) {
             return {
-                statusCode: 400,
-                body: JSON.stringify('User already exists.'),
+                "statusCode": 400,
+                "headers": {
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Headers": "*",
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
+                },
+                "isBase64Encoded": false,
+                "body": JSON.stringify(
+                    {
+                    "message": "User already exists",
+                    },
+                ),
             };
         }
 
-        await saveStudentToDynamoDB(studentData);
+        // Begin transaction
+        await dynamoDB.transactWrite({
+            TransactItems: [
+                {
+                    Put: {
+                        TableName: 'Student-cw7beg2perdtnl7onnneec4jfa-staging',
+                        Item: studentData,
+                    },
+                },
+                {
+                    Put: {
+                        TableName: 'ParentInfo-cw7beg2perdtnl7onnneec4jfa-staging',
+                        Item: parentData,
+                    },
+                },
+            ],
+        }).promise();
+
+        // await saveStudentToDynamoDB(studentData);
         await signUpUserToCognito(username, email, password);
-        await saveParentToDynamoDB(parentData);
+        // await saveParentToDynamoDB(parentData);
         return {
-            statusCode: 200,
-            //  Uncomment below to enable CORS requests
-            //  headers: {
-            //      "Access-Control-Allow-Origin": "*",
-            //      "Access-Control-Allow-Headers": "*"
-            //  },
-            body: JSON.stringify('User created successfully'),
+            "isBase64Encoded": false,
+            "statusCode": 200,
+            "body": JSON.stringify(
+{
+                    "message": "User created successfully",
+                    },
+            ),
+            "headers": {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Headers": "*",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
+            },
+           "message": "User created successfully",
+
 
 
         };
     } catch (error) {
         console.error(error);
+        // Rollback the transaction
+        await rollback(username);
         return {
-            statusCode: 500,
-            body: JSON.stringify('Error' + error),
+            "statusCode": 500,
+            "body": JSON.stringify('Error' + error),
         };
     }
 };
@@ -97,6 +140,22 @@ async function saveParentToDynamoDB(parentData) {
     await dynamoDB.put(params).promise();
 }
 
+async function rollback(username) {
+    // Perform rollback operations
+    // Delete the user from DynamoDB
+    await dynamoDB.delete({
+        TableName: 'Student-cw7beg2perdtnl7onnneec4jfa-staging',
+        Key: {
+            cpr: username,
+        },
+    }).promise();
+
+    // Delete the user from Cognito
+    await cognito.adminDeleteUser({
+        UserPoolId: 'us-east-1_ovqLD9Axf',
+        Username: username,
+    }).promise();
+}
 
 
 
