@@ -45,7 +45,16 @@ exports.handler = async (event) => {
             };
         }
 
-       studentData.parentInfoID =  await saveParentToDynamoDB(parentData);
+        studentData.parentInfoID =  await saveParentToDynamoDB(parentData);
+        studentData._version = 1;
+        studentData._lastChangedAt = new Date().toISOString();
+        studentData.createdAt = new Date().toISOString();
+        studentData.updatedAt = new Date().toISOString();
+        parentData._version = 1;
+        parentData._lastChangedAt = new Date().toISOString();
+        parentData.createdAt = new Date().toISOString();
+        parentData.updatedAt = new Date().toISOString();
+
         await saveStudentToDynamoDB(studentData);
         await signUpUserToCognito(username, email, password);
 
@@ -156,11 +165,10 @@ async function getUserFromCognito(username) {
         UserPoolId: 'us-east-1_ovqLD9Axf',
         Username: username,
     };
-    try{
+    try {
         const user = await cognito.adminGetUser(params).promise();
         return user !== undefined;
-    }
-    catch (error) {
+    } catch (error) {
         return false;
     }
 }
