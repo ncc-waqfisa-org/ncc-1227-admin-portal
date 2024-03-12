@@ -8,69 +8,6 @@ type GeneratedQuery<InputType, OutputType> = string & {
   __generatedQueryOutput: OutputType;
 };
 
-export const searchApplications = /* GraphQL */ `query SearchApplications(
-  $filter: SearchableApplicationFilterInput
-  $sort: [SearchableApplicationSortInput]
-  $limit: Int
-  $nextToken: String
-  $from: Int
-  $aggregates: [SearchableApplicationAggregationInput]
-) {
-  searchApplications(
-    filter: $filter
-    sort: $sort
-    limit: $limit
-    nextToken: $nextToken
-    from: $from
-    aggregates: $aggregates
-  ) {
-    items {
-      id
-      gpa
-      status
-      attachmentID
-      dateTime
-      isEmailSent
-      schoolName
-      schoolType
-      studentCPR
-      batchID
-      batch
-      score
-      adminPoints
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      applicationAttachmentId
-      __typename
-    }
-    nextToken
-    total
-    aggregateItems {
-      name
-      result {
-        ... on SearchableAggregateScalarResult {
-          value
-        }
-        ... on SearchableAggregateBucketResult {
-          buckets {
-            key
-            doc_count
-            __typename
-          }
-        }
-      }
-      __typename
-    }
-    __typename
-  }
-}
-` as GeneratedQuery<
-  APITypes.SearchApplicationsQueryVariables,
-  APITypes.SearchApplicationsQuery
->;
 export const getAttachment = /* GraphQL */ `query GetAttachment($id: ID!) {
   getAttachment(id: $id) {
     id

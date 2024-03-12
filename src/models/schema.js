@@ -306,10 +306,6 @@ export const schema = {
                     "properties": {}
                 },
                 {
-                    "type": "searchable",
-                    "properties": {}
-                },
-                {
                     "type": "key",
                     "properties": {
                         "name": "byDateTime",

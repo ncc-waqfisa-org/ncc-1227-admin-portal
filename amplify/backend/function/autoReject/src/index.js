@@ -8,10 +8,11 @@ const ses = new AWS.SES();
  */
 exports.handler = async (event) => {
     try {
-        const applicationId = event.applicationId;
-        const reason = event.reason;
-        const studentName = event.studentName;
-        const studentId = event.studentId;
+        const requestBody = JSON.parse(event.body);
+        const applicationId = requestBody.applicationId;
+        const reason = requestBody.reason;
+        const studentName = requestBody.studentName;
+        const studentId = requestBody.studentId;
 
         const userExists = await getUserFromDynamoDB(studentId);
         if (!userExists) {

@@ -8,6 +8,8 @@ const AWS = require('aws-sdk');
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 const cognito = new AWS.CognitoIdentityServiceProvider();
+const uuid = require('uuid');
+
 
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
@@ -15,18 +17,16 @@ const cognito = new AWS.CognitoIdentityServiceProvider();
 exports.handler = async (event) => {
     console.log(event);
 
-    let username = "";
-
 
     try {
         const requestBody = JSON.parse(event.body);
         const studentData = requestBody.student.input;
         const parentData = requestBody.parentInfo.input;
-        username = studentData.cpr;
+        const username = studentData.cpr;
         const email = studentData.email;
         const password = requestBody.password;
 
-        const userExists = await getUserFromDynamoDB(username);
+        const userExists = await getUserFromDynamoDB(username) || await getUserFromCognito(username);
         if (userExists) {
             return {
                 "statusCode": 400,
@@ -45,30 +45,13 @@ exports.handler = async (event) => {
             };
         }
 
-        // Begin transaction
-        await dynamoDB.transactWrite({
-            TransactItems: [
-                {
-                    Put: {
-                        TableName: 'Student-cw7beg2perdtnl7onnneec4jfa-staging',
-                        Item: studentData,
-                    },
-                },
-                {
-                    Put: {
-                        TableName: 'ParentInfo-cw7beg2perdtnl7onnneec4jfa-staging',
-                        Item: parentData,
-                    },
-                },
-            ],
-        }).promise();
-
-        // await saveStudentToDynamoDB(studentData);
+       studentData.parentInfoID =  await saveParentToDynamoDB(parentData);
+        await saveStudentToDynamoDB(studentData);
         await signUpUserToCognito(username, email, password);
-        // await saveParentToDynamoDB(parentData);
+
         return {
             "isBase64Encoded": false,
-            "statusCode": 200,
+            "statusCode": 201,
             "body": JSON.stringify(
 {
                     "message": "User created successfully",
@@ -87,8 +70,7 @@ exports.handler = async (event) => {
         };
     } catch (error) {
         console.error(error);
-        // Rollback the transaction
-        await rollback(username);
+        await rollback(JSON.parse(event.body).student.input.cpr);
         return {
             "statusCode": 500,
             "body": JSON.stringify('Error' + error),
@@ -133,29 +115,56 @@ async function saveStudentToDynamoDB(StudentData) {
 }
 
 async function saveParentToDynamoDB(parentData) {
+    // generate a unique id for the parent
+    parentData.id = uuid.v4();
     const params = {
         TableName: 'ParentInfo-cw7beg2perdtnl7onnneec4jfa-staging',
         Item: parentData,
     };
-    await dynamoDB.put(params).promise();
+    let createdItem = dynamoDB.put(params).promise();
+    await createdItem;
+    return parentData.id;
+
 }
+
 
 async function rollback(username) {
     // Perform rollback operations
     // Delete the user from DynamoDB
-    await dynamoDB.delete({
-        TableName: 'Student-cw7beg2perdtnl7onnneec4jfa-staging',
-        Key: {
-            cpr: username,
-        },
-    }).promise();
+    const userExistsDynamoDB = await getUserFromDynamoDB(username);
+    if (userExistsDynamoDB) {
+        await dynamoDB.delete({
+            TableName: 'Student-cw7beg2perdtnl7onnneec4jfa-staging',
+            Key: {
+                cpr: username,
+            },
+        }).promise();
+    }
 
     // Delete the user from Cognito
-    await cognito.adminDeleteUser({
+    const userExistsCognito = await getUserFromCognito(username);
+    if (userExistsCognito) {
+        await cognito.adminDeleteUser({
+            UserPoolId: 'us-east-1_ovqLD9Axf',
+            Username: username,
+        }).promise();
+    }
+}
+
+async function getUserFromCognito(username) {
+    const params = {
         UserPoolId: 'us-east-1_ovqLD9Axf',
         Username: username,
-    }).promise();
+    };
+    try{
+        const user = await cognito.adminGetUser(params).promise();
+        return user !== undefined;
+    }
+    catch (error) {
+        return false;
+    }
 }
+
 
 
 
