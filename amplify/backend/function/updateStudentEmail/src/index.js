@@ -14,6 +14,22 @@ exports.handler = async (event) => {
 
     try {
         const {username, newEmail} = JSON.parse(event.body);
+
+        if(!username || !newEmail) {
+            return {
+                statusCode: 400,
+                body: JSON.stringify('Missing parameters'),
+            };
+        }
+
+        // simple email validation
+        if (!newEmail.includes('@')) {
+            return {
+                statusCode: 400,
+                body: JSON.stringify('Invalid email'),
+            };
+        }
+
         // Check if the user exists in DynamoDB
         const userExists = await getUserFromDynamoDB(username);
         if (!userExists) {
@@ -23,8 +39,39 @@ exports.handler = async (event) => {
             };
         }
 
-        // Update the user's email in Cognito user pool
+        let token = event.headers.authorization;
+        console.log(token);
+        // detach the "Bearer " prefix from the token
+        token = event.headers.authorization.slice(7);
+
+        // Use cognito to validate the token
+        try {
+            const cognitoUser = await cognito.getUser({AccessToken: token}).promise();
+            console.log(cognitoUser);
+            if (cognitoUser.Username !== username) {
+                return {
+                    statusCode: 403,
+                    body: JSON.stringify({
+                        error: 'Forbidden',
+                        message: 'You are not allowed to update this user'
+                    }),
+                };
+            }
+        }
+        catch (error) {
+            console.error(error);
+            return {
+                statusCode: 401,
+                body: JSON.stringify('Unauthorized'),
+            };
+        }
+
+
+
+            // Update the user's email in Cognito user pool
         await updateUserEmailInCognito(username, newEmail);
+        await updateStudentEmail(username, newEmail);
+
 
         return {
             statusCode: 200,
@@ -33,16 +80,21 @@ exports.handler = async (event) => {
             //      "Access-Control-Allow-Origin": "*",
             //      "Access-Control-Allow-Headers": "*"
             //  },
-            body: JSON.stringify('User email updated successfully'),
+            body: JSON.stringify({
+                message: 'Email updated successfully',
+            }),
         };
     }
     catch (error) {
         console.error(error);
         return {
             statusCode: 500,
-            body: JSON.stringify('Error' + error),
+            body: JSON.stringify({
+                error: 'Internal Server Error',
+                message: error.message
+            }),
+            }
         };
-    }
 };
 
 async function updateUserEmailInCognito(username, newEmail) {
