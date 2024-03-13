@@ -25,8 +25,11 @@ exports.handler = async (event) => {
         if (!userExists) {
             return {
                 statusCode: 400,
-                body: JSON.stringify('User does not exist.'),
-            };
+                body: JSON.stringify({
+                    error: 'Bad Request',
+                    message: 'User does not exist'
+                }),
+                }
         }
 
         const token = event.headers.authorization.slice(7);
@@ -69,6 +72,7 @@ exports.handler = async (event) => {
             //  },
             body: JSON.stringify({
                 message: 'Email updated successfully',
+                newEmail: newEmail,
             }),
         };
     }

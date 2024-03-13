@@ -52,7 +52,7 @@
         },
         "updateStudentEmail": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
-          "s3Key": "amplify-builds/updateStudentEmail-66556f47705751745539-build.zip"
+          "s3Key": "amplify-builds/updateStudentEmail-736c5971754b4164747a-build.zip"
         },
         "updateGpaCsv": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
