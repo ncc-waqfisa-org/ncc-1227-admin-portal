@@ -45,15 +45,16 @@ exports.handler = async (event) => {
             };
         }
 
-        studentData.parentInfoID =  await saveParentToDynamoDB(parentData);
-        studentData._version = 1;
-        studentData._lastChangedAt = new Date();
-        studentData.createdAt = new Date.now();
-        studentData.updatedAt = new Date.now();
         parentData._version = 1;
-        parentData._lastChangedAt = new Date.now();
-        parentData.createdAt = new Date.now();
-        parentData.updatedAt = new Date.now();
+        parentData._lastChangedAt = new Date().getTime(); // Get timestamp in milliseconds
+        parentData.createdAt = new Date().toISOString(); // Get current date in ISO format
+        parentData.updatedAt = new Date().toISOString(); // Get current date in ISO format
+
+        studentData.parentInfoID = await saveParentToDynamoDB(parentData);
+        studentData._version = 1;
+        studentData._lastChangedAt = new Date().getTime(); // Get timestamp in milliseconds
+        studentData.createdAt = new Date().toISOString(); // Get current date in ISO format
+        studentData.updatedAt = new Date().toISOString(); // Get current date in ISO format
 
         await saveStudentToDynamoDB(studentData);
         await signUpUserToCognito(username, email, password);
