@@ -13,7 +13,7 @@ exports.handler = async (event) => {
     console.log(event);
 
     try {
-        const {username, newEmail} = event;
+        const {username, newEmail} = JSON.parse(event.body);
         // Check if the user exists in DynamoDB
         const userExists = await getUserFromDynamoDB(username);
         if (!userExists) {
@@ -68,5 +68,19 @@ async function getUserFromDynamoDB(username) {
     };
     const { Item } = await dynamoDB.get(params).promise();
     return Item !== undefined;
+}
+
+async function updateStudentEmail(username, newEmail) {
+    const params = {
+        TableName: 'Student-cw7beg2perdtnl7onnneec4jfa-staging',
+        Key: {
+            cpr: username,
+        },
+        UpdateExpression: 'set email = :e',
+        ExpressionAttributeValues: {
+            ':e': newEmail,
+        }
+    };
+    return dynamoDB.update(params).promise();
 }
 
