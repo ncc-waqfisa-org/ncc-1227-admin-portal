@@ -117,18 +117,23 @@ async function getUserFromDynamoDB(username) {
 }
 
 async function updateStudentEmail(username, newEmail) {
+    const currentTime = new Date().toISOString();
+
     const params = {
         TableName: 'Student-cw7beg2perdtnl7onnneec4jfa-staging',
         Key: {
             cpr: username,
         },
-        UpdateExpression: 'set email = :e',
+        UpdateExpression: 'set email = :e, updatedAt = :updatedAt',
         ExpressionAttributeValues: {
             ':e': newEmail,
+            ':updatedAt': currentTime,
         }
     };
+
     return dynamoDB.update(params).promise();
 }
+
 
 function validate(username, newEmail) {
     if(!username || !newEmail) {
