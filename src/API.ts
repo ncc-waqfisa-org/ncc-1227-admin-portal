@@ -955,6 +955,55 @@ export type DeleteBatchInput = {
   _version?: number | null,
 };
 
+export type CreateScholarshipInput = {
+  id?: string | null,
+  amount?: number | null,
+  status?: Status | null,
+  applicationID?: string | null,
+  studentCPR?: string | null,
+  _version?: number | null,
+};
+
+export type ModelScholarshipConditionInput = {
+  amount?: ModelFloatInput | null,
+  status?: ModelStatusInput | null,
+  applicationID?: ModelStringInput | null,
+  studentCPR?: ModelStringInput | null,
+  and?: Array< ModelScholarshipConditionInput | null > | null,
+  or?: Array< ModelScholarshipConditionInput | null > | null,
+  not?: ModelScholarshipConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type Scholarship = {
+  __typename: "Scholarship",
+  id: string,
+  amount?: number | null,
+  status?: Status | null,
+  applicationID?: string | null,
+  application?: Application | null,
+  studentCPR?: string | null,
+  createdAt: string,
+  updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
+};
+
+export type UpdateScholarshipInput = {
+  id: string,
+  amount?: number | null,
+  status?: Status | null,
+  applicationID?: string | null,
+  studentCPR?: string | null,
+  _version?: number | null,
+};
+
+export type DeleteScholarshipInput = {
+  id: string,
+  _version?: number | null,
+};
+
 export type ModelAttachmentFilterInput = {
   id?: ModelIDInput | null,
   cprDoc?: ModelStringInput | null,
@@ -1181,6 +1230,25 @@ export type ModelBatchFilterInput = {
 export type ModelBatchConnection = {
   __typename: "ModelBatchConnection",
   items:  Array<Batch | null >,
+  nextToken?: string | null,
+  startedAt?: number | null,
+};
+
+export type ModelScholarshipFilterInput = {
+  id?: ModelIDInput | null,
+  amount?: ModelFloatInput | null,
+  status?: ModelStatusInput | null,
+  applicationID?: ModelStringInput | null,
+  studentCPR?: ModelStringInput | null,
+  and?: Array< ModelScholarshipFilterInput | null > | null,
+  or?: Array< ModelScholarshipFilterInput | null > | null,
+  not?: ModelScholarshipFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelScholarshipConnection = {
+  __typename: "ModelScholarshipConnection",
+  items:  Array<Scholarship | null >,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -1423,6 +1491,17 @@ export type ModelSubscriptionBatchFilterInput = {
   signUpEndDate?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionBatchFilterInput | null > | null,
   or?: Array< ModelSubscriptionBatchFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelSubscriptionScholarshipFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  amount?: ModelSubscriptionFloatInput | null,
+  status?: ModelSubscriptionStringInput | null,
+  applicationID?: ModelSubscriptionStringInput | null,
+  studentCPR?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionScholarshipFilterInput | null > | null,
+  or?: Array< ModelSubscriptionScholarshipFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,
 };
 
@@ -2929,6 +3008,135 @@ export type DeleteBatchMutation = {
   } | null,
 };
 
+export type CreateScholarshipMutationVariables = {
+  input: CreateScholarshipInput,
+  condition?: ModelScholarshipConditionInput | null,
+};
+
+export type CreateScholarshipMutation = {
+  createScholarship?:  {
+    __typename: "Scholarship",
+    id: string,
+    amount?: number | null,
+    status?: Status | null,
+    applicationID?: string | null,
+    application?:  {
+      __typename: "Application",
+      id: string,
+      gpa?: number | null,
+      status?: Status | null,
+      attachmentID?: string | null,
+      dateTime: string,
+      isEmailSent?: boolean | null,
+      schoolName?: string | null,
+      schoolType?: SchoolType | null,
+      studentCPR: string,
+      batchID: string,
+      batch?: number | null,
+      score?: number | null,
+      adminPoints?: number | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      applicationAttachmentId?: string | null,
+    } | null,
+    studentCPR?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type UpdateScholarshipMutationVariables = {
+  input: UpdateScholarshipInput,
+  condition?: ModelScholarshipConditionInput | null,
+};
+
+export type UpdateScholarshipMutation = {
+  updateScholarship?:  {
+    __typename: "Scholarship",
+    id: string,
+    amount?: number | null,
+    status?: Status | null,
+    applicationID?: string | null,
+    application?:  {
+      __typename: "Application",
+      id: string,
+      gpa?: number | null,
+      status?: Status | null,
+      attachmentID?: string | null,
+      dateTime: string,
+      isEmailSent?: boolean | null,
+      schoolName?: string | null,
+      schoolType?: SchoolType | null,
+      studentCPR: string,
+      batchID: string,
+      batch?: number | null,
+      score?: number | null,
+      adminPoints?: number | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      applicationAttachmentId?: string | null,
+    } | null,
+    studentCPR?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type DeleteScholarshipMutationVariables = {
+  input: DeleteScholarshipInput,
+  condition?: ModelScholarshipConditionInput | null,
+};
+
+export type DeleteScholarshipMutation = {
+  deleteScholarship?:  {
+    __typename: "Scholarship",
+    id: string,
+    amount?: number | null,
+    status?: Status | null,
+    applicationID?: string | null,
+    application?:  {
+      __typename: "Application",
+      id: string,
+      gpa?: number | null,
+      status?: Status | null,
+      attachmentID?: string | null,
+      dateTime: string,
+      isEmailSent?: boolean | null,
+      schoolName?: string | null,
+      schoolType?: SchoolType | null,
+      studentCPR: string,
+      batchID: string,
+      batch?: number | null,
+      score?: number | null,
+      adminPoints?: number | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      applicationAttachmentId?: string | null,
+    } | null,
+    studentCPR?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
 export type GetAttachmentQueryVariables = {
   id: string,
 };
@@ -4119,6 +4327,103 @@ export type SyncBatchesQuery = {
       updateApplicationEndDate?: string | null,
       signUpStartDate?: string | null,
       signUpEndDate?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type GetScholarshipQueryVariables = {
+  id: string,
+};
+
+export type GetScholarshipQuery = {
+  getScholarship?:  {
+    __typename: "Scholarship",
+    id: string,
+    amount?: number | null,
+    status?: Status | null,
+    applicationID?: string | null,
+    application?:  {
+      __typename: "Application",
+      id: string,
+      gpa?: number | null,
+      status?: Status | null,
+      attachmentID?: string | null,
+      dateTime: string,
+      isEmailSent?: boolean | null,
+      schoolName?: string | null,
+      schoolType?: SchoolType | null,
+      studentCPR: string,
+      batchID: string,
+      batch?: number | null,
+      score?: number | null,
+      adminPoints?: number | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      applicationAttachmentId?: string | null,
+    } | null,
+    studentCPR?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type ListScholarshipsQueryVariables = {
+  filter?: ModelScholarshipFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListScholarshipsQuery = {
+  listScholarships?:  {
+    __typename: "ModelScholarshipConnection",
+    items:  Array< {
+      __typename: "Scholarship",
+      id: string,
+      amount?: number | null,
+      status?: Status | null,
+      applicationID?: string | null,
+      studentCPR?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncScholarshipsQueryVariables = {
+  filter?: ModelScholarshipFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncScholarshipsQuery = {
+  syncScholarships?:  {
+    __typename: "ModelScholarshipConnection",
+    items:  Array< {
+      __typename: "Scholarship",
+      id: string,
+      amount?: number | null,
+      status?: Status | null,
+      applicationID?: string | null,
+      studentCPR?: string | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -5786,6 +6091,132 @@ export type OnDeleteBatchSubscription = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnCreateScholarshipSubscriptionVariables = {
+  filter?: ModelSubscriptionScholarshipFilterInput | null,
+};
+
+export type OnCreateScholarshipSubscription = {
+  onCreateScholarship?:  {
+    __typename: "Scholarship",
+    id: string,
+    amount?: number | null,
+    status?: Status | null,
+    applicationID?: string | null,
+    application?:  {
+      __typename: "Application",
+      id: string,
+      gpa?: number | null,
+      status?: Status | null,
+      attachmentID?: string | null,
+      dateTime: string,
+      isEmailSent?: boolean | null,
+      schoolName?: string | null,
+      schoolType?: SchoolType | null,
+      studentCPR: string,
+      batchID: string,
+      batch?: number | null,
+      score?: number | null,
+      adminPoints?: number | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      applicationAttachmentId?: string | null,
+    } | null,
+    studentCPR?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnUpdateScholarshipSubscriptionVariables = {
+  filter?: ModelSubscriptionScholarshipFilterInput | null,
+};
+
+export type OnUpdateScholarshipSubscription = {
+  onUpdateScholarship?:  {
+    __typename: "Scholarship",
+    id: string,
+    amount?: number | null,
+    status?: Status | null,
+    applicationID?: string | null,
+    application?:  {
+      __typename: "Application",
+      id: string,
+      gpa?: number | null,
+      status?: Status | null,
+      attachmentID?: string | null,
+      dateTime: string,
+      isEmailSent?: boolean | null,
+      schoolName?: string | null,
+      schoolType?: SchoolType | null,
+      studentCPR: string,
+      batchID: string,
+      batch?: number | null,
+      score?: number | null,
+      adminPoints?: number | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      applicationAttachmentId?: string | null,
+    } | null,
+    studentCPR?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnDeleteScholarshipSubscriptionVariables = {
+  filter?: ModelSubscriptionScholarshipFilterInput | null,
+};
+
+export type OnDeleteScholarshipSubscription = {
+  onDeleteScholarship?:  {
+    __typename: "Scholarship",
+    id: string,
+    amount?: number | null,
+    status?: Status | null,
+    applicationID?: string | null,
+    application?:  {
+      __typename: "Application",
+      id: string,
+      gpa?: number | null,
+      status?: Status | null,
+      attachmentID?: string | null,
+      dateTime: string,
+      isEmailSent?: boolean | null,
+      schoolName?: string | null,
+      schoolType?: SchoolType | null,
+      studentCPR: string,
+      batchID: string,
+      batch?: number | null,
+      score?: number | null,
+      adminPoints?: number | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+      applicationAttachmentId?: string | null,
+    } | null,
+    studentCPR?: string | null,
     createdAt: string,
     updatedAt: string,
     _version: number,

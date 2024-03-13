@@ -1481,3 +1481,132 @@ export const onDeleteBatch = /* GraphQL */ `subscription OnDeleteBatch($filter: 
   APITypes.OnDeleteBatchSubscriptionVariables,
   APITypes.OnDeleteBatchSubscription
 >;
+export const onCreateScholarship = /* GraphQL */ `subscription OnCreateScholarship(
+  $filter: ModelSubscriptionScholarshipFilterInput
+) {
+  onCreateScholarship(filter: $filter) {
+    id
+    amount
+    status
+    applicationID
+    application {
+      id
+      gpa
+      status
+      attachmentID
+      dateTime
+      isEmailSent
+      schoolName
+      schoolType
+      studentCPR
+      batchID
+      batch
+      score
+      adminPoints
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      applicationAttachmentId
+      __typename
+    }
+    studentCPR
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnCreateScholarshipSubscriptionVariables,
+  APITypes.OnCreateScholarshipSubscription
+>;
+export const onUpdateScholarship = /* GraphQL */ `subscription OnUpdateScholarship(
+  $filter: ModelSubscriptionScholarshipFilterInput
+) {
+  onUpdateScholarship(filter: $filter) {
+    id
+    amount
+    status
+    applicationID
+    application {
+      id
+      gpa
+      status
+      attachmentID
+      dateTime
+      isEmailSent
+      schoolName
+      schoolType
+      studentCPR
+      batchID
+      batch
+      score
+      adminPoints
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      applicationAttachmentId
+      __typename
+    }
+    studentCPR
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnUpdateScholarshipSubscriptionVariables,
+  APITypes.OnUpdateScholarshipSubscription
+>;
+export const onDeleteScholarship = /* GraphQL */ `subscription OnDeleteScholarship(
+  $filter: ModelSubscriptionScholarshipFilterInput
+) {
+  onDeleteScholarship(filter: $filter) {
+    id
+    amount
+    status
+    applicationID
+    application {
+      id
+      gpa
+      status
+      attachmentID
+      dateTime
+      isEmailSent
+      schoolName
+      schoolType
+      studentCPR
+      batchID
+      batch
+      score
+      adminPoints
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      applicationAttachmentId
+      __typename
+    }
+    studentCPR
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnDeleteScholarshipSubscriptionVariables,
+  APITypes.OnDeleteScholarshipSubscription
+>;

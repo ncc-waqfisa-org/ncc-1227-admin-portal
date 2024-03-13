@@ -1544,3 +1544,135 @@ export const deleteBatch = /* GraphQL */ `mutation DeleteBatch(
   APITypes.DeleteBatchMutationVariables,
   APITypes.DeleteBatchMutation
 >;
+export const createScholarship = /* GraphQL */ `mutation CreateScholarship(
+  $input: CreateScholarshipInput!
+  $condition: ModelScholarshipConditionInput
+) {
+  createScholarship(input: $input, condition: $condition) {
+    id
+    amount
+    status
+    applicationID
+    application {
+      id
+      gpa
+      status
+      attachmentID
+      dateTime
+      isEmailSent
+      schoolName
+      schoolType
+      studentCPR
+      batchID
+      batch
+      score
+      adminPoints
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      applicationAttachmentId
+      __typename
+    }
+    studentCPR
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.CreateScholarshipMutationVariables,
+  APITypes.CreateScholarshipMutation
+>;
+export const updateScholarship = /* GraphQL */ `mutation UpdateScholarship(
+  $input: UpdateScholarshipInput!
+  $condition: ModelScholarshipConditionInput
+) {
+  updateScholarship(input: $input, condition: $condition) {
+    id
+    amount
+    status
+    applicationID
+    application {
+      id
+      gpa
+      status
+      attachmentID
+      dateTime
+      isEmailSent
+      schoolName
+      schoolType
+      studentCPR
+      batchID
+      batch
+      score
+      adminPoints
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      applicationAttachmentId
+      __typename
+    }
+    studentCPR
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.UpdateScholarshipMutationVariables,
+  APITypes.UpdateScholarshipMutation
+>;
+export const deleteScholarship = /* GraphQL */ `mutation DeleteScholarship(
+  $input: DeleteScholarshipInput!
+  $condition: ModelScholarshipConditionInput
+) {
+  deleteScholarship(input: $input, condition: $condition) {
+    id
+    amount
+    status
+    applicationID
+    application {
+      id
+      gpa
+      status
+      attachmentID
+      dateTime
+      isEmailSent
+      schoolName
+      schoolType
+      studentCPR
+      batchID
+      batch
+      score
+      adminPoints
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      applicationAttachmentId
+      __typename
+    }
+    studentCPR
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.DeleteScholarshipMutationVariables,
+  APITypes.DeleteScholarshipMutation
+>;

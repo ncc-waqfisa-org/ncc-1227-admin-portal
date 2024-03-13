@@ -556,3 +556,37 @@ export declare type Batch = LazyLoading extends LazyLoadingDisabled ? EagerBatch
 export declare const Batch: (new (init: ModelInit<Batch>) => Batch) & {
   copyOf(source: Batch, mutator: (draft: MutableModel<Batch>) => MutableModel<Batch> | void): Batch;
 }
+
+type EagerScholarship = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Scholarship, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly amount?: number | null;
+  readonly status?: Status | keyof typeof Status | null;
+  readonly applicationID?: string | null;
+  readonly studentCPR?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyScholarship = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Scholarship, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly amount?: number | null;
+  readonly status?: Status | keyof typeof Status | null;
+  readonly applicationID?: string | null;
+  readonly studentCPR?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Scholarship = LazyLoading extends LazyLoadingDisabled ? EagerScholarship : LazyScholarship
+
+export declare const Scholarship: (new (init: ModelInit<Scholarship>) => Scholarship) & {
+  copyOf(source: Scholarship, mutator: (draft: MutableModel<Scholarship>) => MutableModel<Scholarship> | void): Scholarship;
+}

@@ -1287,6 +1287,109 @@ export const syncBatches = /* GraphQL */ `query SyncBatches(
   APITypes.SyncBatchesQueryVariables,
   APITypes.SyncBatchesQuery
 >;
+export const getScholarship = /* GraphQL */ `query GetScholarship($id: ID!) {
+  getScholarship(id: $id) {
+    id
+    amount
+    status
+    applicationID
+    application {
+      id
+      gpa
+      status
+      attachmentID
+      dateTime
+      isEmailSent
+      schoolName
+      schoolType
+      studentCPR
+      batchID
+      batch
+      score
+      adminPoints
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      applicationAttachmentId
+      __typename
+    }
+    studentCPR
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.GetScholarshipQueryVariables,
+  APITypes.GetScholarshipQuery
+>;
+export const listScholarships = /* GraphQL */ `query ListScholarships(
+  $filter: ModelScholarshipFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listScholarships(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      amount
+      status
+      applicationID
+      studentCPR
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListScholarshipsQueryVariables,
+  APITypes.ListScholarshipsQuery
+>;
+export const syncScholarships = /* GraphQL */ `query SyncScholarships(
+  $filter: ModelScholarshipFilterInput
+  $limit: Int
+  $nextToken: String
+  $lastSync: AWSTimestamp
+) {
+  syncScholarships(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    lastSync: $lastSync
+  ) {
+    items {
+      id
+      amount
+      status
+      applicationID
+      studentCPR
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.SyncScholarshipsQueryVariables,
+  APITypes.SyncScholarshipsQuery
+>;
 export const applicationsByIdAndDateTime = /* GraphQL */ `query ApplicationsByIdAndDateTime(
   $id: ID!
   $dateTime: ModelStringKeyConditionInput

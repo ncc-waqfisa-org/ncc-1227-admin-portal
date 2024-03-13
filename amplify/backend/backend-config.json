@@ -88,6 +88,22 @@
         }
       ]
     },
+    "AMPLIFY_function_getApplications_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getApplications"
+        }
+      ]
+    },
+    "AMPLIFY_function_getApplications_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getApplications"
+        }
+      ]
+    },
     "AMPLIFY_function_signUp_deploymentBucketName": {
       "usedBy": [
         {
