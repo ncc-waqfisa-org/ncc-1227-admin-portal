@@ -49,6 +49,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "getApplications": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "signUp": {
       "build": true,
       "dependsOn": [],

@@ -61,7 +61,8 @@
         "autoReject": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
           "s3Key": "amplify-builds/autoReject-31466a4c44326f314b71-build.zip"
-        }
+        },
+        "getApplications": {}
       }
     }
   }
