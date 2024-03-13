@@ -15,19 +15,9 @@ exports.handler = async (event) => {
     try {
         const {username, newEmail} = JSON.parse(event.body);
 
-        if(!username || !newEmail) {
-            return {
-                statusCode: 400,
-                body: JSON.stringify('Missing parameters'),
-            };
-        }
-
-        // simple email validation
-        if (!newEmail.includes('@')) {
-            return {
-                statusCode: 400,
-                body: JSON.stringify('Invalid email'),
-            };
+        const validationError = validate(username, newEmail);
+        if (validationError) {
+            return validationError;
         }
 
         // Check if the user exists in DynamoDB
@@ -39,10 +29,7 @@ exports.handler = async (event) => {
             };
         }
 
-        let token = event.headers.authorization;
-        console.log(token);
-        // detach the "Bearer " prefix from the token
-        token = event.headers.authorization.slice(7);
+        const token = event.headers.authorization.slice(7);
 
         // Use cognito to validate the token
         try {
@@ -134,5 +121,28 @@ async function updateStudentEmail(username, newEmail) {
         }
     };
     return dynamoDB.update(params).promise();
+}
+
+function validate(username, newEmail) {
+    if(!username || !newEmail) {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({
+                error: 'Bad Request',
+                message: 'Missing required fields'
+            }),
+        };
+    }
+
+    // simple email validation
+    if (!newEmail.includes('@')) {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({
+                error: 'Bad Request',
+                message: 'Invalid email'
+            }),
+            }
+    }
 }
 
