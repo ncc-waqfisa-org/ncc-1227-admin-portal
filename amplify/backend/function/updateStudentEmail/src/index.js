@@ -52,7 +52,10 @@ exports.handler = async (event) => {
             console.error(error);
             return {
                 statusCode: 401,
-                body: JSON.stringify('Unauthorized'),
+                body: JSON.stringify({
+                    error: 'Unauthorized',
+                    message: 'Invalid token'
+                }),
             };
         }
 
