@@ -67,7 +67,6 @@ exports.handler = async (event) => {
 
 
      try {
-
          return await dynamoDB.query(params).promise();
      }
         catch (error) {
