@@ -32,7 +32,58 @@ exports.handler = async (event) => {
                 }
         }
 
-        const token = event.headers.authorization.slice(7);
+        const token = event.headers?.authorization?.slice(7);
+        if(!token) {
+            // check if the email is verified or not
+            const user = await cognito.adminGetUser({
+                UserPoolId: 'us-east-1_ovqLD9Axf',
+                Username: username,
+            }).promise();
+            const isVerified = user.UserAttributes.find(attr => attr.Name === 'email_verified').Value;
+
+            if (isVerified === 'true') {
+                return {
+                    statusCode: 401,
+                    body: JSON.stringify({
+                        error: 'Unauthorized',
+                        message: 'Please login to update your email'
+                    }),
+                };
+            }
+
+            else{
+                try {
+                    await updateUserEmailInCognito(username, newEmail);
+                    await updateStudentEmail(username, newEmail);
+                }
+                catch (error) {
+                    console.error(error);
+                    return {
+                        statusCode: 500,
+                        body: JSON.stringify({
+                            error: 'Internal Server Error',
+                            message: error.message
+                        }),
+                    }
+                }
+
+                return {
+                    statusCode: 200,
+                    //  Uncomment below to enable CORS requests
+                    //  headers: {
+                    //      "Access-Control-Allow-Origin": "*",
+                    //      "Access-Control-Allow-Headers": "*"
+                    //  },
+                    body: JSON.stringify({
+                        message: 'Email updated successfully',
+                        newEmail: newEmail,
+                    }),
+                }
+
+            }
+        }
+
+
 
         // Use cognito to validate the token
         try {
