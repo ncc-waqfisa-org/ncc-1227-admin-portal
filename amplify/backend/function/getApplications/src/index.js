@@ -35,7 +35,7 @@ exports.handler = async (event) => {
 
      const params = {
          TableName: 'Application-cw7beg2perdtnl7onnneec4jfa-staging',
-         Limit: pageSize,
+         // Limit: pageSize,
          ExclusiveStartKey: startKey,
          IndexName: 'byScore',
          KeyConditionExpression: '#batch = :batchValue AND score > :score',
@@ -53,7 +53,6 @@ exports.handler = async (event) => {
          params.FilterExpression = '#status = :status';
          params.ExpressionAttributeNames['#status'] = 'status';
          params.ExpressionAttributeValues[':status'] = status;
-
      }
 
      if(cpr) {
