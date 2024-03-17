@@ -48,7 +48,7 @@
       "function": {
         "signUp": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
-          "s3Key": "amplify-builds/signUp-452f41544a6231396248-build.zip"
+          "s3Key": "amplify-builds/signUp-717261666a67795a7434-build.zip"
         },
         "updateStudentEmail": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
