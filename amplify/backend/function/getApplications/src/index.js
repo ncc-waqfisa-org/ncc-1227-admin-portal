@@ -8,11 +8,11 @@ const dynamoDB = new AWS.DynamoDB.DocumentClient();
 exports.handler = async (event) => {
     console.log(`EVENT: ${JSON.stringify(event)}`);
 
-    const page = parseInt(event.queryStringParameters?.page) || 1;
-    const pageSize = parseInt(event.queryStringParameters?.pageSize) || 10;
+    const pageSize = parseInt(event.queryStringParameters?.pageSize) || 15;
     const startKey = event.queryStringParameters?.startKey || null;
-
-    const applications = await getApplications(page, pageSize, startKey);
+    const batch = event.queryStringParameters?.batch || 2023;
+    const status = event.queryStringParameters?.status || null;
+    const applications = await getApplications(pageSize, startKey, batch);
 
     return {
         statusCode: 200,
@@ -21,20 +21,39 @@ exports.handler = async (event) => {
     //      "Access-Control-Allow-Origin": "*",
     //      "Access-Control-Allow-Headers": "*"
     //  },
-        body: JSON.stringify(applications)
+        body: JSON.stringify(
+            {
+                data: applications.Items,
+                nextStartKey: applications.LastEvaluatedKey
+            }
+        ),
     };
 };
 
- async function getApplications(page, pageSize, startKey = null) {
+ async function getApplications(pageSize, startKey, batch) {
 
      const params = {
          TableName: 'Application-cw7beg2perdtnl7onnneec4jfa-staging',
          Limit: pageSize,
-         ScanIndexForward: false,
          ExclusiveStartKey: startKey,
-         KeyConditionExpression: 'attribute_exists(gpa)',
+         IndexName: 'byScore',
+         KeyConditionExpression: '#batch = :batchValue AND score > :score',
+         ScanIndexForward: false,
+         ExpressionAttributeNames: {
+             '#batch': 'batch' // Using ExpressionAttributeNames to alias the reserved keyword 'batch'
+         },
+         ExpressionAttributeValues: {
+             ':batchValue': batch,
+             ':score': 0.0
+            }
      };
 
-     const result = await dynamoDB.query(params).promise();
-     return result.Items;
+     try {
+
+         return await dynamoDB.query(params).promise();
+     }
+        catch (error) {
+            console.error('Error getting applications', error);
+            throw new Error('Error getting applications');
+        }
 }
