@@ -12,7 +12,8 @@ exports.handler = async (event) => {
     const startKey = event.queryStringParameters?.startKey || null;
     const batch = event.queryStringParameters?.batch || 2023;
     const status = event.queryStringParameters?.status || null;
-    const applications = await getApplications(pageSize, startKey, batch);
+    const cpr = event.queryStringParameters?.cpr || null;
+    const applications = await getApplications(pageSize, startKey, batch, status, cpr);
 
     return {
         statusCode: 200,
@@ -30,7 +31,7 @@ exports.handler = async (event) => {
     };
 };
 
- async function getApplications(pageSize, startKey, batch) {
+ async function getApplications(pageSize, startKey, batch, status = null, cpr= null) {
 
      const params = {
          TableName: 'Application-cw7beg2perdtnl7onnneec4jfa-staging',
@@ -47,6 +48,24 @@ exports.handler = async (event) => {
              ':score': 0.0
             }
      };
+
+     if(status) {
+         params.FilterExpression = '#status = :status';
+         params.ExpressionAttributeNames['#status'] = 'status';
+         params.ExpressionAttributeValues[':status'] = status;
+
+     }
+
+     if(cpr) {
+            // params.FilterExpression = '#studentCPR = :cpr';
+            // params.ExpressionAttributeNames['#studentCPR'] = 'cpr';
+            // params.ExpressionAttributeValues[':studentCPR'] = cpr;
+            // non exact match
+            params.FilterExpression = 'contains(#studentCPR, :cpr)';
+            params.ExpressionAttributeNames['#studentCPR'] = 'cpr';
+            params.ExpressionAttributeValues[':studentCPR'] = cpr;
+        }
+
 
      try {
 

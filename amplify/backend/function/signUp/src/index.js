@@ -59,11 +59,14 @@ exports.handler = async (event) => {
         await saveStudentToDynamoDB(studentData);
         await signUpUserToCognito(username, email, password);
 
+        const user = await getUserSessionFromCognito(username, password);
+
         return {
             "isBase64Encoded": false,
             "statusCode": 201,
             "body": JSON.stringify(
-{
+                {
+                    "user": user,
                     "message": "User created successfully",
                     },
             ),
@@ -73,7 +76,6 @@ exports.handler = async (event) => {
                 "Access-Control-Allow-Origin": "*",
                 "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
             },
-           "message": "User created successfully",
 
 
 
@@ -172,6 +174,19 @@ async function getUserFromCognito(username) {
     } catch (error) {
         return false;
     }
+}
+
+async function getUserSessionFromCognito(username, password) {
+    const params = {
+        AuthFlow: 'USER_PASSWORD_AUTH',
+        ClientId: '41ci7tn8aleem14rrr5gs7tkbs',
+        AuthParameters: {
+            USERNAME: username,
+            PASSWORD: password,
+        },
+    };
+    const user = await cognito.initiateAuth(params).promise();
+    return user;
 }
 
 
