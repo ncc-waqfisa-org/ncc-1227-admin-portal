@@ -1486,7 +1486,6 @@ export const onCreateScholarship = /* GraphQL */ `subscription OnCreateScholarsh
 ) {
   onCreateScholarship(filter: $filter) {
     id
-    amount
     status
     applicationID
     application {
@@ -1512,6 +1511,13 @@ export const onCreateScholarship = /* GraphQL */ `subscription OnCreateScholarsh
       __typename
     }
     studentCPR
+    unsignedContractDoc
+    signedContractDoc
+    studentSignature
+    guardianSignature
+    bankName
+    IBAN
+    IBANLetterDoc
     createdAt
     updatedAt
     _version
@@ -1529,7 +1535,6 @@ export const onUpdateScholarship = /* GraphQL */ `subscription OnUpdateScholarsh
 ) {
   onUpdateScholarship(filter: $filter) {
     id
-    amount
     status
     applicationID
     application {
@@ -1555,6 +1560,13 @@ export const onUpdateScholarship = /* GraphQL */ `subscription OnUpdateScholarsh
       __typename
     }
     studentCPR
+    unsignedContractDoc
+    signedContractDoc
+    studentSignature
+    guardianSignature
+    bankName
+    IBAN
+    IBANLetterDoc
     createdAt
     updatedAt
     _version
@@ -1572,7 +1584,6 @@ export const onDeleteScholarship = /* GraphQL */ `subscription OnDeleteScholarsh
 ) {
   onDeleteScholarship(filter: $filter) {
     id
-    amount
     status
     applicationID
     application {
@@ -1598,6 +1609,13 @@ export const onDeleteScholarship = /* GraphQL */ `subscription OnDeleteScholarsh
       __typename
     }
     studentCPR
+    unsignedContractDoc
+    signedContractDoc
+    studentSignature
+    guardianSignature
+    bankName
+    IBAN
+    IBANLetterDoc
     createdAt
     updatedAt
     _version

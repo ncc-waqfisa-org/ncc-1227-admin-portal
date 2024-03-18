@@ -2,25 +2,30 @@ const AWS = require('aws-sdk');
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
 const tableName = 'Application-cw7beg2perdtnl7onnneec4jfa-staging';
+const universityTableName = 'University-cw7beg2perdtnl7onnneec4jfa-staging';
 
 exports.handler = async (event) => {
     console.log(`EVENT: ${JSON.stringify(event)}`);
 
-    const batchValue = event.queryStringParameters?.batch || '2024';
+    const batchValue = parseInt(event.queryStringParameters?.batch) || 2024;
 
     try {
         const countOfCurrentYearApplications = await getCountOfCurrentYearApplications(batchValue, tableName);
-        const scoreChart = await getScoreChart(batchValue, tableName);
+        const scoreHistogram = await getScoreHistogram(batchValue, tableName);
         const applicationsPerYearChart = await getApplicationsPerYearChart(batchValue, tableName);
-        const statusPieChart = await getStatusPieChart(tableName);
+        const statusPieChart = await getStatusPieChart(tableName, batchValue);
+        const gpaHistogramChart = await getGpaHistogram(tableName, batchValue);
+        const topUniversitiesList = await topUniversities();
 
         return {
             statusCode: 200,
             body: JSON.stringify({
                 countOfCurrentYearApplications,
-                scoreChart,
+                scoreHistogram,
                 applicationsPerYearChart,
-                statusPieChart
+                statusPieChart,
+                gpaHistogramChart,
+
             })
         };
     } catch (error) {
@@ -36,7 +41,7 @@ async function getCountOfCurrentYearApplications(batchValue, tableName) {
     const countParams = {
         TableName: tableName,
         Select: 'COUNT',
-        FilterExpression: 'begins_with(#batch, :batchValue)',
+        FilterExpression: '#batch = :batchValue',
         ExpressionAttributeNames: {
             '#batch': 'batch'
         },
@@ -49,7 +54,7 @@ async function getCountOfCurrentYearApplications(batchValue, tableName) {
     return countResult.Count;
 }
 
-async function getScoreChart(batchValue, tableName) {
+async function getScoreHistogram(batchValue, tableName) {
     const scoreParams = {
         TableName: tableName,
         ProjectionExpression: 'score',
@@ -65,8 +70,17 @@ async function getScoreChart(batchValue, tableName) {
     };
 
     const scoreResult = await dynamoDB.scan(scoreParams).promise();
-    const scores = scoreResult.Items.map(item => item.score);
-    return { scores };
+    // Implement histogram logic, the step size is 5
+    const histogramJson = scoreResult.Items.reduce((acc, item) => {
+        const score = item.score;
+        let bucket = Math.floor(score / 5) * 5;
+        const key = `${bucket}-${bucket + 5}`;
+        acc[key] = (acc[key] || 0) + 1;
+        return acc;
+    }, {});
+
+    return histogramJson;
+
 }
 
 async function getApplicationsPerYearChart(batchValue, tableName) {
@@ -86,13 +100,18 @@ async function getApplicationsPerYearChart(batchValue, tableName) {
     }, {});
 }
 
-async function getStatusPieChart(tableName) {
+async function getStatusPieChart(tableName, batchValue) {
     const statusParams = {
         TableName: tableName,
         ProjectionExpression: '#status',
         ExpressionAttributeNames: {
-            '#status': 'status'
-        }
+            '#status': 'status',
+            '#batch': 'batch'
+        },
+        FilterExpression: '#batch = :batchValue',
+        ExpressionAttributeValues: {
+            ':batchValue': batchValue
+        },
     };
 
     const statusResult = await dynamoDB.scan(statusParams).promise();
@@ -102,3 +121,56 @@ async function getStatusPieChart(tableName) {
         return acc;
     }, {});
 }
+async function getGpaHistogram(tableName, batchValue) {
+    const params = {
+        TableName: tableName,
+        ProjectionExpression: 'gpa',
+        FilterExpression: '#batch = :batchValue AND gpa BETWEEN :minGpa AND :maxGpa',
+        ExpressionAttributeNames: {
+            '#batch': 'batch'
+        },
+        ExpressionAttributeValues: {
+            ':batchValue': batchValue,
+            ':minGpa': 80,
+            ':maxGpa': 100
+        }
+    };
+
+    const result = await dynamoDB.scan(params).promise();
+    // Implement histogram logic, the step size is 5
+    const histogramJson = result.Items.reduce((acc, item) => {
+        const gpa = item.gpa;
+        let bucket = Math.floor(gpa / 5) * 5;
+
+        if(bucket===100) {
+            bucket = 95;
+        }
+        const key = `${bucket}-${bucket + 5}`;
+        acc[key] = (acc[key] || 0) + 1;
+        return acc;
+    }, {});
+
+    return histogramJson;
+}
+
+
+async function topUniversities(tableName, batchValue) {
+    const params = {
+        TableName: tableName,
+        ProjectionExpression: 'name, applications',
+        FilterExpression: 'applications > :applications AND #batch = :batchValue',
+        ExpressionAttributeValues: {
+            ':applications': 10,
+        },
+        ExpressionAttributeNames: {
+            '#batch': 'batch'
+        }
+    };
+
+    const result = await dynamoDB.scan(params).promise();
+    return result.Items;
+}
+
+
+
+

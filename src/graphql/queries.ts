@@ -1290,7 +1290,6 @@ export const syncBatches = /* GraphQL */ `query SyncBatches(
 export const getScholarship = /* GraphQL */ `query GetScholarship($id: ID!) {
   getScholarship(id: $id) {
     id
-    amount
     status
     applicationID
     application {
@@ -1316,6 +1315,13 @@ export const getScholarship = /* GraphQL */ `query GetScholarship($id: ID!) {
       __typename
     }
     studentCPR
+    unsignedContractDoc
+    signedContractDoc
+    studentSignature
+    guardianSignature
+    bankName
+    IBAN
+    IBANLetterDoc
     createdAt
     updatedAt
     _version
@@ -1336,10 +1342,16 @@ export const listScholarships = /* GraphQL */ `query ListScholarships(
   listScholarships(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      amount
       status
       applicationID
       studentCPR
+      unsignedContractDoc
+      signedContractDoc
+      studentSignature
+      guardianSignature
+      bankName
+      IBAN
+      IBANLetterDoc
       createdAt
       updatedAt
       _version
@@ -1370,10 +1382,16 @@ export const syncScholarships = /* GraphQL */ `query SyncScholarships(
   ) {
     items {
       id
-      amount
       status
       applicationID
       studentCPR
+      unsignedContractDoc
+      signedContractDoc
+      studentSignature
+      guardianSignature
+      bankName
+      IBAN
+      IBANLetterDoc
       createdAt
       updatedAt
       _version

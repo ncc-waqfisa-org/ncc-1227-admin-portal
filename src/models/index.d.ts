@@ -45,6 +45,13 @@ export enum FamilyIncome {
   OVER_1000 = "OVER_1000"
 }
 
+export enum ScholarshipStatus {
+  APPROVED = "APPROVED",
+  PENDING = "PENDING",
+  REJECTED = "REJECTED",
+  WITHDRAWN = "WITHDRAWN"
+}
+
 
 
 type EagerAttachment = {
@@ -563,10 +570,17 @@ type EagerScholarship = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly amount?: number | null;
-  readonly status?: Status | keyof typeof Status | null;
-  readonly applicationID?: string | null;
+  readonly status?: ScholarshipStatus | keyof typeof ScholarshipStatus | null;
+  readonly applicationID: string;
+  readonly application?: Application | null;
   readonly studentCPR?: string | null;
+  readonly unsignedContractDoc?: string | null;
+  readonly signedContractDoc?: string | null;
+  readonly studentSignature?: string | null;
+  readonly guardianSignature?: string | null;
+  readonly bankName?: string | null;
+  readonly IBAN?: string | null;
+  readonly IBANLetterDoc?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -577,10 +591,17 @@ type LazyScholarship = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
-  readonly amount?: number | null;
-  readonly status?: Status | keyof typeof Status | null;
-  readonly applicationID?: string | null;
+  readonly status?: ScholarshipStatus | keyof typeof ScholarshipStatus | null;
+  readonly applicationID: string;
+  readonly application: AsyncItem<Application | undefined>;
   readonly studentCPR?: string | null;
+  readonly unsignedContractDoc?: string | null;
+  readonly signedContractDoc?: string | null;
+  readonly studentSignature?: string | null;
+  readonly guardianSignature?: string | null;
+  readonly bankName?: string | null;
+  readonly IBAN?: string | null;
+  readonly IBANLetterDoc?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

@@ -1550,7 +1550,6 @@ export const createScholarship = /* GraphQL */ `mutation CreateScholarship(
 ) {
   createScholarship(input: $input, condition: $condition) {
     id
-    amount
     status
     applicationID
     application {
@@ -1576,6 +1575,13 @@ export const createScholarship = /* GraphQL */ `mutation CreateScholarship(
       __typename
     }
     studentCPR
+    unsignedContractDoc
+    signedContractDoc
+    studentSignature
+    guardianSignature
+    bankName
+    IBAN
+    IBANLetterDoc
     createdAt
     updatedAt
     _version
@@ -1594,7 +1600,6 @@ export const updateScholarship = /* GraphQL */ `mutation UpdateScholarship(
 ) {
   updateScholarship(input: $input, condition: $condition) {
     id
-    amount
     status
     applicationID
     application {
@@ -1620,6 +1625,13 @@ export const updateScholarship = /* GraphQL */ `mutation UpdateScholarship(
       __typename
     }
     studentCPR
+    unsignedContractDoc
+    signedContractDoc
+    studentSignature
+    guardianSignature
+    bankName
+    IBAN
+    IBANLetterDoc
     createdAt
     updatedAt
     _version
@@ -1638,7 +1650,6 @@ export const deleteScholarship = /* GraphQL */ `mutation DeleteScholarship(
 ) {
   deleteScholarship(input: $input, condition: $condition) {
     id
-    amount
     status
     applicationID
     application {
@@ -1664,6 +1675,13 @@ export const deleteScholarship = /* GraphQL */ `mutation DeleteScholarship(
       __typename
     }
     studentCPR
+    unsignedContractDoc
+    signedContractDoc
+    studentSignature
+    guardianSignature
+    bankName
+    IBAN
+    IBANLetterDoc
     createdAt
     updatedAt
     _version

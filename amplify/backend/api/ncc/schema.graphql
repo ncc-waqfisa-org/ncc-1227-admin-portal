@@ -184,11 +184,17 @@ type Batch @model @auth(rules: [{ allow: public }]) {
 
 type Scholarship @model @auth(rules: [{ allow: public }]) {
   id: ID!
-  amount: Float
-  status: Status
-  applicationID: String
-  application: Application
+  status: ScholarshipStatus
+  applicationID: ID!
+  application: Application @hasOne(fields: ["applicationID"])
   studentCPR: String
+  unsignedContractDoc: String
+  signedContractDoc: String
+  studentSignature: String
+  guardianSignature: String
+  bankName: String
+  IBAN: String
+  IBANLetterDoc: String
 }
 
 enum FamilyIncome {
@@ -198,4 +204,11 @@ enum FamilyIncome {
   LESS_THAN_1500
   MORE_THAN_1500
   OVER_1000
+}
+
+enum ScholarshipStatus {
+  APPROVED
+  PENDING
+  REJECTED
+  WITHDRAWN
 }

@@ -1633,18 +1633,11 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "amount": {
-                    "name": "amount",
-                    "isArray": false,
-                    "type": "Float",
-                    "isRequired": false,
-                    "attributes": []
-                },
                 "status": {
                     "name": "status",
                     "isArray": false,
                     "type": {
-                        "enum": "Status"
+                        "enum": "ScholarshipStatus"
                     },
                     "isRequired": false,
                     "attributes": []
@@ -1652,12 +1645,79 @@ export const schema = {
                 "applicationID": {
                     "name": "applicationID",
                     "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "application": {
+                    "name": "application",
+                    "isArray": false,
+                    "type": {
+                        "model": "Application"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "HAS_ONE",
+                        "associatedWith": [
+                            "id"
+                        ],
+                        "targetNames": [
+                            "applicationID"
+                        ]
+                    }
+                },
+                "studentCPR": {
+                    "name": "studentCPR",
+                    "isArray": false,
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
-                "studentCPR": {
-                    "name": "studentCPR",
+                "unsignedContractDoc": {
+                    "name": "unsignedContractDoc",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "signedContractDoc": {
+                    "name": "signedContractDoc",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "studentSignature": {
+                    "name": "studentSignature",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "guardianSignature": {
+                    "name": "guardianSignature",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "bankName": {
+                    "name": "bankName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "IBAN": {
+                    "name": "IBAN",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "IBANLetterDoc": {
+                    "name": "IBANLetterDoc",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -1763,9 +1823,18 @@ export const schema = {
                 "MORE_THAN_1500",
                 "OVER_1000"
             ]
+        },
+        "ScholarshipStatus": {
+            "name": "ScholarshipStatus",
+            "values": [
+                "APPROVED",
+                "PENDING",
+                "REJECTED",
+                "WITHDRAWN"
+            ]
         }
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "bfab02f07bd6e50bb7c299de762a02bc"
+    "version": "25736de226c19a46e43811a747d700ec"
 };

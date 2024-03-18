@@ -45,6 +45,13 @@ const FamilyIncome = {
   "OVER_1000": "OVER_1000"
 };
 
+const ScholarshipStatus = {
+  "APPROVED": "APPROVED",
+  "PENDING": "PENDING",
+  "REJECTED": "REJECTED",
+  "WITHDRAWN": "WITHDRAWN"
+};
+
 const { Attachment, Application, ProgramChoice, Program, University, AdminLog, StudentLog, Admin, ParentInfo, Student, Batch, Scholarship } = initSchema(schema);
 
 export {
@@ -66,5 +73,6 @@ export {
   Gender,
   SchoolType,
   Nationality,
-  FamilyIncome
+  FamilyIncome,
+  ScholarshipStatus
 };
