@@ -3,6 +3,7 @@ const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
 const tableName = 'Application-cw7beg2perdtnl7onnneec4jfa-staging';
 const universityTableName = 'University-cw7beg2perdtnl7onnneec4jfa-staging';
+const programChoiceTableName = 'ProgramChoice-cw7beg2perdtnl7onnneec4jfa-staging';
 
 exports.handler = async (event) => {
     console.log(`EVENT: ${JSON.stringify(event)}`);
@@ -15,7 +16,6 @@ exports.handler = async (event) => {
         const applicationsPerYearChart = await getApplicationsPerYearChart(batchValue, tableName);
         const statusPieChart = await getStatusPieChart(tableName, batchValue);
         const gpaHistogramChart = await getGpaHistogram(tableName, batchValue);
-        const topUniversitiesList = await topUniversities();
 
         return {
             statusCode: 200,
@@ -153,23 +153,6 @@ async function getGpaHistogram(tableName, batchValue) {
     return histogramJson;
 }
 
-
-async function topUniversities(tableName, batchValue) {
-    const params = {
-        TableName: tableName,
-        ProjectionExpression: 'name, applications',
-        FilterExpression: 'applications > :applications AND #batch = :batchValue',
-        ExpressionAttributeValues: {
-            ':applications': 10,
-        },
-        ExpressionAttributeNames: {
-            '#batch': 'batch'
-        }
-    };
-
-    const result = await dynamoDB.scan(params).promise();
-    return result.Items;
-}
 
 
 
