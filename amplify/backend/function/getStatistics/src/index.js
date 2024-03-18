@@ -89,7 +89,10 @@ async function getApplicationsPerYearChart(batchValue, tableName) {
 async function getStatusPieChart(tableName) {
     const statusParams = {
         TableName: tableName,
-        ProjectionExpression: 'status'
+        ProjectionExpression: '#status',
+        ExpressionAttributeNames: {
+            '#status': 'status'
+        }
     };
 
     const statusResult = await dynamoDB.scan(statusParams).promise();
