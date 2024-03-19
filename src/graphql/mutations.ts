@@ -1694,3 +1694,75 @@ export const deleteScholarship = /* GraphQL */ `mutation DeleteScholarship(
   APITypes.DeleteScholarshipMutationVariables,
   APITypes.DeleteScholarshipMutation
 >;
+export const createStatistics = /* GraphQL */ `mutation CreateStatistics(
+  $input: CreateStatisticsInput!
+  $condition: ModelStatisticsConditionInput
+) {
+  createStatistics(input: $input, condition: $condition) {
+    id
+    totalApplications
+    totalApplicationsPerBatch
+    totalApplicationsPerStatus
+    scoreHistogram
+    gpaHistogram
+    totalApplicationsPerUniversity
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.CreateStatisticsMutationVariables,
+  APITypes.CreateStatisticsMutation
+>;
+export const updateStatistics = /* GraphQL */ `mutation UpdateStatistics(
+  $input: UpdateStatisticsInput!
+  $condition: ModelStatisticsConditionInput
+) {
+  updateStatistics(input: $input, condition: $condition) {
+    id
+    totalApplications
+    totalApplicationsPerBatch
+    totalApplicationsPerStatus
+    scoreHistogram
+    gpaHistogram
+    totalApplicationsPerUniversity
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.UpdateStatisticsMutationVariables,
+  APITypes.UpdateStatisticsMutation
+>;
+export const deleteStatistics = /* GraphQL */ `mutation DeleteStatistics(
+  $input: DeleteStatisticsInput!
+  $condition: ModelStatisticsConditionInput
+) {
+  deleteStatistics(input: $input, condition: $condition) {
+    id
+    totalApplications
+    totalApplicationsPerBatch
+    totalApplicationsPerStatus
+    scoreHistogram
+    gpaHistogram
+    totalApplicationsPerUniversity
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.DeleteStatisticsMutationVariables,
+  APITypes.DeleteStatisticsMutation
+>;

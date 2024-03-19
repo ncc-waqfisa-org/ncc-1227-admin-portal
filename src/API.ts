@@ -1041,6 +1041,62 @@ export type DeleteScholarshipInput = {
   _version?: number | null,
 };
 
+export type CreateStatisticsInput = {
+  id?: string | null,
+  totalApplications?: number | null,
+  totalApplicationsPerBatch?: string | null,
+  totalApplicationsPerStatus?: string | null,
+  scoreHistogram?: string | null,
+  gpaHistogram?: string | null,
+  totalApplicationsPerUniversity?: string | null,
+  _version?: number | null,
+};
+
+export type ModelStatisticsConditionInput = {
+  totalApplications?: ModelIntInput | null,
+  totalApplicationsPerBatch?: ModelStringInput | null,
+  totalApplicationsPerStatus?: ModelStringInput | null,
+  scoreHistogram?: ModelStringInput | null,
+  gpaHistogram?: ModelStringInput | null,
+  totalApplicationsPerUniversity?: ModelStringInput | null,
+  and?: Array< ModelStatisticsConditionInput | null > | null,
+  or?: Array< ModelStatisticsConditionInput | null > | null,
+  not?: ModelStatisticsConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type Statistics = {
+  __typename: "Statistics",
+  id: string,
+  totalApplications?: number | null,
+  totalApplicationsPerBatch?: string | null,
+  totalApplicationsPerStatus?: string | null,
+  scoreHistogram?: string | null,
+  gpaHistogram?: string | null,
+  totalApplicationsPerUniversity?: string | null,
+  createdAt: string,
+  updatedAt: string,
+  _version: number,
+  _deleted?: boolean | null,
+  _lastChangedAt: number,
+};
+
+export type UpdateStatisticsInput = {
+  id: string,
+  totalApplications?: number | null,
+  totalApplicationsPerBatch?: string | null,
+  totalApplicationsPerStatus?: string | null,
+  scoreHistogram?: string | null,
+  gpaHistogram?: string | null,
+  totalApplicationsPerUniversity?: string | null,
+  _version?: number | null,
+};
+
+export type DeleteStatisticsInput = {
+  id: string,
+  _version?: number | null,
+};
+
 export type ModelAttachmentFilterInput = {
   id?: ModelIDInput | null,
   cprDoc?: ModelStringInput | null,
@@ -1292,6 +1348,27 @@ export type ModelScholarshipFilterInput = {
 export type ModelScholarshipConnection = {
   __typename: "ModelScholarshipConnection",
   items:  Array<Scholarship | null >,
+  nextToken?: string | null,
+  startedAt?: number | null,
+};
+
+export type ModelStatisticsFilterInput = {
+  id?: ModelIDInput | null,
+  totalApplications?: ModelIntInput | null,
+  totalApplicationsPerBatch?: ModelStringInput | null,
+  totalApplicationsPerStatus?: ModelStringInput | null,
+  scoreHistogram?: ModelStringInput | null,
+  gpaHistogram?: ModelStringInput | null,
+  totalApplicationsPerUniversity?: ModelStringInput | null,
+  and?: Array< ModelStatisticsFilterInput | null > | null,
+  or?: Array< ModelStatisticsFilterInput | null > | null,
+  not?: ModelStatisticsFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelStatisticsConnection = {
+  __typename: "ModelStatisticsConnection",
+  items:  Array<Statistics | null >,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -1551,6 +1628,19 @@ export type ModelSubscriptionScholarshipFilterInput = {
   IBANLetterDoc?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionScholarshipFilterInput | null > | null,
   or?: Array< ModelSubscriptionScholarshipFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelSubscriptionStatisticsFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  totalApplications?: ModelSubscriptionIntInput | null,
+  totalApplicationsPerBatch?: ModelSubscriptionStringInput | null,
+  totalApplicationsPerStatus?: ModelSubscriptionStringInput | null,
+  scoreHistogram?: ModelSubscriptionStringInput | null,
+  gpaHistogram?: ModelSubscriptionStringInput | null,
+  totalApplicationsPerUniversity?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionStatisticsFilterInput | null > | null,
+  or?: Array< ModelSubscriptionStatisticsFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,
 };
 
@@ -3204,6 +3294,75 @@ export type DeleteScholarshipMutation = {
   } | null,
 };
 
+export type CreateStatisticsMutationVariables = {
+  input: CreateStatisticsInput,
+  condition?: ModelStatisticsConditionInput | null,
+};
+
+export type CreateStatisticsMutation = {
+  createStatistics?:  {
+    __typename: "Statistics",
+    id: string,
+    totalApplications?: number | null,
+    totalApplicationsPerBatch?: string | null,
+    totalApplicationsPerStatus?: string | null,
+    scoreHistogram?: string | null,
+    gpaHistogram?: string | null,
+    totalApplicationsPerUniversity?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type UpdateStatisticsMutationVariables = {
+  input: UpdateStatisticsInput,
+  condition?: ModelStatisticsConditionInput | null,
+};
+
+export type UpdateStatisticsMutation = {
+  updateStatistics?:  {
+    __typename: "Statistics",
+    id: string,
+    totalApplications?: number | null,
+    totalApplicationsPerBatch?: string | null,
+    totalApplicationsPerStatus?: string | null,
+    scoreHistogram?: string | null,
+    gpaHistogram?: string | null,
+    totalApplicationsPerUniversity?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type DeleteStatisticsMutationVariables = {
+  input: DeleteStatisticsInput,
+  condition?: ModelStatisticsConditionInput | null,
+};
+
+export type DeleteStatisticsMutation = {
+  deleteStatistics?:  {
+    __typename: "Statistics",
+    id: string,
+    totalApplications?: number | null,
+    totalApplicationsPerBatch?: string | null,
+    totalApplicationsPerStatus?: string | null,
+    scoreHistogram?: string | null,
+    gpaHistogram?: string | null,
+    totalApplicationsPerUniversity?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
 export type GetAttachmentQueryVariables = {
   id: string,
 };
@@ -4520,6 +4679,87 @@ export type SyncScholarshipsQuery = {
   } | null,
 };
 
+export type GetStatisticsQueryVariables = {
+  id: string,
+};
+
+export type GetStatisticsQuery = {
+  getStatistics?:  {
+    __typename: "Statistics",
+    id: string,
+    totalApplications?: number | null,
+    totalApplicationsPerBatch?: string | null,
+    totalApplicationsPerStatus?: string | null,
+    scoreHistogram?: string | null,
+    gpaHistogram?: string | null,
+    totalApplicationsPerUniversity?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type ListStatisticsQueryVariables = {
+  filter?: ModelStatisticsFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListStatisticsQuery = {
+  listStatistics?:  {
+    __typename: "ModelStatisticsConnection",
+    items:  Array< {
+      __typename: "Statistics",
+      id: string,
+      totalApplications?: number | null,
+      totalApplicationsPerBatch?: string | null,
+      totalApplicationsPerStatus?: string | null,
+      scoreHistogram?: string | null,
+      gpaHistogram?: string | null,
+      totalApplicationsPerUniversity?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncStatisticsQueryVariables = {
+  filter?: ModelStatisticsFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncStatisticsQuery = {
+  syncStatistics?:  {
+    __typename: "ModelStatisticsConnection",
+    items:  Array< {
+      __typename: "Statistics",
+      id: string,
+      totalApplications?: number | null,
+      totalApplicationsPerBatch?: string | null,
+      totalApplicationsPerStatus?: string | null,
+      scoreHistogram?: string | null,
+      gpaHistogram?: string | null,
+      totalApplicationsPerUniversity?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
 export type ApplicationsByIdAndDateTimeQueryVariables = {
   id: string,
   dateTime?: ModelStringKeyConditionInput | null,
@@ -4708,6 +4948,42 @@ export type ApplicationsByScoreAndStatusQuery = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
       applicationAttachmentId?: string | null,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type ScholarshipsByStudentCPRAndStatusQueryVariables = {
+  studentCPR: string,
+  status?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelScholarshipFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ScholarshipsByStudentCPRAndStatusQuery = {
+  scholarshipsByStudentCPRAndStatus?:  {
+    __typename: "ModelScholarshipConnection",
+    items:  Array< {
+      __typename: "Scholarship",
+      id: string,
+      status?: ScholarshipStatus | null,
+      applicationID: string,
+      studentCPR?: string | null,
+      unsignedContractDoc?: string | null,
+      signedContractDoc?: string | null,
+      studentSignature?: string | null,
+      guardianSignature?: string | null,
+      bankName?: string | null,
+      IBAN?: string | null,
+      IBANLetterDoc?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -6320,6 +6596,72 @@ export type OnDeleteScholarshipSubscription = {
     bankName?: string | null,
     IBAN?: string | null,
     IBANLetterDoc?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnCreateStatisticsSubscriptionVariables = {
+  filter?: ModelSubscriptionStatisticsFilterInput | null,
+};
+
+export type OnCreateStatisticsSubscription = {
+  onCreateStatistics?:  {
+    __typename: "Statistics",
+    id: string,
+    totalApplications?: number | null,
+    totalApplicationsPerBatch?: string | null,
+    totalApplicationsPerStatus?: string | null,
+    scoreHistogram?: string | null,
+    gpaHistogram?: string | null,
+    totalApplicationsPerUniversity?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnUpdateStatisticsSubscriptionVariables = {
+  filter?: ModelSubscriptionStatisticsFilterInput | null,
+};
+
+export type OnUpdateStatisticsSubscription = {
+  onUpdateStatistics?:  {
+    __typename: "Statistics",
+    id: string,
+    totalApplications?: number | null,
+    totalApplicationsPerBatch?: string | null,
+    totalApplicationsPerStatus?: string | null,
+    scoreHistogram?: string | null,
+    gpaHistogram?: string | null,
+    totalApplicationsPerUniversity?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnDeleteStatisticsSubscriptionVariables = {
+  filter?: ModelSubscriptionStatisticsFilterInput | null,
+};
+
+export type OnDeleteStatisticsSubscription = {
+  onDeleteStatistics?:  {
+    __typename: "Statistics",
+    id: string,
+    totalApplications?: number | null,
+    totalApplicationsPerBatch?: string | null,
+    totalApplicationsPerStatus?: string | null,
+    scoreHistogram?: string | null,
+    gpaHistogram?: string | null,
+    totalApplicationsPerUniversity?: string | null,
     createdAt: string,
     updatedAt: string,
     _version: number,

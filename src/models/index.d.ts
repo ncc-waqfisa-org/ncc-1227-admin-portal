@@ -611,3 +611,41 @@ export declare type Scholarship = LazyLoading extends LazyLoadingDisabled ? Eage
 export declare const Scholarship: (new (init: ModelInit<Scholarship>) => Scholarship) & {
   copyOf(source: Scholarship, mutator: (draft: MutableModel<Scholarship>) => MutableModel<Scholarship> | void): Scholarship;
 }
+
+type EagerStatistics = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Statistics, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly totalApplications?: number | null;
+  readonly totalApplicationsPerBatch?: string | null;
+  readonly totalApplicationsPerStatus?: string | null;
+  readonly scoreHistogram?: string | null;
+  readonly gpaHistogram?: string | null;
+  readonly totalApplicationsPerUniversity?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyStatistics = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Statistics, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly totalApplications?: number | null;
+  readonly totalApplicationsPerBatch?: string | null;
+  readonly totalApplicationsPerStatus?: string | null;
+  readonly scoreHistogram?: string | null;
+  readonly gpaHistogram?: string | null;
+  readonly totalApplicationsPerUniversity?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Statistics = LazyLoading extends LazyLoadingDisabled ? EagerStatistics : LazyStatistics
+
+export declare const Statistics: (new (init: ModelInit<Statistics>) => Statistics) & {
+  copyOf(source: Statistics, mutator: (draft: MutableModel<Statistics>) => MutableModel<Statistics> | void): Statistics;
+}

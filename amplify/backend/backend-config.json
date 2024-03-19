@@ -75,6 +75,12 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "updateStatistics": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "updateStudentEmail": {
       "build": true,
       "providerPlugin": "awscloudformation",

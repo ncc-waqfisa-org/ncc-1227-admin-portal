@@ -52,7 +52,7 @@ const ScholarshipStatus = {
   "WITHDRAWN": "WITHDRAWN"
 };
 
-const { Attachment, Application, ProgramChoice, Program, University, AdminLog, StudentLog, Admin, ParentInfo, Student, Batch, Scholarship } = initSchema(schema);
+const { Attachment, Application, ProgramChoice, Program, University, AdminLog, StudentLog, Admin, ParentInfo, Student, Batch, Scholarship, Statistics } = initSchema(schema);
 
 export {
   Attachment,
@@ -67,6 +67,7 @@ export {
   Student,
   Batch,
   Scholarship,
+  Statistics,
   AdminRole,
   Status,
   Language,

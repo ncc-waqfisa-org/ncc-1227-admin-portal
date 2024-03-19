@@ -1628,3 +1628,72 @@ export const onDeleteScholarship = /* GraphQL */ `subscription OnDeleteScholarsh
   APITypes.OnDeleteScholarshipSubscriptionVariables,
   APITypes.OnDeleteScholarshipSubscription
 >;
+export const onCreateStatistics = /* GraphQL */ `subscription OnCreateStatistics(
+  $filter: ModelSubscriptionStatisticsFilterInput
+) {
+  onCreateStatistics(filter: $filter) {
+    id
+    totalApplications
+    totalApplicationsPerBatch
+    totalApplicationsPerStatus
+    scoreHistogram
+    gpaHistogram
+    totalApplicationsPerUniversity
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnCreateStatisticsSubscriptionVariables,
+  APITypes.OnCreateStatisticsSubscription
+>;
+export const onUpdateStatistics = /* GraphQL */ `subscription OnUpdateStatistics(
+  $filter: ModelSubscriptionStatisticsFilterInput
+) {
+  onUpdateStatistics(filter: $filter) {
+    id
+    totalApplications
+    totalApplicationsPerBatch
+    totalApplicationsPerStatus
+    scoreHistogram
+    gpaHistogram
+    totalApplicationsPerUniversity
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnUpdateStatisticsSubscriptionVariables,
+  APITypes.OnUpdateStatisticsSubscription
+>;
+export const onDeleteStatistics = /* GraphQL */ `subscription OnDeleteStatistics(
+  $filter: ModelSubscriptionStatisticsFilterInput
+) {
+  onDeleteStatistics(filter: $filter) {
+    id
+    totalApplications
+    totalApplicationsPerBatch
+    totalApplicationsPerStatus
+    scoreHistogram
+    gpaHistogram
+    totalApplicationsPerUniversity
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnDeleteStatisticsSubscriptionVariables,
+  APITypes.OnDeleteStatisticsSubscription
+>;

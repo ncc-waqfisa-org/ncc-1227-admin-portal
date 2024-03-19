@@ -41,7 +41,8 @@ exports.handler = async (event) => {
 
 async function exportApplicationsCsv(tableName, batchValue, status) {
     const applications = await getApplications(tableName, batchValue, status);
-    const csv = convertToCsv(applications);
+    const students = await getStudents(batchValue);
+    const csv = convertToCsv(applications, students);
     return uploadToS3(csv);
 }
 
@@ -56,14 +57,27 @@ async function getApplications(tableName, batchValue, status) {
             ':batchValue': batchValue
         }
     };
-    const applications = await dynamoDB.scan(params).promise();
-    return applications.Items;
+    let allApplications = [];
+
+    do {
+        const applications = await dynamoDB.scan(params).promise();
+        allApplications = allApplications.concat(applications.Items);
+
+        // Check if there are more items to fetch
+        params.ExclusiveStartKey = applications.LastEvaluatedKey;
+    } while (params.ExclusiveStartKey);
+
+    return allApplications;
 }
 
-function convertToCsv(applications) {
-    let csv = 'StudentCPR,Batch,Status,GPA,Score,SchoolType\n';
+
+function convertToCsv(applications, students) {
+    let csv = 'StudentCPR,Name,Gender,Nationality,Specialization,Phone,email,Batch,Status,GPA,Score,SchoolName,SchoolType\n';
     applications.forEach(application => {
-        csv += `${application.studentCPR},${application.batch},${application.status},${application.gpa},${application.score},${application.schoolType}\n`;
+        const student = students.find(student => student.cpr === application.studentCPR);
+        if(student) {
+            csv += `${application.studentCPR},${student?.fullName},${student?.gender},${student?.nationalityCategory},${student?.specialization},${student?.phone},${student?.email},${application.batch},${application.status},${application.gpa},${application.score},${application.schoolName},${application.schoolType}\n`;
+        }
     });
     return csv;
 }
@@ -77,6 +91,28 @@ async function uploadToS3(csv) {
     await s3.upload(params).promise();
     // return the URL of the uploaded file
     return s3.getSignedUrl('getObject', {Bucket: params.Bucket, Key: params.Key});
+}
+
+async function getStudents(batchValue) {
+    const params = {
+        TableName: 'Student-cw7beg2perdtnl7onnneec4jfa-staging',
+        // graduationDate is contained in the batch attribute
+        FilterExpression: 'begins_with(graduationDate, :batchValue)',
+        ExpressionAttributeValues: {
+            ':batchValue': batchValue
+        }
+    };
+    let allStudents = [];
+
+    do {
+        const students = await dynamoDB.scan(params).promise();
+        allStudents = allStudents.concat(students.Items);
+
+        // Check if there are more items to fetch
+        params.ExclusiveStartKey = students.LastEvaluatedKey;
+    } while (params.ExclusiveStartKey);
+
+    return allStudents;
 }
 
 

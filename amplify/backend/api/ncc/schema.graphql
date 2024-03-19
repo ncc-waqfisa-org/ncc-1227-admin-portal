@@ -187,7 +187,7 @@ type Scholarship @model @auth(rules: [{ allow: public }]) {
   status: ScholarshipStatus
   applicationID: ID!
   application: Application @hasOne(fields: ["applicationID"])
-  studentCPR: String
+  studentCPR: String @index(name: "byCPR", sortKeyFields: ["status"])
   unsignedContractDoc: String
   signedContractDoc: String
   studentSignature: String
@@ -195,6 +195,16 @@ type Scholarship @model @auth(rules: [{ allow: public }]) {
   bankName: String
   IBAN: String
   IBANLetterDoc: String
+}
+
+type Statistics @model @auth(rules: [{ allow: public }]) {
+  id: ID!
+  totalApplications: Int
+  totalApplicationsPerBatch: AWSJSON
+  totalApplicationsPerStatus: AWSJSON
+  scoreHistogram: AWSJSON
+  gpaHistogram: AWSJSON
+  totalApplicationsPerUniversity: AWSJSON
 }
 
 enum FamilyIncome {
