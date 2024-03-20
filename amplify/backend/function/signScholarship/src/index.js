@@ -1,18 +1,56 @@
 const AWS = require('aws-sdk');
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
-const s3 = new AWS.S3();
+const s3 = new AWS.S3({
+    'region': 'us-east-1',
+}
+);
 const { PDFDocument } = require('pdf-lib');
+const cognito = new AWS.CognitoIdentityServiceProvider();
 
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
-    console.log(`EVENT: ${JSON.stringify(event)}`);
-    const link = event.queryStringParameters?.link;
-    const studentSignature = event.queryStringParameters?.studentSignature;
-    const guardianSignature = event.queryStringParameters?.guardianSignature;
+    const { scholarshipId, studentSignature, guardianSignature } = JSON.parse(event.body);
+    if(!scholarshipId || !studentSignature || !guardianSignature) {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({ message: 'Missing required parameters, scholarshipId, studentSignature, guardianSignature' })
+        };
+    }
+    const token = event.headers.authorization.slice(7);
+    const cognitoUser = await cognito.getUser({AccessToken: token}).promise();
+
+
+    const scholarship = await getScholarship(scholarshipId);
+    if (!scholarship) {
+        return {
+            statusCode: 404,
+            body: JSON.stringify({ message: 'Scholarship not found' })
+        };
+    }
+
+    if (cognitoUser.Username !== scholarship.studentCPR) {
+        return {
+            statusCode: 403,
+            body: JSON.stringify({ message: 'You are not allowed to sign this scholarship' })
+        };
+    }
+    if (scholarship.status !== 'APPROVED') {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({ message: 'Scholarship has not been approved' })
+        };
+    }
+
+    const key = 'public/' + scholarship.unsignedContractDoc;
+    const link = s3.getSignedUrl('getObject', {Bucket: 'ncc1227bucket65406-staging', Key: key});
+
     const signedPdf = await signPDF(link, studentSignature, guardianSignature);
-    const signedPdfUrl = await uploadToS3(signedPdf);
+    const { signedPdfUrl, signedPdfKey } = await uploadToS3(signedPdf, scholarship.studentCPR);
+    const { studentSignatureUrl, guardianSignatureUrl, studentSignatureKey, guardianSignatureKey } = await uploadSignaturesToS3(studentSignature, guardianSignature, scholarship.studentCPR);
+
+    await updateScholarship(scholarshipId, signedPdfKey, studentSignatureKey, guardianSignatureKey);
 
     return {
         statusCode: 200,
@@ -21,7 +59,12 @@ exports.handler = async (event) => {
     //      "Access-Control-Allow-Origin": "*",
     //      "Access-Control-Allow-Headers": "*"
     //  },
-        body: JSON.stringify('Hello from Lambda!'),
+        body: JSON.stringify({
+            message: 'Scholarship signed' ,
+            signedPdfUrl: signedPdfUrl,
+            studentSignatureUrl: studentSignatureUrl,
+            guardianSignatureUrl: guardianSignatureUrl,
+        }),
     };
 };
 
@@ -70,20 +113,85 @@ async function signPDF(
 
     // Save the signed PDF
     const blob = new Blob([signedPdfBytes], { type: "application/pdf" });
+    // convert the blob to a buffer
+    const buffer = Buffer.from(await blob.arrayBuffer());
+    return buffer;
 
-    return blob;
 }
 
-async function uploadToS3(pdf) {
+async function uploadToS3(pdf, studentCPR) {
+
     const params = {
-        Bucket: 'scholarship',
-        Key: 'signed-scholarship.pdf',
+        Bucket: 'ncc1227bucket65406-staging',
+        Key: 'Student' + studentCPR + '/' + studentCPR + '#SIGNED_SCHOLARSHIP' + new Date().getMilliseconds(),
         Body: pdf,
     };
 
     await s3.upload(params).promise();
     // return the URL of the uploaded file
-    return s3.getSignedUrl('getObject', {Bucket: params.Bucket, Key: params.Key});
+    return {
+        signedPdfUrl: s3.getSignedUrl('getObject', {Bucket: params.Bucket, Key: params.Key}),
+        signedPdfKey: params.Key,
+    }
+}
+
+async function uploadSignaturesToS3(studentSignature, guardianSignature, studentCPR) {
+    const studentSignatureParams = {
+        Bucket: 'ncc1227bucket65406-staging',
+        Key: 'Student' + studentCPR + '/' + studentCPR + '#STUDENT_SIGNATURE' + new Date().getMilliseconds(),
+        Body: studentSignature,
+    };
+    const guardianSignatureParams = {
+        Bucket: 'ncc1227bucket65406-staging',
+        Key: 'Student' + studentCPR + '/' + studentCPR + '#GUARDIAN_SIGNATURE' + new Date().getMilliseconds(),
+        Body: guardianSignature,
+    };
+    await s3.upload(studentSignatureParams).promise();
+    await s3.upload(guardianSignatureParams).promise();
+    // return the URL of the uploaded file
+    return {
+        studentSignatureUrl: s3.getSignedUrl('getObject', {Bucket: studentSignatureParams.Bucket, Key: studentSignatureParams.Key}),
+        guardianSignatureUrl: s3.getSignedUrl('getObject', {Bucket: guardianSignatureParams.Bucket, Key: guardianSignatureParams.Key}),
+        studentSignatureKey: studentSignatureParams.Key,
+        guardianSignatureKey: guardianSignatureParams.Key,
+    };
+}
+
+
+async function updateScholarship(scholarshipId, signedPdfUrl, studentSignature, guardianSignature) {
+    const params = {
+        TableName: 'Scholarship-cw7beg2perdtnl7onnneec4jfa-staging',
+        Key: {
+            id: scholarshipId,
+        },
+        UpdateExpression: 'set #signedPdfUrl = :signedPdfUrl, studentSignature = :studentSignature, guardianSignature = :guardianSignature',
+        ExpressionAttributeNames: {
+            '#signedPdfUrl': 'signedPdfUrl',
+        },
+        ExpressionAttributeValues: {
+            ':signedPdfUrl': signedPdfUrl,
+            ':studentSignature': studentSignature,
+            ':guardianSignature': guardianSignature,
+        }
+    };
+    await dynamoDB.update(params).promise();
+}
+
+async function fetchPdfAsUint8Array(link) {
+    const response = await fetch(link);
+    const arrayBuffer = await response.arrayBuffer();
+    return new Uint8Array(arrayBuffer);
+}
+
+async function getScholarship(scholarshipId) {
+    const params = {
+        TableName: 'Scholarship-cw7beg2perdtnl7onnneec4jfa-staging',
+        Key: {
+            id: scholarshipId,
+        },
+    };
+    const { Item } = await dynamoDB.get(params).promise();
+    return Item;
 }
 
 
