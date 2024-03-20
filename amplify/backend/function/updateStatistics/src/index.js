@@ -7,7 +7,7 @@ const AWS = require('aws-sdk');
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
 const tableName = 'Application-cw7beg2perdtnl7onnneec4jfa-staging';
-const batchValue = 2023;
+const batchValue = new Date().getFullYear();
 
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}

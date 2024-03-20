@@ -30,17 +30,11 @@ exports.handler = async (event) => {
 async function getStatistics(batchValue) {
     const params = {
         TableName: 'Statistics-cw7beg2perdtnl7onnneec4jfa-staging',
-        IndexName: 'byBatch',
-        KeyConditionExpression: '#batch = :batchValue',
-        ExpressionAttributeNames: {
-            '#batch': 'batch'
-        },
-        ExpressionAttributeValues: {
-            ':batchValue': batchValue
-        },
-        ScanIndexForward: false,
+        Key: {
+            id: batchValue
+        }
     };
-    const { Item } = await dynamoDB.query(params).promise();
+    const { Item } = await dynamoDB.get(params).promise();
     return Item;
 }
 

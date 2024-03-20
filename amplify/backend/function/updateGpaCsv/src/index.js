@@ -1,3 +1,8 @@
+const AWS = require('aws-sdk');
+const csv = require('csv-parser');
+
+const dynamoDB = new AWS.DynamoDB.DocumentClient();
+const tableName = 'Application-cw7beg2perdtnl7onnneec4jfa-staging';
 
 
 /**
@@ -15,3 +20,8 @@ exports.handler = async (event) => {
         body: JSON.stringify('Hello from Lambda!'),
     };
 };
+
+async function bulkUpdateApplications(tableName, batchValue, csv){
+
+
+}
