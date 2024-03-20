@@ -614,13 +614,12 @@ export declare const Scholarship: (new (init: ModelInit<Scholarship>) => Scholar
 
 type EagerStatistics = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Statistics, 'id'>;
+    identifier: OptionallyManagedIdentifier<Statistics, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
-  readonly id: string;
-  readonly batch?: number | null;
+  readonly id: number;
+  readonly batch: number;
   readonly totalApplications?: number | null;
-  readonly totalApplicationsPerBatch?: string | null;
   readonly totalApplicationsPerStatus?: string | null;
   readonly scoreHistogram?: string | null;
   readonly gpaHistogram?: string | null;
@@ -631,13 +630,12 @@ type EagerStatistics = {
 
 type LazyStatistics = {
   readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Statistics, 'id'>;
+    identifier: OptionallyManagedIdentifier<Statistics, 'id'>;
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
-  readonly id: string;
-  readonly batch?: number | null;
+  readonly id: number;
+  readonly batch: number;
   readonly totalApplications?: number | null;
-  readonly totalApplicationsPerBatch?: string | null;
   readonly totalApplicationsPerStatus?: string | null;
   readonly scoreHistogram?: string | null;
   readonly gpaHistogram?: string | null;

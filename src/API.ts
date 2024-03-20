@@ -1042,10 +1042,9 @@ export type DeleteScholarshipInput = {
 };
 
 export type CreateStatisticsInput = {
-  id?: string | null,
-  batch?: number | null,
+  id: number,
+  batch: number,
   totalApplications?: number | null,
-  totalApplicationsPerBatch?: string | null,
   totalApplicationsPerStatus?: string | null,
   scoreHistogram?: string | null,
   gpaHistogram?: string | null,
@@ -1056,7 +1055,6 @@ export type CreateStatisticsInput = {
 export type ModelStatisticsConditionInput = {
   batch?: ModelIntInput | null,
   totalApplications?: ModelIntInput | null,
-  totalApplicationsPerBatch?: ModelStringInput | null,
   totalApplicationsPerStatus?: ModelStringInput | null,
   scoreHistogram?: ModelStringInput | null,
   gpaHistogram?: ModelStringInput | null,
@@ -1069,10 +1067,9 @@ export type ModelStatisticsConditionInput = {
 
 export type Statistics = {
   __typename: "Statistics",
-  id: string,
-  batch?: number | null,
+  id: number,
+  batch: number,
   totalApplications?: number | null,
-  totalApplicationsPerBatch?: string | null,
   totalApplicationsPerStatus?: string | null,
   scoreHistogram?: string | null,
   gpaHistogram?: string | null,
@@ -1085,10 +1082,9 @@ export type Statistics = {
 };
 
 export type UpdateStatisticsInput = {
-  id: string,
+  id: number,
   batch?: number | null,
   totalApplications?: number | null,
-  totalApplicationsPerBatch?: string | null,
   totalApplicationsPerStatus?: string | null,
   scoreHistogram?: string | null,
   gpaHistogram?: string | null,
@@ -1097,7 +1093,7 @@ export type UpdateStatisticsInput = {
 };
 
 export type DeleteStatisticsInput = {
-  id: string,
+  id: number,
   _version?: number | null,
 };
 
@@ -1357,10 +1353,9 @@ export type ModelScholarshipConnection = {
 };
 
 export type ModelStatisticsFilterInput = {
-  id?: ModelIDInput | null,
+  id?: ModelIntInput | null,
   batch?: ModelIntInput | null,
   totalApplications?: ModelIntInput | null,
-  totalApplicationsPerBatch?: ModelStringInput | null,
   totalApplicationsPerStatus?: ModelStringInput | null,
   scoreHistogram?: ModelStringInput | null,
   gpaHistogram?: ModelStringInput | null,
@@ -1646,10 +1641,9 @@ export type ModelSubscriptionScholarshipFilterInput = {
 };
 
 export type ModelSubscriptionStatisticsFilterInput = {
-  id?: ModelSubscriptionIDInput | null,
+  id?: ModelSubscriptionIntInput | null,
   batch?: ModelSubscriptionIntInput | null,
   totalApplications?: ModelSubscriptionIntInput | null,
-  totalApplicationsPerBatch?: ModelSubscriptionStringInput | null,
   totalApplicationsPerStatus?: ModelSubscriptionStringInput | null,
   scoreHistogram?: ModelSubscriptionStringInput | null,
   gpaHistogram?: ModelSubscriptionStringInput | null,
@@ -3317,10 +3311,9 @@ export type CreateStatisticsMutationVariables = {
 export type CreateStatisticsMutation = {
   createStatistics?:  {
     __typename: "Statistics",
-    id: string,
-    batch?: number | null,
+    id: number,
+    batch: number,
     totalApplications?: number | null,
-    totalApplicationsPerBatch?: string | null,
     totalApplicationsPerStatus?: string | null,
     scoreHistogram?: string | null,
     gpaHistogram?: string | null,
@@ -3341,10 +3334,9 @@ export type UpdateStatisticsMutationVariables = {
 export type UpdateStatisticsMutation = {
   updateStatistics?:  {
     __typename: "Statistics",
-    id: string,
-    batch?: number | null,
+    id: number,
+    batch: number,
     totalApplications?: number | null,
-    totalApplicationsPerBatch?: string | null,
     totalApplicationsPerStatus?: string | null,
     scoreHistogram?: string | null,
     gpaHistogram?: string | null,
@@ -3365,10 +3357,9 @@ export type DeleteStatisticsMutationVariables = {
 export type DeleteStatisticsMutation = {
   deleteStatistics?:  {
     __typename: "Statistics",
-    id: string,
-    batch?: number | null,
+    id: number,
+    batch: number,
     totalApplications?: number | null,
-    totalApplicationsPerBatch?: string | null,
     totalApplicationsPerStatus?: string | null,
     scoreHistogram?: string | null,
     gpaHistogram?: string | null,
@@ -4698,16 +4689,15 @@ export type SyncScholarshipsQuery = {
 };
 
 export type GetStatisticsQueryVariables = {
-  id: string,
+  id: number,
 };
 
 export type GetStatisticsQuery = {
   getStatistics?:  {
     __typename: "Statistics",
-    id: string,
-    batch?: number | null,
+    id: number,
+    batch: number,
     totalApplications?: number | null,
-    totalApplicationsPerBatch?: string | null,
     totalApplicationsPerStatus?: string | null,
     scoreHistogram?: string | null,
     gpaHistogram?: string | null,
@@ -4721,9 +4711,11 @@ export type GetStatisticsQuery = {
 };
 
 export type ListStatisticsQueryVariables = {
+  id?: number | null,
   filter?: ModelStatisticsFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
+  sortDirection?: ModelSortDirection | null,
 };
 
 export type ListStatisticsQuery = {
@@ -4731,10 +4723,9 @@ export type ListStatisticsQuery = {
     __typename: "ModelStatisticsConnection",
     items:  Array< {
       __typename: "Statistics",
-      id: string,
-      batch?: number | null,
+      id: number,
+      batch: number,
       totalApplications?: number | null,
-      totalApplicationsPerBatch?: string | null,
       totalApplicationsPerStatus?: string | null,
       scoreHistogram?: string | null,
       gpaHistogram?: string | null,
@@ -4762,10 +4753,9 @@ export type SyncStatisticsQuery = {
     __typename: "ModelStatisticsConnection",
     items:  Array< {
       __typename: "Statistics",
-      id: string,
-      batch?: number | null,
+      id: number,
+      batch: number,
       totalApplications?: number | null,
-      totalApplicationsPerBatch?: string | null,
       totalApplicationsPerStatus?: string | null,
       scoreHistogram?: string | null,
       gpaHistogram?: string | null,
@@ -5025,10 +5015,9 @@ export type StatisticsByBatchAndTotalApplicationsQuery = {
     __typename: "ModelStatisticsConnection",
     items:  Array< {
       __typename: "Statistics",
-      id: string,
-      batch?: number | null,
+      id: number,
+      batch: number,
       totalApplications?: number | null,
-      totalApplicationsPerBatch?: string | null,
       totalApplicationsPerStatus?: string | null,
       scoreHistogram?: string | null,
       gpaHistogram?: string | null,
@@ -6665,10 +6654,9 @@ export type OnCreateStatisticsSubscriptionVariables = {
 export type OnCreateStatisticsSubscription = {
   onCreateStatistics?:  {
     __typename: "Statistics",
-    id: string,
-    batch?: number | null,
+    id: number,
+    batch: number,
     totalApplications?: number | null,
-    totalApplicationsPerBatch?: string | null,
     totalApplicationsPerStatus?: string | null,
     scoreHistogram?: string | null,
     gpaHistogram?: string | null,
@@ -6688,10 +6676,9 @@ export type OnUpdateStatisticsSubscriptionVariables = {
 export type OnUpdateStatisticsSubscription = {
   onUpdateStatistics?:  {
     __typename: "Statistics",
-    id: string,
-    batch?: number | null,
+    id: number,
+    batch: number,
     totalApplications?: number | null,
-    totalApplicationsPerBatch?: string | null,
     totalApplicationsPerStatus?: string | null,
     scoreHistogram?: string | null,
     gpaHistogram?: string | null,
@@ -6711,10 +6698,9 @@ export type OnDeleteStatisticsSubscriptionVariables = {
 export type OnDeleteStatisticsSubscription = {
   onDeleteStatistics?:  {
     __typename: "Statistics",
-    id: string,
-    batch?: number | null,
+    id: number,
+    batch: number,
     totalApplications?: number | null,
-    totalApplicationsPerBatch?: string | null,
     totalApplicationsPerStatus?: string | null,
     scoreHistogram?: string | null,
     gpaHistogram?: string | null,

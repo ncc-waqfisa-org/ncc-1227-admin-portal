@@ -1635,7 +1635,6 @@ export const onCreateStatistics = /* GraphQL */ `subscription OnCreateStatistics
     id
     batch
     totalApplications
-    totalApplicationsPerBatch
     totalApplicationsPerStatus
     scoreHistogram
     gpaHistogram
@@ -1659,7 +1658,6 @@ export const onUpdateStatistics = /* GraphQL */ `subscription OnUpdateStatistics
     id
     batch
     totalApplications
-    totalApplicationsPerBatch
     totalApplicationsPerStatus
     scoreHistogram
     gpaHistogram
@@ -1683,7 +1681,6 @@ export const onDeleteStatistics = /* GraphQL */ `subscription OnDeleteStatistics
     id
     batch
     totalApplications
-    totalApplicationsPerBatch
     totalApplicationsPerStatus
     scoreHistogram
     gpaHistogram

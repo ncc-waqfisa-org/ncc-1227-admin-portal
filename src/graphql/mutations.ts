@@ -1702,7 +1702,6 @@ export const createStatistics = /* GraphQL */ `mutation CreateStatistics(
     id
     batch
     totalApplications
-    totalApplicationsPerBatch
     totalApplicationsPerStatus
     scoreHistogram
     gpaHistogram
@@ -1727,7 +1726,6 @@ export const updateStatistics = /* GraphQL */ `mutation UpdateStatistics(
     id
     batch
     totalApplications
-    totalApplicationsPerBatch
     totalApplicationsPerStatus
     scoreHistogram
     gpaHistogram
@@ -1752,7 +1750,6 @@ export const deleteStatistics = /* GraphQL */ `mutation DeleteStatistics(
     id
     batch
     totalApplications
-    totalApplicationsPerBatch
     totalApplicationsPerStatus
     scoreHistogram
     gpaHistogram

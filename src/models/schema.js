@@ -1781,7 +1781,7 @@ export const schema = {
                 "id": {
                     "name": "id",
                     "isArray": false,
-                    "type": "ID",
+                    "type": "Int",
                     "isRequired": true,
                     "attributes": []
                 },
@@ -1789,20 +1789,13 @@ export const schema = {
                     "name": "batch",
                     "isArray": false,
                     "type": "Int",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "totalApplications": {
                     "name": "totalApplications",
                     "isArray": false,
                     "type": "Int",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "totalApplicationsPerBatch": {
-                    "name": "totalApplicationsPerBatch",
-                    "isArray": false,
-                    "type": "AWSJSON",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -1857,6 +1850,14 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "fields": [
+                            "id"
+                        ]
+                    }
                 },
                 {
                     "type": "key",
@@ -1957,5 +1958,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "3488c6fdff8d9d64c2ce2b2c40738a5c"
+    "version": "14bcba57795c5109f6c3b1f8bdc64ca8"
 };

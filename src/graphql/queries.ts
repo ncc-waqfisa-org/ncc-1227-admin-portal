@@ -1408,12 +1408,11 @@ export const syncScholarships = /* GraphQL */ `query SyncScholarships(
   APITypes.SyncScholarshipsQueryVariables,
   APITypes.SyncScholarshipsQuery
 >;
-export const getStatistics = /* GraphQL */ `query GetStatistics($id: ID!) {
+export const getStatistics = /* GraphQL */ `query GetStatistics($id: Int!) {
   getStatistics(id: $id) {
     id
     batch
     totalApplications
-    totalApplicationsPerBatch
     totalApplicationsPerStatus
     scoreHistogram
     gpaHistogram
@@ -1431,16 +1430,23 @@ export const getStatistics = /* GraphQL */ `query GetStatistics($id: ID!) {
   APITypes.GetStatisticsQuery
 >;
 export const listStatistics = /* GraphQL */ `query ListStatistics(
+  $id: Int
   $filter: ModelStatisticsFilterInput
   $limit: Int
   $nextToken: String
+  $sortDirection: ModelSortDirection
 ) {
-  listStatistics(filter: $filter, limit: $limit, nextToken: $nextToken) {
+  listStatistics(
+    id: $id
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    sortDirection: $sortDirection
+  ) {
     items {
       id
       batch
       totalApplications
-      totalApplicationsPerBatch
       totalApplicationsPerStatus
       scoreHistogram
       gpaHistogram
@@ -1477,7 +1483,6 @@ export const syncStatistics = /* GraphQL */ `query SyncStatistics(
       id
       batch
       totalApplications
-      totalApplicationsPerBatch
       totalApplicationsPerStatus
       scoreHistogram
       gpaHistogram
@@ -1795,7 +1800,6 @@ export const statisticsByBatchAndTotalApplications = /* GraphQL */ `query Statis
       id
       batch
       totalApplications
-      totalApplicationsPerBatch
       totalApplicationsPerStatus
       scoreHistogram
       gpaHistogram
