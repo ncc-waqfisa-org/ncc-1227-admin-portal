@@ -4,22 +4,20 @@
 Amplify Params - DO NOT EDIT */
 
 const AWS = require('aws-sdk');
-const {now} = require("lodash");
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
 const tableName = 'Application-cw7beg2perdtnl7onnneec4jfa-staging';
+const batchValue = new Date().getFullYear();
+
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
     console.log(`EVENT: ${JSON.stringify(event)}`);
     try {
-        const batchValue = now().getFullYear();
+        await updateStatistics(tableName, batchValue);
 
-        const scoreHistogram = await getScoreHistograms(tableName);
-        const applicationsPerYearChart = await getApplicationsPerYearChart(tableName, batchValue);
-        const statusPieChart = await getStatusPieChart(tableName, batchValue);
-        const gpaHistogramChart = await getGpaHistogram(tableName, batchValue);
+
         return {
             statusCode: 200,
             //  Uncomment below to enable CORS requests
@@ -27,7 +25,9 @@ exports.handler = async (event) => {
             //      "Access-Control-Allow-Origin": "*",
             //      "Access-Control-Allow-Headers": "*"
             //  },
-            body: JSON.stringify('Hello from Lambda!'),
+            body: JSON.stringify({
+                message: 'Statistics updated'
+            })
         };
     } catch (error) {
         console.error('Error getting statistics', error);
@@ -47,7 +47,7 @@ async function getScoreHistograms(tableName, batchValue) {
     const scoreParams = {
         TableName: tableName,
         ProjectionExpression: 'score',
-        FilterExpression: '#batch = :batchValue score BETWEEN :minScore AND :maxScore',
+        FilterExpression: '#batch = :batchValue AND score BETWEEN :minScore AND :maxScore',
         ExpressionAttributeNames: {
             '#batch': 'batch'
         },
@@ -109,41 +109,114 @@ async function getGpaHistogram(tableName, batchValue) {
     return histogramJson;
 }
 
-async function getApplicationsPerYearChart(batchValue, tableName) {
-    const applicationsPerYearParams = {
-        TableName: tableName,
-        ProjectionExpression: '#batch',
-        ExpressionAttributeNames: {
-            '#batch': 'batch'
-        }
-    };
+async function getApplicationsPerYearChart(tableName, batchValue) {
+    let applicationsPerYear = {};
+    let lastEvaluatedKey = null;
 
-    const applicationsPerYearResult = await dynamoDB.scan(applicationsPerYearParams).promise();
-    return applicationsPerYearResult.Items.reduce((acc, item) => {
-        const batch = item.batch;
-        acc[batch] = (acc[batch] || 0) + 1;
-        return acc;
-    }, {});
+    do {
+        const applicationsPerYearParams = {
+            TableName: tableName,
+            ProjectionExpression: '#batch',
+            ExpressionAttributeNames: {
+                '#batch': 'batch'
+            },
+            ExclusiveStartKey: lastEvaluatedKey
+        };
+
+        const applicationsPerYearResult = await dynamoDB.scan(applicationsPerYearParams).promise();
+
+        applicationsPerYearResult.Items.forEach(item => {
+            const batch = item.batch;
+            applicationsPerYear[batch] = (applicationsPerYear[batch] || 0) + 1;
+        });
+
+        lastEvaluatedKey = applicationsPerYearResult.LastEvaluatedKey;
+    } while (lastEvaluatedKey);
+
+    return applicationsPerYear;
 }
 
+
 async function getStatusPieChart(tableName, batchValue) {
-    const statusParams = {
-        TableName: tableName,
-        ProjectionExpression: '#status',
-        ExpressionAttributeNames: {
-            '#status': 'status',
+    let statusCounts = {};
+
+    let lastEvaluatedKey = null;
+    do {
+        const statusParams = {
+            TableName: tableName,
+            ProjectionExpression: '#status',
+            ExpressionAttributeNames: {
+                '#status': 'status',
+                '#batch': 'batch'
+            },
+            FilterExpression: '#batch = :batchValue',
+            ExpressionAttributeValues: {
+                ':batchValue': batchValue
+            },
+            ExclusiveStartKey: lastEvaluatedKey
+        };
+
+        const statusResult = await dynamoDB.scan(statusParams).promise();
+
+        statusResult.Items.forEach(item => {
+            const status = item.status;
+            statusCounts[status] = (statusCounts[status] || 0) + 1;
+        });
+
+        lastEvaluatedKey = statusResult.LastEvaluatedKey;
+    } while (lastEvaluatedKey);
+
+    return statusCounts;
+}
+
+
+async function updateStatistics(tableName, batchValue) {
+    const scoreHistogram = await getScoreHistograms(tableName, batchValue);
+    const applicationsPerYearChart = await getApplicationsPerYearChart(tableName, batchValue);
+    const statusPieChart = await getStatusPieChart(tableName, batchValue);
+    const gpaHistogramChart = await getGpaHistogram(tableName, batchValue);
+
+    const params = {
+        TableName: 'Statistics-cw7beg2perdtnl7onnneec4jfa-staging',
+        Item: {
+            batch: batchValue,
+            totalApplications: applicationsPerYearChart[batchValue],
+            totalApplicationsPerBatch: applicationsPerYearChart,
+            totalApplicationsPerStatus: statusPieChart,
+            scoreHistogram: scoreHistogram,
+            gpaHistogram:  gpaHistogramChart,
+            totalApplicationsPerUniversity: {},
+        },
+        IndexName: 'byBatch',
+        keyConditionExpression: '#batch = :batchValue',
+        expressionAttributeNames: {
             '#batch': 'batch'
         },
-        FilterExpression: '#batch = :batchValue',
-        ExpressionAttributeValues: {
+        expressionAttributeValues: {
             ':batchValue': batchValue
         },
     };
 
-    const statusResult = await dynamoDB.scan(statusParams).promise();
-    return statusResult.Items.reduce((acc, item) => {
-        const status = item.status;
-        acc[status] = (acc[status] || 0) + 1;
-        return acc;
-    }, {});
+    await dynamoDB.put(params).promise();
+
+
 }
+
+// async function checkIfStatisticsExist(batchValue) {
+//     const params = {
+//         TableName: 'Statistics-cw7beg2perdtnl7onnneec4jfa-staging',
+//         IndexName: 'byBatch',
+//         KeyConditionExpression: '#batch = :batchValue',
+//         ExpressionAttributeNames: {
+//             '#batch': 'batch'
+//         },
+//         ExpressionAttributeValues: {
+//             ':batchValue': batchValue
+//         },
+//         ScanIndexForward: false,
+//     };
+//
+//     const { Items } = await dynamoDB.query(params).promise();
+//
+//     return Items.length > 0;
+// }

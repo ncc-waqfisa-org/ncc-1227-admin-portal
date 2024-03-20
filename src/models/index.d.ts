@@ -618,6 +618,7 @@ type EagerStatistics = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
+  readonly batch?: number | null;
   readonly totalApplications?: number | null;
   readonly totalApplicationsPerBatch?: string | null;
   readonly totalApplicationsPerStatus?: string | null;
@@ -634,6 +635,7 @@ type LazyStatistics = {
     readOnlyFields: 'createdAt' | 'updatedAt';
   };
   readonly id: string;
+  readonly batch?: number | null;
   readonly totalApplications?: number | null;
   readonly totalApplicationsPerBatch?: string | null;
   readonly totalApplicationsPerStatus?: string | null;

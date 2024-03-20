@@ -1411,6 +1411,7 @@ export const syncScholarships = /* GraphQL */ `query SyncScholarships(
 export const getStatistics = /* GraphQL */ `query GetStatistics($id: ID!) {
   getStatistics(id: $id) {
     id
+    batch
     totalApplications
     totalApplicationsPerBatch
     totalApplicationsPerStatus
@@ -1437,6 +1438,7 @@ export const listStatistics = /* GraphQL */ `query ListStatistics(
   listStatistics(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
+      batch
       totalApplications
       totalApplicationsPerBatch
       totalApplicationsPerStatus
@@ -1473,6 +1475,7 @@ export const syncStatistics = /* GraphQL */ `query SyncStatistics(
   ) {
     items {
       id
+      batch
       totalApplications
       totalApplicationsPerBatch
       totalApplicationsPerStatus
@@ -1771,4 +1774,45 @@ export const scholarshipsByStudentCPRAndStatus = /* GraphQL */ `query Scholarshi
 ` as GeneratedQuery<
   APITypes.ScholarshipsByStudentCPRAndStatusQueryVariables,
   APITypes.ScholarshipsByStudentCPRAndStatusQuery
+>;
+export const statisticsByBatchAndTotalApplications = /* GraphQL */ `query StatisticsByBatchAndTotalApplications(
+  $batch: Int!
+  $totalApplications: ModelIntKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelStatisticsFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  statisticsByBatchAndTotalApplications(
+    batch: $batch
+    totalApplications: $totalApplications
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      batch
+      totalApplications
+      totalApplicationsPerBatch
+      totalApplicationsPerStatus
+      scoreHistogram
+      gpaHistogram
+      totalApplicationsPerUniversity
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.StatisticsByBatchAndTotalApplicationsQueryVariables,
+  APITypes.StatisticsByBatchAndTotalApplicationsQuery
 >;

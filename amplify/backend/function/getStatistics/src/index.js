@@ -11,11 +11,11 @@ exports.handler = async (event) => {
     const batchValue = parseInt(event.queryStringParameters?.batch) || 2024;
 
     try {
-
-
+        const statistics = await getStatistics(batchValue);
         return {
             statusCode: 200,
             body: JSON.stringify({
+                statistics
             })
         };
     } catch (error) {
@@ -28,7 +28,20 @@ exports.handler = async (event) => {
 };
 
 async function getStatistics(batchValue) {
-
+    const params = {
+        TableName: 'Statistics-cw7beg2perdtnl7onnneec4jfa-staging',
+        IndexName: 'byBatch',
+        KeyConditionExpression: '#batch = :batchValue',
+        ExpressionAttributeNames: {
+            '#batch': 'batch'
+        },
+        ExpressionAttributeValues: {
+            ':batchValue': batchValue
+        },
+        ScanIndexForward: false,
+    };
+    const { Item } = await dynamoDB.query(params).promise();
+    return Item;
 }
 
 

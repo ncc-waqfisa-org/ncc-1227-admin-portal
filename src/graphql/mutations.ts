@@ -1700,6 +1700,7 @@ export const createStatistics = /* GraphQL */ `mutation CreateStatistics(
 ) {
   createStatistics(input: $input, condition: $condition) {
     id
+    batch
     totalApplications
     totalApplicationsPerBatch
     totalApplicationsPerStatus
@@ -1724,6 +1725,7 @@ export const updateStatistics = /* GraphQL */ `mutation UpdateStatistics(
 ) {
   updateStatistics(input: $input, condition: $condition) {
     id
+    batch
     totalApplications
     totalApplicationsPerBatch
     totalApplicationsPerStatus
@@ -1748,6 +1750,7 @@ export const deleteStatistics = /* GraphQL */ `mutation DeleteStatistics(
 ) {
   deleteStatistics(input: $input, condition: $condition) {
     id
+    batch
     totalApplications
     totalApplicationsPerBatch
     totalApplicationsPerStatus

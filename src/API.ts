@@ -1043,6 +1043,7 @@ export type DeleteScholarshipInput = {
 
 export type CreateStatisticsInput = {
   id?: string | null,
+  batch?: number | null,
   totalApplications?: number | null,
   totalApplicationsPerBatch?: string | null,
   totalApplicationsPerStatus?: string | null,
@@ -1053,6 +1054,7 @@ export type CreateStatisticsInput = {
 };
 
 export type ModelStatisticsConditionInput = {
+  batch?: ModelIntInput | null,
   totalApplications?: ModelIntInput | null,
   totalApplicationsPerBatch?: ModelStringInput | null,
   totalApplicationsPerStatus?: ModelStringInput | null,
@@ -1068,6 +1070,7 @@ export type ModelStatisticsConditionInput = {
 export type Statistics = {
   __typename: "Statistics",
   id: string,
+  batch?: number | null,
   totalApplications?: number | null,
   totalApplicationsPerBatch?: string | null,
   totalApplicationsPerStatus?: string | null,
@@ -1083,6 +1086,7 @@ export type Statistics = {
 
 export type UpdateStatisticsInput = {
   id: string,
+  batch?: number | null,
   totalApplications?: number | null,
   totalApplicationsPerBatch?: string | null,
   totalApplicationsPerStatus?: string | null,
@@ -1354,6 +1358,7 @@ export type ModelScholarshipConnection = {
 
 export type ModelStatisticsFilterInput = {
   id?: ModelIDInput | null,
+  batch?: ModelIntInput | null,
   totalApplications?: ModelIntInput | null,
   totalApplicationsPerBatch?: ModelStringInput | null,
   totalApplicationsPerStatus?: ModelStringInput | null,
@@ -1384,6 +1389,15 @@ export type ModelStringKeyConditionInput = {
 };
 
 export type ModelFloatKeyConditionInput = {
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+};
+
+export type ModelIntKeyConditionInput = {
   eq?: number | null,
   le?: number | null,
   lt?: number | null,
@@ -1633,6 +1647,7 @@ export type ModelSubscriptionScholarshipFilterInput = {
 
 export type ModelSubscriptionStatisticsFilterInput = {
   id?: ModelSubscriptionIDInput | null,
+  batch?: ModelSubscriptionIntInput | null,
   totalApplications?: ModelSubscriptionIntInput | null,
   totalApplicationsPerBatch?: ModelSubscriptionStringInput | null,
   totalApplicationsPerStatus?: ModelSubscriptionStringInput | null,
@@ -3303,6 +3318,7 @@ export type CreateStatisticsMutation = {
   createStatistics?:  {
     __typename: "Statistics",
     id: string,
+    batch?: number | null,
     totalApplications?: number | null,
     totalApplicationsPerBatch?: string | null,
     totalApplicationsPerStatus?: string | null,
@@ -3326,6 +3342,7 @@ export type UpdateStatisticsMutation = {
   updateStatistics?:  {
     __typename: "Statistics",
     id: string,
+    batch?: number | null,
     totalApplications?: number | null,
     totalApplicationsPerBatch?: string | null,
     totalApplicationsPerStatus?: string | null,
@@ -3349,6 +3366,7 @@ export type DeleteStatisticsMutation = {
   deleteStatistics?:  {
     __typename: "Statistics",
     id: string,
+    batch?: number | null,
     totalApplications?: number | null,
     totalApplicationsPerBatch?: string | null,
     totalApplicationsPerStatus?: string | null,
@@ -4687,6 +4705,7 @@ export type GetStatisticsQuery = {
   getStatistics?:  {
     __typename: "Statistics",
     id: string,
+    batch?: number | null,
     totalApplications?: number | null,
     totalApplicationsPerBatch?: string | null,
     totalApplicationsPerStatus?: string | null,
@@ -4713,6 +4732,7 @@ export type ListStatisticsQuery = {
     items:  Array< {
       __typename: "Statistics",
       id: string,
+      batch?: number | null,
       totalApplications?: number | null,
       totalApplicationsPerBatch?: string | null,
       totalApplicationsPerStatus?: string | null,
@@ -4743,6 +4763,7 @@ export type SyncStatisticsQuery = {
     items:  Array< {
       __typename: "Statistics",
       id: string,
+      batch?: number | null,
       totalApplications?: number | null,
       totalApplicationsPerBatch?: string | null,
       totalApplicationsPerStatus?: string | null,
@@ -4979,6 +5000,39 @@ export type ScholarshipsByStudentCPRAndStatusQuery = {
       bankName?: string | null,
       IBAN?: string | null,
       IBANLetterDoc?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type StatisticsByBatchAndTotalApplicationsQueryVariables = {
+  batch: number,
+  totalApplications?: ModelIntKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelStatisticsFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type StatisticsByBatchAndTotalApplicationsQuery = {
+  statisticsByBatchAndTotalApplications?:  {
+    __typename: "ModelStatisticsConnection",
+    items:  Array< {
+      __typename: "Statistics",
+      id: string,
+      batch?: number | null,
+      totalApplications?: number | null,
+      totalApplicationsPerBatch?: string | null,
+      totalApplicationsPerStatus?: string | null,
+      scoreHistogram?: string | null,
+      gpaHistogram?: string | null,
+      totalApplicationsPerUniversity?: string | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -6612,6 +6666,7 @@ export type OnCreateStatisticsSubscription = {
   onCreateStatistics?:  {
     __typename: "Statistics",
     id: string,
+    batch?: number | null,
     totalApplications?: number | null,
     totalApplicationsPerBatch?: string | null,
     totalApplicationsPerStatus?: string | null,
@@ -6634,6 +6689,7 @@ export type OnUpdateStatisticsSubscription = {
   onUpdateStatistics?:  {
     __typename: "Statistics",
     id: string,
+    batch?: number | null,
     totalApplications?: number | null,
     totalApplicationsPerBatch?: string | null,
     totalApplicationsPerStatus?: string | null,
@@ -6656,6 +6712,7 @@ export type OnDeleteStatisticsSubscription = {
   onDeleteStatistics?:  {
     __typename: "Statistics",
     id: string,
+    batch?: number | null,
     totalApplications?: number | null,
     totalApplicationsPerBatch?: string | null,
     totalApplicationsPerStatus?: string | null,

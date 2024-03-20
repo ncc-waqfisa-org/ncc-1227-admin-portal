@@ -76,7 +76,7 @@ function convertToCsv(applications, students) {
     applications.forEach(application => {
         const student = students.find(student => student.cpr === application.studentCPR);
         if(student) {
-            csv += `${application.studentCPR},${student?.fullName},${student?.gender},${student?.nationalityCategory},${student?.specialization},${student?.phone},${student?.email},${application.batch},${application.status},${application.gpa},${application.score},${application.schoolName},${application.schoolType}\n`;
+            csv += `${application.studentCPR},"${student?.fullName}",${student?.gender},${student?.nationalityCategory},"${student?.specialization}",${student?.phone},${student?.email},${application.batch},${application.status},${application.gpa},${application.score},"${application.schoolName}",${application.schoolType}\n`;
         }
     });
     return csv;
@@ -94,12 +94,20 @@ async function uploadToS3(csv) {
 }
 
 async function getStudents(batchValue) {
+    const startDate = new Date();
+    startDate.setFullYear(batchValue);
+    startDate.setMonth(0); // September
+    startDate.setDate(1); // 1st
+    const endDate = new Date();
+    endDate.setMonth(11); // December
+    endDate.setDate(31); // 31st
     const params = {
         TableName: 'Student-cw7beg2perdtnl7onnneec4jfa-staging',
         // graduationDate is contained in the batch attribute
-        FilterExpression: 'begins_with(graduationDate, :batchValue)',
+        FilterExpression: 'graduationDate BETWEEN :startDate AND :endDate',
         ExpressionAttributeValues: {
-            ':batchValue': batchValue
+            ':startDate': startDate.toISOString(),
+            ':endDate': endDate.toISOString()
         }
     };
     let allStudents = [];

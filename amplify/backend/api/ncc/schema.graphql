@@ -199,6 +199,7 @@ type Scholarship @model @auth(rules: [{ allow: public }]) {
 
 type Statistics @model @auth(rules: [{ allow: public }]) {
   id: ID!
+  batch: Int @index(name: "byBatch", sortKeyFields: ["totalApplications"])
   totalApplications: Int
   totalApplicationsPerBatch: AWSJSON
   totalApplicationsPerStatus: AWSJSON

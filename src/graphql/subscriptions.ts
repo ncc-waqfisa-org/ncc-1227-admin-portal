@@ -1633,6 +1633,7 @@ export const onCreateStatistics = /* GraphQL */ `subscription OnCreateStatistics
 ) {
   onCreateStatistics(filter: $filter) {
     id
+    batch
     totalApplications
     totalApplicationsPerBatch
     totalApplicationsPerStatus
@@ -1656,6 +1657,7 @@ export const onUpdateStatistics = /* GraphQL */ `subscription OnUpdateStatistics
 ) {
   onUpdateStatistics(filter: $filter) {
     id
+    batch
     totalApplications
     totalApplicationsPerBatch
     totalApplicationsPerStatus
@@ -1679,6 +1681,7 @@ export const onDeleteStatistics = /* GraphQL */ `subscription OnDeleteStatistics
 ) {
   onDeleteStatistics(filter: $filter) {
     id
+    batch
     totalApplications
     totalApplicationsPerBatch
     totalApplicationsPerStatus
