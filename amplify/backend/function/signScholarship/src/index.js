@@ -123,7 +123,7 @@ async function uploadToS3(pdf, studentCPR) {
 
     const params = {
         Bucket: 'ncc1227bucket65406-staging',
-        Key: 'Student' + studentCPR + '/' + studentCPR + '#SIGNED_SCHOLARSHIP' + new Date().getMilliseconds(),
+        Key: 'Student' + studentCPR + '/' + studentCPR + '#SIGNED_SCHOLARSHIP' + new Date().getMilliseconds() + '.pdf',
         Body: pdf,
     };
 
@@ -136,25 +136,39 @@ async function uploadToS3(pdf, studentCPR) {
 }
 
 async function uploadSignaturesToS3(studentSignature, guardianSignature, studentCPR) {
+    // Decode base64-encoded image data
+    const studentSignatureData = Buffer.from(studentSignature.replace(/^data:image\/\w+;base64,/, ''), 'base64');
+    const guardianSignatureData = Buffer.from(guardianSignature.replace(/^data:image\/\w+;base64,/, ''), 'base64');
+
     const studentSignatureParams = {
         Bucket: 'ncc1227bucket65406-staging',
-        Key: 'Student' + studentCPR + '/' + studentCPR + '#STUDENT_SIGNATURE' + new Date().getMilliseconds(),
-        Body: studentSignature,
+        Key: `Student${studentCPR}/${studentCPR}#STUDENT_SIGNATURE${new Date().getTime()}.png`, // Using getTime() to ensure unique filenames
+        Body: studentSignatureData,
+        ContentType: 'image/png' // Set content type explicitly
     };
     const guardianSignatureParams = {
         Bucket: 'ncc1227bucket65406-staging',
-        Key: 'Student' + studentCPR + '/' + studentCPR + '#GUARDIAN_SIGNATURE' + new Date().getMilliseconds(),
-        Body: guardianSignature,
+        Key: `Student${studentCPR}/${studentCPR}#GUARDIAN_SIGNATURE${new Date().getTime()}.png`, // Using getTime() to ensure unique filenames
+        Body: guardianSignatureData,
+        ContentType: 'image/png' // Set content type explicitly
     };
-    await s3.upload(studentSignatureParams).promise();
-    await s3.upload(guardianSignatureParams).promise();
-    // return the URL of the uploaded file
-    return {
-        studentSignatureUrl: s3.getSignedUrl('getObject', {Bucket: studentSignatureParams.Bucket, Key: studentSignatureParams.Key}),
-        guardianSignatureUrl: s3.getSignedUrl('getObject', {Bucket: guardianSignatureParams.Bucket, Key: guardianSignatureParams.Key}),
-        studentSignatureKey: studentSignatureParams.Key,
-        guardianSignatureKey: guardianSignatureParams.Key,
-    };
+
+    try {
+        await Promise.all([
+            s3.upload(studentSignatureParams).promise(),
+            s3.upload(guardianSignatureParams).promise()
+        ]);
+        // return the URL of the uploaded file
+        return {
+            studentSignatureUrl: s3.getSignedUrl('getObject', {Bucket: studentSignatureParams.Bucket, Key: studentSignatureParams.Key}),
+            guardianSignatureUrl: s3.getSignedUrl('getObject', {Bucket: guardianSignatureParams.Bucket, Key: guardianSignatureParams.Key}),
+            studentSignatureKey: studentSignatureParams.Key,
+            guardianSignatureKey: guardianSignatureParams.Key,
+        };
+    } catch (error) {
+        console.error('Error uploading signatures:', error);
+        throw error; // Rethrow the error to handle it elsewhere if needed
+    }
 }
 
 

@@ -13,7 +13,14 @@ exports.handler = async (event) => {
     try {
         const batchValue = parseInt(event.queryStringParameters?.batch) || 2024;
         const status = event.queryStringParameters?.status || null;
+        if(status && !['APPROVED', 'WITHDRAWN', 'REJECTED', 'ELIGIBLE', 'NOT_COMPLETED'].includes(status)) {
+            return {
+                statusCode: 400,
+                body: JSON.stringify({ message: 'Invalid status. Must be one of: APPROVED, WITHDRAWN, REJECTED, ELIGIBLE, NOT_COMPLETED' })
+            };
+        }
         const csv = await exportApplicationsCsv(tableName, batchValue, status);
+
 
 
         return {
@@ -22,7 +29,7 @@ exports.handler = async (event) => {
             //  headers: {
             //      "Access-Control-Allow-Origin": "*",
             //      "Access-Control-Allow-Headers": "*"
-            //  },
+            //  },q23323
             body: JSON.stringify(
                 {
                     url: csv
@@ -57,6 +64,12 @@ async function getApplications(tableName, batchValue, status) {
             ':batchValue': batchValue
         }
     };
+    if(status) {
+        params.FilterExpression += ' AND #status = :status';
+        params.ExpressionAttributeNames['#status'] = 'status';
+        params.ExpressionAttributeValues[':status'] = status;
+    }
+
     let allApplications = [];
 
     do {
