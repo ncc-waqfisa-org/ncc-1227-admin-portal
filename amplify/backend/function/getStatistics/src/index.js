@@ -2,6 +2,7 @@ const AWS = require('aws-sdk');
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
 const tableName = 'Application-cw7beg2perdtnl7onnneec4jfa-staging';
+const adminTableName = 'Admin-cw7beg2perdtnl7onnneec4jfa-staging';
 const universityTableName = 'University-cw7beg2perdtnl7onnneec4jfa-staging';
 const programChoiceTableName = 'ProgramChoice-cw7beg2perdtnl7onnneec4jfa-staging';
 
@@ -32,6 +33,17 @@ async function getStatistics(batchValue) {
         TableName: 'Statistics-cw7beg2perdtnl7onnneec4jfa-staging',
         Key: {
             id: batchValue
+        }
+    };
+    const { Item } = await dynamoDB.get(params).promise();
+    return Item;
+}
+
+async function checkIsAdmin(username, adminTableName) {
+    const params = {
+        TableName: adminTableName,
+        Key: {
+            id: adminId
         }
     };
     const { Item } = await dynamoDB.get(params).promise();
