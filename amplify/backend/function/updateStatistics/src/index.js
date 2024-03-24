@@ -232,22 +232,3 @@ async function updateStatistics(tableName, batchValue) {
 
 
 }
-
-// async function checkIfStatisticsExist(batchValue) {
-//     const params = {
-//         TableName: 'Statistics-cw7beg2perdtnl7onnneec4jfa-staging',
-//         IndexName: 'byBatch',
-//         KeyConditionExpression: '#batch = :batchValue',
-//         ExpressionAttributeNames: {
-//             '#batch': 'batch'
-//         },
-//         ExpressionAttributeValues: {
-//             ':batchValue': batchValue
-//         },
-//         ScanIndexForward: false,
-//     };
-//
-//     const { Items } = await dynamoDB.query(params).promise();
-//
-//     return Items.length > 0;
-// }

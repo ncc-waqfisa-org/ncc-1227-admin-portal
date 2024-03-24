@@ -176,18 +176,18 @@ async function uploadSignaturesToS3(studentSignature, guardianSignature, student
 }
 
 
-async function updateScholarship(scholarshipId, signedPdfUrl, studentSignature, guardianSignature) {
+async function updateScholarship(scholarshipId, signedPdfKey, studentSignature, guardianSignature) {
     const params = {
         TableName: 'Scholarship-cw7beg2perdtnl7onnneec4jfa-staging',
         Key: {
             id: scholarshipId,
         },
-        UpdateExpression: 'set #signedPdfUrl = :signedPdfUrl, studentSignature = :studentSignature, guardianSignature = :guardianSignature',
+        UpdateExpression: 'set #signedContractDoc = :signedContractDoc, studentSignature = :studentSignature, guardianSignature = :guardianSignature',
         ExpressionAttributeNames: {
-            '#signedPdfUrl': 'signedPdfUrl',
+            '#signedContractDoc': 'signedContractDoc',
         },
         ExpressionAttributeValues: {
-            ':signedPdfUrl': signedPdfUrl,
+            ':signedContractDoc': signedPdfKey,
             ':studentSignature': studentSignature,
             ':guardianSignature': guardianSignature,
         }

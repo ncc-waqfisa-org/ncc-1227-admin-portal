@@ -1,5 +1,6 @@
 const AWS = require('aws-sdk');
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
+const cognito = new AWS.CognitoIdentityServiceProvider();
 
 
 /**
@@ -7,6 +8,21 @@ const dynamoDB = new AWS.DynamoDB.DocumentClient();
  */
 exports.handler = async (event) => {
     console.log(`EVENT: ${JSON.stringify(event)}`);
+    const token = event.headers?.authorization?.slice(7);
+    if (!token) {
+        return {
+            statusCode: 401,
+            body: JSON.stringify({ message: 'Unauthorized!' })
+        };
+    }
+
+    const isAdmin = await checkIsAdmin(token);
+    if (!isAdmin) {
+        return {
+            statusCode: 403,
+            body: JSON.stringify({ message: 'Forbidden. You are not an admin' })
+        };
+    }
 
     const pageSize = parseInt(event.queryStringParameters?.pageSize) || 15;
     const startKey = event.queryStringParameters?.startKey || null;
@@ -74,3 +90,24 @@ exports.handler = async (event) => {
             throw new Error('Error getting applications');
         }
 }
+
+async function checkIsAdmin(token) {
+    // get the username from the token using cognito
+    try {
+        const cognitoUser = await cognito.getUser({AccessToken: token}).promise();
+        const username = cognitoUser.Username;
+
+        const params = {
+            TableName: 'Admin-cw7beg2perdtnl7onnneec4jfa-staging',
+            Key: {
+                cpr: username
+            }
+        };
+        const {Item} = await dynamoDB.get(params).promise();
+        return Item !== undefined;
+    } catch (error) {
+        console.error('Error checking if user is admin', error);
+        return false;
+    }
+}
+
