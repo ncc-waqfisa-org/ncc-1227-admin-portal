@@ -28,7 +28,7 @@ exports.handler = async (event) => {
         };
     }
 
-    const csvData = event.body;
+    const csvData = JSON.parse(event.body).csv;
     if(!csvData){
         return {
             statusCode: 400,
@@ -38,17 +38,26 @@ exports.handler = async (event) => {
 
     const batchValue = parseInt(event.queryStringParameters?.batch) || 2024;
     const dataStream = processCsv(csvData);
-    await bulkUpdateApplications(tableName, batchValue, dataStream);
+    try {
+        await bulkUpdateApplications(tableName, batchValue, dataStream);
+        return {
+            statusCode: 200,
+            //  Uncomment below to enable CORS requests
+            //  headers: {
+            //      "Access-Control-Allow-Origin": "*",
+            //      "Access-Control-Allow-Headers": "*"
+            //  },
+            body: JSON.stringify({ message: 'Applications updated' })
+        };
+    } catch (error) {
+        console.error('Error updating applications', error);
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ message: 'Error updating applications' })
+        };
+    }
 
-    return {
-        statusCode: 200,
-    //  Uncomment below to enable CORS requests
-    //  headers: {
-    //      "Access-Control-Allow-Origin": "*",
-    //      "Access-Control-Allow-Headers": "*"
-    //  },
-        body: JSON.stringify('Hello from Lambda!'),
-    };
+
 };
 
 async function bulkUpdateApplications(tableName, batchValue, dataStream){
@@ -59,29 +68,38 @@ async function bulkUpdateApplications(tableName, batchValue, dataStream){
             Key: {
                 id: row.id
             },
-            UpdateExpression: 'SET #score = :gpa',
+            UpdateExpression: 'set score = :gpa',
             ExpressionAttributeValues: {
-                ':gpa': row.GPA
+                ':gpa': Number(row.GPA)
             },
-            ExpressionAttributeNames: {
-                '#score': 'score'
-            }
         };
-        return dynamoDB.update(params).promise();
+        if (row.id && row.GPA) {
+            return dynamoDB.update(params).promise();
+        }
+        else {
+            return Promise.resolve();
+        }
     });
     return Promise.all(updatePromises);
 
 }
 
 function processCsv(csvData){
-    const csvString = Buffer.from(csvData, 'base64').toString('utf-8');
-    const dataStream = csvString
-        .split('\n')
-        .map(row => row.trim())
-        .filter(row => row) // Remove empty rows
-        .map(row => row.split(',')); // Assuming CSV data is comma-separated
+    let csvString = Buffer.from(csvData, 'base64').toString('utf-8');
+    const rows = csvString.split(/\r?\n/).slice(1);
+
+
+    const dataStream = rows.map(row => {
+        const columns = row.split(',');
+        return {
+            id: columns[0],
+            GPA: columns[10]
+        };
+    }).filter(row => row.id && row.GPA && !isNaN(row.GPA));
     console.log(dataStream);
+
     return dataStream;
+
 
 }
 

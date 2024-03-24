@@ -207,6 +207,29 @@ type Statistics @model @auth(rules: [{ allow: public }]) {
   totalApplicationsPerUniversity: AWSJSON
 }
 
+#type CurrentApplication @model @auth(rules: [{ allow: public }]) {
+#  id: ID! @index(name: "byDateTime", sortKeyFields: ["dateTime"])
+#  gpa: Float
+#  status: Status
+#  attachmentID: String
+#  adminLogs: [AdminLog] @hasMany
+#  studentLogs: [StudentLog] @hasMany
+#  attachment: Attachment @hasOne
+#  programs: [ProgramChoice] @hasMany
+#  dateTime: AWSDateTime!
+#  isEmailSent: Boolean @default(value: "false")
+#  schoolName: String
+#  schoolType: SchoolType
+#  studentCPR: String! @index(name: "byCPR", sortKeyFields: ["gpa"])
+#  student: Student @belongsTo(fields: ["studentCPR"])
+#  batchID: ID! @index(name: "byBatchRelation") @default(value: "48745538-4051-4c99-ad0f-7be0cac6cf16")
+#  batch: Int @index(name: "byBatch", sortKeyFields: ["status"])
+#  batchRelation: Batch @belongsTo(fields: ["batchID"])
+#  # add a new field to the Application model called "score" that is a Float and is indexed for sorting
+#  score: Float @index(name: "byScore", sortKeyFields: ["status"])
+#  adminPoints: Int
+#}
+
 
 enum FamilyIncome {
   LESS_THAN_500
