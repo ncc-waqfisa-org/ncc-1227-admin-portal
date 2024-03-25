@@ -14,11 +14,18 @@ exports.handler = async (event) => {
 
         const application = requestBody.Records[0].dynamodb.NewImage;
         const oldApplication = requestBody.Records[0].dynamodb.OldImage;
+
+        const isGpaUpdated = application.gpa.N !== oldApplication.gpa.N;
+        const isGpaVerified = application.verifiedGpa !== oldApplication.verifiedGpa;
+        const isStatusUpdated = application.status.S !== oldApplication.status.S;
+
+
         console.log(application);
         console.log(requestBody.Records[0].dynamodb);
 
-        const applicationId = application.applicationId.S;
+        const applicationId = application.id.S;
         const studentCPR = application.studentCPR.S;
+        console.log(applicationId, studentCPR);
 
         const reason = 'We are sorry to inform you that your application has been rejected';
         const studentName = 'Student';
@@ -29,6 +36,10 @@ exports.handler = async (event) => {
 
         await updateApplicationStatus(applicationId, 'REJECTED');
         await sendEmail(studentEmail, studentName, reason);
+
+        // sleep for 5 seconds
+        await new Promise(r => setTimeout(r, 5000));
+        console.log('Lambda executed successfully');
 
 
         return {
@@ -53,13 +64,16 @@ exports.handler = async (event) => {
 
 async function updateApplicationStatus(applicationId, status) {
     const params = {
-        TableName: 'Applications-cw7beg2perdtnl7onnneec4jfa-staging',
+        TableName: 'Application-cw7beg2perdtnl7onnneec4jfa-staging',
         Key: {
-            applicationId: applicationId
+            id: applicationId
         },
-        UpdateExpression: 'set status = :s',
+        UpdateExpression: 'set #status = :s',
         ExpressionAttributeValues: {
             ':s': status
+        },
+        ExpressionAttributeNames: {
+            '#status': 'status'
         }
     };
     return dynamoDB.update(params).promise();
