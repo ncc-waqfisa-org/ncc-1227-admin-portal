@@ -68,7 +68,7 @@ async function bulkUpdateApplications(tableName, batchValue, dataStream){
             Key: {
                 id: row.id
             },
-            UpdateExpression: 'set score = :gpa',
+            UpdateExpression: 'set verifiedGpa = :gpa',
             ExpressionAttributeValues: {
                 ':gpa': Number(row.GPA)
             },

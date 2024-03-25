@@ -56,15 +56,15 @@
         },
         "updateGpaCsv": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
-          "s3Key": "amplify-builds/updateGpaCsv-475071664f7049515a69-build.zip"
+          "s3Key": "amplify-builds/updateGpaCsv-7a4634366d5362307538-build.zip"
         },
         "autoReject": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
-          "s3Key": "amplify-builds/autoReject-31466a4c44326f314b71-build.zip"
+          "s3Key": "amplify-builds/autoReject-6e5a416d3946376a5242-build.zip"
         },
         "getApplications": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
-          "s3Key": "amplify-builds/getApplications-6457696648586e684c5a-build.zip"
+          "s3Key": "amplify-builds/getApplications-6c4774702f6639543271-build.zip"
         },
         "getStatistics": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",

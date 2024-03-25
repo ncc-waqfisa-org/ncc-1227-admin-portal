@@ -8,23 +8,26 @@ const ses = new AWS.SES();
  */
 exports.handler = async (event) => {
     try {
-        const requestBody = JSON.parse(event.body);
-        const applicationId = requestBody.applicationId;
-        const reason = requestBody.reason;
-        const studentName = requestBody.studentName;
-        const studentId = requestBody.studentId;
+        // const requestBody = JSON.parse(event.body);
+        const requestBody = event;
+        console.log(requestBody);
 
-        const userExists = await getUserFromDynamoDB(studentId);
-        if (!userExists) {
-            return {
-                statusCode: 400,
-                body: JSON.stringify('Student does not exist.'),
-            };
-        }
+        const application = requestBody.Records[0].dynamodb.NewImage;
+        const oldApplication = requestBody.Records[0].dynamodb.OldImage;
+        console.log(application);
+        console.log(requestBody.Records[0].dynamodb);
 
-        const studentEmail = await getStudentEmail(studentId);
+        const applicationId = application.applicationId.S;
+        const studentCPR = application.studentCPR.S;
 
-        await updateApplicationStatus(applicationId, 'rejected');
+        const reason = 'We are sorry to inform you that your application has been rejected';
+        const studentName = 'Student';
+
+
+
+        const studentEmail = await getStudentEmail(studentCPR);
+
+        await updateApplicationStatus(applicationId, 'REJECTED');
         await sendEmail(studentEmail, studentName, reason);
 
 
@@ -50,7 +53,7 @@ exports.handler = async (event) => {
 
 async function updateApplicationStatus(applicationId, status) {
     const params = {
-        TableName: 'Applications',
+        TableName: 'Applications-cw7beg2perdtnl7onnneec4jfa-staging',
         Key: {
             applicationId: applicationId
         },

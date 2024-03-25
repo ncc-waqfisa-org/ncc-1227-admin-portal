@@ -81,6 +81,7 @@ export const createApplication = /* GraphQL */ `mutation CreateApplication(
   createApplication(input: $input, condition: $condition) {
     id
     gpa
+    verifiedGPA
     status
     attachmentID
     adminLogs {
@@ -184,6 +185,7 @@ export const updateApplication = /* GraphQL */ `mutation UpdateApplication(
   updateApplication(input: $input, condition: $condition) {
     id
     gpa
+    verifiedGPA
     status
     attachmentID
     adminLogs {
@@ -287,6 +289,7 @@ export const deleteApplication = /* GraphQL */ `mutation DeleteApplication(
   deleteApplication(input: $input, condition: $condition) {
     id
     gpa
+    verifiedGPA
     status
     attachmentID
     adminLogs {
@@ -413,6 +416,7 @@ export const createProgramChoice = /* GraphQL */ `mutation CreateProgramChoice(
     application {
       id
       gpa
+      verifiedGPA
       status
       attachmentID
       dateTime
@@ -478,6 +482,7 @@ export const updateProgramChoice = /* GraphQL */ `mutation UpdateProgramChoice(
     application {
       id
       gpa
+      verifiedGPA
       status
       attachmentID
       dateTime
@@ -543,6 +548,7 @@ export const deleteProgramChoice = /* GraphQL */ `mutation DeleteProgramChoice(
     application {
       id
       gpa
+      verifiedGPA
       status
       attachmentID
       dateTime
@@ -1555,6 +1561,7 @@ export const createScholarship = /* GraphQL */ `mutation CreateScholarship(
     application {
       id
       gpa
+      verifiedGPA
       status
       attachmentID
       dateTime
@@ -1605,6 +1612,7 @@ export const updateScholarship = /* GraphQL */ `mutation UpdateScholarship(
     application {
       id
       gpa
+      verifiedGPA
       status
       attachmentID
       dateTime
@@ -1655,6 +1663,7 @@ export const deleteScholarship = /* GraphQL */ `mutation DeleteScholarship(
     application {
       id
       gpa
+      verifiedGPA
       status
       attachmentID
       dateTime

@@ -9,6 +9,7 @@ type Attachment @model @auth(rules: [{ allow: public }]) {
 type Application @model @auth(rules: [{ allow: public }]) {
   id: ID! @index(name: "byDateTime", sortKeyFields: ["dateTime"])
   gpa: Float
+  verifiedGPA: Float
   status: Status
   attachmentID: String
   adminLogs: [AdminLog] @hasMany

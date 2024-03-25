@@ -97,6 +97,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "verifiedGPA": {
+                    "name": "verifiedGPA",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "status": {
                     "name": "status",
                     "isArray": false,
@@ -1958,5 +1965,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "14bcba57795c5109f6c3b1f8bdc64ca8"
+    "version": "29771f430619f89d05f09dcc88a37a52"
 };

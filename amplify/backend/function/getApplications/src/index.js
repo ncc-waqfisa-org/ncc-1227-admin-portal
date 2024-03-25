@@ -108,9 +108,7 @@ async function getApplications(pageSize, startKey, batch, status = null, cpr = n
 
         if (status) {
             params.FilterExpression += ' AND #status = :status';
-            params.ExpressionAttributeNames = {
-                '#status': 'status'
-            };
+            params.ExpressionAttributeNames['#status'] = 'status';
             params.ExpressionAttributeValues[':status'] = status;
         }
 

@@ -95,6 +95,7 @@ type EagerApplication = {
   };
   readonly id: string;
   readonly gpa?: number | null;
+  readonly verifiedGPA?: number | null;
   readonly status?: Status | keyof typeof Status | null;
   readonly attachmentID?: string | null;
   readonly adminLogs?: (AdminLog | null)[] | null;
@@ -124,6 +125,7 @@ type LazyApplication = {
   };
   readonly id: string;
   readonly gpa?: number | null;
+  readonly verifiedGPA?: number | null;
   readonly status?: Status | keyof typeof Status | null;
   readonly attachmentID?: string | null;
   readonly adminLogs: AsyncCollection<AdminLog>;
