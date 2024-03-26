@@ -47,86 +47,94 @@ exports.handler = async (event) => {
     };
 };
 
-//  async function getApplications(pageSize, startKey, batch, status = null, cpr= null) {
-//
-//      const params = {
-//          TableName: 'Application-cw7beg2perdtnl7onnneec4jfa-staging',
-//          Limit: pageSize,
-//          ExclusiveStartKey: startKey,
-//          IndexName: 'byScore',
-//          KeyConditionExpression: '#batch = :batchValue AND score > :score',
-//          ScanIndexForward: false,
-//          ExpressionAttributeNames: {
-//              '#batch': 'batch' // Using ExpressionAttributeNames to alias the reserved keyword 'batch'
-//          },
-//          ExpressionAttributeValues: {
-//              ':batchValue': batch,
-//              ':score': 0.0
-//             }
-//      };
-//
-//      if(status) {
-//          params.FilterExpression = '#status = :status';
-//          params.ExpressionAttributeNames['#status'] = 'status';
-//          params.ExpressionAttributeValues[':status'] = status;
-//      }
-//
-//      if(cpr) {
-//             // params.FilterExpression = '#studentCPR = :cpr';
-//             // params.ExpressionAttributeNames['#studentCPR'] = 'cpr';
-//             // params.ExpressionAttributeValues[':studentCPR'] = cpr;
-//             // non exact match
-//             params.FilterExpression = 'contains(#studentCPR, :cpr)';
-//             params.ExpressionAttributeNames['#studentCPR'] = 'cpr';
-//             params.ExpressionAttributeValues[':studentCPR'] = cpr;
-//         }
-//
-//
-//      try {
-//          return await dynamoDB.query(params).promise();
-//      }
-//         catch (error) {
-//             console.error('Error getting applications', error);
-//             throw new Error('Error getting applications');
-//         }
-// }
+ async function getApplications(pageSize, startKey, batch, status = null, cpr= null) {
 
-async function getApplications(pageSize, startKey, batch, status = null, cpr = null) {
-    const params = {
-        TableName: 'Application-cw7beg2perdtnl7onnneec4jfa-staging',
-        Limit: pageSize,
-        ExclusiveStartKey: startKey,
-        FilterExpression: '#batch = :batchValue AND score > :score',
-        ExpressionAttributeValues : {
-            ':batchValue': batch,
-            ':score': 0.0
-        },
-        ExpressionAttributeNames : {
-            '#batch': 'batch'
-        }
-    };
+     const params = {
+         TableName: 'Application-cw7beg2perdtnl7onnneec4jfa-staging',
+         Limit: pageSize,
+         ExclusiveStartKey: startKey,
+         IndexName: 'byScore',
+         KeyConditionExpression: '#batch = :batchValue AND score > :score',
+         ScanIndexForward: false,
+         ExpressionAttributeNames: {
+             '#batch': 'batch' // Using ExpressionAttributeNames to alias the reserved keyword 'batch'
+         },
+         ExpressionAttributeValues: {
+             ':batchValue': batch,
+             ':score': 0.0
+            }
+     };
 
-        if (status) {
-            params.FilterExpression += ' AND #status = :status';
-            params.ExpressionAttributeNames['#status'] = 'status';
-            params.ExpressionAttributeValues[':status'] = status;
+     if(status) {
+         params.FilterExpression = '#status = :status';
+         params.ExpressionAttributeNames['#status'] = 'status';
+         params.ExpressionAttributeValues[':status'] = status;
+     }
+
+     if(cpr) {
+            // params.FilterExpression = '#studentCPR = :cpr';
+            // params.ExpressionAttributeNames['#studentCPR'] = 'cpr';
+            // params.ExpressionAttributeValues[':studentCPR'] = cpr;
+            // non exact match
+            params.FilterExpression = 'contains(#studentCPR, :cpr)';
+            params.ExpressionAttributeNames['#studentCPR'] = 'cpr';
+            params.ExpressionAttributeValues[':studentCPR'] = cpr;
         }
 
-        if (cpr) {
-            // For exact match
-            // params.FilterExpression += ' AND cpr = :cpr';
-            // For non-exact match
-            params.FilterExpression += ' AND contains(cpr, :cpr)';
-            params.ExpressionAttributeValues[':cpr'] = cpr;
-        }
 
-    try {
-        return await dynamoDB.scan(params).promise();
-    } catch (error) {
-        console.error('Error getting applications', error);
-        throw new Error('Error getting applications');
-    }
+     try {
+         const result = await dynamoDB.query(params).promise();
+         // check if the result items are less than the page size, if so, call the function again with the last evaluated key
+         if(result.Items.length < pageSize) {
+             const remaining = pageSize - result.Items.length;
+             const nextResult = await getApplications(remaining, result.LastEvaluatedKey, batch, status, cpr);
+             result.Items = result.Items.concat(nextResult.Items);
+             result.LastEvaluatedKey = nextResult.LastEvaluatedKey;
+         }
+            return result;
+     }
+        catch (error) {
+            console.error('Error getting applications', error);
+            throw new Error('Error getting applications');
+        }
 }
+
+// async function getApplications(pageSize, startKey, batch, status = null, cpr = null) {
+//     const params = {
+//         TableName: 'Application-cw7beg2perdtnl7onnneec4jfa-staging',
+//         Limit: pageSize,
+//         ExclusiveStartKey: startKey,
+//         FilterExpression: '#batch = :batchValue AND score > :score',
+//         ExpressionAttributeValues : {
+//             ':batchValue': batch,
+//             ':score': 0.0
+//         },
+//         ExpressionAttributeNames : {
+//             '#batch': 'batch'
+//         }
+//     };
+//
+//         if (status) {
+//             params.FilterExpression += ' AND #status = :status';
+//             params.ExpressionAttributeNames['#status'] = 'status';
+//             params.ExpressionAttributeValues[':status'] = status;
+//         }
+//
+//         if (cpr) {
+//             // For exact match
+//             // params.FilterExpression += ' AND cpr = :cpr';
+//             // For non-exact match
+//             params.FilterExpression += ' AND contains(cpr, :cpr)';
+//             params.ExpressionAttributeValues[':cpr'] = cpr;
+//         }
+//
+//     try {
+//         return await dynamoDB.scan(params).promise();
+//     } catch (error) {
+//         console.error('Error getting applications', error);
+//         throw new Error('Error getting applications');
+//     }
+// }
 
 
 async function checkIsAdmin(token) {
