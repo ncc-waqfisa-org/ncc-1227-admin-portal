@@ -1,4 +1,6 @@
-
+const AWS = require('aws-sdk');
+const dynamoDB = new AWS.DynamoDB.DocumentClient();
+const cognito = new AWS.CognitoIdentityServiceProvider();
 
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
