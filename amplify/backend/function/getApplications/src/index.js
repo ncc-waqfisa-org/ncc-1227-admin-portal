@@ -25,8 +25,12 @@ exports.handler = async (event) => {
     }
 
     const pageSize = parseInt(event.queryStringParameters?.pageSize) || 30;
-    const startKey = event.queryStringParameters?.startKey || null;
-    const batch = event.queryStringParameters?.batch || 2023;
+    let startKey = event.queryStringParameters?.startKey || null;
+    if(startKey) {
+        startKey = JSON.parse(startKey);
+    }
+
+    const batch = parseInt(event.queryStringParameters?.batch) || 2023;
     const status = event.queryStringParameters?.status || null;
     const cpr = event.queryStringParameters?.cpr || null;
     const applications = await getApplications(pageSize, startKey, batch, status, cpr);
@@ -86,6 +90,9 @@ exports.handler = async (event) => {
          const result = await dynamoDB.query(params).promise();
          // check if the result items are less than the page size, if so, call the function again with the last evaluated key
          if(result.Items.length < pageSize) {
+             if(!result.LastEvaluatedKey) {
+                    return result;
+             }
              const remaining = pageSize - result.Items.length;
              const nextResult = await getApplications(remaining, result.LastEvaluatedKey, batch, status, cpr);
              result.Items = result.Items.concat(nextResult.Items);
