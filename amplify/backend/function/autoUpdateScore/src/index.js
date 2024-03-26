@@ -42,3 +42,5 @@ async function updateScore(applicationId, score) {
     return dynamoDB.update(params).promise();
 
 }
+
+

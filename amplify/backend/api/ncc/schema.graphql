@@ -28,6 +28,7 @@ type Application @model @auth(rules: [{ allow: public }]) {
   # add a new field to the Application model called "score" that is a Float and is indexed for sorting
   score: Float @index(name: "byScore", sortKeyFields: ["status"])
   adminPoints: Int
+  processed: Int @index(name: "byProcessed", sortKeyFields: ["batch"])
 }
 
 type ProgramChoice @model @auth(rules: [{ allow: public }]) {
