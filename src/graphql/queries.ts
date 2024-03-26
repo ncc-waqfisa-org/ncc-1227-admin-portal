@@ -1296,6 +1296,7 @@ export const getScholarship = /* GraphQL */ `query GetScholarship($id: ID!) {
     id
     status
     applicationID
+    isConfirmed
     application {
       id
       gpa
@@ -1349,6 +1350,7 @@ export const listScholarships = /* GraphQL */ `query ListScholarships(
       id
       status
       applicationID
+      isConfirmed
       studentCPR
       unsignedContractDoc
       signedContractDoc
@@ -1389,6 +1391,7 @@ export const syncScholarships = /* GraphQL */ `query SyncScholarships(
       id
       status
       applicationID
+      isConfirmed
       studentCPR
       unsignedContractDoc
       signedContractDoc
@@ -1766,6 +1769,7 @@ export const scholarshipsByStudentCPRAndStatus = /* GraphQL */ `query Scholarshi
       id
       status
       applicationID
+      isConfirmed
       studentCPR
       unsignedContractDoc
       signedContractDoc

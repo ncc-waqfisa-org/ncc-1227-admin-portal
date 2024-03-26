@@ -1558,6 +1558,7 @@ export const createScholarship = /* GraphQL */ `mutation CreateScholarship(
     id
     status
     applicationID
+    isConfirmed
     application {
       id
       gpa
@@ -1609,6 +1610,7 @@ export const updateScholarship = /* GraphQL */ `mutation UpdateScholarship(
     id
     status
     applicationID
+    isConfirmed
     application {
       id
       gpa
@@ -1660,6 +1662,7 @@ export const deleteScholarship = /* GraphQL */ `mutation DeleteScholarship(
     id
     status
     applicationID
+    isConfirmed
     application {
       id
       gpa

@@ -1494,6 +1494,7 @@ export const onCreateScholarship = /* GraphQL */ `subscription OnCreateScholarsh
     id
     status
     applicationID
+    isConfirmed
     application {
       id
       gpa
@@ -1544,6 +1545,7 @@ export const onUpdateScholarship = /* GraphQL */ `subscription OnUpdateScholarsh
     id
     status
     applicationID
+    isConfirmed
     application {
       id
       gpa
@@ -1594,6 +1596,7 @@ export const onDeleteScholarship = /* GraphQL */ `subscription OnDeleteScholarsh
     id
     status
     applicationID
+    isConfirmed
     application {
       id
       gpa
