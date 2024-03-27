@@ -27,7 +27,7 @@ exports.handler = async (event) => {
         const password = requestBody.password;
         const user =  await getUserFromCognito(username);
 
-        const userExists = await getUserFromDynamoDB(username) !== undefined || await getUserFromCognito(username) !== undefined;
+        const userExists = !!user;
         if (userExists) {
             if(user.UserAttributes.find(attr => attr.Name === 'email_verified').Value === 'true'){
                 return {
