@@ -17,10 +17,10 @@ exports.handler = async (event) => {
         };
     }
 
-    if(batchDetails.updateApllicationEndDate < today){
+    if(batchDetails.updateApplicationEndDate < today){
         return {
             statusCode: 200,
-            body: JSON.stringify({ message: 'Batch update period has not started yet' })
+            body: JSON.stringify({ message: 'Batch update period has not finished yet. Skipping auto reject' })
         };
     }
 
