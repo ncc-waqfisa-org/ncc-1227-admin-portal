@@ -112,6 +112,25 @@ export const onCreateApplication = /* GraphQL */ `subscription OnCreateApplicati
     isEmailSent
     schoolName
     schoolType
+    studentName
+    universityID
+    university {
+      id
+      name
+      nameAr
+      availability
+      isDeactivated
+      isExtended
+      extendedTo
+      isException
+      isTrashed
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
     studentCPR
     student {
       cpr
@@ -151,6 +170,7 @@ export const onCreateApplication = /* GraphQL */ `subscription OnCreateApplicati
     _version
     _deleted
     _lastChangedAt
+    universityApplicationsId
     applicationAttachmentId
     __typename
   }
@@ -200,6 +220,25 @@ export const onUpdateApplication = /* GraphQL */ `subscription OnUpdateApplicati
     isEmailSent
     schoolName
     schoolType
+    studentName
+    universityID
+    university {
+      id
+      name
+      nameAr
+      availability
+      isDeactivated
+      isExtended
+      extendedTo
+      isException
+      isTrashed
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
     studentCPR
     student {
       cpr
@@ -239,6 +278,7 @@ export const onUpdateApplication = /* GraphQL */ `subscription OnUpdateApplicati
     _version
     _deleted
     _lastChangedAt
+    universityApplicationsId
     applicationAttachmentId
     __typename
   }
@@ -288,6 +328,25 @@ export const onDeleteApplication = /* GraphQL */ `subscription OnDeleteApplicati
     isEmailSent
     schoolName
     schoolType
+    studentName
+    universityID
+    university {
+      id
+      name
+      nameAr
+      availability
+      isDeactivated
+      isExtended
+      extendedTo
+      isException
+      isTrashed
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
     studentCPR
     student {
       cpr
@@ -327,6 +386,7 @@ export const onDeleteApplication = /* GraphQL */ `subscription OnDeleteApplicati
     _version
     _deleted
     _lastChangedAt
+    universityApplicationsId
     applicationAttachmentId
     __typename
   }
@@ -371,6 +431,8 @@ export const onCreateProgramChoice = /* GraphQL */ `subscription OnCreateProgram
       isEmailSent
       schoolName
       schoolType
+      studentName
+      universityID
       studentCPR
       batch
       score
@@ -381,6 +443,7 @@ export const onCreateProgramChoice = /* GraphQL */ `subscription OnCreateProgram
       _version
       _deleted
       _lastChangedAt
+      universityApplicationsId
       applicationAttachmentId
       __typename
     }
@@ -436,6 +499,8 @@ export const onUpdateProgramChoice = /* GraphQL */ `subscription OnUpdateProgram
       isEmailSent
       schoolName
       schoolType
+      studentName
+      universityID
       studentCPR
       batch
       score
@@ -446,6 +511,7 @@ export const onUpdateProgramChoice = /* GraphQL */ `subscription OnUpdateProgram
       _version
       _deleted
       _lastChangedAt
+      universityApplicationsId
       applicationAttachmentId
       __typename
     }
@@ -501,6 +567,8 @@ export const onDeleteProgramChoice = /* GraphQL */ `subscription OnDeleteProgram
       isEmailSent
       schoolName
       schoolType
+      studentName
+      universityID
       studentCPR
       batch
       score
@@ -511,6 +579,7 @@ export const onDeleteProgramChoice = /* GraphQL */ `subscription OnDeleteProgram
       _version
       _deleted
       _lastChangedAt
+      universityApplicationsId
       applicationAttachmentId
       __typename
     }
@@ -548,6 +617,7 @@ export const onCreateProgram = /* GraphQL */ `subscription OnCreateProgram($filt
       isDeactivated
       isExtended
       extendedTo
+      isException
       isTrashed
       createdAt
       updatedAt
@@ -594,6 +664,7 @@ export const onUpdateProgram = /* GraphQL */ `subscription OnUpdateProgram($filt
       isDeactivated
       isExtended
       extendedTo
+      isException
       isTrashed
       createdAt
       updatedAt
@@ -640,6 +711,7 @@ export const onDeleteProgram = /* GraphQL */ `subscription OnDeleteProgram($filt
       isDeactivated
       isExtended
       extendedTo
+      isException
       isTrashed
       createdAt
       updatedAt
@@ -684,7 +756,13 @@ export const onCreateUniversity = /* GraphQL */ `subscription OnCreateUniversity
     isDeactivated
     isExtended
     extendedTo
+    isException
     isTrashed
+    applications {
+      nextToken
+      startedAt
+      __typename
+    }
     createdAt
     updatedAt
     _version
@@ -713,7 +791,13 @@ export const onUpdateUniversity = /* GraphQL */ `subscription OnUpdateUniversity
     isDeactivated
     isExtended
     extendedTo
+    isException
     isTrashed
+    applications {
+      nextToken
+      startedAt
+      __typename
+    }
     createdAt
     updatedAt
     _version
@@ -742,7 +826,13 @@ export const onDeleteUniversity = /* GraphQL */ `subscription OnDeleteUniversity
     isDeactivated
     isExtended
     extendedTo
+    isException
     isTrashed
+    applications {
+      nextToken
+      startedAt
+      __typename
+    }
     createdAt
     updatedAt
     _version
@@ -1372,7 +1462,6 @@ export const onCreateBatch = /* GraphQL */ `subscription OnCreateBatch($filter: 
     updateApplicationEndDate
     signUpStartDate
     signUpEndDate
-    updateExceptions
     createdAt
     updatedAt
     _version
@@ -1393,7 +1482,6 @@ export const onUpdateBatch = /* GraphQL */ `subscription OnUpdateBatch($filter: 
     updateApplicationEndDate
     signUpStartDate
     signUpEndDate
-    updateExceptions
     createdAt
     updatedAt
     _version
@@ -1414,7 +1502,6 @@ export const onDeleteBatch = /* GraphQL */ `subscription OnDeleteBatch($filter: 
     updateApplicationEndDate
     signUpStartDate
     signUpEndDate
-    updateExceptions
     createdAt
     updatedAt
     _version
@@ -1445,6 +1532,8 @@ export const onCreateScholarship = /* GraphQL */ `subscription OnCreateScholarsh
       isEmailSent
       schoolName
       schoolType
+      studentName
+      universityID
       studentCPR
       batch
       score
@@ -1455,6 +1544,7 @@ export const onCreateScholarship = /* GraphQL */ `subscription OnCreateScholarsh
       _version
       _deleted
       _lastChangedAt
+      universityApplicationsId
       applicationAttachmentId
       __typename
     }
@@ -1496,6 +1586,8 @@ export const onUpdateScholarship = /* GraphQL */ `subscription OnUpdateScholarsh
       isEmailSent
       schoolName
       schoolType
+      studentName
+      universityID
       studentCPR
       batch
       score
@@ -1506,6 +1598,7 @@ export const onUpdateScholarship = /* GraphQL */ `subscription OnUpdateScholarsh
       _version
       _deleted
       _lastChangedAt
+      universityApplicationsId
       applicationAttachmentId
       __typename
     }
@@ -1547,6 +1640,8 @@ export const onDeleteScholarship = /* GraphQL */ `subscription OnDeleteScholarsh
       isEmailSent
       schoolName
       schoolType
+      studentName
+      universityID
       studentCPR
       batch
       score
@@ -1557,6 +1652,7 @@ export const onDeleteScholarship = /* GraphQL */ `subscription OnDeleteScholarsh
       _version
       _deleted
       _lastChangedAt
+      universityApplicationsId
       applicationAttachmentId
       __typename
     }

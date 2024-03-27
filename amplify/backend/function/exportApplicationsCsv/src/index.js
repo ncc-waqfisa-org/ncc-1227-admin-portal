@@ -56,13 +56,16 @@ async function exportApplicationsCsv(tableName, batchValue, status) {
 async function getApplications(tableName, batchValue, status) {
     const params = {
         TableName: tableName,
-        FilterExpression: '#batch = :batchValue',
+        IndexName: 'byScore',
+        KeyConditionExpression: '#batch = :batchValue AND score > :score',
         ExpressionAttributeNames: {
             '#batch': 'batch'
         },
         ExpressionAttributeValues: {
-            ':batchValue': batchValue
-        }
+            ':batchValue': batchValue,
+            ':score': 0.0
+        },
+        ScanIndexForward: false,
     };
     if(status) {
         params.FilterExpression += ' AND #status = :status';
@@ -73,7 +76,7 @@ async function getApplications(tableName, batchValue, status) {
     let allApplications = [];
 
     do {
-        const applications = await dynamoDB.scan(params).promise();
+        const applications = await dynamoDB.query(params).promise();
         allApplications = allApplications.concat(applications.Items);
 
         // Check if there are more items to fetch

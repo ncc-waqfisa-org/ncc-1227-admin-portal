@@ -216,6 +216,35 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "studentName": {
+                    "name": "studentName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "universityID": {
+                    "name": "universityID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "university": {
+                    "name": "university",
+                    "isArray": false,
+                    "type": {
+                        "model": "University"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "universityID"
+                        ]
+                    }
+                },
                 "studentCPR": {
                     "name": "studentCPR",
                     "isArray": false,
@@ -284,6 +313,13 @@ export const schema = {
                 },
                 "applicationAttachmentId": {
                     "name": "applicationAttachmentId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "universityApplicationsId": {
+                    "name": "universityApplicationsId",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": false,
@@ -699,7 +735,7 @@ export const schema = {
                 "isExtended": {
                     "name": "isExtended",
                     "isArray": false,
-                    "type": "Boolean",
+                    "type": "Int",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -710,12 +746,35 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "isException": {
+                    "name": "isException",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "isTrashed": {
                     "name": "isTrashed",
                     "isArray": false,
                     "type": "Boolean",
                     "isRequired": false,
                     "attributes": []
+                },
+                "applications": {
+                    "name": "applications",
+                    "isArray": true,
+                    "type": {
+                        "model": "Application"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "universityApplicationsId"
+                        ]
+                    }
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -740,6 +799,25 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byExtended",
+                        "fields": [
+                            "isExtended",
+                            "extendedTo"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byException",
+                        "fields": [
+                            "isException"
+                        ]
+                    }
                 },
                 {
                     "type": "auth",
@@ -1543,13 +1621,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "updateExceptions": {
-                    "name": "updateExceptions",
-                    "isArray": false,
-                    "type": "AWSJSON",
-                    "isRequired": false,
-                    "attributes": []
-                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -1942,5 +2013,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "35ef6cf35a3e76dac0d30426abd81040"
+    "version": "15459d2439af149d47e084ce930107c6"
 };

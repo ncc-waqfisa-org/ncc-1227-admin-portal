@@ -128,6 +128,25 @@ export const getApplication = /* GraphQL */ `query GetApplication($id: ID!) {
     isEmailSent
     schoolName
     schoolType
+    studentName
+    universityID
+    university {
+      id
+      name
+      nameAr
+      availability
+      isDeactivated
+      isExtended
+      extendedTo
+      isException
+      isTrashed
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
     studentCPR
     student {
       cpr
@@ -167,6 +186,7 @@ export const getApplication = /* GraphQL */ `query GetApplication($id: ID!) {
     _version
     _deleted
     _lastChangedAt
+    universityApplicationsId
     applicationAttachmentId
     __typename
   }
@@ -191,6 +211,8 @@ export const listApplications = /* GraphQL */ `query ListApplications(
       isEmailSent
       schoolName
       schoolType
+      studentName
+      universityID
       studentCPR
       batch
       score
@@ -201,6 +223,7 @@ export const listApplications = /* GraphQL */ `query ListApplications(
       _version
       _deleted
       _lastChangedAt
+      universityApplicationsId
       applicationAttachmentId
       __typename
     }
@@ -235,6 +258,8 @@ export const syncApplications = /* GraphQL */ `query SyncApplications(
       isEmailSent
       schoolName
       schoolType
+      studentName
+      universityID
       studentCPR
       batch
       score
@@ -245,6 +270,7 @@ export const syncApplications = /* GraphQL */ `query SyncApplications(
       _version
       _deleted
       _lastChangedAt
+      universityApplicationsId
       applicationAttachmentId
       __typename
     }
@@ -291,6 +317,8 @@ export const getProgramChoice = /* GraphQL */ `query GetProgramChoice($id: ID!) 
       isEmailSent
       schoolName
       schoolType
+      studentName
+      universityID
       studentCPR
       batch
       score
@@ -301,6 +329,7 @@ export const getProgramChoice = /* GraphQL */ `query GetProgramChoice($id: ID!) 
       _version
       _deleted
       _lastChangedAt
+      universityApplicationsId
       applicationAttachmentId
       __typename
     }
@@ -404,6 +433,7 @@ export const getProgram = /* GraphQL */ `query GetProgram($id: ID!) {
       isDeactivated
       isExtended
       extendedTo
+      isException
       isTrashed
       createdAt
       updatedAt
@@ -520,7 +550,13 @@ export const getUniversity = /* GraphQL */ `query GetUniversity($id: ID!) {
     isDeactivated
     isExtended
     extendedTo
+    isException
     isTrashed
+    applications {
+      nextToken
+      startedAt
+      __typename
+    }
     createdAt
     updatedAt
     _version
@@ -547,6 +583,7 @@ export const listUniversities = /* GraphQL */ `query ListUniversities(
       isDeactivated
       isExtended
       extendedTo
+      isException
       isTrashed
       createdAt
       updatedAt
@@ -584,6 +621,7 @@ export const syncUniversities = /* GraphQL */ `query SyncUniversities(
       isDeactivated
       isExtended
       extendedTo
+      isException
       isTrashed
       createdAt
       updatedAt
@@ -1187,7 +1225,6 @@ export const getBatch = /* GraphQL */ `query GetBatch($batch: Int!) {
     updateApplicationEndDate
     signUpStartDate
     signUpEndDate
-    updateExceptions
     createdAt
     updatedAt
     _version
@@ -1218,7 +1255,6 @@ export const listBatches = /* GraphQL */ `query ListBatches(
       updateApplicationEndDate
       signUpStartDate
       signUpEndDate
-      updateExceptions
       createdAt
       updatedAt
       _version
@@ -1254,7 +1290,6 @@ export const syncBatches = /* GraphQL */ `query SyncBatches(
       updateApplicationEndDate
       signUpStartDate
       signUpEndDate
-      updateExceptions
       createdAt
       updatedAt
       _version
@@ -1287,6 +1322,8 @@ export const getScholarship = /* GraphQL */ `query GetScholarship($id: ID!) {
       isEmailSent
       schoolName
       schoolType
+      studentName
+      universityID
       studentCPR
       batch
       score
@@ -1297,6 +1334,7 @@ export const getScholarship = /* GraphQL */ `query GetScholarship($id: ID!) {
       _version
       _deleted
       _lastChangedAt
+      universityApplicationsId
       applicationAttachmentId
       __typename
     }
@@ -1517,6 +1555,8 @@ export const applicationsByIdAndDateTime = /* GraphQL */ `query ApplicationsById
       isEmailSent
       schoolName
       schoolType
+      studentName
+      universityID
       studentCPR
       batch
       score
@@ -1527,6 +1567,7 @@ export const applicationsByIdAndDateTime = /* GraphQL */ `query ApplicationsById
       _version
       _deleted
       _lastChangedAt
+      universityApplicationsId
       applicationAttachmentId
       __typename
     }
@@ -1565,6 +1606,8 @@ export const applicationsByStudentCPRAndGpa = /* GraphQL */ `query ApplicationsB
       isEmailSent
       schoolName
       schoolType
+      studentName
+      universityID
       studentCPR
       batch
       score
@@ -1575,6 +1618,7 @@ export const applicationsByStudentCPRAndGpa = /* GraphQL */ `query ApplicationsB
       _version
       _deleted
       _lastChangedAt
+      universityApplicationsId
       applicationAttachmentId
       __typename
     }
@@ -1613,6 +1657,8 @@ export const applicationsByBatchAndStatus = /* GraphQL */ `query ApplicationsByB
       isEmailSent
       schoolName
       schoolType
+      studentName
+      universityID
       studentCPR
       batch
       score
@@ -1623,6 +1669,7 @@ export const applicationsByBatchAndStatus = /* GraphQL */ `query ApplicationsByB
       _version
       _deleted
       _lastChangedAt
+      universityApplicationsId
       applicationAttachmentId
       __typename
     }
@@ -1661,6 +1708,8 @@ export const applicationsByScoreAndStatus = /* GraphQL */ `query ApplicationsByS
       isEmailSent
       schoolName
       schoolType
+      studentName
+      universityID
       studentCPR
       batch
       score
@@ -1671,6 +1720,7 @@ export const applicationsByScoreAndStatus = /* GraphQL */ `query ApplicationsByS
       _version
       _deleted
       _lastChangedAt
+      universityApplicationsId
       applicationAttachmentId
       __typename
     }
@@ -1709,6 +1759,8 @@ export const applicationsByProcessedAndBatch = /* GraphQL */ `query Applications
       isEmailSent
       schoolName
       schoolType
+      studentName
+      universityID
       studentCPR
       batch
       score
@@ -1719,6 +1771,7 @@ export const applicationsByProcessedAndBatch = /* GraphQL */ `query Applications
       _version
       _deleted
       _lastChangedAt
+      universityApplicationsId
       applicationAttachmentId
       __typename
     }
@@ -1730,6 +1783,88 @@ export const applicationsByProcessedAndBatch = /* GraphQL */ `query Applications
 ` as GeneratedQuery<
   APITypes.ApplicationsByProcessedAndBatchQueryVariables,
   APITypes.ApplicationsByProcessedAndBatchQuery
+>;
+export const universitiesByIsExtendedAndExtendedTo = /* GraphQL */ `query UniversitiesByIsExtendedAndExtendedTo(
+  $isExtended: Int!
+  $extendedTo: ModelStringKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelUniversityFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  universitiesByIsExtendedAndExtendedTo(
+    isExtended: $isExtended
+    extendedTo: $extendedTo
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      name
+      nameAr
+      availability
+      isDeactivated
+      isExtended
+      extendedTo
+      isException
+      isTrashed
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.UniversitiesByIsExtendedAndExtendedToQueryVariables,
+  APITypes.UniversitiesByIsExtendedAndExtendedToQuery
+>;
+export const universitiesByIsException = /* GraphQL */ `query UniversitiesByIsException(
+  $isException: Int!
+  $sortDirection: ModelSortDirection
+  $filter: ModelUniversityFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  universitiesByIsException(
+    isException: $isException
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      name
+      nameAr
+      availability
+      isDeactivated
+      isExtended
+      extendedTo
+      isException
+      isTrashed
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.UniversitiesByIsExceptionQueryVariables,
+  APITypes.UniversitiesByIsExceptionQuery
 >;
 export const scholarshipsByStudentCPRAndStatus = /* GraphQL */ `query ScholarshipsByStudentCPRAndStatus(
   $studentCPR: String!

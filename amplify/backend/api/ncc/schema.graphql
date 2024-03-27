@@ -20,6 +20,9 @@ type Application @model @auth(rules: [{ allow: public }]) {
   isEmailSent: Boolean @default(value: "false")
   schoolName: String
   schoolType: SchoolType
+  studentName: String
+  universityID: ID
+  university: University @belongsTo(fields: ["universityID"])
   studentCPR: String! @index(name: "byCPR", sortKeyFields: ["gpa"])
   student: Student @belongsTo(fields: ["studentCPR"])
 #  batchID: ID! @index(name: "byBatchRelation") @default(value: "48745538-4051-4c99-ad0f-7be0cac6cf16")
@@ -63,10 +66,11 @@ type University @model @auth(rules: [{ allow: public }]) {
   Programs: [Program] @hasMany
   availability: Int @default(value: "0")
   isDeactivated: Boolean
-  isExtended: Boolean @default(value: "false")
-  # extendedTo: AWSDate and nullable
+  isExtended: Int @index(name: "byExtended", sortKeyFields: ["extendedTo"])
   extendedTo: AWSDate
+  isException: Int @index(name: "byException")
   isTrashed: Boolean @default(value: "false")
+  applications: [Application] @hasMany
 }
 
 type AdminLog @model @auth(rules: [{ allow: public }]) {
@@ -180,7 +184,7 @@ type Batch @model @auth(rules: [{ allow: public }]) {
   updateApplicationEndDate: AWSDate
   signUpStartDate: AWSDate
   signUpEndDate: AWSDate
-  updateExceptions: AWSJSON
+#  updateExceptions: AWSJSON
 #  applications: [Application] @hasMany(indexName: "byBatchRelation", fields: ["id"])
 }
 

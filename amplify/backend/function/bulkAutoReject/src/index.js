@@ -25,8 +25,9 @@ exports.handler = async (event) => {
     }
 
     const applications = await getApplications(batchValue);
-    const extendedUniversities = batchDetails.extendedUniversities;
-    await bulkUpdateApplications(batchValue, applications, extendedUniversities);
+    const extendedUniversities = getExtendedUniversities();
+    const exceptionUniversities = getExceptionUniversities();
+    await bulkUpdateApplications(batchValue, applications, extendedUniversities, exceptionUniversities);
 
 
 
@@ -68,7 +69,7 @@ async function getApplications(batch) {
     return allApplications;
 }
 
-async function bulkUpdateApplications(batchValue, applications){
+async function bulkUpdateApplications(batchValue, applications, extendedUniversities, exceptionUniversities) {
     const updatePromises = applications.map(async application => {
         const student = await getStudent(application.studentCPR);
         const params = {
@@ -84,9 +85,11 @@ async function bulkUpdateApplications(batchValue, applications){
         const isNonBahraini = student.nationalityCategory === 'NON_BAHRAINI';
         const isNotCompleted = application.status === 'NOT_COMPLETED';
 
-        if (isNonBahraini || isNotCompleted) {
+        if (isNonBahraini) {
             params.UpdateExpression += ', status = :statusValue';
             params.ExpressionAttributeValues[':statusValue'] = 'REJECTED';
+        } else {
+
         }
 
         return dynamoDB.update(params).promise();
@@ -118,4 +121,77 @@ async function getBatchDetails(batch) {
     return batchDetails.Item;
 }
 
+async function getExtendedUniversities() {
+
+    const params = {
+        TableName: 'University-cw7beg2perdtnl7onnneec4jfa-staging',
+        IndexName: 'byExtended',
+        KeyConditionExpression: '#isExtended = :extendedValue',
+        ExpressionAttributeNames: {
+            '#isExtended': 'isExtended'
+        },
+        ExpressionAttributeValues: {
+            ':extendedValue': 1
+        }
+    };
+
+    let allUniversities = [];
+
+    do {
+        const universities = await dynamoDB.query(params).promise();
+        allUniversities = allUniversities.concat(universities.Items);
+        params.ExclusiveStartKey = universities.LastEvaluatedKey;
+    } while (params.ExclusiveStartKey);
+
+    return allUniversities;
+}
+
+async function getExceptionUniversities() {
+
+    const params = {
+        TableName: 'University-cw7beg2perdtnl7onnneec4jfa-staging',
+        IndexName: 'byException',
+        KeyConditionExpression: '#isException = :exceptionValue',
+        ExpressionAttributeNames: {
+            '#isException': 'isException'
+        },
+        ExpressionAttributeValues: {
+            ':exceptionValue': 1
+        }
+    };
+
+    let allUniversities = [];
+
+    do {
+        const universities = await dynamoDB.query(params).promise();
+        allUniversities = allUniversities.concat(universities.Items);
+        params.ExclusiveStartKey = universities.LastEvaluatedKey;
+    } while (params.ExclusiveStartKey);
+
+    return allUniversities;
+}
+
+async function getAppliedToUniversities(studentId) {
+    const params = {
+        TableName: 'Application-cw7beg2perdtnl7onnneec4jfa-staging',
+        IndexName: 'byStudent',
+        KeyConditionExpression: '#studentId = :studentId',
+        ExpressionAttributeNames: {
+            '#studentId': 'studentId'
+        },
+        ExpressionAttributeValues: {
+            ':studentId': studentId
+        }
+    };
+
+    let allApplications = [];
+
+    do {
+        const applications = await dynamoDB.query(params).promise();
+        allApplications = allApplications.concat(applications.Items);
+        params.ExclusiveStartKey = applications.LastEvaluatedKey;
+    } while (params.ExclusiveStartKey);
+
+    return allApplications;
+}
 

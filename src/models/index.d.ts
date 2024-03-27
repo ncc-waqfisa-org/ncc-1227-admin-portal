@@ -106,6 +106,9 @@ type EagerApplication = {
   readonly isEmailSent?: boolean | null;
   readonly schoolName?: string | null;
   readonly schoolType?: SchoolType | keyof typeof SchoolType | null;
+  readonly studentName?: string | null;
+  readonly universityID?: string | null;
+  readonly university?: University | null;
   readonly studentCPR: string;
   readonly student?: Student | null;
   readonly batch?: number | null;
@@ -115,6 +118,7 @@ type EagerApplication = {
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly applicationAttachmentId?: string | null;
+  readonly universityApplicationsId?: string | null;
 }
 
 type LazyApplication = {
@@ -135,6 +139,9 @@ type LazyApplication = {
   readonly isEmailSent?: boolean | null;
   readonly schoolName?: string | null;
   readonly schoolType?: SchoolType | keyof typeof SchoolType | null;
+  readonly studentName?: string | null;
+  readonly universityID?: string | null;
+  readonly university: AsyncItem<University | undefined>;
   readonly studentCPR: string;
   readonly student: AsyncItem<Student | undefined>;
   readonly batch?: number | null;
@@ -144,6 +151,7 @@ type LazyApplication = {
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly applicationAttachmentId?: string | null;
+  readonly universityApplicationsId?: string | null;
 }
 
 export declare type Application = LazyLoading extends LazyLoadingDisabled ? EagerApplication : LazyApplication
@@ -255,9 +263,11 @@ type EagerUniversity = {
   readonly Programs?: (Program | null)[] | null;
   readonly availability?: number | null;
   readonly isDeactivated?: boolean | null;
-  readonly isExtended?: boolean | null;
+  readonly isExtended?: number | null;
   readonly extendedTo?: string | null;
+  readonly isException?: number | null;
   readonly isTrashed?: boolean | null;
+  readonly applications?: (Application | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -273,9 +283,11 @@ type LazyUniversity = {
   readonly Programs: AsyncCollection<Program>;
   readonly availability?: number | null;
   readonly isDeactivated?: boolean | null;
-  readonly isExtended?: boolean | null;
+  readonly isExtended?: number | null;
   readonly extendedTo?: string | null;
+  readonly isException?: number | null;
   readonly isTrashed?: boolean | null;
+  readonly applications: AsyncCollection<Application>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -535,7 +547,6 @@ type EagerBatch = {
   readonly updateApplicationEndDate?: string | null;
   readonly signUpStartDate?: string | null;
   readonly signUpEndDate?: string | null;
-  readonly updateExceptions?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -551,7 +562,6 @@ type LazyBatch = {
   readonly updateApplicationEndDate?: string | null;
   readonly signUpStartDate?: string | null;
   readonly signUpEndDate?: string | null;
-  readonly updateExceptions?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
