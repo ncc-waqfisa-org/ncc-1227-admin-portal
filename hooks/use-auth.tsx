@@ -72,6 +72,10 @@ function useProvideAuth() {
     async function getAuthUser(): Promise<void> {
       try {
         const authUser = await Auth.currentAuthenticatedUser();
+        console.log(
+            "🚀 ~ getAuthUser ~ authUser:",
+            authUser.getSignInUserSession()?.getAccessToken().getJwtToken()
+        );
         if (authUser) {
           await checkAuthUser(authUser).then((isAdmin) => {
             if (isAdmin) {

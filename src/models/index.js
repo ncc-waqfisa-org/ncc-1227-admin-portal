@@ -2,6 +2,11 @@
 import { initSchema } from '@aws-amplify/datastore';
 import { schema } from './schema';
 
+const AdminRole = {
+  "ADMIN": "ADMIN",
+  "SUPER_ADMIN": "SUPER_ADMIN"
+};
+
 const Status = {
   "APPROVED": "APPROVED",
   "ELIGIBLE": "ELIGIBLE",
@@ -11,9 +16,9 @@ const Status = {
   "WITHDRAWN": "WITHDRAWN"
 };
 
-const AdminRole = {
-  "ADMIN": "ADMIN",
-  "SUPER_ADMIN": "SUPER_ADMIN"
+const Language = {
+  "ARABIC": "ARABIC",
+  "ENGLISH": "ENGLISH"
 };
 
 const Gender = {
@@ -26,35 +31,49 @@ const SchoolType = {
   "PUBLIC": "PUBLIC"
 };
 
+const Nationality = {
+  "BAHRAINI": "BAHRAINI",
+  "NON_BAHRAINI": "NON_BAHRAINI"
+};
+
 const FamilyIncome = {
   "LESS_THAN_500": "LESS_THAN_500",
   "BETWEEN_500_AND_700": "BETWEEN_500_AND_700",
   "BETWEEN_700_AND_1000": "BETWEEN_700_AND_1000",
+  "LESS_THAN_1500": "LESS_THAN_1500",
+  "MORE_THAN_1500": "MORE_THAN_1500",
   "OVER_1000": "OVER_1000"
 };
 
-const Language = {
-  "ARABIC": "ARABIC",
-  "ENGLISH": "ENGLISH"
+const ScholarshipStatus = {
+  "APPROVED": "APPROVED",
+  "PENDING": "PENDING",
+  "REJECTED": "REJECTED",
+  "WITHDRAWN": "WITHDRAWN"
 };
 
-const { Attachment, Application, AdminLog, Admin, StudentLog, Student, ParentInfo, ProgramChoice, Program, University } = initSchema(schema);
+const { Attachment, Application, ProgramChoice, Program, University, AdminLog, StudentLog, Admin, ParentInfo, Student, Batch, Scholarship, Statistics } = initSchema(schema);
 
 export {
   Attachment,
   Application,
-  AdminLog,
-  Admin,
-  StudentLog,
-  Student,
-  ParentInfo,
   ProgramChoice,
   Program,
   University,
-  Status,
+  AdminLog,
+  StudentLog,
+  Admin,
+  ParentInfo,
+  Student,
+  Batch,
+  Scholarship,
+  Statistics,
   AdminRole,
+  Status,
+  Language,
   Gender,
   SchoolType,
+  Nationality,
   FamilyIncome,
-  Language
+  ScholarshipStatus
 };

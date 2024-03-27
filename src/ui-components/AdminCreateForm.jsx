@@ -6,10 +6,15 @@
 
 /* eslint-disable */
 import * as React from "react";
-import { fetchByPath, validateField } from "./utils";
+import {
+  Button,
+  Flex,
+  Grid,
+  SelectField,
+  TextField,
+} from "@aws-amplify/ui-react";
 import { Admin } from "../models";
-import { getOverrideProps } from "@aws-amplify/ui-react/internal";
-import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
+import { fetchByPath, getOverrideProps, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
 export default function AdminCreateForm(props) {
   const {
@@ -17,33 +22,44 @@ export default function AdminCreateForm(props) {
     onSuccess,
     onError,
     onSubmit,
-    onCancel,
     onValidate,
     onChange,
     overrides,
     ...rest
   } = props;
   const initialValues = {
-    cpr: undefined,
-    fullName: undefined,
-    email: undefined,
+    cpr: "",
+    fullName: "",
+    email: "",
+    role: "",
   };
   const [cpr, setCpr] = React.useState(initialValues.cpr);
   const [fullName, setFullName] = React.useState(initialValues.fullName);
   const [email, setEmail] = React.useState(initialValues.email);
+  const [role, setRole] = React.useState(initialValues.role);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setCpr(initialValues.cpr);
     setFullName(initialValues.fullName);
     setEmail(initialValues.email);
+    setRole(initialValues.role);
     setErrors({});
   };
   const validations = {
     cpr: [{ type: "Required" }],
     fullName: [],
     email: [],
+    role: [],
   };
-  const runValidationTasks = async (fieldName, value) => {
+  const runValidationTasks = async (
+    fieldName,
+    currentValue,
+    getDisplayValue
+  ) => {
+    const value =
+      currentValue && getDisplayValue
+        ? getDisplayValue(currentValue)
+        : currentValue;
     let validationResponse = validateField(value, validations[fieldName]);
     const customValidator = fetchByPath(onValidate, fieldName);
     if (customValidator) {
@@ -64,6 +80,7 @@ export default function AdminCreateForm(props) {
           cpr,
           fullName,
           email,
+          role,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -88,6 +105,11 @@ export default function AdminCreateForm(props) {
           modelFields = onSubmit(modelFields);
         }
         try {
+          Object.entries(modelFields).forEach(([key, value]) => {
+            if (typeof value === "string" && value === "") {
+              modelFields[key] = null;
+            }
+          });
           await DataStore.save(new Admin(modelFields));
           if (onSuccess) {
             onSuccess(modelFields);
@@ -101,13 +123,14 @@ export default function AdminCreateForm(props) {
           }
         }
       }}
-      {...rest}
       {...getOverrideProps(overrides, "AdminCreateForm")}
+      {...rest}
     >
       <TextField
         label="Cpr"
         isRequired={true}
         isReadOnly={false}
+        value={cpr}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
@@ -115,6 +138,7 @@ export default function AdminCreateForm(props) {
               cpr: value,
               fullName,
               email,
+              role,
             };
             const result = onChange(modelFields);
             value = result?.cpr ?? value;
@@ -133,6 +157,7 @@ export default function AdminCreateForm(props) {
         label="Full name"
         isRequired={false}
         isReadOnly={false}
+        value={fullName}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
@@ -140,6 +165,7 @@ export default function AdminCreateForm(props) {
               cpr,
               fullName: value,
               email,
+              role,
             };
             const result = onChange(modelFields);
             value = result?.fullName ?? value;
@@ -158,6 +184,7 @@ export default function AdminCreateForm(props) {
         label="Email"
         isRequired={false}
         isReadOnly={false}
+        value={email}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
@@ -165,6 +192,7 @@ export default function AdminCreateForm(props) {
               cpr,
               fullName,
               email: value,
+              role,
             };
             const result = onChange(modelFields);
             value = result?.email ?? value;
@@ -179,6 +207,44 @@ export default function AdminCreateForm(props) {
         hasError={errors.email?.hasError}
         {...getOverrideProps(overrides, "email")}
       ></TextField>
+      <SelectField
+        label="Role"
+        placeholder="Please select an option"
+        isDisabled={false}
+        value={role}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              cpr,
+              fullName,
+              email,
+              role: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.role ?? value;
+          }
+          if (errors.role?.hasError) {
+            runValidationTasks("role", value);
+          }
+          setRole(value);
+        }}
+        onBlur={() => runValidationTasks("role", role)}
+        errorMessage={errors.role?.errorMessage}
+        hasError={errors.role?.hasError}
+        {...getOverrideProps(overrides, "role")}
+      >
+        <option
+          children="Admin"
+          value="ADMIN"
+          {...getOverrideProps(overrides, "roleoption0")}
+        ></option>
+        <option
+          children="Super admin"
+          value="SUPER_ADMIN"
+          {...getOverrideProps(overrides, "roleoption1")}
+        ></option>
+      </SelectField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}
@@ -186,21 +252,16 @@ export default function AdminCreateForm(props) {
         <Button
           children="Clear"
           type="reset"
-          onClick={resetStateValues}
+          onClick={(event) => {
+            event.preventDefault();
+            resetStateValues();
+          }}
           {...getOverrideProps(overrides, "ClearButton")}
         ></Button>
         <Flex
           gap="15px"
           {...getOverrideProps(overrides, "RightAlignCTASubFlex")}
         >
-          <Button
-            children="Cancel"
-            type="button"
-            onClick={() => {
-              onCancel && onCancel();
-            }}
-            {...getOverrideProps(overrides, "CancelButton")}
-          ></Button>
           <Button
             children="Submit"
             type="submit"
