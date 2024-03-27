@@ -238,34 +238,12 @@ export const schema = {
                         ]
                     }
                 },
-                "batchID": {
-                    "name": "batchID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "batch": {
                     "name": "batch",
                     "isArray": false,
                     "type": "Int",
                     "isRequired": false,
                     "attributes": []
-                },
-                "batchRelation": {
-                    "name": "batchRelation",
-                    "isArray": false,
-                    "type": {
-                        "model": "Batch"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetNames": [
-                            "batchID"
-                        ]
-                    }
                 },
                 "score": {
                     "name": "score",
@@ -276,6 +254,13 @@ export const schema = {
                 },
                 "adminPoints": {
                     "name": "adminPoints",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "processed": {
+                    "name": "processed",
                     "isArray": false,
                     "type": "Int",
                     "isRequired": false,
@@ -335,15 +320,6 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
-                        "name": "byBatchRelation",
-                        "fields": [
-                            "batchID"
-                        ]
-                    }
-                },
-                {
-                    "type": "key",
-                    "properties": {
                         "name": "byBatch",
                         "fields": [
                             "batch",
@@ -358,6 +334,16 @@ export const schema = {
                         "fields": [
                             "score",
                             "status"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byProcessed",
+                        "fields": [
+                            "processed",
+                            "batch"
                         ]
                     }
                 },
@@ -1515,18 +1501,11 @@ export const schema = {
         "Batch": {
             "name": "Batch",
             "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "batch": {
                     "name": "batch",
                     "isArray": false,
                     "type": "Int",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "createApplicationStartDate": {
@@ -1564,21 +1543,12 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "applications": {
-                    "name": "applications",
-                    "isArray": true,
-                    "type": {
-                        "model": "Application"
-                    },
+                "updateExceptions": {
+                    "name": "updateExceptions",
+                    "isArray": false,
+                    "type": "AWSJSON",
                     "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": [
-                            "batchRelation"
-                        ]
-                    }
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -1608,7 +1578,7 @@ export const schema = {
                     "type": "key",
                     "properties": {
                         "fields": [
-                            "id"
+                            "batch"
                         ]
                     }
                 },
@@ -1972,5 +1942,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "7412c1ab53839d2b9ea52115bc907089"
+    "version": "35ef6cf35a3e76dac0d30426abd81040"
 };

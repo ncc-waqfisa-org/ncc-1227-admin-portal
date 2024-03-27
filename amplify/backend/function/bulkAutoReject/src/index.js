@@ -16,7 +16,17 @@ exports.handler = async (event) => {
             body: JSON.stringify({ message: 'Batch not found' })
         };
     }
+
+    if(batchDetails.updateApllicationEndDate < today){
+        return {
+            statusCode: 200,
+            body: JSON.stringify({ message: 'Batch update period has not started yet' })
+        };
+    }
+
     const applications = await getApplications(batchValue);
+    const extendedUniversities = batchDetails.extendedUniversities;
+    await bulkUpdateApplications(batchValue, applications, extendedUniversities);
 
 
 

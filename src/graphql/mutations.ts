@@ -146,25 +146,10 @@ export const createApplication = /* GraphQL */ `mutation CreateApplication(
       _lastChangedAt
       __typename
     }
-    batchID
     batch
-    batchRelation {
-      id
-      batch
-      createApplicationStartDate
-      createApplicationEndDate
-      updateApplicationEndDate
-      signUpStartDate
-      signUpEndDate
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
     score
     adminPoints
+    processed
     createdAt
     updatedAt
     _version
@@ -250,25 +235,10 @@ export const updateApplication = /* GraphQL */ `mutation UpdateApplication(
       _lastChangedAt
       __typename
     }
-    batchID
     batch
-    batchRelation {
-      id
-      batch
-      createApplicationStartDate
-      createApplicationEndDate
-      updateApplicationEndDate
-      signUpStartDate
-      signUpEndDate
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
     score
     adminPoints
+    processed
     createdAt
     updatedAt
     _version
@@ -354,25 +324,10 @@ export const deleteApplication = /* GraphQL */ `mutation DeleteApplication(
       _lastChangedAt
       __typename
     }
-    batchID
     batch
-    batchRelation {
-      id
-      batch
-      createApplicationStartDate
-      createApplicationEndDate
-      updateApplicationEndDate
-      signUpStartDate
-      signUpEndDate
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
     score
     adminPoints
+    processed
     createdAt
     updatedAt
     _version
@@ -424,10 +379,10 @@ export const createProgramChoice = /* GraphQL */ `mutation CreateProgramChoice(
       schoolName
       schoolType
       studentCPR
-      batchID
       batch
       score
       adminPoints
+      processed
       createdAt
       updatedAt
       _version
@@ -490,10 +445,10 @@ export const updateProgramChoice = /* GraphQL */ `mutation UpdateProgramChoice(
       schoolName
       schoolType
       studentCPR
-      batchID
       batch
       score
       adminPoints
+      processed
       createdAt
       updatedAt
       _version
@@ -556,10 +511,10 @@ export const deleteProgramChoice = /* GraphQL */ `mutation DeleteProgramChoice(
       schoolName
       schoolType
       studentCPR
-      batchID
       batch
       score
       adminPoints
+      processed
       createdAt
       updatedAt
       _version
@@ -1468,18 +1423,13 @@ export const createBatch = /* GraphQL */ `mutation CreateBatch(
   $condition: ModelBatchConditionInput
 ) {
   createBatch(input: $input, condition: $condition) {
-    id
     batch
     createApplicationStartDate
     createApplicationEndDate
     updateApplicationEndDate
     signUpStartDate
     signUpEndDate
-    applications {
-      nextToken
-      startedAt
-      __typename
-    }
+    updateExceptions
     createdAt
     updatedAt
     _version
@@ -1497,18 +1447,13 @@ export const updateBatch = /* GraphQL */ `mutation UpdateBatch(
   $condition: ModelBatchConditionInput
 ) {
   updateBatch(input: $input, condition: $condition) {
-    id
     batch
     createApplicationStartDate
     createApplicationEndDate
     updateApplicationEndDate
     signUpStartDate
     signUpEndDate
-    applications {
-      nextToken
-      startedAt
-      __typename
-    }
+    updateExceptions
     createdAt
     updatedAt
     _version
@@ -1526,18 +1471,13 @@ export const deleteBatch = /* GraphQL */ `mutation DeleteBatch(
   $condition: ModelBatchConditionInput
 ) {
   deleteBatch(input: $input, condition: $condition) {
-    id
     batch
     createApplicationStartDate
     createApplicationEndDate
     updateApplicationEndDate
     signUpStartDate
     signUpEndDate
-    applications {
-      nextToken
-      startedAt
-      __typename
-    }
+    updateExceptions
     createdAt
     updatedAt
     _version
@@ -1570,10 +1510,10 @@ export const createScholarship = /* GraphQL */ `mutation CreateScholarship(
       schoolName
       schoolType
       studentCPR
-      batchID
       batch
       score
       adminPoints
+      processed
       createdAt
       updatedAt
       _version
@@ -1622,10 +1562,10 @@ export const updateScholarship = /* GraphQL */ `mutation UpdateScholarship(
       schoolName
       schoolType
       studentCPR
-      batchID
       batch
       score
       adminPoints
+      processed
       createdAt
       updatedAt
       _version
@@ -1674,10 +1614,10 @@ export const deleteScholarship = /* GraphQL */ `mutation DeleteScholarship(
       schoolName
       schoolType
       studentCPR
-      batchID
       batch
       score
       adminPoints
+      processed
       createdAt
       updatedAt
       _version

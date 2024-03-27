@@ -29,7 +29,6 @@ exports.handler = async (event) => {
 
         const userExists = await getUserFromDynamoDB(username) || await getUserFromCognito(username) !== undefined;
         if (userExists) {
-
             if(user.UserAttributes.find(attr => attr.Name === 'email_verified').Value === 'true'){
                 return {
                     "statusCode": 400,
