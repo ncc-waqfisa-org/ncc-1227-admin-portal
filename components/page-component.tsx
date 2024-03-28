@@ -49,7 +49,8 @@ export const PageComponent: FC<PropsWithChildren<Props>> = (props) => {
           <p className="text-zinc-500">{user?.getUsername()}</p>
         </div>
       </div>
-      <div className="drawer drawer-mobile min-w-[277px]">
+      {/* <div className="drawer drawer-mobile min-w-[277px]"> */}
+      <div className="drawer lg:drawer-open">
         <input
           id="my-drawer-2"
           type="checkbox"

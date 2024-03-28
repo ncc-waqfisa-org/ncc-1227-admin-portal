@@ -39,7 +39,6 @@
     "class-variance-authority": "^0.6.1",
     "clsx": "^1.2.1",
     "cmdk": "^0.2.0",
-    "daisyui": "^2.42.1",
     "dotenv": "^16.3.1",
     "eslint": "8.28.0",
     "eslint-config-next": "13.0.5",
@@ -70,8 +69,9 @@
     "@netlify/plugin-nextjs": "^4.31.0",
     "@types/nodemailer": "^6.4.7",
     "@types/papaparse": "^5.3.7",
-    "autoprefixer": "^10.4.13",
-    "postcss": "^8.4.19",
-    "tailwindcss": "^3.2.4"
+    "autoprefixer": "^10.4.19",
+    "daisyui": "^4.9.0",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.3"
   }
 }

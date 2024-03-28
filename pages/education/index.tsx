@@ -397,7 +397,7 @@ const Education = () => {
 
       {/* Education Table */}
       <div dir="ltr">
-        <div className="w-full h-screen overflow-x-auto">
+        <div className="w-full overflow-x-auto">
           <table className="table w-full table-auto">
             <thead className="">
               <tr>
@@ -446,7 +446,7 @@ const Education = () => {
                         }`}
                       >{`${datum.availability}`}</div>
                     </td>
-                    <td className="overflow-x-scroll bg-transparent ">
+                    <td className="overflow-x-scroll gap-3 flex flex-wrap  bg-transparent ">
                       {datum.Programs?.items
                         ?.sort((a: any, b: any) => {
                           let bD = b.isDeactivated === true ? -1 : 1;
@@ -455,7 +455,7 @@ const Education = () => {
                         .map((program: Program) => (
                           <div
                             key={program?.id}
-                            className={`mr-2 badge text-white hover:cursor-pointer hover:badge-warning duration-150 ${
+                            className={`mr-2 h-fit badge hover:cursor-pointer hover:badge-warning duration-150 ${
                               !program.isDeactivated &&
                               "badge-accent text-primary-content"
                             }`}

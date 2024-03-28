@@ -23,5 +23,6 @@
     "tailwindcss",
     "tanstack",
     "unparse"
-  ]
+  ],
+  "i18n-ally.localesPaths": ["public/locales"]
 }

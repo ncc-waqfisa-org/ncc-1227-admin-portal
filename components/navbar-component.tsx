@@ -26,7 +26,7 @@ export default function NavbarComponent() {
   }
 
   return (
-    <div className="flex flex-col justify-between p-4 py-24 bg-nccGray-50">
+    <div className="flex flex-col h-[100svh] w-full max-w-64 justify-between p-4 py-24 bg-nccGray-50">
       <div className="flex flex-col gap-4">
         {!isHomePage && (
           <button className="btn btn-ghost" onClick={goBack}>
