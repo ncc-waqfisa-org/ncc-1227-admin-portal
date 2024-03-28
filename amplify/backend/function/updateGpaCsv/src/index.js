@@ -62,21 +62,21 @@ exports.handler = async (event) => {
 
 async function bulkUpdateApplications(tableName, batchValue, dataStream){
 
-    const updatePromises = dataStream.map(row => {
+    const updatePromises = dataStream.map(async row => {
         const params = {
             TableName: tableName,
             Key: {
                 id: row.id
             },
-            UpdateExpression: 'set verifiedGpa = :gpa',
+            UpdateExpression: 'set verifiedGpa = :gpa, studentName = :studentName',
             ExpressionAttributeValues: {
-                ':gpa': Number(row.GPA)
+                ':gpa': Number(row.GPA),
+                ':studentName': row.name
             },
         };
         if (row.id && row.GPA) {
             return dynamoDB.update(params).promise();
-        }
-        else {
+        } else {
             return Promise.resolve();
         }
     });
@@ -93,6 +93,8 @@ function processCsv(csvData){
         const columns = row.split(',');
         return {
             id: columns[0],
+            name: // remove the quotes around the name
+                columns[2]?.replace(/^"(.*)"$/, '$1'),
             GPA: columns[10]
         };
     }).filter(row => row.id && row.GPA && !isNaN(row.GPA));
@@ -123,3 +125,10 @@ async function checkIsAdmin(token) {
     }
 }
 
+function calculateScore(familyIncome, gpa, adminScore= 0) {
+    let score = gpa * 0.7 + adminScore;
+    if(familyIncome === "LESS_THAN_1500") {
+        score += 10;
+    }
+    return round(score, 2);
+}
