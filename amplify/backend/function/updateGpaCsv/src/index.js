@@ -63,15 +63,22 @@ exports.handler = async (event) => {
 async function bulkUpdateApplications(tableName, batchValue, dataStream){
 
     const updatePromises = dataStream.map(async row => {
+        const student = await getStudent(row.cpr);
+        // if (!student) {
+        //     return Promise.resolve();
+        // }
+        const score = calculateScore(student?.familyIncome, row.GPA, student?.adminScore);
+        // console.log('Score:', score, "Student:", student);
         const params = {
             TableName: tableName,
             Key: {
                 id: row.id
             },
-            UpdateExpression: 'set verifiedGpa = :gpa, studentName = :studentName',
+            UpdateExpression: 'set verifiedGpa = :gpa, score = :score',
             ExpressionAttributeValues: {
                 ':gpa': Number(row.GPA),
-                ':studentName': row.name
+                // ':studentName': row.name,
+                ':score': score
             },
         };
         if (row.id && row.GPA) {
@@ -93,12 +100,13 @@ function processCsv(csvData){
         const columns = row.split(',');
         return {
             id: columns[0],
-            name: // remove the quotes around the name
-                columns[2]?.replace(/^"(.*)"$/, '$1'),
+            // name: // remove the quotes around the name
+            //     columns[2]?.replace(/^"(.*)"$/, '$1'),
+            cpr: columns[1],
             GPA: columns[10]
         };
     }).filter(row => row.id && row.GPA && !isNaN(row.GPA));
-    console.log(dataStream);
+    // console.log('Data Stream:', dataStream);
 
     return dataStream;
 
@@ -126,9 +134,24 @@ async function checkIsAdmin(token) {
 }
 
 function calculateScore(familyIncome, gpa, adminScore= 0) {
-    let score = gpa * 0.7 + adminScore;
+    let score = gpa * 0.7;
+    if(adminScore) {
+        score += adminScore;
+    }
     if(familyIncome === "LESS_THAN_1500") {
         score += 10;
     }
-    return round(score, 2);
+    // convert to 2 decimal places
+    return Math.round(score * 100) / 100;
+}
+
+async function getStudent(cpr) {
+    const params = {
+        TableName: 'Student-cw7beg2perdtnl7onnneec4jfa-staging',
+        Key: {
+            cpr: cpr
+        }
+    };
+    const {Item} = await dynamoDB.get(params).promise();
+    return Item;
 }
