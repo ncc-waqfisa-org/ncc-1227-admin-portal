@@ -169,6 +169,7 @@ export const createApplication = /* GraphQL */ `mutation CreateApplication(
     score
     adminPoints
     processed
+    statusText
     createdAt
     updatedAt
     _version
@@ -278,6 +279,7 @@ export const updateApplication = /* GraphQL */ `mutation UpdateApplication(
     score
     adminPoints
     processed
+    statusText
     createdAt
     updatedAt
     _version
@@ -387,6 +389,7 @@ export const deleteApplication = /* GraphQL */ `mutation DeleteApplication(
     score
     adminPoints
     processed
+    statusText
     createdAt
     updatedAt
     _version
@@ -445,6 +448,7 @@ export const createProgramChoice = /* GraphQL */ `mutation CreateProgramChoice(
       score
       adminPoints
       processed
+      statusText
       createdAt
       updatedAt
       _version
@@ -514,6 +518,7 @@ export const updateProgramChoice = /* GraphQL */ `mutation UpdateProgramChoice(
       score
       adminPoints
       processed
+      statusText
       createdAt
       updatedAt
       _version
@@ -583,6 +588,7 @@ export const deleteProgramChoice = /* GraphQL */ `mutation DeleteProgramChoice(
       score
       adminPoints
       processed
+      statusText
       createdAt
       updatedAt
       _version
@@ -1603,6 +1609,7 @@ export const createScholarship = /* GraphQL */ `mutation CreateScholarship(
       score
       adminPoints
       processed
+      statusText
       createdAt
       updatedAt
       _version
@@ -1658,6 +1665,7 @@ export const updateScholarship = /* GraphQL */ `mutation UpdateScholarship(
       score
       adminPoints
       processed
+      statusText
       createdAt
       updatedAt
       _version
@@ -1713,6 +1721,7 @@ export const deleteScholarship = /* GraphQL */ `mutation DeleteScholarship(
       score
       adminPoints
       processed
+      statusText
       createdAt
       updatedAt
       _version

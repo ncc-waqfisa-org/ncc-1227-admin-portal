@@ -165,6 +165,7 @@ export const onCreateApplication = /* GraphQL */ `subscription OnCreateApplicati
     score
     adminPoints
     processed
+    statusText
     createdAt
     updatedAt
     _version
@@ -273,6 +274,7 @@ export const onUpdateApplication = /* GraphQL */ `subscription OnUpdateApplicati
     score
     adminPoints
     processed
+    statusText
     createdAt
     updatedAt
     _version
@@ -381,6 +383,7 @@ export const onDeleteApplication = /* GraphQL */ `subscription OnDeleteApplicati
     score
     adminPoints
     processed
+    statusText
     createdAt
     updatedAt
     _version
@@ -438,6 +441,7 @@ export const onCreateProgramChoice = /* GraphQL */ `subscription OnCreateProgram
       score
       adminPoints
       processed
+      statusText
       createdAt
       updatedAt
       _version
@@ -506,6 +510,7 @@ export const onUpdateProgramChoice = /* GraphQL */ `subscription OnUpdateProgram
       score
       adminPoints
       processed
+      statusText
       createdAt
       updatedAt
       _version
@@ -574,6 +579,7 @@ export const onDeleteProgramChoice = /* GraphQL */ `subscription OnDeleteProgram
       score
       adminPoints
       processed
+      statusText
       createdAt
       updatedAt
       _version
@@ -1539,6 +1545,7 @@ export const onCreateScholarship = /* GraphQL */ `subscription OnCreateScholarsh
       score
       adminPoints
       processed
+      statusText
       createdAt
       updatedAt
       _version
@@ -1593,6 +1600,7 @@ export const onUpdateScholarship = /* GraphQL */ `subscription OnUpdateScholarsh
       score
       adminPoints
       processed
+      statusText
       createdAt
       updatedAt
       _version
@@ -1647,6 +1655,7 @@ export const onDeleteScholarship = /* GraphQL */ `subscription OnDeleteScholarsh
       score
       adminPoints
       processed
+      statusText
       createdAt
       updatedAt
       _version

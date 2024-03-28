@@ -295,6 +295,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "statusTest": {
+                    "name": "statusTest",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -2013,5 +2020,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "15459d2439af149d47e084ce930107c6"
+    "version": "f2d5570c90bfbc69a4a3a3c5173a38de"
 };

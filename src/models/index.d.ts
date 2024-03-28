@@ -115,6 +115,7 @@ type EagerApplication = {
   readonly score?: number | null;
   readonly adminPoints?: number | null;
   readonly processed?: number | null;
+  readonly statusTest?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly applicationAttachmentId?: string | null;
@@ -148,6 +149,7 @@ type LazyApplication = {
   readonly score?: number | null;
   readonly adminPoints?: number | null;
   readonly processed?: number | null;
+  readonly statusTest?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly applicationAttachmentId?: string | null;

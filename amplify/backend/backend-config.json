@@ -64,6 +64,12 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "exportEligibleCsv": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "getApplications": {
       "build": true,
       "providerPlugin": "awscloudformation",
