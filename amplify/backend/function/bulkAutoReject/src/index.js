@@ -25,10 +25,12 @@ exports.handler = async (event) => {
     }
 
     const applications = await getApplications(batchValue);
-    const universities = getUniversities();
+    const universities = await getUniversities();
+    const programs = await getPrograms();
+    console.log('universities', universities);
     const extendedUniversities = universities.filter(university => university.isExtended);
     const exceptionUniversities = universities.filter(university => university.isException);
-    await bulkUpdateApplications(batchValue, applications, extendedUniversities, exceptionUniversities, universities);
+    await bulkUpdateApplications(batchValue, applications, extendedUniversities, exceptionUniversities, universities, programs);
 
 
 
@@ -71,7 +73,7 @@ async function getApplications(batch) {
     return allApplications;
 }
 
-async function bulkUpdateApplications(batchValue, applications, extendedUniversities, exceptionUniversities, universities) {
+async function bulkUpdateApplications(batchValue, applications, extendedUniversities, exceptionUniversities, universities, programs) {
     const updatePromises = applications.map(async application => {
         const student = await getStudent(application.studentCPR);
         const params = {
@@ -84,11 +86,12 @@ async function bulkUpdateApplications(batchValue, applications, extendedUniversi
                 ':processedValue': 1
             }
         };
-        const universityId = application.universityId;
+        const universityId = application.universityID;
+        const programId = application.programID;
         const isExtended = extendedUniversities.some(university => university.id === universityId);
         const isException = exceptionUniversities.some(university => university.id === universityId);
         const isNonBahraini = student.nationalityCategory === 'NON_BAHRAINI';
-        const isEligible = student.verifiedGPA >= universities.find(university => university.id === universityId).minimumGPA;
+        const isEligible = application.verifiedGPA && application.verifiedGPA >= programs.find(program => program.id === programId).minimumGPA;
 
         let isNotCompleted = application.status === 'NOT_COMPLETED';
         if(isException) {
@@ -223,4 +226,20 @@ async function getUniversities() {
     } while (params.ExclusiveStartKey);
 
     return allUniversities;
+}
+
+async function getPrograms(){
+    const params = {
+        TableName: 'Program-cw7beg2perdtnl7onnneec4jfa-staging'
+    };
+
+    let allPrograms = [];
+
+    do {
+        const programs = await dynamoDB.scan(params).promise();
+        allPrograms = allPrograms.concat(programs.Items);
+        params.ExclusiveStartKey = programs.LastEvaluatedKey;
+    } while (params.ExclusiveStartKey);
+
+    return allPrograms;
 }
