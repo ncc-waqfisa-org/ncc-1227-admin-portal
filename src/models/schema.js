@@ -200,6 +200,24 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "nationalityCategory": {
+                    "name": "nationalityCategory",
+                    "isArray": false,
+                    "type": {
+                        "enum": "Nationality"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "familyIncome": {
+                    "name": "familyIncome",
+                    "isArray": false,
+                    "type": {
+                        "enum": "FamilyIncome"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "schoolName": {
                     "name": "schoolName",
                     "isArray": false,
@@ -295,13 +313,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "statusTest": {
-                    "name": "statusTest",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -347,6 +358,16 @@ export const schema = {
                         "fields": [
                             "id",
                             "dateTime"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byNationalityCategory",
+                        "fields": [
+                            "nationalityCategory",
+                            "batch"
                         ]
                     }
                 },
@@ -1566,6 +1587,16 @@ export const schema = {
                     }
                 },
                 {
+                    "type": "key",
+                    "properties": {
+                        "name": "byNationalityCategory",
+                        "fields": [
+                            "nationalityCategory",
+                            "graduationDate"
+                        ]
+                    }
+                },
+                {
                     "type": "auth",
                     "properties": {
                         "rules": [
@@ -2020,5 +2051,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "f2d5570c90bfbc69a4a3a3c5173a38de"
+    "version": "3496396a521348c12235d2aeb9861c2c"
 };

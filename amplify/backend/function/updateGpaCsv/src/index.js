@@ -63,12 +63,17 @@ exports.handler = async (event) => {
 async function bulkUpdateApplications(tableName, batchValue, dataStream){
 
     const updatePromises = dataStream.map(async row => {
-        const student = await getStudent(row.cpr);
+        // const student = await getStudent(row.cpr);
+        // const bahrainiTypos = ["بحريني", "بحرين", "البحرين", "بحراني", "بحرينيه", "بحرينية", "بحرانية","بجريني", "بحرنية", "بحرينة", "بحرني","بحرنية", "بحريني الجنسية", "bahrian", "بحريني الجنسيه", "BAH","Bahraiani", "bahraini", "BAHRAIN", "BAHRAINI", "bahrani", "Bahrani", "Bahrainy" ,"Bahrini","Bahrain", "bahrain", "Bahraini","بحرانيه"];
+        // const otherNationalities = ["Egyptian" ,"سورية", "سعودية" ,"مصري", "باكستانية","Iraqi", "كويتية", "عراقية"];
         // if (!student) {
         //     return Promise.resolve();
         // }
-        const score = calculateScore(student?.familyIncome, row.GPA, student?.adminScore);
-        // console.log('Score:', score, "Student:", student);
+        const score = calculateScore(row.familyIncome, row.GPA, row.adminPoints);
+        console.log('Score:', score);
+        console.log('Row:', row);
+
+
         const params = {
             TableName: tableName,
             Key: {
@@ -78,7 +83,9 @@ async function bulkUpdateApplications(tableName, batchValue, dataStream){
             ExpressionAttributeValues: {
                 ':gpa': Number(row.GPA),
                 // ':studentName': row.name,
-                ':score': score
+                ':score': score,
+                // ':nationalityCategory': otherNationalities.includes(student.nationality) ? 'NON_BAHRAINI' : 'BAHRAINI',
+                // ':familyIncome': student.familyIncome
             },
         };
         if (row.id && row.GPA) {
@@ -103,6 +110,8 @@ function processCsv(csvData){
             // name: // remove the quotes around the name
             //     columns[2]?.replace(/^"(.*)"$/, '$1'),
             cpr: columns[1],
+            familyIncome: columns[2],
+            adminPoints: columns[3],
             GPA: columns[10]
         };
     }).filter(row => row.id && row.GPA && !isNaN(row.GPA));
@@ -133,11 +142,8 @@ async function checkIsAdmin(token) {
     }
 }
 
-function calculateScore(familyIncome, gpa, adminScore= 0) {
-    let score = gpa * 0.7;
-    if(adminScore) {
-        score += adminScore;
-    }
+function calculateScore(familyIncome, gpa, adminPoints= 0) {
+    let score = gpa * 0.7 + adminPoints;
     if(familyIncome === "LESS_THAN_1500") {
         score += 10;
     }

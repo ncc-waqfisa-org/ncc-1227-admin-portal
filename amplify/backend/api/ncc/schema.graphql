@@ -18,6 +18,8 @@ type Application @model @auth(rules: [{ allow: public }]) {
   programs: [ProgramChoice] @hasMany
   dateTime: AWSDateTime!
   isEmailSent: Boolean @default(value: "false")
+  nationalityCategory: Nationality @index(name: "byNationalityCategory", sortKeyFields: ["batch"])
+  familyIncome: FamilyIncome
   schoolName: String
   schoolType: SchoolType
   studentName: String
@@ -32,7 +34,6 @@ type Application @model @auth(rules: [{ allow: public }]) {
   score: Float @index(name: "byScore", sortKeyFields: ["status"])
   adminPoints: Int
   processed: Int @index(name: "byProcessed", sortKeyFields: ["batch"])
-  statusTest: String
 }
 
 type ProgramChoice @model @auth(rules: [{ allow: public }]) {
@@ -158,7 +159,7 @@ type Student @model @auth(rules: [{ allow: public }]) {
   email: String
   phone: String
   gender: Gender
-  nationalityCategory: Nationality
+  nationalityCategory: Nationality @index(name: "byNationalityCategory", sortKeyFields: ["graduationDate"])
   nationality: String
   schoolName: String
   schoolType: SchoolType

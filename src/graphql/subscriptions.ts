@@ -2,7 +2,7 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-import * as APITypes from "../API";
+import * as APITypes from "../../amplify/backend/function/exportEligibleCsv/src/src/API";
 type GeneratedSubscription<InputType, OutputType> = string & {
   __generatedSubscriptionInput: InputType;
   __generatedSubscriptionOutput: OutputType;
@@ -110,6 +110,8 @@ export const onCreateApplication = /* GraphQL */ `subscription OnCreateApplicati
     }
     dateTime
     isEmailSent
+    nationalityCategory
+    familyIncome
     schoolName
     schoolType
     studentName
@@ -165,7 +167,6 @@ export const onCreateApplication = /* GraphQL */ `subscription OnCreateApplicati
     score
     adminPoints
     processed
-    statusText
     createdAt
     updatedAt
     _version
@@ -219,6 +220,8 @@ export const onUpdateApplication = /* GraphQL */ `subscription OnUpdateApplicati
     }
     dateTime
     isEmailSent
+    nationalityCategory
+    familyIncome
     schoolName
     schoolType
     studentName
@@ -274,7 +277,6 @@ export const onUpdateApplication = /* GraphQL */ `subscription OnUpdateApplicati
     score
     adminPoints
     processed
-    statusText
     createdAt
     updatedAt
     _version
@@ -328,6 +330,8 @@ export const onDeleteApplication = /* GraphQL */ `subscription OnDeleteApplicati
     }
     dateTime
     isEmailSent
+    nationalityCategory
+    familyIncome
     schoolName
     schoolType
     studentName
@@ -383,7 +387,6 @@ export const onDeleteApplication = /* GraphQL */ `subscription OnDeleteApplicati
     score
     adminPoints
     processed
-    statusText
     createdAt
     updatedAt
     _version
@@ -432,6 +435,8 @@ export const onCreateProgramChoice = /* GraphQL */ `subscription OnCreateProgram
       attachmentID
       dateTime
       isEmailSent
+      nationalityCategory
+      familyIncome
       schoolName
       schoolType
       studentName
@@ -441,7 +446,6 @@ export const onCreateProgramChoice = /* GraphQL */ `subscription OnCreateProgram
       score
       adminPoints
       processed
-      statusText
       createdAt
       updatedAt
       _version
@@ -501,6 +505,8 @@ export const onUpdateProgramChoice = /* GraphQL */ `subscription OnUpdateProgram
       attachmentID
       dateTime
       isEmailSent
+      nationalityCategory
+      familyIncome
       schoolName
       schoolType
       studentName
@@ -510,7 +516,6 @@ export const onUpdateProgramChoice = /* GraphQL */ `subscription OnUpdateProgram
       score
       adminPoints
       processed
-      statusText
       createdAt
       updatedAt
       _version
@@ -570,6 +575,8 @@ export const onDeleteProgramChoice = /* GraphQL */ `subscription OnDeleteProgram
       attachmentID
       dateTime
       isEmailSent
+      nationalityCategory
+      familyIncome
       schoolName
       schoolType
       studentName
@@ -579,7 +586,6 @@ export const onDeleteProgramChoice = /* GraphQL */ `subscription OnDeleteProgram
       score
       adminPoints
       processed
-      statusText
       createdAt
       updatedAt
       _version
@@ -1536,6 +1542,8 @@ export const onCreateScholarship = /* GraphQL */ `subscription OnCreateScholarsh
       attachmentID
       dateTime
       isEmailSent
+      nationalityCategory
+      familyIncome
       schoolName
       schoolType
       studentName
@@ -1545,7 +1553,6 @@ export const onCreateScholarship = /* GraphQL */ `subscription OnCreateScholarsh
       score
       adminPoints
       processed
-      statusText
       createdAt
       updatedAt
       _version
@@ -1591,6 +1598,8 @@ export const onUpdateScholarship = /* GraphQL */ `subscription OnUpdateScholarsh
       attachmentID
       dateTime
       isEmailSent
+      nationalityCategory
+      familyIncome
       schoolName
       schoolType
       studentName
@@ -1600,7 +1609,6 @@ export const onUpdateScholarship = /* GraphQL */ `subscription OnUpdateScholarsh
       score
       adminPoints
       processed
-      statusText
       createdAt
       updatedAt
       _version
@@ -1646,6 +1654,8 @@ export const onDeleteScholarship = /* GraphQL */ `subscription OnDeleteScholarsh
       attachmentID
       dateTime
       isEmailSent
+      nationalityCategory
+      familyIncome
       schoolName
       schoolType
       studentName
@@ -1655,7 +1665,6 @@ export const onDeleteScholarship = /* GraphQL */ `subscription OnDeleteScholarsh
       score
       adminPoints
       processed
-      statusText
       createdAt
       updatedAt
       _version

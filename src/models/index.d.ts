@@ -104,6 +104,8 @@ type EagerApplication = {
   readonly programs?: (ProgramChoice | null)[] | null;
   readonly dateTime: string;
   readonly isEmailSent?: boolean | null;
+  readonly nationalityCategory?: Nationality | keyof typeof Nationality | null;
+  readonly familyIncome?: FamilyIncome | keyof typeof FamilyIncome | null;
   readonly schoolName?: string | null;
   readonly schoolType?: SchoolType | keyof typeof SchoolType | null;
   readonly studentName?: string | null;
@@ -115,7 +117,6 @@ type EagerApplication = {
   readonly score?: number | null;
   readonly adminPoints?: number | null;
   readonly processed?: number | null;
-  readonly statusTest?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly applicationAttachmentId?: string | null;
@@ -138,6 +139,8 @@ type LazyApplication = {
   readonly programs: AsyncCollection<ProgramChoice>;
   readonly dateTime: string;
   readonly isEmailSent?: boolean | null;
+  readonly nationalityCategory?: Nationality | keyof typeof Nationality | null;
+  readonly familyIncome?: FamilyIncome | keyof typeof FamilyIncome | null;
   readonly schoolName?: string | null;
   readonly schoolType?: SchoolType | keyof typeof SchoolType | null;
   readonly studentName?: string | null;
@@ -149,7 +152,6 @@ type LazyApplication = {
   readonly score?: number | null;
   readonly adminPoints?: number | null;
   readonly processed?: number | null;
-  readonly statusTest?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly applicationAttachmentId?: string | null;
