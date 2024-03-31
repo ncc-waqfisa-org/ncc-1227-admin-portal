@@ -70,7 +70,11 @@ async function bulkUpdateApplications(tableName, batchValue, dataStream){
         // if (!student) {
         //     return Promise.resolve();
         // }
-        const score = calculateScore(row.familyIncome, row.GPA, row.adminPoints);
+        let score = calculateScore(row.familyIncome, row.GPA, row.adminPoints);
+        if(isNaN(score)) {
+           score = 0;
+        }
+
         console.log('Score:', score);
         console.log('Row:', row);
 
