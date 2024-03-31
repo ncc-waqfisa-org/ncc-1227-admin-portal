@@ -48,10 +48,11 @@ async function getApplications(batch) {
     const params = {
         TableName: 'Application-cw7beg2perdtnl7onnneec4jfa-staging',
         IndexName: 'byProcessed',
-        KeyConditionExpression: '#batch = :batchValue AND processed = :processedValue',
+        KeyConditionExpression: '#batch = :batchValue AND #processed = :processedValue',
         ScanIndexForward: false,
         ExpressionAttributeNames: {
-            '#batch': 'batch' // Using ExpressionAttributeNames to alias the reserved keyword 'batch'
+            '#batch': 'batch', // Using ExpressionAttributeNames to alias the reserved keyword 'batch'
+            '#processed': 'processed'
         },
         ExpressionAttributeValues: {
             ':batchValue': batch,

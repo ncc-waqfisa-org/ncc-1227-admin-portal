@@ -65,7 +65,7 @@ async function getApplications(tableName, batchValue) {
 function convertToCsv(applications, students) {
     let csv = 'StudentCPR,GPA,verifiedGPA\n';
     applications.forEach(application => {
-        csv += `'${application.studentCPR},${application.gpa},'PLEASE VERIFY'\n`;
+        csv += `=""${application.studentCPR}"",${application.gpa},PLEASE VERIFY\n`;
     });
     return csv;
 }

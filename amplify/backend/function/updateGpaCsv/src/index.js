@@ -37,7 +37,8 @@ exports.handler = async (event) => {
     }
 
     const batchValue = parseInt(event.queryStringParameters?.batch) || 2024;
-    const dataStream = processCsv(csvData);
+    const applications = await getApplications(batchValue);
+    const dataStream = processCsv(csvData, applications);
     try {
         await bulkUpdateApplications(tableName, batchValue, dataStream);
         return {
@@ -105,13 +106,18 @@ function processCsv(csvData, applications) {
 
     const dataStream = rows.map(row => {
         const columns = row.split(',');
+        const cpr = // take only the digits and remove any spaces or special characters or quotes
+            columns[0]?.replace(/[^0-9]/g, '');
         return {
             // id: columns[0],
             // name: // remove the quotes around the name
             //     columns[2]?.replace(/^"(.*)"$/, '$1'),
-            cpr: columns[0],
+            id: applications.find(application => application.studentCPR === cpr)?.id,
+            cpr: cpr,
             GPA: columns[1],
             verifiedGPA: columns[2],
+            familyIncome: applications.find(application => application.studentCPR === cpr)?.familyIncome,
+            adminPoints: applications.find(application => application.studentCPR === cpr)?.adminPoints ?? 0,
             // familyIncome: columns[2],
             // adminPoints: columns[3],
         };
@@ -161,3 +167,28 @@ async function getStudent(cpr) {
     const {Item} = await dynamoDB.get(params).promise();
     return Item;
 }
+
+async function getApplications(batch) {
+    const params = {
+        TableName: 'Application-cw7beg2perdtnl7onnneec4jfa-staging',
+        KeyConditionExpression: '#batch = :batchValue',
+        ScanIndexForward: false,
+        ExpressionAttributeNames: {
+            '#batch': 'batch' // Using ExpressionAttributeNames to alias the reserved keyword 'batch'
+        },
+        ExpressionAttributeValues: {
+            ':batchValue': batch,
+        }
+    };
+
+    let allApplications = [];
+
+    do {
+        const applications = await dynamoDB.query(params).promise();
+        allApplications = allApplications.concat(applications.Items);
+        params.ExclusiveStartKey = applications.LastEvaluatedKey;
+    } while (params.ExclusiveStartKey);
+
+    return allApplications;
+}
+
