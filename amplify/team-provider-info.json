@@ -56,7 +56,7 @@
         },
         "updateGpaCsv": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
-          "s3Key": "amplify-builds/updateGpaCsv-5951726568354446666d-build.zip"
+          "s3Key": "amplify-builds/updateGpaCsv-6e5047554e427a575255-build.zip"
         },
         "autoReject": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",

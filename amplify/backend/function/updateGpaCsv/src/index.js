@@ -173,6 +173,7 @@ async function getApplications(batch) {
         TableName: 'Application-cw7beg2perdtnl7onnneec4jfa-staging',
         KeyConditionExpression: '#batch = :batchValue',
         ScanIndexForward: false,
+        IndexName: 'byBatch',
         ExpressionAttributeNames: {
             '#batch': 'batch' // Using ExpressionAttributeNames to alias the reserved keyword 'batch'
         },
@@ -182,7 +183,6 @@ async function getApplications(batch) {
     };
 
     let allApplications = [];
-
     do {
         const applications = await dynamoDB.query(params).promise();
         allApplications = allApplications.concat(applications.Items);
