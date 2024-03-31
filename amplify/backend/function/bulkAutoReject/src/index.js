@@ -25,9 +25,10 @@ exports.handler = async (event) => {
     }
 
     const applications = await getApplications(batchValue);
-    const extendedUniversities = getExtendedUniversities();
-    const exceptionUniversities = getExceptionUniversities();
-    await bulkUpdateApplications(batchValue, applications, extendedUniversities, exceptionUniversities);
+    const universities = getUniversities();
+    const extendedUniversities = universities.filter(university => university.isExtended);
+    const exceptionUniversities = universities.filter(university => university.isException);
+    await bulkUpdateApplications(batchValue, applications, extendedUniversities, exceptionUniversities, universities);
 
 
 
@@ -69,7 +70,7 @@ async function getApplications(batch) {
     return allApplications;
 }
 
-async function bulkUpdateApplications(batchValue, applications, extendedUniversities, exceptionUniversities) {
+async function bulkUpdateApplications(batchValue, applications, extendedUniversities, exceptionUniversities, universities) {
     const updatePromises = applications.map(async application => {
         const student = await getStudent(application.studentCPR);
         const params = {
@@ -86,6 +87,8 @@ async function bulkUpdateApplications(batchValue, applications, extendedUniversi
         const isExtended = extendedUniversities.some(university => university.id === universityId);
         const isException = exceptionUniversities.some(university => university.id === universityId);
         const isNonBahraini = student.nationalityCategory === 'NON_BAHRAINI';
+        const isEligible = student.verifiedGPA >= universities.find(university => university.id === universityId).minimumGPA;
+
         let isNotCompleted = application.status === 'NOT_COMPLETED';
         if(isException) {
             isNotCompleted = false;
@@ -102,6 +105,9 @@ async function bulkUpdateApplications(batchValue, applications, extendedUniversi
         if(isNonBahraini) {
             status = 'REJECTED';
         } else if(isNotCompleted) {
+            status = 'REJECTED';
+        }
+        else if(!isEligible) {
             status = 'REJECTED';
         }
         else {
@@ -140,55 +146,55 @@ async function getBatchDetails(batch) {
     return batchDetails.Item;
 }
 
-async function getExtendedUniversities() {
-
-    const params = {
-        TableName: 'University-cw7beg2perdtnl7onnneec4jfa-staging',
-        IndexName: 'byExtended',
-        KeyConditionExpression: '#isExtended = :extendedValue',
-        ExpressionAttributeNames: {
-            '#isExtended': 'isExtended'
-        },
-        ExpressionAttributeValues: {
-            ':extendedValue': 1
-        }
-    };
-
-    let allUniversities = [];
-
-    do {
-        const universities = await dynamoDB.query(params).promise();
-        allUniversities = allUniversities.concat(universities.Items);
-        params.ExclusiveStartKey = universities.LastEvaluatedKey;
-    } while (params.ExclusiveStartKey);
-
-    return allUniversities;
-}
-
-async function getExceptionUniversities() {
-
-    const params = {
-        TableName: 'University-cw7beg2perdtnl7onnneec4jfa-staging',
-        IndexName: 'byException',
-        KeyConditionExpression: '#isException = :exceptionValue',
-        ExpressionAttributeNames: {
-            '#isException': 'isException'
-        },
-        ExpressionAttributeValues: {
-            ':exceptionValue': 1
-        }
-    };
-
-    let allUniversities = [];
-
-    do {
-        const universities = await dynamoDB.query(params).promise();
-        allUniversities = allUniversities.concat(universities.Items);
-        params.ExclusiveStartKey = universities.LastEvaluatedKey;
-    } while (params.ExclusiveStartKey);
-
-    return allUniversities;
-}
+// async function getExtendedUniversities() {
+//
+//     const params = {
+//         TableName: 'University-cw7beg2perdtnl7onnneec4jfa-staging',
+//         IndexName: 'byExtended',
+//         KeyConditionExpression: '#isExtended = :extendedValue',
+//         ExpressionAttributeNames: {
+//             '#isExtended': 'isExtended'
+//         },
+//         ExpressionAttributeValues: {
+//             ':extendedValue': 1
+//         }
+//     };
+//
+//     let allUniversities = [];
+//
+//     do {
+//         const universities = await dynamoDB.query(params).promise();
+//         allUniversities = allUniversities.concat(universities.Items);
+//         params.ExclusiveStartKey = universities.LastEvaluatedKey;
+//     } while (params.ExclusiveStartKey);
+//
+//     return allUniversities;
+// }
+//
+// async function getExceptionUniversities() {
+//
+//     const params = {
+//         TableName: 'University-cw7beg2perdtnl7onnneec4jfa-staging',
+//         IndexName: 'byException',
+//         KeyConditionExpression: '#isException = :exceptionValue',
+//         ExpressionAttributeNames: {
+//             '#isException': 'isException'
+//         },
+//         ExpressionAttributeValues: {
+//             ':exceptionValue': 1
+//         }
+//     };
+//
+//     let allUniversities = [];
+//
+//     do {
+//         const universities = await dynamoDB.query(params).promise();
+//         allUniversities = allUniversities.concat(universities.Items);
+//         params.ExclusiveStartKey = universities.LastEvaluatedKey;
+//     } while (params.ExclusiveStartKey);
+//
+//     return allUniversities;
+// }
 
 async function getUniversity(universityId) {
     const params = {

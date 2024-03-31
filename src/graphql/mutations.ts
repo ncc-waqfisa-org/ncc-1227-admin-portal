@@ -119,6 +119,26 @@ export const createApplication = /* GraphQL */ `mutation CreateApplication(
     schoolName
     schoolType
     studentName
+    programID
+    program {
+      id
+      name
+      minimumGPA
+      requirements
+      nameAr
+      requirementsAr
+      availability
+      universityID
+      isDeactivated
+      isTrashed
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      universityProgramsId
+      __typename
+    }
     universityID
     university {
       id
@@ -176,6 +196,7 @@ export const createApplication = /* GraphQL */ `mutation CreateApplication(
     _version
     _deleted
     _lastChangedAt
+    programApplicationId
     universityApplicationsId
     applicationAttachmentId
     __typename
@@ -230,6 +251,26 @@ export const updateApplication = /* GraphQL */ `mutation UpdateApplication(
     schoolName
     schoolType
     studentName
+    programID
+    program {
+      id
+      name
+      minimumGPA
+      requirements
+      nameAr
+      requirementsAr
+      availability
+      universityID
+      isDeactivated
+      isTrashed
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      universityProgramsId
+      __typename
+    }
     universityID
     university {
       id
@@ -287,6 +328,7 @@ export const updateApplication = /* GraphQL */ `mutation UpdateApplication(
     _version
     _deleted
     _lastChangedAt
+    programApplicationId
     universityApplicationsId
     applicationAttachmentId
     __typename
@@ -341,6 +383,26 @@ export const deleteApplication = /* GraphQL */ `mutation DeleteApplication(
     schoolName
     schoolType
     studentName
+    programID
+    program {
+      id
+      name
+      minimumGPA
+      requirements
+      nameAr
+      requirementsAr
+      availability
+      universityID
+      isDeactivated
+      isTrashed
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      universityProgramsId
+      __typename
+    }
     universityID
     university {
       id
@@ -398,6 +460,7 @@ export const deleteApplication = /* GraphQL */ `mutation DeleteApplication(
     _version
     _deleted
     _lastChangedAt
+    programApplicationId
     universityApplicationsId
     applicationAttachmentId
     __typename
@@ -447,6 +510,7 @@ export const createProgramChoice = /* GraphQL */ `mutation CreateProgramChoice(
       schoolName
       schoolType
       studentName
+      programID
       universityID
       studentCPR
       batch
@@ -458,6 +522,7 @@ export const createProgramChoice = /* GraphQL */ `mutation CreateProgramChoice(
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
       universityApplicationsId
       applicationAttachmentId
       __typename
@@ -518,6 +583,7 @@ export const updateProgramChoice = /* GraphQL */ `mutation UpdateProgramChoice(
       schoolName
       schoolType
       studentName
+      programID
       universityID
       studentCPR
       batch
@@ -529,6 +595,7 @@ export const updateProgramChoice = /* GraphQL */ `mutation UpdateProgramChoice(
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
       universityApplicationsId
       applicationAttachmentId
       __typename
@@ -589,6 +656,7 @@ export const deleteProgramChoice = /* GraphQL */ `mutation DeleteProgramChoice(
       schoolName
       schoolType
       studentName
+      programID
       universityID
       studentCPR
       batch
@@ -600,6 +668,7 @@ export const deleteProgramChoice = /* GraphQL */ `mutation DeleteProgramChoice(
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
       universityApplicationsId
       applicationAttachmentId
       __typename
@@ -657,6 +726,11 @@ export const createProgram = /* GraphQL */ `mutation CreateProgram(
     }
     isDeactivated
     isTrashed
+    application {
+      nextToken
+      startedAt
+      __typename
+    }
     createdAt
     updatedAt
     _version
@@ -707,6 +781,11 @@ export const updateProgram = /* GraphQL */ `mutation UpdateProgram(
     }
     isDeactivated
     isTrashed
+    application {
+      nextToken
+      startedAt
+      __typename
+    }
     createdAt
     updatedAt
     _version
@@ -757,6 +836,11 @@ export const deleteProgram = /* GraphQL */ `mutation DeleteProgram(
     }
     isDeactivated
     isTrashed
+    application {
+      nextToken
+      startedAt
+      __typename
+    }
     createdAt
     updatedAt
     _version
@@ -1611,6 +1695,7 @@ export const createScholarship = /* GraphQL */ `mutation CreateScholarship(
       schoolName
       schoolType
       studentName
+      programID
       universityID
       studentCPR
       batch
@@ -1622,6 +1707,7 @@ export const createScholarship = /* GraphQL */ `mutation CreateScholarship(
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
       universityApplicationsId
       applicationAttachmentId
       __typename
@@ -1668,6 +1754,7 @@ export const updateScholarship = /* GraphQL */ `mutation UpdateScholarship(
       schoolName
       schoolType
       studentName
+      programID
       universityID
       studentCPR
       batch
@@ -1679,6 +1766,7 @@ export const updateScholarship = /* GraphQL */ `mutation UpdateScholarship(
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
       universityApplicationsId
       applicationAttachmentId
       __typename
@@ -1725,6 +1813,7 @@ export const deleteScholarship = /* GraphQL */ `mutation DeleteScholarship(
       schoolName
       schoolType
       studentName
+      programID
       universityID
       studentCPR
       batch
@@ -1736,6 +1825,7 @@ export const deleteScholarship = /* GraphQL */ `mutation DeleteScholarship(
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
       universityApplicationsId
       applicationAttachmentId
       __typename

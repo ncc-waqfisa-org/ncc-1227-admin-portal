@@ -241,6 +241,28 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "programID": {
+                    "name": "programID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "program": {
+                    "name": "program",
+                    "isArray": false,
+                    "type": {
+                        "model": "Program"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetNames": [
+                            "programID"
+                        ]
+                    }
+                },
                 "universityID": {
                     "name": "universityID",
                     "isArray": false,
@@ -331,6 +353,13 @@ export const schema = {
                 },
                 "applicationAttachmentId": {
                     "name": "applicationAttachmentId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "programApplicationId": {
+                    "name": "programApplicationId",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": false,
@@ -656,6 +685,22 @@ export const schema = {
                     "type": "Boolean",
                     "isRequired": false,
                     "attributes": []
+                },
+                "application": {
+                    "name": "application",
+                    "isArray": true,
+                    "type": {
+                        "model": "Application"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "programApplicationId"
+                        ]
+                    }
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -2051,5 +2096,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "3496396a521348c12235d2aeb9861c2c"
+    "version": "a65b09914d90fa8e08898ae90f2864bc"
 };

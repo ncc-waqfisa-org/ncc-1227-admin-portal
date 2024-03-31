@@ -115,6 +115,26 @@ export const onCreateApplication = /* GraphQL */ `subscription OnCreateApplicati
     schoolName
     schoolType
     studentName
+    programID
+    program {
+      id
+      name
+      minimumGPA
+      requirements
+      nameAr
+      requirementsAr
+      availability
+      universityID
+      isDeactivated
+      isTrashed
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      universityProgramsId
+      __typename
+    }
     universityID
     university {
       id
@@ -172,6 +192,7 @@ export const onCreateApplication = /* GraphQL */ `subscription OnCreateApplicati
     _version
     _deleted
     _lastChangedAt
+    programApplicationId
     universityApplicationsId
     applicationAttachmentId
     __typename
@@ -225,6 +246,26 @@ export const onUpdateApplication = /* GraphQL */ `subscription OnUpdateApplicati
     schoolName
     schoolType
     studentName
+    programID
+    program {
+      id
+      name
+      minimumGPA
+      requirements
+      nameAr
+      requirementsAr
+      availability
+      universityID
+      isDeactivated
+      isTrashed
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      universityProgramsId
+      __typename
+    }
     universityID
     university {
       id
@@ -282,6 +323,7 @@ export const onUpdateApplication = /* GraphQL */ `subscription OnUpdateApplicati
     _version
     _deleted
     _lastChangedAt
+    programApplicationId
     universityApplicationsId
     applicationAttachmentId
     __typename
@@ -335,6 +377,26 @@ export const onDeleteApplication = /* GraphQL */ `subscription OnDeleteApplicati
     schoolName
     schoolType
     studentName
+    programID
+    program {
+      id
+      name
+      minimumGPA
+      requirements
+      nameAr
+      requirementsAr
+      availability
+      universityID
+      isDeactivated
+      isTrashed
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      universityProgramsId
+      __typename
+    }
     universityID
     university {
       id
@@ -392,6 +454,7 @@ export const onDeleteApplication = /* GraphQL */ `subscription OnDeleteApplicati
     _version
     _deleted
     _lastChangedAt
+    programApplicationId
     universityApplicationsId
     applicationAttachmentId
     __typename
@@ -440,6 +503,7 @@ export const onCreateProgramChoice = /* GraphQL */ `subscription OnCreateProgram
       schoolName
       schoolType
       studentName
+      programID
       universityID
       studentCPR
       batch
@@ -451,6 +515,7 @@ export const onCreateProgramChoice = /* GraphQL */ `subscription OnCreateProgram
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
       universityApplicationsId
       applicationAttachmentId
       __typename
@@ -510,6 +575,7 @@ export const onUpdateProgramChoice = /* GraphQL */ `subscription OnUpdateProgram
       schoolName
       schoolType
       studentName
+      programID
       universityID
       studentCPR
       batch
@@ -521,6 +587,7 @@ export const onUpdateProgramChoice = /* GraphQL */ `subscription OnUpdateProgram
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
       universityApplicationsId
       applicationAttachmentId
       __typename
@@ -580,6 +647,7 @@ export const onDeleteProgramChoice = /* GraphQL */ `subscription OnDeleteProgram
       schoolName
       schoolType
       studentName
+      programID
       universityID
       studentCPR
       batch
@@ -591,6 +659,7 @@ export const onDeleteProgramChoice = /* GraphQL */ `subscription OnDeleteProgram
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
       universityApplicationsId
       applicationAttachmentId
       __typename
@@ -645,6 +714,11 @@ export const onCreateProgram = /* GraphQL */ `subscription OnCreateProgram($filt
     }
     isDeactivated
     isTrashed
+    application {
+      nextToken
+      startedAt
+      __typename
+    }
     createdAt
     updatedAt
     _version
@@ -692,6 +766,11 @@ export const onUpdateProgram = /* GraphQL */ `subscription OnUpdateProgram($filt
     }
     isDeactivated
     isTrashed
+    application {
+      nextToken
+      startedAt
+      __typename
+    }
     createdAt
     updatedAt
     _version
@@ -739,6 +818,11 @@ export const onDeleteProgram = /* GraphQL */ `subscription OnDeleteProgram($filt
     }
     isDeactivated
     isTrashed
+    application {
+      nextToken
+      startedAt
+      __typename
+    }
     createdAt
     updatedAt
     _version
@@ -1547,6 +1631,7 @@ export const onCreateScholarship = /* GraphQL */ `subscription OnCreateScholarsh
       schoolName
       schoolType
       studentName
+      programID
       universityID
       studentCPR
       batch
@@ -1558,6 +1643,7 @@ export const onCreateScholarship = /* GraphQL */ `subscription OnCreateScholarsh
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
       universityApplicationsId
       applicationAttachmentId
       __typename
@@ -1603,6 +1689,7 @@ export const onUpdateScholarship = /* GraphQL */ `subscription OnUpdateScholarsh
       schoolName
       schoolType
       studentName
+      programID
       universityID
       studentCPR
       batch
@@ -1614,6 +1701,7 @@ export const onUpdateScholarship = /* GraphQL */ `subscription OnUpdateScholarsh
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
       universityApplicationsId
       applicationAttachmentId
       __typename
@@ -1659,6 +1747,7 @@ export const onDeleteScholarship = /* GraphQL */ `subscription OnDeleteScholarsh
       schoolName
       schoolType
       studentName
+      programID
       universityID
       studentCPR
       batch
@@ -1670,6 +1759,7 @@ export const onDeleteScholarship = /* GraphQL */ `subscription OnDeleteScholarsh
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
       universityApplicationsId
       applicationAttachmentId
       __typename

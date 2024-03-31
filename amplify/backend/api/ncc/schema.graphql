@@ -23,6 +23,8 @@ type Application @model @auth(rules: [{ allow: public }]) {
   schoolName: String
   schoolType: SchoolType
   studentName: String
+  programID : ID
+  program: Program @belongsTo(fields: ["programID"])
   universityID: ID
   university: University @belongsTo(fields: ["universityID"])
   studentCPR: String! @index(name: "byCPR", sortKeyFields: ["gpa"])
@@ -59,6 +61,8 @@ type Program @model @auth(rules: [{ allow: public }]) {
   applications: [ProgramChoice] @hasMany
   isDeactivated: Boolean
   isTrashed: Boolean @default(value: "false")
+  application: [Application] @hasMany
+
 }
 
 type University @model @auth(rules: [{ allow: public }]) {

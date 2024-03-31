@@ -131,6 +131,26 @@ export const getApplication = /* GraphQL */ `query GetApplication($id: ID!) {
     schoolName
     schoolType
     studentName
+    programID
+    program {
+      id
+      name
+      minimumGPA
+      requirements
+      nameAr
+      requirementsAr
+      availability
+      universityID
+      isDeactivated
+      isTrashed
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      universityProgramsId
+      __typename
+    }
     universityID
     university {
       id
@@ -188,6 +208,7 @@ export const getApplication = /* GraphQL */ `query GetApplication($id: ID!) {
     _version
     _deleted
     _lastChangedAt
+    programApplicationId
     universityApplicationsId
     applicationAttachmentId
     __typename
@@ -216,6 +237,7 @@ export const listApplications = /* GraphQL */ `query ListApplications(
       schoolName
       schoolType
       studentName
+      programID
       universityID
       studentCPR
       batch
@@ -227,6 +249,7 @@ export const listApplications = /* GraphQL */ `query ListApplications(
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
       universityApplicationsId
       applicationAttachmentId
       __typename
@@ -265,6 +288,7 @@ export const syncApplications = /* GraphQL */ `query SyncApplications(
       schoolName
       schoolType
       studentName
+      programID
       universityID
       studentCPR
       batch
@@ -276,6 +300,7 @@ export const syncApplications = /* GraphQL */ `query SyncApplications(
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
       universityApplicationsId
       applicationAttachmentId
       __typename
@@ -326,6 +351,7 @@ export const getProgramChoice = /* GraphQL */ `query GetProgramChoice($id: ID!) 
       schoolName
       schoolType
       studentName
+      programID
       universityID
       studentCPR
       batch
@@ -337,6 +363,7 @@ export const getProgramChoice = /* GraphQL */ `query GetProgramChoice($id: ID!) 
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
       universityApplicationsId
       applicationAttachmentId
       __typename
@@ -457,6 +484,11 @@ export const getProgram = /* GraphQL */ `query GetProgram($id: ID!) {
     }
     isDeactivated
     isTrashed
+    application {
+      nextToken
+      startedAt
+      __typename
+    }
     createdAt
     updatedAt
     _version
@@ -1333,6 +1365,7 @@ export const getScholarship = /* GraphQL */ `query GetScholarship($id: ID!) {
       schoolName
       schoolType
       studentName
+      programID
       universityID
       studentCPR
       batch
@@ -1344,6 +1377,7 @@ export const getScholarship = /* GraphQL */ `query GetScholarship($id: ID!) {
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
       universityApplicationsId
       applicationAttachmentId
       __typename
@@ -1568,6 +1602,7 @@ export const applicationsByIdAndDateTime = /* GraphQL */ `query ApplicationsById
       schoolName
       schoolType
       studentName
+      programID
       universityID
       studentCPR
       batch
@@ -1579,6 +1614,7 @@ export const applicationsByIdAndDateTime = /* GraphQL */ `query ApplicationsById
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
       universityApplicationsId
       applicationAttachmentId
       __typename
@@ -1621,6 +1657,7 @@ export const applicationsByNationalityCategoryAndBatch = /* GraphQL */ `query Ap
       schoolName
       schoolType
       studentName
+      programID
       universityID
       studentCPR
       batch
@@ -1632,6 +1669,7 @@ export const applicationsByNationalityCategoryAndBatch = /* GraphQL */ `query Ap
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
       universityApplicationsId
       applicationAttachmentId
       __typename
@@ -1674,6 +1712,7 @@ export const applicationsByStudentCPRAndGpa = /* GraphQL */ `query ApplicationsB
       schoolName
       schoolType
       studentName
+      programID
       universityID
       studentCPR
       batch
@@ -1685,6 +1724,7 @@ export const applicationsByStudentCPRAndGpa = /* GraphQL */ `query ApplicationsB
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
       universityApplicationsId
       applicationAttachmentId
       __typename
@@ -1727,6 +1767,7 @@ export const applicationsByBatchAndStatus = /* GraphQL */ `query ApplicationsByB
       schoolName
       schoolType
       studentName
+      programID
       universityID
       studentCPR
       batch
@@ -1738,6 +1779,7 @@ export const applicationsByBatchAndStatus = /* GraphQL */ `query ApplicationsByB
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
       universityApplicationsId
       applicationAttachmentId
       __typename
@@ -1780,6 +1822,7 @@ export const applicationsByScoreAndStatus = /* GraphQL */ `query ApplicationsByS
       schoolName
       schoolType
       studentName
+      programID
       universityID
       studentCPR
       batch
@@ -1791,6 +1834,7 @@ export const applicationsByScoreAndStatus = /* GraphQL */ `query ApplicationsByS
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
       universityApplicationsId
       applicationAttachmentId
       __typename
@@ -1833,6 +1877,7 @@ export const applicationsByProcessedAndBatch = /* GraphQL */ `query Applications
       schoolName
       schoolType
       studentName
+      programID
       universityID
       studentCPR
       batch
@@ -1844,6 +1889,7 @@ export const applicationsByProcessedAndBatch = /* GraphQL */ `query Applications
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
       universityApplicationsId
       applicationAttachmentId
       __typename
