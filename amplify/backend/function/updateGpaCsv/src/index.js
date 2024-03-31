@@ -71,7 +71,7 @@ async function bulkUpdateApplications(tableName, batchValue, dataStream){
         //     return Promise.resolve();
         // }
         let score = calculateScore(row.familyIncome, row.GPA, row.adminPoints);
-        if(isNaN(score)) {
+        if(isNaN(score) || score < 0 || isNaN(row.verifiedGPA)){
            score = 0;
         }
 
@@ -86,7 +86,7 @@ async function bulkUpdateApplications(tableName, batchValue, dataStream){
             },
             UpdateExpression: 'set verifiedGpa = :gpa, score = :score',
             ExpressionAttributeValues: {
-                ':gpa': Number(row.GPA),
+                ':gpa': !isNaN(row.verifiedGPA) ? row.verifiedGPA : 0,
                 // ':studentName': row.name,
                 ':score': score,
                 // ':nationalityCategory': otherNationalities.includes(student.nationality) ? 'NON_BAHRAINI' : 'BAHRAINI',
