@@ -98,7 +98,7 @@ async function bulkUpdateApplications(tableName, batchValue, dataStream){
 
 }
 
-function processCsv(csvData){
+function processCsv(csvData, applications) {
     let csvString = Buffer.from(csvData, 'base64').toString('utf-8');
     const rows = csvString.split(/\r?\n/).slice(1);
 
@@ -106,19 +106,19 @@ function processCsv(csvData){
     const dataStream = rows.map(row => {
         const columns = row.split(',');
         return {
-            id: columns[0],
+            // id: columns[0],
             // name: // remove the quotes around the name
             //     columns[2]?.replace(/^"(.*)"$/, '$1'),
-            cpr: columns[1],
-            familyIncome: columns[2],
-            adminPoints: columns[3],
-            GPA: columns[10]
+            cpr: columns[0],
+            GPA: columns[1],
+            verifiedGPA: columns[2],
+            // familyIncome: columns[2],
+            // adminPoints: columns[3],
         };
     }).filter(row => row.id && row.GPA && !isNaN(row.GPA));
     // console.log('Data Stream:', dataStream);
 
     return dataStream;
-
 
 }
 

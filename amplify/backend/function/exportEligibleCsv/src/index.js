@@ -12,17 +12,25 @@ const s3 = new AWS.S3();
 
 
 exports.handler = async (event) => {
-    const batchValue = parseInt(event.queryStringParameters?.batch) || 2024;
+    const batchValue = parseInt(event.queryStringParameters?.batch) || new Date().getFullYear();
     console.log(`EVENT: ${JSON.stringify(event)}`);
-    return {
-        statusCode: 200,
-    //  Uncomment below to enable CORS requests
-    //  headers: {
-    //      "Access-Control-Allow-Origin": "*",
-    //      "Access-Control-Allow-Headers": "*"
-    //  },
-        body: JSON.stringify('Hello from Lambda!'),
-    };
+
+    try {
+        const applications = await getApplications('Application-cw7beg2perdtnl7onnneec4jfa-staging', batchValue);
+        const csv = convertToCsv(applications);
+        const url = await uploadToS3(csv);
+        return {
+            statusCode: 200,
+            body: JSON.stringify({url})
+        };
+    }
+    catch (error) {
+        console.error('Error exporting applications', error);
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ message: 'Error exporting applications' })
+        };
+    }
 };
 
 async function getApplications(tableName, batchValue) {
@@ -55,12 +63,9 @@ async function getApplications(tableName, batchValue) {
 
 
 function convertToCsv(applications, students) {
-    let csv = 'id,StudentCPR,Name,Gender,Nationality,Specialization,Phone,email,Batch,Status,GPA,Score,SchoolName,SchoolType\n';
+    let csv = 'StudentCPR,GPA,verifiedGPA\n';
     applications.forEach(application => {
-        const student = students.find(student => student.cpr === application.studentCPR);
-        if(student) {
-            csv += `${application.id},${application.studentCPR},"${student?.fullName}",${student?.gender},${student?.nationalityCategory},"${student?.specialization}",${student?.phone},${student?.email},${application.batch},${application.status},${application.gpa},${application.score},"${application.schoolName}",${application.schoolType}\n`;
-        }
+        csv += `'${application.studentCPR},${application.gpa},'PLEASE VERIFY'\n`;
     });
     return csv;
 }
