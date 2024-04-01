@@ -159,7 +159,7 @@ export const getApplication = /* GraphQL */ `query GetApplication($id: ID!) {
       availability
       isDeactivated
       isExtended
-      extendedTo
+      extensionDuration
       isException
       isTrashed
       createdAt
@@ -467,7 +467,7 @@ export const getProgram = /* GraphQL */ `query GetProgram($id: ID!) {
       availability
       isDeactivated
       isExtended
-      extendedTo
+      extensionDuration
       isException
       isTrashed
       createdAt
@@ -589,7 +589,7 @@ export const getUniversity = /* GraphQL */ `query GetUniversity($id: ID!) {
     availability
     isDeactivated
     isExtended
-    extendedTo
+    extensionDuration
     isException
     isTrashed
     applications {
@@ -622,7 +622,7 @@ export const listUniversities = /* GraphQL */ `query ListUniversities(
       availability
       isDeactivated
       isExtended
-      extendedTo
+      extensionDuration
       isException
       isTrashed
       createdAt
@@ -660,7 +660,7 @@ export const syncUniversities = /* GraphQL */ `query SyncUniversities(
       availability
       isDeactivated
       isExtended
-      extendedTo
+      extensionDuration
       isException
       isTrashed
       createdAt
@@ -1903,17 +1903,17 @@ export const applicationsByProcessedAndBatch = /* GraphQL */ `query Applications
   APITypes.ApplicationsByProcessedAndBatchQueryVariables,
   APITypes.ApplicationsByProcessedAndBatchQuery
 >;
-export const universitiesByIsExtendedAndExtendedTo = /* GraphQL */ `query UniversitiesByIsExtendedAndExtendedTo(
+export const universitiesByIsExtendedAndName = /* GraphQL */ `query UniversitiesByIsExtendedAndName(
   $isExtended: Int!
-  $extendedTo: ModelStringKeyConditionInput
+  $name: ModelStringKeyConditionInput
   $sortDirection: ModelSortDirection
   $filter: ModelUniversityFilterInput
   $limit: Int
   $nextToken: String
 ) {
-  universitiesByIsExtendedAndExtendedTo(
+  universitiesByIsExtendedAndName(
     isExtended: $isExtended
-    extendedTo: $extendedTo
+    name: $name
     sortDirection: $sortDirection
     filter: $filter
     limit: $limit
@@ -1926,7 +1926,7 @@ export const universitiesByIsExtendedAndExtendedTo = /* GraphQL */ `query Univer
       availability
       isDeactivated
       isExtended
-      extendedTo
+      extensionDuration
       isException
       isTrashed
       createdAt
@@ -1942,8 +1942,8 @@ export const universitiesByIsExtendedAndExtendedTo = /* GraphQL */ `query Univer
   }
 }
 ` as GeneratedQuery<
-  APITypes.UniversitiesByIsExtendedAndExtendedToQueryVariables,
-  APITypes.UniversitiesByIsExtendedAndExtendedToQuery
+  APITypes.UniversitiesByIsExtendedAndNameQueryVariables,
+  APITypes.UniversitiesByIsExtendedAndNameQuery
 >;
 export const universitiesByIsException = /* GraphQL */ `query UniversitiesByIsException(
   $isException: Int!
@@ -1966,7 +1966,7 @@ export const universitiesByIsException = /* GraphQL */ `query UniversitiesByIsEx
       availability
       isDeactivated
       isExtended
-      extendedTo
+      extensionDuration
       isException
       isTrashed
       createdAt

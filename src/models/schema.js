@@ -812,10 +812,10 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "extendedTo": {
-                    "name": "extendedTo",
+                "extensionDuration": {
+                    "name": "extensionDuration",
                     "isArray": false,
-                    "type": "AWSDate",
+                    "type": "Int",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -879,7 +879,7 @@ export const schema = {
                         "name": "byExtended",
                         "fields": [
                             "isExtended",
-                            "extendedTo"
+                            "name"
                         ]
                     }
                 },
@@ -2096,5 +2096,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "a65b09914d90fa8e08898ae90f2864bc"
+    "version": "efd6519fef211b6df805038fcb555d69"
 };

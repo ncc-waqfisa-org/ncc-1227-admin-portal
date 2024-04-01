@@ -276,7 +276,7 @@ type EagerUniversity = {
   readonly availability?: number | null;
   readonly isDeactivated?: boolean | null;
   readonly isExtended?: number | null;
-  readonly extendedTo?: string | null;
+  readonly extensionDuration?: number | null;
   readonly isException?: number | null;
   readonly isTrashed?: boolean | null;
   readonly applications?: (Application | null)[] | null;
@@ -296,7 +296,7 @@ type LazyUniversity = {
   readonly availability?: number | null;
   readonly isDeactivated?: boolean | null;
   readonly isExtended?: number | null;
-  readonly extendedTo?: string | null;
+  readonly extensionDuration?: number | null;
   readonly isException?: number | null;
   readonly isTrashed?: boolean | null;
   readonly applications: AsyncCollection<Application>;

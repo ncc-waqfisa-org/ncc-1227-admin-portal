@@ -14,6 +14,9 @@ const s3 = new AWS.S3();
 exports.handler = async (event) => {
     const batchValue = parseInt(event.queryStringParameters?.batch) || new Date().getFullYear();
     const exceptionUniversities = await getExceptionUniversities();
+    const extendedUniversities = await getExtendedUniversities();
+
+    console.log('Universities:', exceptionUniversities);
     console.log(`EVENT: ${JSON.stringify(event)}`);
 
     try {

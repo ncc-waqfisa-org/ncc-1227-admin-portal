@@ -143,7 +143,7 @@ export const onCreateApplication = /* GraphQL */ `subscription OnCreateApplicati
       availability
       isDeactivated
       isExtended
-      extendedTo
+      extensionDuration
       isException
       isTrashed
       createdAt
@@ -274,7 +274,7 @@ export const onUpdateApplication = /* GraphQL */ `subscription OnUpdateApplicati
       availability
       isDeactivated
       isExtended
-      extendedTo
+      extensionDuration
       isException
       isTrashed
       createdAt
@@ -405,7 +405,7 @@ export const onDeleteApplication = /* GraphQL */ `subscription OnDeleteApplicati
       availability
       isDeactivated
       isExtended
-      extendedTo
+      extensionDuration
       isException
       isTrashed
       createdAt
@@ -697,7 +697,7 @@ export const onCreateProgram = /* GraphQL */ `subscription OnCreateProgram($filt
       availability
       isDeactivated
       isExtended
-      extendedTo
+      extensionDuration
       isException
       isTrashed
       createdAt
@@ -749,7 +749,7 @@ export const onUpdateProgram = /* GraphQL */ `subscription OnUpdateProgram($filt
       availability
       isDeactivated
       isExtended
-      extendedTo
+      extensionDuration
       isException
       isTrashed
       createdAt
@@ -801,7 +801,7 @@ export const onDeleteProgram = /* GraphQL */ `subscription OnDeleteProgram($filt
       availability
       isDeactivated
       isExtended
-      extendedTo
+      extensionDuration
       isException
       isTrashed
       createdAt
@@ -851,7 +851,7 @@ export const onCreateUniversity = /* GraphQL */ `subscription OnCreateUniversity
     availability
     isDeactivated
     isExtended
-    extendedTo
+    extensionDuration
     isException
     isTrashed
     applications {
@@ -886,7 +886,7 @@ export const onUpdateUniversity = /* GraphQL */ `subscription OnUpdateUniversity
     availability
     isDeactivated
     isExtended
-    extendedTo
+    extensionDuration
     isException
     isTrashed
     applications {
@@ -921,7 +921,7 @@ export const onDeleteUniversity = /* GraphQL */ `subscription OnDeleteUniversity
     availability
     isDeactivated
     isExtended
-    extendedTo
+    extensionDuration
     isException
     isTrashed
     applications {
