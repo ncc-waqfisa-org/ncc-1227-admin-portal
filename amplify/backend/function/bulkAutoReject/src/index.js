@@ -92,10 +92,10 @@ async function bulkUpdateApplications(batchValue, applications, extendedUniversi
         const isExtended = extendedUniversities.some(university => university.id === universityId);
         const isException = exceptionUniversities.some(university => university.id === universityId);
         const isNonBahraini = student.nationalityCategory === 'NON_BAHRAINI';
-        let isEligible = application.verifiedGPA && application.verifiedGPA >= programs.find(program => program.id === programId).minimumGPA;
+        const isEligible = application.verifiedGPA? application.verifiedGPA >= programs.find(program => program.id === programId).minimumGPA: true;
 
 
-            let isNotCompleted = application.status === 'NOT_COMPLETED';
+        let isNotCompleted = application.status === 'NOT_COMPLETED';
         if(isException) {
             isNotCompleted = false;
         } else if(isExtended) {
@@ -115,7 +115,7 @@ async function bulkUpdateApplications(batchValue, applications, extendedUniversi
             status = 'REJECTED';
             isProcessed = 1;
         }
-        else if(!isEligible && application.verifiedGPA && application.verifiedGPA != 0) {
+        else if(!isEligible) {
             status = 'REJECTED';
             isProcessed = 1;
         }
@@ -123,9 +123,13 @@ async function bulkUpdateApplications(batchValue, applications, extendedUniversi
             status = 'ELIGIBLE';
             isProcessed = 0;
         }
-        params.UpdateExpression += ', #status = :status';
+        params.UpdateExpression = 'set processed = :processedValue, #status = :status';
+
         params.ExpressionAttributeValues[':status'] = status;
+        params.ExpressionAttributeValues[':processedValue'] = isProcessed;
+
         params.ExpressionAttributeNames['#status'] = 'status';
+
 
         return dynamoDB.update(params).promise();
     });
