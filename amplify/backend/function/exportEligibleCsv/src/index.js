@@ -35,6 +35,7 @@ exports.handler = async (event) => {
 };
 
 async function getApplications(tableName, batchValue, exceptionUniversities) {
+    const programs = await getPrograms();
     const params = {
         TableName: tableName,
         IndexName: 'byNationalityCategory',
@@ -62,7 +63,7 @@ async function getApplications(tableName, batchValue, exceptionUniversities) {
     // fRemove the NOT_COMPLETED application unless the university is an exception
     allApplications = allApplications.filter(
         application => application.status !== 'NOT_COMPLETED'
-            || exceptionUniversities.some(university => university.id === application.universityID));
+            || exceptionUniversities.some(async university => university.id === programs.find(program => program.id === application.programID).universityID));
 
 
     return allApplications;
@@ -111,4 +112,45 @@ async function getExceptionUniversities() {
     } while (params.ExclusiveStartKey);
 
     return allUniversities;
+}
+
+async function getExtendedUniversities() {
+
+    const params = {
+        TableName: 'University-cw7beg2perdtnl7onnneec4jfa-staging',
+        IndexName: 'byExtended',
+        KeyConditionExpression: '#isExtended = :extendedValue',
+        ExpressionAttributeNames: {
+            '#isExtended': 'isExtended'
+        },
+        ExpressionAttributeValues: {
+            ':extendedValue': 1
+        }
+    };
+
+    let allUniversities = [];
+
+    do {
+        const universities = await dynamoDB.query(params).promise();
+        allUniversities = allUniversities.concat(universities.Items);
+        params.ExclusiveStartKey = universities.LastEvaluatedKey;
+    } while (params.ExclusiveStartKey);
+
+    return allUniversities;
+}
+
+async function getPrograms() {
+    const params = {
+        TableName: 'Program-cw7beg2perdtnl7onnneec4jfa-staging',
+    };
+
+    let allPrograms = [];
+
+    do {
+        const programs = await dynamoDB.scan(params).promise();
+        allPrograms = allPrograms.concat(programs.Items);
+        params.ExclusiveStartKey = programs.LastEvaluatedKey;
+    } while (params.ExclusiveStartKey);
+
+    return allPrograms;
 }
