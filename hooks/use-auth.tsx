@@ -17,6 +17,8 @@ Auth.configure({ ...config, ssr: true });
 
 interface IUseAuthContext {
   user: CognitoUser | undefined | null;
+  cpr: string | undefined | null;
+  token: string | undefined | null;
   admin: Admin | undefined;
   isSignedIn: boolean;
   isSuperAdmin: boolean;
@@ -29,6 +31,8 @@ interface IUseAuthContext {
 
 const defaultState: IUseAuthContext = {
   user: null,
+  cpr: null,
+  token: null,
   admin: undefined,
   isSignedIn: false,
   isSuperAdmin: false,
@@ -54,6 +58,10 @@ function useProvideAuth() {
   const [user, setUser] = useState<CognitoUser | undefined | null>(
     defaultState.user
   );
+  const [cpr, setCpr] = useState<string | undefined | null>(defaultState.cpr);
+  const [token, setToken] = useState<string | undefined | null>(
+    defaultState.token
+  );
   const [admin, setAdmin] = useState<Admin | undefined>(defaultState.admin);
   const [isSignedIn, setIsSignedIn] = useState(defaultState.isSignedIn);
   const [isSuperAdmin, setIsSuperAdmin] = useState<boolean>(
@@ -71,15 +79,18 @@ function useProvideAuth() {
   useEffect(() => {
     async function getAuthUser(): Promise<void> {
       try {
-        const authUser = await Auth.currentAuthenticatedUser();
-        console.log(
-            "🚀 ~ getAuthUser ~ authUser:",
-            authUser.getSignInUserSession()?.getAccessToken().getJwtToken()
-        );
+        const authUser: CognitoUser = await Auth.currentAuthenticatedUser();
         if (authUser) {
           await checkAuthUser(authUser).then((isAdmin) => {
             if (isAdmin) {
               setUser(authUser);
+              setToken(
+                authUser.getSignInUserSession()?.getAccessToken().getJwtToken()
+              );
+              setCpr(
+                authUser.getSignInUserSession()?.getAccessToken().payload
+                  .username
+              );
             }
           });
         }
@@ -90,6 +101,8 @@ function useProvideAuth() {
         setAdmin(undefined);
         setIsSuperAdmin(false);
         setIsInitializing(false);
+        setToken(null);
+        setCpr(null);
       }
     }
 
@@ -129,6 +142,8 @@ function useProvideAuth() {
       Auth.signOut();
       setIsSignedIn(false);
       setUser(null);
+      setToken(null);
+      setCpr(null);
       setAdmin(undefined);
       setIsSuperAdmin(false);
     } else {
@@ -233,6 +248,8 @@ function useProvideAuth() {
 
   return {
     user,
+    token,
+    cpr,
     admin,
     isSignedIn,
     isSuperAdmin,

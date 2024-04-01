@@ -60,8 +60,9 @@ export const PageComponent: FC<PropsWithChildren<Props>> = (props) => {
 
         <div className="drawer-content">
           {isInitializing ? (
-            <div className="flex items-center justify-center w-full h-full bg-gray-200 animate-pulse">
-              <div className="btn btn-ghost hover:bg-transparent loading">
+            <div className="flex items-center justify-center flex-col w-full h-[100svh] bg-gray-200 animate-pulse">
+              <div className="flex items-center gap-2">
+                <span className="loading"></span>
                 {` ${tCommon("loading")} `}
               </div>
             </div>

@@ -1,28 +1,4 @@
 {
-  "dev": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-ncc-dev-74429-authRole",
-      "UnauthRoleArn": "arn:aws:iam::232269327483:role/amplify-ncc-dev-74429-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::232269327483:role/amplify-ncc-dev-74429-authRole",
-      "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-ncc-dev-74429-deployment",
-      "UnauthRoleName": "amplify-ncc-dev-74429-unauthRole",
-      "StackName": "amplify-ncc-dev-74429",
-      "StackId": "arn:aws:cloudformation:us-east-1:232269327483:stack/amplify-ncc-dev-74429/e2d72260-cb0c-11ee-83de-0a5494653c59",
-      "AmplifyAppId": "d2og02frzhtz6s"
-    },
-    "categories": {
-      "auth": {
-        "ncc548b4d55": {}
-      },
-      "storage": {
-        "nccStorage": {}
-      },
-      "api": {
-        "ncc": {}
-      }
-    }
-  },
   "staging": {
     "awscloudformation": {
       "AuthRoleName": "amplify-ncc-staging-65406-authRole",
@@ -94,6 +70,30 @@
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
           "s3Key": "amplify-builds/exportEligibleCsv-336e4b68437634613372-build.zip"
         }
+      }
+    }
+  },
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-ncc-dev-74429-authRole",
+      "UnauthRoleArn": "arn:aws:iam::232269327483:role/amplify-ncc-dev-74429-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::232269327483:role/amplify-ncc-dev-74429-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-ncc-dev-74429-deployment",
+      "UnauthRoleName": "amplify-ncc-dev-74429-unauthRole",
+      "StackName": "amplify-ncc-dev-74429",
+      "StackId": "arn:aws:cloudformation:us-east-1:232269327483:stack/amplify-ncc-dev-74429/e2d72260-cb0c-11ee-83de-0a5494653c59",
+      "AmplifyAppId": "d2og02frzhtz6s"
+    },
+    "categories": {
+      "auth": {
+        "ncc548b4d55": {}
+      },
+      "storage": {
+        "nccStorage": {}
+      },
+      "api": {
+        "ncc": {}
       }
     }
   }

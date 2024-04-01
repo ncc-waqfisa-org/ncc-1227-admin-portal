@@ -1,0 +1,11 @@
+{
+  "batch": "دفعة",
+  "batches": "الدفعات",
+  "batchesSubtitle": "قائمة بجميع الدُفعات",
+  "tableBatchYear": "دفعة",
+  "tableBatchSignUpStartDate": "بدء التسجيلات",
+  "tableBatchSignUpEndDate": "انتهاء التسجيلات",
+  "tableBatchCreateApplicationStartDate": "بدء تقديم الطلبات الجديدة",
+  "tableBatchCreateApplicationEndDate": "انتهاء تقديم الطلبات الجديدة",
+  "tableBatchUpdateApplicationEndDate": "انتهاء تحديث الطلبات"
+}

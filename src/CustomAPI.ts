@@ -16,6 +16,10 @@ import {
   CreateProgramChoiceMutationVariables,
   CreateStudentLogMutation,
   CreateStudentLogMutationVariables,
+  GetBatchQuery,
+  GetBatchQueryVariables,
+  ListBatchesQuery,
+  ListBatchesQueryVariables,
   Program,
   StudentLog,
   University,
@@ -25,6 +29,8 @@ import {
   UpdateApplicationMutationVariables,
   UpdateAttachmentMutation,
   UpdateAttachmentMutationVariables,
+  UpdateBatchMutation,
+  UpdateBatchMutationVariables,
   UpdateProgramChoiceMutation,
   UpdateProgramChoiceMutationVariables,
   UpdateProgramMutation,
@@ -45,7 +51,9 @@ import {
   updateUniversity,
   updateAdmin,
   createAdmin,
+  updateBatch,
 } from "./graphql/mutations";
+import { getBatch, listBatches } from "./graphql/queries";
 
 /* -------------------------------------------------------------------------- */
 /*                                 INTERFACES                                 */
@@ -1103,4 +1111,40 @@ export async function getAllApprovedApplicationsAPI(
     ?.items ?? []) as Application[];
 
   return temp;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                              Batches                                       */
+/* -------------------------------------------------------------------------- */
+
+export async function listAllBatches(
+  variables: ListBatchesQueryVariables
+): Promise<ListBatchesQuery | undefined> {
+  let res = (await API.graphql({
+    query: listBatches,
+    variables: variables,
+  })) as GraphQLResult<ListBatchesQuery>;
+
+  return res.data;
+}
+
+export async function getSingleBatch(
+  variables: GetBatchQueryVariables
+): Promise<GetBatchQuery | undefined> {
+  let res = (await API.graphql({
+    query: getBatch,
+    variables: variables,
+  })) as GraphQLResult<GetBatchQuery>;
+
+  return res.data;
+}
+export async function updateSingleBatch(
+  variables: UpdateBatchMutationVariables
+): Promise<UpdateBatchMutation | undefined> {
+  let res = (await API.graphql({
+    query: updateBatch,
+    variables: variables,
+  })) as GraphQLResult<UpdateBatchMutation>;
+
+  return res.data;
 }
