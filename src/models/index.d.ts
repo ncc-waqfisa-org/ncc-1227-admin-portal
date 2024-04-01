@@ -104,9 +104,13 @@ type EagerApplication = {
   readonly programs?: (ProgramChoice | null)[] | null;
   readonly dateTime: string;
   readonly isEmailSent?: boolean | null;
+  readonly nationalityCategory?: Nationality | keyof typeof Nationality | null;
+  readonly familyIncome?: FamilyIncome | keyof typeof FamilyIncome | null;
   readonly schoolName?: string | null;
   readonly schoolType?: SchoolType | keyof typeof SchoolType | null;
   readonly studentName?: string | null;
+  readonly programID?: string | null;
+  readonly program?: Program | null;
   readonly universityID?: string | null;
   readonly university?: University | null;
   readonly studentCPR: string;
@@ -115,10 +119,10 @@ type EagerApplication = {
   readonly score?: number | null;
   readonly adminPoints?: number | null;
   readonly processed?: number | null;
-  readonly statusTest?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly applicationAttachmentId?: string | null;
+  readonly programApplicationId?: string | null;
   readonly universityApplicationsId?: string | null;
 }
 
@@ -138,9 +142,13 @@ type LazyApplication = {
   readonly programs: AsyncCollection<ProgramChoice>;
   readonly dateTime: string;
   readonly isEmailSent?: boolean | null;
+  readonly nationalityCategory?: Nationality | keyof typeof Nationality | null;
+  readonly familyIncome?: FamilyIncome | keyof typeof FamilyIncome | null;
   readonly schoolName?: string | null;
   readonly schoolType?: SchoolType | keyof typeof SchoolType | null;
   readonly studentName?: string | null;
+  readonly programID?: string | null;
+  readonly program: AsyncItem<Program | undefined>;
   readonly universityID?: string | null;
   readonly university: AsyncItem<University | undefined>;
   readonly studentCPR: string;
@@ -149,10 +157,10 @@ type LazyApplication = {
   readonly score?: number | null;
   readonly adminPoints?: number | null;
   readonly processed?: number | null;
-  readonly statusTest?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly applicationAttachmentId?: string | null;
+  readonly programApplicationId?: string | null;
   readonly universityApplicationsId?: string | null;
 }
 
@@ -221,6 +229,7 @@ type EagerProgram = {
   readonly applications?: (ProgramChoice | null)[] | null;
   readonly isDeactivated?: boolean | null;
   readonly isTrashed?: boolean | null;
+  readonly application?: (Application | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly universityProgramsId?: string | null;
@@ -243,6 +252,7 @@ type LazyProgram = {
   readonly applications: AsyncCollection<ProgramChoice>;
   readonly isDeactivated?: boolean | null;
   readonly isTrashed?: boolean | null;
+  readonly application: AsyncCollection<Application>;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly universityProgramsId?: string | null;

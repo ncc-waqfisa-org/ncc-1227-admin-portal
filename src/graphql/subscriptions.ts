@@ -2,7 +2,7 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-import * as APITypes from "../API";
+import * as APITypes from "../../amplify/backend/function/exportEligibleCsv/src/src/API";
 type GeneratedSubscription<InputType, OutputType> = string & {
   __generatedSubscriptionInput: InputType;
   __generatedSubscriptionOutput: OutputType;
@@ -110,9 +110,31 @@ export const onCreateApplication = /* GraphQL */ `subscription OnCreateApplicati
     }
     dateTime
     isEmailSent
+    nationalityCategory
+    familyIncome
     schoolName
     schoolType
     studentName
+    programID
+    program {
+      id
+      name
+      minimumGPA
+      requirements
+      nameAr
+      requirementsAr
+      availability
+      universityID
+      isDeactivated
+      isTrashed
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      universityProgramsId
+      __typename
+    }
     universityID
     university {
       id
@@ -165,12 +187,12 @@ export const onCreateApplication = /* GraphQL */ `subscription OnCreateApplicati
     score
     adminPoints
     processed
-    statusText
     createdAt
     updatedAt
     _version
     _deleted
     _lastChangedAt
+    programApplicationId
     universityApplicationsId
     applicationAttachmentId
     __typename
@@ -219,9 +241,31 @@ export const onUpdateApplication = /* GraphQL */ `subscription OnUpdateApplicati
     }
     dateTime
     isEmailSent
+    nationalityCategory
+    familyIncome
     schoolName
     schoolType
     studentName
+    programID
+    program {
+      id
+      name
+      minimumGPA
+      requirements
+      nameAr
+      requirementsAr
+      availability
+      universityID
+      isDeactivated
+      isTrashed
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      universityProgramsId
+      __typename
+    }
     universityID
     university {
       id
@@ -274,12 +318,12 @@ export const onUpdateApplication = /* GraphQL */ `subscription OnUpdateApplicati
     score
     adminPoints
     processed
-    statusText
     createdAt
     updatedAt
     _version
     _deleted
     _lastChangedAt
+    programApplicationId
     universityApplicationsId
     applicationAttachmentId
     __typename
@@ -328,9 +372,31 @@ export const onDeleteApplication = /* GraphQL */ `subscription OnDeleteApplicati
     }
     dateTime
     isEmailSent
+    nationalityCategory
+    familyIncome
     schoolName
     schoolType
     studentName
+    programID
+    program {
+      id
+      name
+      minimumGPA
+      requirements
+      nameAr
+      requirementsAr
+      availability
+      universityID
+      isDeactivated
+      isTrashed
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      universityProgramsId
+      __typename
+    }
     universityID
     university {
       id
@@ -383,12 +449,12 @@ export const onDeleteApplication = /* GraphQL */ `subscription OnDeleteApplicati
     score
     adminPoints
     processed
-    statusText
     createdAt
     updatedAt
     _version
     _deleted
     _lastChangedAt
+    programApplicationId
     universityApplicationsId
     applicationAttachmentId
     __typename
@@ -432,21 +498,24 @@ export const onCreateProgramChoice = /* GraphQL */ `subscription OnCreateProgram
       attachmentID
       dateTime
       isEmailSent
+      nationalityCategory
+      familyIncome
       schoolName
       schoolType
       studentName
+      programID
       universityID
       studentCPR
       batch
       score
       adminPoints
       processed
-      statusText
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
       universityApplicationsId
       applicationAttachmentId
       __typename
@@ -501,21 +570,24 @@ export const onUpdateProgramChoice = /* GraphQL */ `subscription OnUpdateProgram
       attachmentID
       dateTime
       isEmailSent
+      nationalityCategory
+      familyIncome
       schoolName
       schoolType
       studentName
+      programID
       universityID
       studentCPR
       batch
       score
       adminPoints
       processed
-      statusText
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
       universityApplicationsId
       applicationAttachmentId
       __typename
@@ -570,21 +642,24 @@ export const onDeleteProgramChoice = /* GraphQL */ `subscription OnDeleteProgram
       attachmentID
       dateTime
       isEmailSent
+      nationalityCategory
+      familyIncome
       schoolName
       schoolType
       studentName
+      programID
       universityID
       studentCPR
       batch
       score
       adminPoints
       processed
-      statusText
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
       universityApplicationsId
       applicationAttachmentId
       __typename
@@ -639,6 +714,11 @@ export const onCreateProgram = /* GraphQL */ `subscription OnCreateProgram($filt
     }
     isDeactivated
     isTrashed
+    application {
+      nextToken
+      startedAt
+      __typename
+    }
     createdAt
     updatedAt
     _version
@@ -686,6 +766,11 @@ export const onUpdateProgram = /* GraphQL */ `subscription OnUpdateProgram($filt
     }
     isDeactivated
     isTrashed
+    application {
+      nextToken
+      startedAt
+      __typename
+    }
     createdAt
     updatedAt
     _version
@@ -733,6 +818,11 @@ export const onDeleteProgram = /* GraphQL */ `subscription OnDeleteProgram($filt
     }
     isDeactivated
     isTrashed
+    application {
+      nextToken
+      startedAt
+      __typename
+    }
     createdAt
     updatedAt
     _version
@@ -1536,21 +1626,24 @@ export const onCreateScholarship = /* GraphQL */ `subscription OnCreateScholarsh
       attachmentID
       dateTime
       isEmailSent
+      nationalityCategory
+      familyIncome
       schoolName
       schoolType
       studentName
+      programID
       universityID
       studentCPR
       batch
       score
       adminPoints
       processed
-      statusText
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
       universityApplicationsId
       applicationAttachmentId
       __typename
@@ -1591,21 +1684,24 @@ export const onUpdateScholarship = /* GraphQL */ `subscription OnUpdateScholarsh
       attachmentID
       dateTime
       isEmailSent
+      nationalityCategory
+      familyIncome
       schoolName
       schoolType
       studentName
+      programID
       universityID
       studentCPR
       batch
       score
       adminPoints
       processed
-      statusText
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
       universityApplicationsId
       applicationAttachmentId
       __typename
@@ -1646,21 +1742,24 @@ export const onDeleteScholarship = /* GraphQL */ `subscription OnDeleteScholarsh
       attachmentID
       dateTime
       isEmailSent
+      nationalityCategory
+      familyIncome
       schoolName
       schoolType
       studentName
+      programID
       universityID
       studentCPR
       batch
       score
       adminPoints
       processed
-      statusText
       createdAt
       updatedAt
       _version
       _deleted
       _lastChangedAt
+      programApplicationId
       universityApplicationsId
       applicationAttachmentId
       __typename

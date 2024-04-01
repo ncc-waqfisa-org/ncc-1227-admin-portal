@@ -173,6 +173,22 @@
         }
       ]
     },
+    "AMPLIFY_function_exportEligibleCsv_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "exportEligibleCsv"
+        }
+      ]
+    },
+    "AMPLIFY_function_exportEligibleCsv_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "exportEligibleCsv"
+        }
+      ]
+    },
     "AMPLIFY_function_getApplications_deploymentBucketName": {
       "usedBy": [
         {
