@@ -13,10 +13,11 @@ const s3 = new AWS.S3();
 
 exports.handler = async (event) => {
     const batchValue = parseInt(event.queryStringParameters?.batch) || new Date().getFullYear();
+    const exceptionUniversities = await getExceptionUniversities();
     console.log(`EVENT: ${JSON.stringify(event)}`);
 
     try {
-        const applications = await getApplications('Application-cw7beg2perdtnl7onnneec4jfa-staging', batchValue);
+        const applications = await getApplications('Application-cw7beg2perdtnl7onnneec4jfa-staging', batchValue, exceptionUniversities);
         const csv = convertToCsv(applications);
         const url = await uploadToS3(csv);
         return {
@@ -33,7 +34,8 @@ exports.handler = async (event) => {
     }
 };
 
-async function getApplications(tableName, batchValue) {
+async function getApplications(tableName, batchValue, exceptionUniversities, extendedUniversities) {
+    // const programs = await getPrograms();
     const params = {
         TableName: tableName,
         IndexName: 'byNationalityCategory',
@@ -45,7 +47,6 @@ async function getApplications(tableName, batchValue) {
             ':batchValue': batchValue,
             ':nationalityCategory': 'BAHRAINI'
         },
-
     };
 
     let allApplications = [];
@@ -58,11 +59,16 @@ async function getApplications(tableName, batchValue) {
         params.ExclusiveStartKey = applications.LastEvaluatedKey;
     } while (params.ExclusiveStartKey);
 
+    // Remove the NOT_COMPLETED application unless the university is an exception
+    allApplications = allApplications.filter(
+        application => application.status !== 'NOT_COMPLETED'
+            || exceptionUniversities.some(async university => university.id === application.universityID) || extendedUniversities.some(async university => university.id === application.universityID));
+
     return allApplications;
 }
 
 
-function convertToCsv(applications, students) {
+function convertToCsv(applications) {
     let csv = 'StudentCPR,GPA,verifiedGPA\n';
     applications.forEach(application => {
         csv += `=""${application.studentCPR}"",${application.gpa},PLEASE VERIFY\n`;
@@ -80,3 +86,72 @@ async function uploadToS3(csv) {
     // return the URL of the uploaded file
     return s3.getSignedUrl('getObject', {Bucket: params.Bucket, Key: params.Key});
 }
+
+async function getExceptionUniversities() {
+
+    const params = {
+        TableName: 'University-cw7beg2perdtnl7onnneec4jfa-staging',
+        IndexName: 'byException',
+        KeyConditionExpression: '#isException = :exceptionValue',
+        ExpressionAttributeNames: {
+            '#isException': 'isException'
+        },
+        ExpressionAttributeValues: {
+            ':exceptionValue': 1
+        }
+    };
+
+    let allUniversities = [];
+
+    do {
+        const universities = await dynamoDB.query(params).promise();
+        allUniversities = allUniversities.concat(universities.Items);
+        params.ExclusiveStartKey = universities.LastEvaluatedKey;
+    } while (params.ExclusiveStartKey);
+
+    return allUniversities;
+}
+
+async function getExtendedUniversities() {
+
+    const params = {
+        TableName: 'University-cw7beg2perdtnl7onnneec4jfa-staging',
+        IndexName: 'byExtended',
+        KeyConditionExpression: '#isExtended = :extendedValue',
+        ExpressionAttributeNames: {
+            '#isExtended': 'isExtended'
+        },
+        ExpressionAttributeValues: {
+            ':extendedValue': 1
+        }
+    };
+
+    let allUniversities = [];
+
+
+    do {
+        const universities = await dynamoDB.query(params).promise();
+        allUniversities = allUniversities.concat(universities.Items);
+        params.ExclusiveStartKey = universities.LastEvaluatedKey;
+    } while (params.ExclusiveStartKey);
+
+    return allUniversities;
+}
+
+// async function getPrograms() {
+//     const params = {
+//         TableName: 'Program-cw7beg2perdtnl7onnneec4jfa-staging',
+//     };
+//
+//     let allPrograms = [];
+//
+//     do {
+//         const programs = await dynamoDB.scan(params).promise();
+//         allPrograms = allPrograms.concat(programs.Items);
+//         params.ExclusiveStartKey = programs.LastEvaluatedKey;
+//     } while (params.ExclusiveStartKey);
+//
+//     return allPrograms;
+// }
+//
+

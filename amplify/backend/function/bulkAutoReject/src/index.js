@@ -75,6 +75,7 @@ async function getApplications(batch) {
 
 async function bulkUpdateApplications(batchValue, applications, extendedUniversities, exceptionUniversities, universities, programs) {
     const updatePromises = applications.map(async application => {
+        let isProcessed = 1;
         const student = await getStudent(application.studentCPR);
         const params = {
             TableName: 'Application-cw7beg2perdtnl7onnneec4jfa-staging',
@@ -83,7 +84,7 @@ async function bulkUpdateApplications(batchValue, applications, extendedUniversi
             },
             UpdateExpression: 'set processed = :processedValue',
             ExpressionAttributeValues: {
-                ':processedValue': 1
+                ':processedValue': isProcessed
             }
         };
         const universityId = application.universityID;
@@ -91,9 +92,10 @@ async function bulkUpdateApplications(batchValue, applications, extendedUniversi
         const isExtended = extendedUniversities.some(university => university.id === universityId);
         const isException = exceptionUniversities.some(university => university.id === universityId);
         const isNonBahraini = student.nationalityCategory === 'NON_BAHRAINI';
-        const isEligible = application.verifiedGPA && application.verifiedGPA >= programs.find(program => program.id === programId).minimumGPA;
+        let isEligible = application.verifiedGPA && application.verifiedGPA >= programs.find(program => program.id === programId).minimumGPA;
 
-        let isNotCompleted = application.status === 'NOT_COMPLETED';
+
+            let isNotCompleted = application.status === 'NOT_COMPLETED';
         if(isException) {
             isNotCompleted = false;
         } else if(isExtended) {
@@ -104,18 +106,22 @@ async function bulkUpdateApplications(batchValue, applications, extendedUniversi
             isNotCompleted = today < deadline;
         }
 
-        let status = '';
+        let status;
 
         if(isNonBahraini) {
             status = 'REJECTED';
+            isProcessed = 1;
         } else if(isNotCompleted) {
             status = 'REJECTED';
+            isProcessed = 1;
         }
-        else if(!isEligible) {
+        else if(!isEligible && application.verifiedGPA && application.verifiedGPA != 0) {
             status = 'REJECTED';
+            isProcessed = 1;
         }
         else {
             status = 'ELIGIBLE';
+            isProcessed = 0;
         }
         params.UpdateExpression += ', #status = :status';
         params.ExpressionAttributeValues[':status'] = status;
