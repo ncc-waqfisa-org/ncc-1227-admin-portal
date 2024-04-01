@@ -12,6 +12,8 @@ import {
   CreateApplicationMutationVariables,
   CreateAttachmentMutation,
   CreateAttachmentMutationVariables,
+  CreateBatchMutation,
+  CreateBatchMutationVariables,
   CreateProgramChoiceMutation,
   CreateProgramChoiceMutationVariables,
   CreateStudentLogMutation,
@@ -52,6 +54,7 @@ import {
   updateAdmin,
   createAdmin,
   updateBatch,
+  createBatch,
 } from "./graphql/mutations";
 import { getBatch, listBatches } from "./graphql/queries";
 
@@ -1135,6 +1138,16 @@ export async function getSingleBatch(
     query: getBatch,
     variables: variables,
   })) as GraphQLResult<GetBatchQuery>;
+
+  return res.data;
+}
+export async function createSingleBatch(
+  variables: CreateBatchMutationVariables
+): Promise<CreateBatchMutation | undefined> {
+  let res = (await API.graphql({
+    query: createBatch,
+    variables: variables,
+  })) as GraphQLResult<CreateBatchMutation>;
 
   return res.data;
 }

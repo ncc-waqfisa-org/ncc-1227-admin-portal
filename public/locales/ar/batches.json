@@ -7,5 +7,17 @@
   "tableBatchSignUpEndDate": "انتهاء التسجيلات",
   "tableBatchCreateApplicationStartDate": "بدء تقديم الطلبات الجديدة",
   "tableBatchCreateApplicationEndDate": "انتهاء تقديم الطلبات الجديدة",
-  "tableBatchUpdateApplicationEndDate": "انتهاء تحديث الطلبات"
+  "tableBatchUpdateApplicationEndDate": "انتهاء تحديث الطلبات",
+  "updatedSuccessfully": "تم التحديث بنجاح",
+  "createdSuccessfully": "تم إنشاؤها بنجاح",
+  "failedToUpdate": "فشل في التحديث",
+  "failedToCreate": "فشل في انشاء الدفعة",
+  "createNewBatch": "إنشاء دفعة جديدة",
+  "batchYearExample": "سنة الدفعة (على سبيل المثال 2024)",
+  "editBatch": "تحرير دفعة",
+  "notFound": "غير معثور عليه",
+  "submit": "تقديم",
+  "clear": "مسح",
+  "reset": "إعادة تعيين",
+  "loading": "يرجى الإنتظار"
 }

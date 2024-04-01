@@ -7,5 +7,17 @@
   "tableBatchSignUpEndDate": "Registrations end",
   "tableBatchCreateApplicationStartDate": "New applications start",
   "tableBatchCreateApplicationEndDate": "New applications end",
-  "tableBatchUpdateApplicationEndDate": "Update applications end"
+  "tableBatchUpdateApplicationEndDate": "Update applications end",
+  "createdSuccessfully": "Created successfully",
+  "updatedSuccessfully": "Updated successfully",
+  "failedToUpdate": "Failed to update",
+  "failedToCreate": "Failed to create",
+  "createNewBatch": "Create new batch",
+  "batchYearExample": "Batch year (e.g. 2024)",
+  "editBatch": "Edit batch",
+  "notFound": "Not Found",
+  "submit": "Submit",
+  "clear": "Clear",
+  "reset": "Reset",
+  "loading": "Loading"
 }

@@ -19,7 +19,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "components/batch/BatchUpdateForm.jsx"
+    "components/batch/BatchUpdateForm.tsx",
+    "components/batch/BatchUpdateForm.d.ts.bk"
   ],
   "exclude": ["node_modules"]
 }

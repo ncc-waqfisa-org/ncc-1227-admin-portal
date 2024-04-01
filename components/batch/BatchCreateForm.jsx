@@ -1,18 +1,18 @@
 /* eslint-disable */
 import * as React from "react";
 import { Button, Flex, Grid, TextField } from "@aws-amplify/ui-react";
-import { Batch } from "../../src/models";
+
 import {
   fetchByPath,
   getOverrideProps,
   validateField,
 } from "../../src/ui-components/utils";
-import { DataStore } from "aws-amplify";
 import { useTranslation } from "react-i18next";
-export default function BatchUpdateForm(props) {
+
+export default function BatchCreateForm(props) {
   const {
-    id: idProp,
-    batch: batchModelProp,
+    clearOnSuccess = true,
+    onSuccess,
     onError,
     onSubmit,
     onValidate,
@@ -42,30 +42,15 @@ export default function BatchUpdateForm(props) {
     initialValues.signUpEndDate
   );
   const [errors, setErrors] = React.useState({});
-
   const resetStateValues = () => {
-    const cleanValues = batchRecord
-      ? { ...initialValues, ...batchRecord }
-      : initialValues;
-    setBatch(cleanValues.batch);
-    setCreateApplicationStartDate(cleanValues.createApplicationStartDate);
-    setCreateApplicationEndDate(cleanValues.createApplicationEndDate);
-    setUpdateApplicationEndDate(cleanValues.updateApplicationEndDate);
-    setSignUpStartDate(cleanValues.signUpStartDate);
-    setSignUpEndDate(cleanValues.signUpEndDate);
+    setBatch(initialValues.batch);
+    setCreateApplicationStartDate(initialValues.createApplicationStartDate);
+    setCreateApplicationEndDate(initialValues.createApplicationEndDate);
+    setUpdateApplicationEndDate(initialValues.updateApplicationEndDate);
+    setSignUpStartDate(initialValues.signUpStartDate);
+    setSignUpEndDate(initialValues.signUpEndDate);
     setErrors({});
   };
-  const [batchRecord, setBatchRecord] = React.useState(batchModelProp);
-  React.useEffect(() => {
-    const queryData = async () => {
-      const record = idProp
-        ? await DataStore.query(Batch, idProp)
-        : batchModelProp;
-      setBatchRecord(record);
-    };
-    queryData();
-  }, [idProp, batchModelProp]);
-  React.useEffect(resetStateValues, [batchRecord]);
   const validations = {
     batch: [],
     createApplicationStartDate: [],
@@ -133,16 +118,16 @@ export default function BatchUpdateForm(props) {
           modelFields = onSubmit(modelFields);
         }
       }}
-      {...getOverrideProps(overrides, "BatchUpdateForm")}
+      {...getOverrideProps(overrides, "BatchCreateForm")}
       {...rest}
     >
       <TextField
         label={t("batch")}
         isRequired={false}
         isReadOnly={false}
-        disabled
         type="number"
         step="any"
+        placeholder={t("batchYearExample")}
         value={batch}
         onChange={(e) => {
           let value = isNaN(parseInt(e.target.value))
@@ -335,20 +320,18 @@ export default function BatchUpdateForm(props) {
         hasError={errors.updateApplicationEndDate?.hasError}
         {...getOverrideProps(overrides, "updateApplicationEndDate")}
       ></TextField>
-
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}
       >
         <Button
-          children={t("reset")}
+          children={t("clear")}
           type="reset"
           onClick={(event) => {
             event.preventDefault();
             resetStateValues();
           }}
-          isDisabled={!(idProp || batchModelProp)}
-          {...getOverrideProps(overrides, "ResetButton")}
+          {...getOverrideProps(overrides, "ClearButton")}
         ></Button>
         <Flex
           gap="15px"
@@ -358,10 +341,7 @@ export default function BatchUpdateForm(props) {
             children={t("submit")}
             type="submit"
             variation="primary"
-            isDisabled={
-              !(idProp || batchModelProp) ||
-              Object.values(errors).some((e) => e?.hasError)
-            }
+            isDisabled={Object.values(errors).some((e) => e?.hasError)}
             {...getOverrideProps(overrides, "SubmitButton")}
           ></Button>
         </Flex>
