@@ -80,3 +80,28 @@ async function uploadToS3(csv) {
     // return the URL of the uploaded file
     return s3.getSignedUrl('getObject', {Bucket: params.Bucket, Key: params.Key});
 }
+
+async function getExceptionUniversities() {
+
+    const params = {
+        TableName: 'University-cw7beg2perdtnl7onnneec4jfa-staging',
+        IndexName: 'byException',
+        KeyConditionExpression: '#isException = :exceptionValue',
+        ExpressionAttributeNames: {
+            '#isException': 'isException'
+        },
+        ExpressionAttributeValues: {
+            ':exceptionValue': 1
+        }
+    };
+
+    let allUniversities = [];
+
+    do {
+        const universities = await dynamoDB.query(params).promise();
+        allUniversities = allUniversities.concat(universities.Items);
+        params.ExclusiveStartKey = universities.LastEvaluatedKey;
+    } while (params.ExclusiveStartKey);
+
+    return allUniversities;
+}
