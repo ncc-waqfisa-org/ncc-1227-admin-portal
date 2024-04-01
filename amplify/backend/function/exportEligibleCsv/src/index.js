@@ -65,12 +65,11 @@ async function getApplications(tableName, batchValue, exceptionUniversities) {
             || exceptionUniversities.some(university => university.id === application.universityID));
 
 
-
     return allApplications;
 }
 
 
-function convertToCsv(applications, students) {
+function convertToCsv(applications) {
     let csv = 'StudentCPR,GPA,verifiedGPA\n';
     applications.forEach(application => {
         csv += `=""${application.studentCPR}"",${application.gpa},PLEASE VERIFY\n`;
