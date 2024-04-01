@@ -34,8 +34,8 @@ exports.handler = async (event) => {
     }
 };
 
-async function getApplications(tableName, batchValue, exceptionUniversities) {
-    const programs = await getPrograms();
+async function getApplications(tableName, batchValue, exceptionUniversities, extendedUniversities) {
+    // const programs = await getPrograms();
     const params = {
         TableName: tableName,
         IndexName: 'byNationalityCategory',
@@ -47,7 +47,6 @@ async function getApplications(tableName, batchValue, exceptionUniversities) {
             ':batchValue': batchValue,
             ':nationalityCategory': 'BAHRAINI'
         },
-
     };
 
     let allApplications = [];
@@ -60,11 +59,10 @@ async function getApplications(tableName, batchValue, exceptionUniversities) {
         params.ExclusiveStartKey = applications.LastEvaluatedKey;
     } while (params.ExclusiveStartKey);
 
-    // fRemove the NOT_COMPLETED application unless the university is an exception
+    // Remove the NOT_COMPLETED application unless the university is an exception
     allApplications = allApplications.filter(
         application => application.status !== 'NOT_COMPLETED'
-            || exceptionUniversities.some(async university => university.id === programs.find(program => program.id === application.programID).universityID));
-
+            || exceptionUniversities.some(async university => university.id === application.universityID) || extendedUniversities.some(async university => university.id === application.universityID));
 
     return allApplications;
 }
@@ -130,6 +128,7 @@ async function getExtendedUniversities() {
 
     let allUniversities = [];
 
+
     do {
         const universities = await dynamoDB.query(params).promise();
         allUniversities = allUniversities.concat(universities.Items);
@@ -139,18 +138,20 @@ async function getExtendedUniversities() {
     return allUniversities;
 }
 
-async function getPrograms() {
-    const params = {
-        TableName: 'Program-cw7beg2perdtnl7onnneec4jfa-staging',
-    };
+// async function getPrograms() {
+//     const params = {
+//         TableName: 'Program-cw7beg2perdtnl7onnneec4jfa-staging',
+//     };
+//
+//     let allPrograms = [];
+//
+//     do {
+//         const programs = await dynamoDB.scan(params).promise();
+//         allPrograms = allPrograms.concat(programs.Items);
+//         params.ExclusiveStartKey = programs.LastEvaluatedKey;
+//     } while (params.ExclusiveStartKey);
+//
+//     return allPrograms;
+// }
+//
 
-    let allPrograms = [];
-
-    do {
-        const programs = await dynamoDB.scan(params).promise();
-        allPrograms = allPrograms.concat(programs.Items);
-        params.ExclusiveStartKey = programs.LastEvaluatedKey;
-    } while (params.ExclusiveStartKey);
-
-    return allPrograms;
-}
