@@ -13,10 +13,11 @@ const s3 = new AWS.S3();
 
 exports.handler = async (event) => {
     const batchValue = parseInt(event.queryStringParameters?.batch) || new Date().getFullYear();
+    const exceptionUniversities = await getExceptionUniversities();
     console.log(`EVENT: ${JSON.stringify(event)}`);
 
     try {
-        const applications = await getApplications('Application-cw7beg2perdtnl7onnneec4jfa-staging', batchValue);
+        const applications = await getApplications('Application-cw7beg2perdtnl7onnneec4jfa-staging', batchValue, exceptionUniversities);
         const csv = convertToCsv(applications);
         const url = await uploadToS3(csv);
         return {
@@ -33,7 +34,7 @@ exports.handler = async (event) => {
     }
 };
 
-async function getApplications(tableName, batchValue) {
+async function getApplications(tableName, batchValue, exceptionUniversities) {
     const params = {
         TableName: tableName,
         IndexName: 'byNationalityCategory',
@@ -57,6 +58,13 @@ async function getApplications(tableName, batchValue) {
         // Check if there are more items to fetch
         params.ExclusiveStartKey = applications.LastEvaluatedKey;
     } while (params.ExclusiveStartKey);
+
+    // fRemove the NOT_COMPLETED application unless the university is an exception
+    allApplications = allApplications.filter(
+        application => application.status !== 'NOT_COMPLETED'
+            || exceptionUniversities.some(university => university.id === application.universityID));
+
+
 
     return allApplications;
 }
