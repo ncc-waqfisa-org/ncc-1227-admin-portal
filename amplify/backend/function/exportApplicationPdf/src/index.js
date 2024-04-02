@@ -22,11 +22,22 @@ exports.handler = async (event) => {
     }
     try {
         const application = await getApplication(applicationId);
-        const program = await getProgram(application.programId);
-        const university = await getUniversity(program.universityId);
-        const parent = await getParentInfo(application.parentId);
-        const pdfData = await generatePdf(application, program, university, parent);
-        const pdfUrl = await uploadToS3(pdfData);
+        if (!application) {
+            return {
+                statusCode: 404,
+                body: JSON.stringify({ message: 'Application not found' })
+            };
+        }
+        console.log('Application:', application);
+        const program = application.programID ? await getProgram(application.programID) : null;
+        console.log('Program:', program);
+        const university = application.universityID ? await getUniversity(application.universityID) : null;
+        console.log('University:', university);
+        const student = await getStudent(application.studentCPR);
+
+        const parent = await getParentInfo(student.parentInfoID);
+        const pdfBuffer = await generatePdf(application, program, university, parent);
+        const pdfUrl = await uploadToS3(pdfBuffer);
         return {
             statusCode: 200,
             body: JSON.stringify({ url: pdfUrl })
@@ -42,11 +53,11 @@ exports.handler = async (event) => {
     console.log(`EVENT: ${JSON.stringify(event)}`);
     return {
         statusCode: 200,
-    //  Uncomment below to enable CORS requests
-    //  headers: {
-    //      "Access-Control-Allow-Origin": "*",
-    //      "Access-Control-Allow-Headers": "*"
-    //  },
+        //  Uncomment below to enable CORS requests
+        //  headers: {
+        //      "Access-Control-Allow-Origin": "*",
+        //      "Access-Control-Allow-Headers": "*"
+        //  },
         body: JSON.stringify('Hello from Lambda!'),
     };
 };
@@ -65,42 +76,55 @@ async function getApplication(applicationId) {
 async function generatePdf(application, program, university, parent) {
     // Generate PDF
     const doc = new pdfKit();
+    doc.font('Helvetica');
     const pdfBuffer = [];
     doc.on('data', chunk => {
         pdfBuffer.push(chunk);
     });
-    doc.on('end', () => {
-        return Buffer.concat(pdfBuffer);
+    // Using a Promise to handle the asynchronous operation
+    const pdfPromise = new Promise((resolve, reject) => {
+        doc.on('end', () => {
+            resolve(Buffer.concat(pdfBuffer));
+        });
+        doc.on('error', reject);
     });
-    doc.text(`Application Details`, { align: 'center', fontSize: 26 });
-    doc.text(`Application ID: ${application.id}`);
-    doc.text(`Student Details:`, { fontSize: 20 , fontWeight: 'bold'});
-    doc.text(`Name: ${application.studentName}`);
+    // Define styles
+
+
+    // Add content to the PDF document with styles
+    doc.fontSize(26).text('Application');
+    doc.fontSize(14).text(`Application ID: ${application.id}`);
+    doc.fontSize(18).text('Student Details:');
+    doc.fontSize(14).text(`Name: ${application.studentName}`);
     doc.text(`CPR: ${application.studentCPR}`);
     doc.text(`Nationality: ${application.nationalityCategory}`);
     doc.text(`GPA : ${application.gpa}`);
     doc.text(`Verified GPA: ${application.verifiedGPA}`);
 
-    doc.text(`Parents Details:`, { fontSize: 20 , fontWeight: 'bold'});
-    doc.text(`Father Name: ${parent.fatherFullName}`);
+    doc.fontSize(18).text('Parents Details:');
+    doc.fontSize(14).text(`Father Name: ${parent.fatherFullName}`);
     doc.text(`Father CPR: ${parent.fatherCPR}`);
-
     doc.text(`Mother Name: ${parent.motherFullName}`);
     doc.text(`Mother CPR: ${parent.motherCPR}`);
     doc.text(`Family Income: ${application.familyIncome}`);
 
+    doc.fontSize(18).text('Program Details:');
+    if(program) {
+        doc.fontSize(14).text(`Name: ${program.name}`).fontSize(14);
+        doc.fontSize(14).text(`University: ${university.name}`);
+    }
+    else {
+        doc.fontSize(14).text('Program not found');
+    }
+    doc.end();
 
-    doc.text(`Program Details:`, { fontSize: 20 , fontWeight: 'bold'});
-    doc.text(`Name: ${program.name}`);
-    doc.text(`University: ${university.name}`);
-
-    return await uploadToS3(pdfBuffer);
+    // Wait for the PDF generation to finish and return the result
+    return await pdfPromise;
 }
-
 
 async function uploadToS3(pdfData) {
     const params = {
-        Bucket: 'exported-applications',
+        Bucket: 'amplify-ncc-staging-65406-deployment',
         Key: 'application.pdf',
         Body: pdfData,
         ContentType: 'application/pdf'
@@ -142,3 +166,13 @@ async function getParentInfo(parentId) {
     return parent.Item;
 }
 
+async function getStudent(studentCPR) {
+    const params = {
+        TableName: 'Student-cw7beg2perdtnl7onnneec4jfa-staging',
+        Key: {
+            cpr: studentCPR
+        }
+    };
+    const student = await dynamoDB.get(params).promise();
+    return student.Item;
+}
