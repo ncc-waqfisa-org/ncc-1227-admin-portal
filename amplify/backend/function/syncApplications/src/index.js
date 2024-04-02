@@ -16,10 +16,20 @@ exports.handler = async (event) => {
         const applicationId = await getApplication(student.studentCPR.S);
         console.log(applicationId);
 
+        await updateApplication(applicationId, oldStudent, student);
+        console.log('Lambda executed successfully');
 
-
-
-
+        return {
+            statusCode: 200,
+            //  Uncomment below to enable CORS requests
+            //  headers: {
+            //      "Access-Control-Allow-Origin": "*",
+            //      "Access-Control-Allow-Headers": "*"
+            //  },
+            body: JSON.stringify({
+                message: 'Application updated successfully'
+            }),
+            }
 
     }
     catch (error) {
@@ -29,9 +39,7 @@ exports.handler = async (event) => {
             body: JSON.stringify('Error' + error),
         };
     }
-
 };
-
 
 async function updateApplication(applicationId, oldStudent, student) {
     // update studentName, nationalityCategory, familyIncome
@@ -63,8 +71,6 @@ if (params.UpdateExpression) {
     params.UpdateExpression = params.UpdateExpression.slice(0, -2);
     await dynamoDB.update(params).promise();
 }
-
-
 }
 
 async function getApplication(studentCPR) {
