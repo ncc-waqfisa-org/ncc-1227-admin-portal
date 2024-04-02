@@ -167,6 +167,22 @@
         }
       ]
     },
+    "AMPLIFY_function_exportApplicationPdf_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "exportApplicationPdf"
+        }
+      ]
+    },
+    "AMPLIFY_function_exportApplicationPdf_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "exportApplicationPdf"
+        }
+      ]
+    },
     "AMPLIFY_function_exportApplicationsCsv_deploymentBucketName": {
       "usedBy": [
         {
