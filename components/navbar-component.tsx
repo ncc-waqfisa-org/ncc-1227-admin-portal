@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import { LangSwitcher } from "./langSwitcher";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { CalendarIcon } from "@radix-ui/react-icons";
 
 export default function NavbarComponent() {
   const { signOut, isSignedIn, user, admin, isSuperAdmin } = useAuth();
@@ -100,6 +101,15 @@ export default function NavbarComponent() {
               <HiOutlineUsers className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
             }
             linkTo={"/users"}
+          ></NavBarButton>
+        )}
+        {isSuperAdmin && (
+          <NavBarButton
+            name={t("Batches")}
+            icon={
+              <CalendarIcon className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
+            }
+            linkTo={"/batches"}
           ></NavBarButton>
         )}
         {/* <NavBarButton

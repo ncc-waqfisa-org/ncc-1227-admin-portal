@@ -16,3 +16,12 @@ export const EducationTableHeaders = [
   "availability",
   "tableUniPrograms",
 ];
+
+export const BatchesTableHeaders = [
+  "tableBatchYear",
+  "tableBatchSignUpStartDate",
+  "tableBatchSignUpEndDate",
+  "tableBatchCreateApplicationStartDate",
+  "tableBatchUpdateApplicationEndDate",
+  "tableBatchCreateApplicationEndDate",
+];

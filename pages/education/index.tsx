@@ -481,9 +481,9 @@ const Education = () => {
           </table>
           {/* fake pagination */}
           <div className="flex justify-center mt-8 ">
-            <div className="btn-group">
+            <div className="join">
               <button
-                className="btn btn-accent text-anzac-500"
+                className="btn btn-accent join-item text-anzac-500"
                 onClick={goPrevPage}
                 disabled={disableBackward}
               >
@@ -491,12 +491,12 @@ const Education = () => {
               </button>
               <button
                 disabled
-                className="btn hover:cursor-auto disabled:btn-accent"
+                className="btn hover:cursor-auto join-item disabled:btn-accent"
               >
                 {currentPage}
               </button>
               <button
-                className="btn btn-accent text-anzac-500"
+                className="btn btn-accent join-item text-anzac-500"
                 onClick={goNextPage}
                 disabled={disableForward}
               >

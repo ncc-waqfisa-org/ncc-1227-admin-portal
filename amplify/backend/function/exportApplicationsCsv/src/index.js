@@ -88,11 +88,11 @@ async function getApplications(tableName, batchValue, status) {
 
 
 function convertToCsv(applications, students) {
-    let csv = 'id,StudentCPR,Name,Gender,Nationality,Specialization,Phone,email,Batch,Status,GPA,Score,SchoolName,SchoolType\n';
+    let csv = 'id,StudentCPR,Name,Gender,Nationality,Specialization,Phone,email,Batch,Status,GPA,Score,SchoolName,SchoolType,FamilyIncome\n';
     applications.forEach(application => {
         const student = students.find(student => student.cpr === application.studentCPR);
         if(student) {
-            csv += `${application.id},${application.studentCPR},"${student?.fullName}",${student?.gender},${student?.nationalityCategory},"${student?.specialization}",${student?.phone},${student?.email},${application.batch},${application.status},${application.gpa},${application.score},"${application.schoolName}",${application.schoolType}\n`;
+            csv += `${application.id},${application.studentCPR},"${student?.fullName}",${student?.gender},${student?.nationalityCategory},"${student?.specialization}",${student?.phone},${student?.email},${application.batch},${application.status},${application.gpa},${application.score},"${application.schoolName}",${application.schoolType},${application.familyIncome}\n`;
         }
     });
     return csv;

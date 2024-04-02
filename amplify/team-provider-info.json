@@ -1,28 +1,4 @@
 {
-  "dev": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-ncc-dev-74429-authRole",
-      "UnauthRoleArn": "arn:aws:iam::232269327483:role/amplify-ncc-dev-74429-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::232269327483:role/amplify-ncc-dev-74429-authRole",
-      "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-ncc-dev-74429-deployment",
-      "UnauthRoleName": "amplify-ncc-dev-74429-unauthRole",
-      "StackName": "amplify-ncc-dev-74429",
-      "StackId": "arn:aws:cloudformation:us-east-1:232269327483:stack/amplify-ncc-dev-74429/e2d72260-cb0c-11ee-83de-0a5494653c59",
-      "AmplifyAppId": "d2og02frzhtz6s"
-    },
-    "categories": {
-      "auth": {
-        "ncc548b4d55": {}
-      },
-      "storage": {
-        "nccStorage": {}
-      },
-      "api": {
-        "ncc": {}
-      }
-    }
-  },
   "staging": {
     "awscloudformation": {
       "AuthRoleName": "amplify-ncc-staging-65406-authRole",
@@ -56,7 +32,7 @@
         },
         "updateGpaCsv": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
-          "s3Key": "amplify-builds/updateGpaCsv-445a43463577426a7563-build.zip"
+          "s3Key": "amplify-builds/updateGpaCsv-7a626b42516f544c4e62-build.zip"
         },
         "autoReject": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
@@ -64,7 +40,7 @@
         },
         "getApplications": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
-          "s3Key": "amplify-builds/getApplications-65677732504175683641-build.zip"
+          "s3Key": "amplify-builds/getApplications-5035787862335435525a-build.zip"
         },
         "getStatistics": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
@@ -72,7 +48,7 @@
         },
         "exportApplicationsCsv": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
-          "s3Key": "amplify-builds/exportApplicationsCsv-484758466b4766314851-build.zip"
+          "s3Key": "amplify-builds/exportApplicationsCsv-384c3273787949725257-build.zip"
         },
         "updateStatistics": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
@@ -88,9 +64,41 @@
         },
         "bulkAutoReject": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
-          "s3Key": "amplify-builds/bulkAutoReject-5a725a76525a302f6f61-build.zip"
+          "s3Key": "amplify-builds/bulkAutoReject-4b524f5a34764845334c-build.zip"
         },
-        "exportEligibleCsv": {}
+        "exportEligibleCsv": {
+          "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
+          "s3Key": "amplify-builds/exportEligibleCsv-74527746506669385a46-build.zip"
+        },
+        "syncApplications": {
+          "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
+          "s3Key": "amplify-builds/syncApplications-5a6245765834326c2b48-build.zip"
+        },
+        "exportApplicationPdf": {}
+      }
+    }
+  },
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-ncc-dev-74429-authRole",
+      "UnauthRoleArn": "arn:aws:iam::232269327483:role/amplify-ncc-dev-74429-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::232269327483:role/amplify-ncc-dev-74429-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-ncc-dev-74429-deployment",
+      "UnauthRoleName": "amplify-ncc-dev-74429-unauthRole",
+      "StackName": "amplify-ncc-dev-74429",
+      "StackId": "arn:aws:cloudformation:us-east-1:232269327483:stack/amplify-ncc-dev-74429/e2d72260-cb0c-11ee-83de-0a5494653c59",
+      "AmplifyAppId": "d2og02frzhtz6s"
+    },
+    "categories": {
+      "auth": {
+        "ncc548b4d55": {}
+      },
+      "storage": {
+        "nccStorage": {}
+      },
+      "api": {
+        "ncc": {}
       }
     }
   }

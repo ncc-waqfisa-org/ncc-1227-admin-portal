@@ -47,12 +47,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "exportEligibleCsv",
+            "syncApplications",
             {
               "Fn::Join": [
                 "",
                 [
-                  "exportEligibleCsv",
+                  "syncApplications",
                   "-",
                   {
                     "Ref": "env"
@@ -89,12 +89,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "nccLambdaRole9ada7159",
+            "nccLambdaRole264e0cdb",
             {
               "Fn::Join": [
                 "",
                 [
-                  "nccLambdaRole9ada7159",
+                  "nccLambdaRole264e0cdb",
                   "-",
                   {
                     "Ref": "env"

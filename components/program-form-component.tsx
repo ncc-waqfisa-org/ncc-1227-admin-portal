@@ -235,6 +235,7 @@ export default function ProgramFormComponent({ program }: Props) {
               <textarea
                 className="h-24 textarea textarea-bordered"
                 name="requirements"
+                title="requirements"
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.requirements}
@@ -254,6 +255,7 @@ export default function ProgramFormComponent({ program }: Props) {
               <textarea
                 className="h-24 textarea textarea-bordered"
                 name="requirementsAr"
+                title="requirementsAr"
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.requirementsAr}

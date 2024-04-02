@@ -1,6 +1,6 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import { Amplify } from "aws-amplify";
+import { Amplify, DataStore } from "aws-amplify";
 import awsExports from "../src/aws-exports";
 import "@aws-amplify/ui-react/styles.css";
 import {
@@ -23,6 +23,7 @@ import { EducationProvider } from "../context/EducationContext";
 import NextNProgress from "nextjs-progressbar";
 import { useRouter } from "next/router";
 import { appWithTranslation } from "next-i18next";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 Amplify.configure({ ...awsExports, ssr: true });
 
@@ -44,19 +45,23 @@ ChartJS.register(
 function App({ Component, pageProps }: AppProps) {
   const { locale } = useRouter();
 
+  const queryClient = new QueryClient();
+
   const dir = locale === "ar" ? "rtl" : "ltr";
   return (
     <div dir={dir} className={locale === "ar" ? "font-IBMArabic" : "font-IBM"}>
-      <AuthProvider>
-        <AppProvider>
-          <StudentProvider>
-            <EducationProvider>
-              <NextNProgress color="#E1BA3D" />
-              <Component {...pageProps} />
-            </EducationProvider>
-          </StudentProvider>
-        </AppProvider>
-      </AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <AppProvider>
+            <StudentProvider>
+              <EducationProvider>
+                <NextNProgress color="#E1BA3D" />
+                <Component {...pageProps} />
+              </EducationProvider>
+            </StudentProvider>
+          </AppProvider>
+        </AuthProvider>
+      </QueryClientProvider>
     </div>
   );
 }
