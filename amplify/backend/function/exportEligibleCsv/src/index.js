@@ -62,7 +62,9 @@ async function getApplications(tableName, batchValue, exceptionUniversities, ext
         params.ExclusiveStartKey = applications.LastEvaluatedKey;
     } while (params.ExclusiveStartKey);
 
-    // Remove the NOT_COMPLETED application unless the university is an exception
+    // Remove the NOT_COMPLETED application unless the university is an exception]
+
+    console.log('Universities:', exceptionUniversities);
     allApplications = allApplications.filter(
         application => application.status !== 'NOT_COMPLETED'
             || exceptionUniversities.some(async university => university.id === application.universityID) || extendedUniversities.some(async university => university.id === application.universityID));
