@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "aws-sdk": "^2.1590.0",
-    "pdfkit": "^0.15.0"
+    "pdfkit": "^0.15.0",
+    "twitter_cldr": "^2.3.0"
   }
 }

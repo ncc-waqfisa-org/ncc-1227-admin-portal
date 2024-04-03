@@ -7,6 +7,8 @@ const AWS = require('aws-sdk');
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 const s3 = new AWS.S3();
 const pdfKit = require('pdfkit');
+// const TwitterCldr = require('twitter-cldr');
+
 
 
 /**
@@ -76,7 +78,8 @@ async function getApplication(applicationId) {
 async function generatePdf(application, program, university, parent) {
     // Generate PDF
     const doc = new pdfKit();
-    doc.font('Helvetica');
+    // set the line height
+    doc.lineGap(5);
     const pdfBuffer = [];
     doc.on('data', chunk => {
         pdfBuffer.push(chunk);
@@ -91,26 +94,31 @@ async function generatePdf(application, program, university, parent) {
     // Define styles
 
 
-    // Add content to the PDF document with styles
-    doc.fontSize(26).text('Application');
-    doc.fontSize(14).text(`Application ID: ${application.id}`);
-    doc.fontSize(18).text('Student Details:');
-    doc.fontSize(14).text(`Name: ${application.studentName}`);
+    doc.font('Helvetica-Bold').fontSize(26).text('Application');
+    doc.font('Helvetica').fontSize(14).text(`Application ID: ${application.id}`);
+    // take a gap
+    doc.text(' ');
+
+    doc.font('Helvetica-Bold').fontSize(18).text('Student Details:');
+    doc.font('Helvetica').fontSize(14).text(`Name: ${application.studentName}`, {rtl: true});
     doc.text(`CPR: ${application.studentCPR}`);
     doc.text(`Nationality: ${application.nationalityCategory}`);
     doc.text(`GPA : ${application.gpa}`);
-    doc.text(`Verified GPA: ${application.verifiedGPA}`);
-
-    doc.fontSize(18).text('Parents Details:');
-    doc.fontSize(14).text(`Father Name: ${parent.fatherFullName}`);
+    doc.text("Verified GPA:" + application.verifiedGPA) ? application.verifiedGPA : "PLEASE VERIFY";
+    // take a gap
+    doc.text(' ');
+    doc.font('Helvetica-Bold').fontSize(18).text('Parents Details:');
+    doc.font('Helvetica').fontSize(14).text(`Father Name: ${parent.fatherFullName}`, {rtl: true});
     doc.text(`Father CPR: ${parent.fatherCPR}`);
-    doc.text(`Mother Name: ${parent.motherFullName}`);
+    doc.text(`Mother Name: ${parent.motherFullName}`, {rtl: true});
     doc.text(`Mother CPR: ${parent.motherCPR}`);
     doc.text(`Family Income: ${application.familyIncome}`);
+    // take a gap
+    doc.text(' ');
 
-    doc.fontSize(18).text('Program Details:');
+    doc.font('Helvetica-Bold').fontSize(18).text('Program Details:');
     if(program) {
-        doc.fontSize(14).text(`Name: ${program.name}`).fontSize(14);
+        doc.font('Helvetica').fontSize(14).text(`Name: ${program.name}`).fontSize(14);
         doc.fontSize(14).text(`University: ${university.name}`);
     }
     else {
@@ -176,3 +184,4 @@ async function getStudent(studentCPR) {
     const student = await dynamoDB.get(params).promise();
     return student.Item;
 }
+
