@@ -7,7 +7,6 @@ const AWS = require('aws-sdk');
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 const s3 = new AWS.S3();
 const pdfKit = require('pdfkit');
-// const TwitterCldr = require('twitter-cldr');
 
 
 
@@ -76,6 +75,9 @@ async function getApplication(applicationId) {
 }
 
 async function generatePdf(application, program, university, parent) {
+    const logoUrl = 'https://amplify-ncc-staging-65406-deployment.s3.amazonaws.com/waqfisa_logo.png';
+    const imageBuffer = await fetchImage(logoUrl);
+
     // Generate PDF
     const doc = new pdfKit();
     // set the line height
@@ -91,11 +93,12 @@ async function generatePdf(application, program, university, parent) {
         });
         doc.on('error', reject);
     });
-    // Define styles
+    // Add logo, top center with margin top of 20
 
-
+    doc.image(imageBuffer, 250, 0, { width: 170 }).moveDown(2);
     doc.font('Helvetica-Bold').fontSize(26).text('Application');
     doc.font('Helvetica').fontSize(14).text(`Application ID: ${application.id}`);
+    doc.text("Status: " + application.status);
     // take a gap
     doc.text(' ');
 
@@ -104,13 +107,19 @@ async function generatePdf(application, program, university, parent) {
     doc.text(`CPR: ${application.studentCPR}`);
     doc.text(`Nationality: ${application.nationalityCategory}`);
     doc.text(`GPA : ${application.gpa}`);
-    doc.text("Verified GPA:" + application.verifiedGPA) ? application.verifiedGPA : "PLEASE VERIFY";
+    doc.text("Verified GPA:" + application.verifiedGPA ? application.verifiedGPA : "PLEASE VERIFY");
+    doc.text(`School Name: ${application.schoolName}`);
+    doc.text(`School Type: ${application.schoolType}`);
     // take a gap
     doc.text(' ');
     doc.font('Helvetica-Bold').fontSize(18).text('Parents Details:');
     doc.font('Helvetica').fontSize(14).text(`Father Name: ${parent.fatherFullName}`, {rtl: true});
     doc.text(`Father CPR: ${parent.fatherCPR}`);
-    doc.text(`Mother Name: ${parent.motherFullName}`, {rtl: true});
+    doc.text(`Mother Name: ${parent.motherFullName}`, {features: ['rtla']});
+    doc.font('fonts/noto.tff').text(`Mother Name: ${parent.motherFullName}`, {features: ['rtla']});
+
+    console.log('Mother Name:', parent.motherFullName);
+
     doc.text(`Mother CPR: ${parent.motherCPR}`);
     doc.text(`Family Income: ${application.familyIncome}`);
     // take a gap
@@ -122,7 +131,7 @@ async function generatePdf(application, program, university, parent) {
         doc.fontSize(14).text(`University: ${university.name}`);
     }
     else {
-        doc.fontSize(14).text('Program not found');
+        doc.font('Helvetica').fontSize(14).text('N/A');
     }
     doc.end();
 
@@ -183,5 +192,10 @@ async function getStudent(studentCPR) {
     };
     const student = await dynamoDB.get(params).promise();
     return student.Item;
+}
+
+async function fetchImage(url) {
+    const response = await fetch(url);
+    return response.arrayBuffer();
 }
 
