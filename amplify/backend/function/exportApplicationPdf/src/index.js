@@ -8,6 +8,20 @@ const dynamoDB = new AWS.DynamoDB.DocumentClient();
 const s3 = new AWS.S3();
 const pdfKit = require('pdfkit');
 
+const arabicLocal = {
+    "BAHRAINI": "بحريني",
+    "NON_BAHRAINI": "غير بحريني",
+    "PUBLIC": "حكومية",
+    "PRIVATE": "خاصة",
+    "LESS_THAN_1500" : "أقل من 1500",
+    "MORE_THAN_1500" : "أكثر من 1500",
+    "REJECTED": "مرفوض",
+    "APPROVED": "مقبول",
+    "NOT_COMPLETED": "غير مكتمل",
+    "ELIGIBLE": "مؤهل",
+    "AWAITING_VERIFICATION": "في انتظار التحقق",
+};
+
 
 
 /**
@@ -93,46 +107,70 @@ async function generatePdf(application, program, university, parent) {
         });
         doc.on('error', reject);
     });
-    // Add logo, top center with margin top of 20
-
-    doc.image(imageBuffer, 250, 0, { width: 170 }).moveDown(2);
-    doc.font('Helvetica-Bold').fontSize(26).text('Application');
-    doc.font('Helvetica').fontSize(14).text(`Application ID: ${application.id}`);
-    doc.text("Status: " + application.status);
+    // Add logo, top right. With 170 width
+    doc.image(imageBuffer, 390, 20, { width: 170 });
+    // add a title on the top left
+    doc.font('./fonts/Almarai-Bold.ttf').fontSize(20).text('Waqf Isa Application', 20, 20);
+    // add a line under the title and logo
+    doc.moveTo(20, 90).lineTo(600, 90).stroke();
+    // add today's date under the line
+    doc.font('./fonts/Almarai.ttf').fontSize(10).text(`Date: ${new Date().toLocaleDateString()}`, 20, 95);
+    // take a gap
+    doc.text(' ');
+    // add a "to whom it may concern" text
+    doc.font('./fonts/Almarai.ttf').fontSize(14).text('To Whom It May Concern', {align: 'center', underline: true});
+    doc.text(' ');
+    doc.font('./fonts/Almarai-Bold.ttf').fontSize(12).text('This is to certify that the following student has applied for the Waqf Isa scholarship program. The application details are as follows:');
+    doc.font('./fonts/Almarai.ttf').fontSize(12).text(`ID: ${application.id}`);
+    doc.text("Status: ", {continued: true});
+    doc.text(application.status);
+    doc.text("Batch: ", {continued: true});
+    doc.text(application.batch);
     // take a gap
     doc.text(' ');
 
-    doc.font('Helvetica-Bold').fontSize(18).text('Student Details:');
-    doc.font('Helvetica').fontSize(14).text(`Name: ${application.studentName}`, {rtl: true});
+    doc.font('./fonts/Almarai-Bold.ttf').fontSize(14).text('Student Details:');
+    doc.font('./fonts/Almarai.ttf').fontSize(12).text("Name: ", {continued: true});
+    doc.text(application.studentName, {features: ['rtla']});
     doc.text(`CPR: ${application.studentCPR}`);
     doc.text(`Nationality: ${application.nationalityCategory}`);
-    doc.text(`GPA : ${application.gpa}`);
-    doc.text("Verified GPA:" + application.verifiedGPA ? application.verifiedGPA : "PLEASE VERIFY");
-    doc.text(`School Name: ${application.schoolName}`);
+    doc.text(`GPA: ${application.gpa}%`);
+    doc.text("Verified GPA: " + application.verifiedGPA ? application.verifiedGPA : "Awaiting verification");
+    doc.text("School Name: ", {continued: true});
+    doc.text(application.schoolName, {features: ['rtla']});
+
+
+
     doc.text(`School Type: ${application.schoolType}`);
     // take a gap
     doc.text(' ');
-    doc.font('Helvetica-Bold').fontSize(18).text('Parents Details:');
-    doc.font('Helvetica').fontSize(14).text(`Father Name: ${parent.fatherFullName}`, {rtl: true});
+    doc.font('./fonts/Almarai-Bold.ttf').fontSize(14).text('Parents Details:');
+    doc.font('./fonts/Almarai.ttf').fontSize(12).text("Father Name: ", {continued: true});
+    doc.text(parent.fatherFullName, {features: ['rtla']});
     doc.text(`Father CPR: ${parent.fatherCPR}`);
-    doc.text(`Mother Name: ${parent.motherFullName}`, {features: ['rtla']});
-    doc.font('fonts/noto.tff').text(`Mother Name: ${parent.motherFullName}`, {features: ['rtla']});
-
-    console.log('Mother Name:', parent.motherFullName);
+    doc.text("Mother Name: ", {continued: true});
+    // align the text to the right
+    doc.text(parent.motherFullName, {features: ['rtla']});
 
     doc.text(`Mother CPR: ${parent.motherCPR}`);
+    doc.text("Guardian Name: ", {continued: true});
+    doc.text(parent.guardianFullName, {features: ['rtla']});
+    doc.text(`Guardian CPR: ${parent.guardianCPR}`);
     doc.text(`Family Income: ${application.familyIncome}`);
     // take a gap
     doc.text(' ');
 
-    doc.font('Helvetica-Bold').fontSize(18).text('Program Details:');
+    doc.font('./fonts/Almarai-Bold.ttf').fontSize(14).text('Desired Program:');
     if(program) {
-        doc.font('Helvetica').fontSize(14).text(`Name: ${program.name}`).fontSize(14);
-        doc.fontSize(14).text(`University: ${university.name}`);
+        doc.font('./fonts/Almarai.ttf').fontSize(12).text(`${program.name} - ${university.name}`);
     }
     else {
-        doc.font('Helvetica').fontSize(14).text('N/A');
+        doc.font('./fonts/Almarai.ttf').fontSize(12).text('N/A');
     }
+    // add a footer with a line above it
+    doc.moveTo(20, 690).lineTo(600, 690).stroke();
+    doc.font('./fonts/Almarai.ttf').fontSize(8).text('This document is generated by Waqf Isa system. All rights reserved ' + new Date().getFullYear(), 20, 700);
+    // Finalize PDF file
     doc.end();
 
     // Wait for the PDF generation to finish and return the result
