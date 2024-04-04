@@ -10,6 +10,7 @@ exports.handler = async (event) => {
     const  today = new Date();
     const batchValue = today.getFullYear();
     const batchDetails = await getBatchDetails(batchValue);
+    console.log('batchDetails', batchDetails);
     if (!batchDetails) {
         return {
             statusCode: 404,
@@ -17,7 +18,7 @@ exports.handler = async (event) => {
         };
     }
 
-    if(batchDetails.updateApplicationEndDate < today){
+    if(batchDetails.updateApplicationEndDate > today) {
         return {
             statusCode: 200,
             body: JSON.stringify({ message: 'Batch update period has not finished yet. Skipping auto reject' })
