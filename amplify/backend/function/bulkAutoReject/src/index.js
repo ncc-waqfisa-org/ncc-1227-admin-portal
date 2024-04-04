@@ -17,8 +17,9 @@ exports.handler = async (event) => {
             body: JSON.stringify({ message: 'Batch not found' })
         };
     }
+    const updateApplicationEndDate = new Date(batchDetails.updateApplicationEndDate);
 
-    if(batchDetails.updateApplicationEndDate > today) {
+    if(today < updateApplicationEndDate) {
         return {
             statusCode: 200,
             body: JSON.stringify({ message: 'Batch update period has not finished yet. Skipping auto reject' })
@@ -83,16 +84,17 @@ async function bulkUpdateApplications(batchValue, applications, extendedUniversi
             Key: {
                 id: application.id
             },
-            UpdateExpression: 'set processed = :processedValue',
+            UpdateExpression: 'set #processed = :processedValue',
             ExpressionAttributeValues: {
                 ':processedValue': isProcessed
-            }
+            },
+            ExpressionAttributeNames: {}
         };
         const universityId = application.universityID;
         const programId = application.programID;
         const isExtended = extendedUniversities.some(university => university.id === universityId);
         const isException = exceptionUniversities.some(university => university.id === universityId);
-        const isNonBahraini = student.nationalityCategory === 'NON_BAHRAINI';
+        const isNonBahraini = application.nationalityCategory === 'NON_BAHRAINI';
         const isEligible = application.verifiedGPA? application.verifiedGPA >= programs.find(program => program.id === programId).minimumGPA: true;
 
 
@@ -124,12 +126,21 @@ async function bulkUpdateApplications(batchValue, applications, extendedUniversi
             status = 'ELIGIBLE';
             isProcessed = 0;
         }
-        params.UpdateExpression = 'set processed = :processedValue, #status = :status';
+        // console.log('status', status);
+        // console.log('isProcessed', isProcessed);
+        // console.log('isNonBahraini', isNonBahraini);
+        // console.log('isNotCompleted', isNotCompleted);
+        // console.log('isEligible', isEligible);
+        // console.log('isExtended', isExtended);
+        // console.log('isException', isException);
+
+        params.UpdateExpression = 'set #processed = :processedValue, #status = :status';
 
         params.ExpressionAttributeValues[':status'] = status;
         params.ExpressionAttributeValues[':processedValue'] = isProcessed;
 
         params.ExpressionAttributeNames['#status'] = 'status';
+        params.ExpressionAttributeNames['#processed'] = 'processed';
 
 
         return dynamoDB.update(params).promise();
