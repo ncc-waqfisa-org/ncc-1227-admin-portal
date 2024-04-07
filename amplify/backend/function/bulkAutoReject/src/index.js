@@ -10,7 +10,6 @@ exports.handler = async (event) => {
     const  today = new Date();
     const batchValue = today.getFullYear();
     const batchDetails = await getBatchDetails(batchValue);
-    const lang = event.queryStringParameters?.lang || 'en';
     console.log('batchDetails', batchDetails);
     if (!batchDetails) {
         return {

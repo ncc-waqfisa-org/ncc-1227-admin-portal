@@ -29,6 +29,7 @@ const arabicLocal = {
  */
 exports.handler = async (event) => {
     const applicationId = event.queryStringParameters?.applicationId;
+    const lang = event.queryStringParameters?.lang || 'en';
     if (!applicationId) {
         return {
             statusCode: 400,
@@ -51,7 +52,13 @@ exports.handler = async (event) => {
         const student = await getStudent(application.studentCPR);
 
         const parent = await getParentInfo(student.parentInfoID);
-        const pdfBuffer = await generatePdf(application, program, university, parent);
+        let pdfBuffer;
+       if(lang === 'ar') {
+           pdfBuffer = await generateArabicPdf(application, program, university, parent);
+        }
+        else {
+            pdfBuffer = await generatePdf(application, program, university, parent);
+       }
         const pdfUrl = await uploadToS3(pdfBuffer);
         return {
             statusCode: 200,
@@ -183,6 +190,99 @@ async function generatePdf(application, program, university, parent) {
 
     // Wait for the PDF generation to finish and return the result
     return await pdfPromise;
+}
+
+async function generateArabicPdf(application, program, university, parent) {
+    const logoUrl = 'https://amplify-ncc-staging-65406-deployment.s3.amazonaws.com/waqfisa_logo.png';
+    const imageBuffer = await fetchImage(logoUrl);
+
+    // Generate PDF
+    const doc = new pdfKit();
+    // set the line height
+    doc.lineGap(5);
+    const pdfBuffer = [];
+    doc.on('data', chunk => {
+        pdfBuffer.push(chunk);
+    });
+
+    const pdfPromise = new Promise((resolve, reject) => {
+        doc.on('end', () => {
+            resolve(Buffer.concat(pdfBuffer));
+        });
+        doc.on('error', reject);
+    });
+    // Add logo, top right. With 170 width
+    doc.image(imageBuffer, 390, 20, { width: 170 });
+    // add a title on the top left
+    doc.font('./fonts/Almarai-Bold.ttf').fontSize(20).text('طلب وقف عيسى', 20, 20, {features: ['rtla']});
+    // add a line under the title and logo
+    doc.moveTo(20, 90).lineTo(600, 90).stroke();
+    // add today's date under the line
+    doc.font('./fonts/Almarai.ttf').fontSize(10).text(`التاريخ: ${new Date().toLocaleDateString()}`, 20, 95);
+    // take a gap
+    doc.text(' ');
+    // add a "to whom it may concern" text
+    doc.font('./fonts/Almarai.ttf').fontSize(14).text('إلى من يهمه الأمر', {align: 'center', underline: true, features: ['rtla']});
+    doc.text(' ');
+    doc.font('./fonts/Almarai-Bold.ttf').fontSize(12).text('نشهد بأن الطالب التالي قد قدم طلبًا لبرنامج منحة وقف عيسى. تفاصيل الطلب كالتالي:', {features: ['rtla'], align: 'right'});
+    doc.font('./fonts/Almarai.ttf').fontSize(12).text(`الرقم: ${application.id}`, {features: ['rtla'], align: 'right'});
+    doc.text(`الحالة: ${arabicLocal[application.status]}`, {features: ['rtla'], align: 'right'});
+
+    doc.text(`الدفعة: ${application.batch}`, {features: ['rtla'], align: 'right'});
+    // take a gap
+    doc.text(' ');
+
+    doc.font('./fonts/Almarai-Bold.ttf').fontSize(14).text('تفاصيل الطالب:', {features: ['rtla'], align: 'right'});
+    doc.font('./fonts/Almarai.ttf').fontSize(12).text("الاسم: ", {continued: true});
+    doc.text(application.studentName, {features: ['rtla']});
+    doc.text("الرقم المدني: ", {continued: true, features: ['rtla']});
+    doc.text(application.studentCPR);
+    doc.text("الجنسية: ", {continued: true, features: ['rtla']});
+    doc.text(arabicLocal[application.nationalityCategory]);
+    doc.text("المعدل: ", {continued: true});
+    doc.text(application.gpa + "%");
+    doc.text("المعدل الموثق: " + application.verifiedGPA ? application.verifiedGPA : "في انتظار التحقق");
+    doc.text("اسم المدرسة: ", {continued: true, features: ['rtla']});
+    doc.text(application.schoolName, {features: ['rtla']});
+    doc.text("نوع المدرسة: ", {continued: true, features: ['rtla']});
+    doc.text(arabicLocal[application.schoolType]);
+    // take a gap
+    doc.text(' ');
+    doc.font('./fonts/Almarai-Bold.ttf').fontSize(14).text('تفاصيل الأهل:', {features: ['rtla']});
+    doc.font('./fonts/Almarai.ttf').fontSize(12).text("اسم الأب: ", {continued: true, features: ['rtla']});
+    doc.text(parent.fatherFullName, {features: ['rtla']});
+    doc.text("الرقم المدني للأب: ", {continued: true, features: ['rtla']});
+    doc.text(parent.fatherCPR);
+    doc.text("اسم الأم: ", {continued: true});
+    // align the text to the right
+    doc.text(parent.motherFullName, {features: ['rtla']});
+    doc.text("الرقم المدني للأم: ", {continued: true, features: ['rtla']});
+    doc.text(parent.motherCPR);
+    doc.text("اسم الوصي: ", {continued: true});
+    doc.text(parent.guardianFullName, {features: ['rtla']});
+    doc.text("الرقم المدني للوصي: ", {continued: true, features: ['rtla']});
+    doc.text(parent.guardianCPR);
+    doc.text("الدخل الشهري: ", {continued: true, features: ['rtla']});
+    doc.text(parent.familyIncome);
+    // take a gap
+    doc.text(' ');
+    doc.font('./fonts/Almarai-Bold.ttf').fontSize(14).text('البرنامج المطلوب:');
+    if(program) {
+        doc.font('./fonts/Almarai.ttf').fontSize(12).text(`${program.name} - ${university.name}`);
+    }
+    else {
+        doc.font('./fonts/Almarai.ttf').fontSize(12).text('N/A');
+
+    }
+    // add a footer with a line above it
+    doc.moveTo(20, 690).lineTo(600, 690).stroke();
+    doc.font('./fonts/Almarai.ttf').fontSize(8).text('تم إنشاء هذا المستند بواسطة نظام وقف عيسى. جميع الحقوق محفوظة ' + new Date().getFullYear(), 20, 700);
+    // Finalize PDF file
+    doc.end();
+
+    // Wait for the PDF generation to finish and return the result
+    return await pdfPromise;
+
 }
 
 async function uploadToS3(pdfData) {
