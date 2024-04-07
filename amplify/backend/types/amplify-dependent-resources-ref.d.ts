@@ -39,6 +39,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Name": "string",
       "Region": "string"
     },
+    "exportApplicationPdf": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "exportApplicationsCsv": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
@@ -75,6 +82,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Region": "string"
     },
     "signUp": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "syncApplications": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",

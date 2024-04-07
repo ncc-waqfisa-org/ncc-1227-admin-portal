@@ -147,7 +147,7 @@ export const createApplication = /* GraphQL */ `mutation CreateApplication(
       availability
       isDeactivated
       isExtended
-      extendedTo
+      extensionDuration
       isException
       isTrashed
       createdAt
@@ -279,7 +279,7 @@ export const updateApplication = /* GraphQL */ `mutation UpdateApplication(
       availability
       isDeactivated
       isExtended
-      extendedTo
+      extensionDuration
       isException
       isTrashed
       createdAt
@@ -411,7 +411,7 @@ export const deleteApplication = /* GraphQL */ `mutation DeleteApplication(
       availability
       isDeactivated
       isExtended
-      extendedTo
+      extensionDuration
       isException
       isTrashed
       createdAt
@@ -709,7 +709,7 @@ export const createProgram = /* GraphQL */ `mutation CreateProgram(
       availability
       isDeactivated
       isExtended
-      extendedTo
+      extensionDuration
       isException
       isTrashed
       createdAt
@@ -764,7 +764,7 @@ export const updateProgram = /* GraphQL */ `mutation UpdateProgram(
       availability
       isDeactivated
       isExtended
-      extendedTo
+      extensionDuration
       isException
       isTrashed
       createdAt
@@ -819,7 +819,7 @@ export const deleteProgram = /* GraphQL */ `mutation DeleteProgram(
       availability
       isDeactivated
       isExtended
-      extendedTo
+      extensionDuration
       isException
       isTrashed
       createdAt
@@ -870,7 +870,7 @@ export const createUniversity = /* GraphQL */ `mutation CreateUniversity(
     availability
     isDeactivated
     isExtended
-    extendedTo
+    extensionDuration
     isException
     isTrashed
     applications {
@@ -906,7 +906,7 @@ export const updateUniversity = /* GraphQL */ `mutation UpdateUniversity(
     availability
     isDeactivated
     isExtended
-    extendedTo
+    extensionDuration
     isException
     isTrashed
     applications {
@@ -942,7 +942,7 @@ export const deleteUniversity = /* GraphQL */ `mutation DeleteUniversity(
     availability
     isDeactivated
     isExtended
-    extendedTo
+    extensionDuration
     isException
     isTrashed
     applications {

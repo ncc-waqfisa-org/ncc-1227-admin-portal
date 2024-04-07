@@ -72,8 +72,8 @@ type University @model @auth(rules: [{ allow: public }]) {
   Programs: [Program] @hasMany
   availability: Int @default(value: "0")
   isDeactivated: Boolean
-  isExtended: Int @index(name: "byExtended", sortKeyFields: ["extendedTo"])
-  extendedTo: AWSDate
+  isExtended: Int @index(name: "byExtended", sortKeyFields: ["name"])
+  extensionDuration: Int
   isException: Int @index(name: "byException")
   isTrashed: Boolean @default(value: "false")
   applications: [Application] @hasMany

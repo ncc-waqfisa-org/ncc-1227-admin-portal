@@ -59,6 +59,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "exportApplicationPdf": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "exportApplicationsCsv": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -88,6 +93,11 @@
     "signUp": {
       "build": true,
       "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "syncApplications": {
+      "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
@@ -154,6 +164,22 @@
         {
           "category": "function",
           "resourceName": "bulkAutoReject"
+        }
+      ]
+    },
+    "AMPLIFY_function_exportApplicationPdf_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "exportApplicationPdf"
+        }
+      ]
+    },
+    "AMPLIFY_function_exportApplicationPdf_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "exportApplicationPdf"
         }
       ]
     },
@@ -250,6 +276,22 @@
         {
           "category": "function",
           "resourceName": "signUp"
+        }
+      ]
+    },
+    "AMPLIFY_function_syncApplications_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "syncApplications"
+        }
+      ]
+    },
+    "AMPLIFY_function_syncApplications_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "syncApplications"
         }
       ]
     },
