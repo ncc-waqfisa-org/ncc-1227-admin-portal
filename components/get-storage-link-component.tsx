@@ -40,11 +40,10 @@ export default function GetStorageLinkComponent({
           <button
             disabled={isLoading}
             type="button"
-            className={`btn btn-ghost btn-sm text-primary hover:bg-primary/20 ${
-              isLoading && "loading"
-            }`}
+            className={`btn btn-ghost btn-sm text-primary hover:bg-primary/20`}
             onClick={() => getLink(storageKey)}
           >
+            {isLoading && <span className="loading"></span>}
             {isLoading
               ? t("loading")
               : showName

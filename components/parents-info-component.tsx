@@ -9,7 +9,7 @@ interface Props {
 export default function ParentsInfoComponent({ parents }: Props) {
   const { t } = useTranslation("applications");
   return (
-    <div dir="ltr">
+    <div>
       <table className="table w-full mb-4 table-fixed">
         <thead>
           <tr>

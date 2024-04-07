@@ -33,10 +33,14 @@ import {
   UpdateAttachmentMutationVariables,
   UpdateBatchMutation,
   UpdateBatchMutationVariables,
+  UpdateParentInfoMutation,
+  UpdateParentInfoMutationVariables,
   UpdateProgramChoiceMutation,
   UpdateProgramChoiceMutationVariables,
   UpdateProgramMutation,
   UpdateProgramMutationVariables,
+  UpdateStudentMutation,
+  UpdateStudentMutationVariables,
   UpdateUniversityMutation,
   UpdateUniversityMutationVariables,
 } from "./API";
@@ -55,6 +59,8 @@ import {
   createAdmin,
   updateBatch,
   createBatch,
+  updateParentInfo,
+  updateStudent,
 } from "./graphql/mutations";
 import { getBatch, listBatches } from "./graphql/queries";
 
@@ -84,6 +90,11 @@ export enum DocType {
   ACCEPTANCE,
   TRANSCRIPT,
   SIGNED_CONTRACT,
+  SCHOOL_CERTIFICATE,
+  FAMILY_INCOME_PROOF,
+  PRIMARY_PROGRAM_ACCEPTANCE,
+  SECONDARY_PROGRAM_ACCEPTANCE,
+  BANK_LETTER,
 }
 
 /* -------------------------------------------------------------------------- */
@@ -396,10 +407,17 @@ export async function createStudentLogInDB(
  * @param {DocType} type - DocType - this is an enum that I have defined in my code.
  * @returns The key of the file uploaded to the storage bucket.
  */
-export async function uploadFile(file: File, type: DocType, cpr: string) {
+export async function uploadFile(
+  file: File,
+  type: DocType,
+  cpr: string,
+  index?: number
+) {
   try {
     let res = await Storage.put(
-      `Student${cpr}/${cpr}#${DocType[type]}#${new Date().getDate()}`,
+      `Student${cpr}/${cpr}#${DocType[type]}${
+        index ? `-${index}` : ""
+      }#${new Date().getTime()}`,
       file,
       {
         contentType: file.type,
@@ -1158,6 +1176,27 @@ export async function updateSingleBatch(
     query: updateBatch,
     variables: variables,
   })) as GraphQLResult<UpdateBatchMutation>;
+
+  return res.data;
+}
+export async function updateParentInfoData(
+  variables: UpdateParentInfoMutationVariables
+): Promise<UpdateParentInfoMutation | undefined> {
+  let res = (await API.graphql({
+    query: updateParentInfo,
+    variables: variables,
+  })) as GraphQLResult<UpdateParentInfoMutation>;
+
+  return res.data;
+}
+
+export async function updateStudentInDB(
+  mutationVars: UpdateStudentMutationVariables
+): Promise<UpdateStudentMutation | undefined> {
+  let res = (await API.graphql({
+    query: updateStudent,
+    variables: mutationVars,
+  })) as GraphQLResult<UpdateStudentMutation>;
 
   return res.data;
 }

@@ -166,6 +166,7 @@ function useProviderStudent() {
         gender
         graduationDate
         nationality
+        nationalityCategory
         phone
         placeOfBirth
         preferredLanguage

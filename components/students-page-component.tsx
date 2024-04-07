@@ -4,10 +4,16 @@ import { useTranslation } from "react-i18next";
 import * as yup from "yup";
 import { useStudent } from "../context/StudentContext";
 import { Application, Student } from "../src/API";
-import StudentInfoComponent from "./student-info-component";
 import Link from "next/link";
-import ParentsInfoComponent from "./parents-info-component";
 import { formatDate, formatDateTime } from "../src/Helpers";
+import StudentUpdate from "./student/StudentUpdate";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "../components/ui/accordion";
+import UpdateParentInfo from "./student/UpdateParentInfo";
 
 export default function StudentsPageComponent() {
   const { t } = useTranslation("applications");
@@ -74,9 +80,10 @@ export default function StudentsPageComponent() {
             </div>
             <button
               type="submit"
-              className={`btn btn-primary ${isSubmitting && "loading"}`}
+              className={`btn btn-primary`}
               disabled={isSubmitting || !isValid}
             >
+              {isSubmitting && <span className="loading"></span>}
               {t("searchForStudent")}
             </button>
           </Form>
@@ -92,22 +99,38 @@ export default function StudentsPageComponent() {
         {!student && !loading && firstSearchDone && <div>{t("noData")}</div>}
 
         {student && !loading && (
-          <div className={"flex flex-col w-full"}>
-            <StudentInfoComponent
-              showAll
-              student={student}
-            ></StudentInfoComponent>
-            <ParentsInfoComponent
-              parents={student?.ParentInfo}
-            ></ParentsInfoComponent>
+          <Accordion
+            className="w-full"
+            type="single"
+            defaultValue="studentInformation"
+            collapsible
+          >
+            <AccordionItem value="studentInformation">
+              <AccordionTrigger className="text-xl font-medium">
+                {" "}
+                {t("studentInformation")}
+              </AccordionTrigger>
+              <AccordionContent>
+                <StudentUpdate student={student} />
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="parentsInformation">
+              <AccordionTrigger className="text-xl font-medium">
+                {t("parentsInformation")}
+              </AccordionTrigger>
+              <AccordionContent>
+                {student.ParentInfo && (
+                  <UpdateParentInfo parentInfo={student.ParentInfo} />
+                )}
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        )}
+
+        {student && !loading && (
+          <div className={"flex flex-col w-full gap-10"}>
             <div>
-              <table className="table w-full">
-                <thead>
-                  <tr>
-                    <th className="rounded-b-none">{t("applications")}</th>
-                  </tr>
-                </thead>
-              </table>
+              <p className="text-xl font-medium py-3">{t("applications")}</p>
               <div className="flex items-center gap-6 py-2 overflow-hidden overflow-x-scroll">
                 {student.applications &&
                 student.applications.items.filter(
