@@ -13,7 +13,19 @@ exports.handler = async (event) => {
 
         const student = requestBody.Records[0].dynamodb.NewImage;
         const oldStudent = requestBody.Records[0].dynamodb.OldImage;
-        const applicationId = await getApplication(student.studentCPR.S);
+        const application = await getApplication(student.cpr.S);
+        if(!application) {
+            return {
+                statusCode: 200,
+                body: JSON.stringify({ message: 'Application not found. Skipping update' })
+            };
+        }
+
+        const applicationId = application.id;
+        console.log("applicationId", applicationId);
+
+        console.log("oldStudent", oldStudent);
+        console.log("student", student);
         console.log(applicationId);
 
         await updateApplication(applicationId, oldStudent, student);
@@ -49,34 +61,38 @@ const params = {
     Key: {
         id: applicationId
     },
-    UpdateExpression: '',
-}
+    UpdateExpression: 'SET ',
+    ExpressionAttributeValues: {}
+};
 
-if (student.studentName.S !== oldStudent.studentName.S) {
-    params.UpdateExpression += 'SET studentName = :studentName, ';
-    params.ExpressionAttributeValues[':studentName'] = student.studentName;
+if (student.fullName.S !== oldStudent.fullName.S) {
+    params.UpdateExpression += 'studentName = :studentName, ';
+    params.ExpressionAttributeValues[':studentName'] = student.fullName.S;
 }
 
 if (student.nationalityCategory.S !== oldStudent.nationalityCategory.S) {
-    params.UpdateExpression += 'SET nationalityCategory = :nationalityCategory, ';
-    params.ExpressionAttributeValues[':nationalityCategory'] = student.nationalityCategory;
+    params.UpdateExpression += 'nationalityCategory = :nationalityCategory, ';
+    params.ExpressionAttributeValues[':nationalityCategory'] = student.nationalityCategory.S;
 }
 
 if (student.familyIncome.S !== oldStudent.familyIncome.S) {
-    params.UpdateExpression += 'SET familyIncome = :familyIncome, ';
-    params.ExpressionAttributeValues[':familyIncome'] = student.familyIncome;
+    params.UpdateExpression += 'familyIncome = :familyIncome, ';
+    params.ExpressionAttributeValues[':familyIncome'] = student.familyIncome.S;
 }
 
-if (params.UpdateExpression) {
-    params.UpdateExpression = params.UpdateExpression.slice(0, -2);
-    await dynamoDB.update(params).promise();
+console.log(params.UpdateExpression);
+if (params.UpdateExpression === 'SET ') {
+    return;
 }
+
+params.UpdateExpression = params.UpdateExpression.slice(0, -2); // Remove the last comma
+await dynamoDB.update(params).promise();
 }
 
 async function getApplication(studentCPR) {
     const params = {
         TableName: 'Application-cw7beg2perdtnl7onnneec4jfa-staging',
-        IndexName: 'byStudentCPR',
+        IndexName: 'byCPR',
         KeyConditionExpression: 'studentCPR = :studentCPR',
         ExpressionAttributeValues: {
             ':studentCPR': studentCPR

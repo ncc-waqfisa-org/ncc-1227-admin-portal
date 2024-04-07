@@ -10,6 +10,7 @@ exports.handler = async (event) => {
     const  today = new Date();
     const batchValue = today.getFullYear();
     const batchDetails = await getBatchDetails(batchValue);
+    const lang = event.queryStringParameters?.lang || 'en';
     console.log('batchDetails', batchDetails);
     if (!batchDetails) {
         return {
@@ -78,7 +79,7 @@ async function getApplications(batch) {
 async function bulkUpdateApplications(batchValue, applications, extendedUniversities, exceptionUniversities, universities, programs) {
     const updatePromises = applications.map(async application => {
         let isProcessed = 1;
-        const student = await getStudent(application.studentCPR);
+        // const student = await getStudent(application.studentCPR);
         const params = {
             TableName: 'Application-cw7beg2perdtnl7onnneec4jfa-staging',
             Key: {
@@ -118,12 +119,15 @@ async function bulkUpdateApplications(batchValue, applications, extendedUniversi
             status = 'REJECTED';
             isProcessed = 1;
         }
-        else if(!isEligible) {
-            status = 'REJECTED';
+        else if(!isNotCompleted && !isEligible && ! application.verifiedGPA) {
+            status = 'REVIEW';
+            isProcessed = 0;
+        }
+        else if(isEligible) {
+            status = 'ELIGIBLE';
             isProcessed = 1;
         }
         else {
-            status = 'ELIGIBLE';
             isProcessed = 0;
         }
         // console.log('status', status);
@@ -134,7 +138,16 @@ async function bulkUpdateApplications(batchValue, applications, extendedUniversi
         // console.log('isExtended', isExtended);
         // console.log('isException', isException);
 
-        params.UpdateExpression = 'set #processed = :processedValue, #status = :status';
+        params.UpdateExpression = 'set #processed = :processedValue, ';
+
+        if(status) {
+            params.UpdateExpression += '#status = :status';
+        }
+        else{
+            // remove the last comma
+            params.UpdateExpression = params.UpdateExpression.slice(0, -2);
+        }
+
 
         params.ExpressionAttributeValues[':status'] = status;
         params.ExpressionAttributeValues[':processedValue'] = isProcessed;

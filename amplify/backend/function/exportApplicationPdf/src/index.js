@@ -132,31 +132,39 @@ async function generatePdf(application, program, university, parent) {
     doc.font('./fonts/Almarai-Bold.ttf').fontSize(14).text('Student Details:');
     doc.font('./fonts/Almarai.ttf').fontSize(12).text("Name: ", {continued: true});
     doc.text(application.studentName, {features: ['rtla']});
-    doc.text(`CPR: ${application.studentCPR}`);
-    doc.text(`Nationality: ${application.nationalityCategory}`);
-    doc.text(`GPA: ${application.gpa}%`);
+    doc.text("CPR: ", {continued: true});
+    doc.text(application.studentCPR);
+    doc.text("Nationality: ", {continued: true});
+    doc.text(application.nationalityCategory);
+    doc.text("GPA: ", {continued: true});
+    doc.text(application.gpa + "%");
     doc.text("Verified GPA: " + application.verifiedGPA ? application.verifiedGPA : "Awaiting verification");
     doc.text("School Name: ", {continued: true});
     doc.text(application.schoolName, {features: ['rtla']});
 
 
 
-    doc.text(`School Type: ${application.schoolType}`);
+    doc.text("School Type: ", {continued: true});
+    doc.text(application.schoolType);
     // take a gap
     doc.text(' ');
     doc.font('./fonts/Almarai-Bold.ttf').fontSize(14).text('Parents Details:');
     doc.font('./fonts/Almarai.ttf').fontSize(12).text("Father Name: ", {continued: true});
     doc.text(parent.fatherFullName, {features: ['rtla']});
-    doc.text(`Father CPR: ${parent.fatherCPR}`);
+    doc.text("Father CPR: ", {continued: true});
+    doc.text(parent.fatherCPR);
     doc.text("Mother Name: ", {continued: true});
     // align the text to the right
     doc.text(parent.motherFullName, {features: ['rtla']});
 
-    doc.text(`Mother CPR: ${parent.motherCPR}`);
+    doc.text("Mother CPR: ", {continued: true});
+    doc.text(parent.motherCPR);
     doc.text("Guardian Name: ", {continued: true});
     doc.text(parent.guardianFullName, {features: ['rtla']});
-    doc.text(`Guardian CPR: ${parent.guardianCPR}`);
-    doc.text(`Family Income: ${application.familyIncome}`);
+    doc.text("Guardian CPR: ", {continued: true});
+    doc.text(parent.guardianCPR);
+    doc.text("Family Income: ", {continued: true});
+    doc.text(parent.familyIncome);
     // take a gap
     doc.text(' ');
 
