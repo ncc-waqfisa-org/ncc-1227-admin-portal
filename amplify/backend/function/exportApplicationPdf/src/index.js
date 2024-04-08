@@ -223,43 +223,59 @@ async function generateArabicPdf(application, program, university, parent) {
     doc.font('./fonts/Almarai.ttf').fontSize(12).text("الرقم: ", {align: 'right', features: ['rtla'], underline: true})
     .text(application.id, {align: 'right'});
 
-    doc.text("الحالة: ", {align: 'right', features: ['rtla'], underline: true})
+    doc.font('./fonts/Almarai-Bold.ttf').text("الحالة: ", {align: 'right', features: ['rtla'], underline: true})
+        .font('./fonts/Almarai.ttf')
         .text(arabicLocal[application.status], {align: 'right'});
-    doc.text("الدفعة: ", {align: 'right', features: ['rtla'], underline: true})
+    doc.font('./fonts/Almarai-Bold.ttf').text("الدفعة: ", {align: 'right', features: ['rtla'], underline: true})
+        .font('./fonts/Almarai.ttf')
         .text(application.batch, {align: 'right'});
     doc.text(' ');
     doc.font('./fonts/Almarai-Bold.ttf').fontSize(14).text('تفاصيل الطالب:', {features: ['rtla'], align: 'right'});
-    doc.font('./fonts/Almarai.ttf').fontSize(12).text("الاسم:" , { align: 'right', features: ['rtla'], underline: true})
+    doc.font('./fonts/Almarai-Bold.ttf').fontSize(12).text("الاسم:" , { align: 'right', features: ['rtla'], underline: true})
+        .font('./fonts/Almarai.ttf')
         .text(application.studentName, {align: 'right', features: ['rtla']});
 
-    doc.text("الرقم المدني: ", {align: 'right', features: ['rtla'], underline: true})
+    doc.font('./fonts/Almarai-Bold.ttf').text("رقم البطاقة الذكية: ", {align: 'right', features: ['rtla'], underline: true})
+        .font('./fonts/Almarai.ttf')
         .text(application.studentCPR, {align: 'right'});
-    doc.text("الجنسية: ", {align: 'right', features: ['rtla'], underline: true})
+    doc.font('./fonts/Almarai-Bold.ttf').text("الجنسية: ", {align: 'right', features: ['rtla'], underline: true})
+        .font('./fonts/Almarai.ttf')
         .text(arabicLocal[application.nationalityCategory], {align: 'right'});
-    doc.text("المعدل: ", {align: 'right', features: ['rtla'], underline: true})
+    doc.font('./fonts/Almarai-Bold.ttf').text("المعدل: ", {align: 'right', features: ['rtla'], underline: true})
+        .font('./fonts/Almarai.ttf')
         .text(application.gpa + "%", {align: 'right'});
-    doc.text("المعدل الموثق: ", {align: 'right', features: ['rtla'], underline: true})
+    doc.font('./fonts/Almarai-Bold.ttf').text("المعدل الموثق: ", {align: 'right', features: ['rtla'], underline: true})
+        .font('./fonts/Almarai.ttf')
         .text(application.verifiedGPA ? application.verifiedGPA : "في انتظار التحقق", {align: 'right', features: ["rlta"]});
 
-    doc.text("اسم المدرسة: ", {align: 'right', features: ['rtla'], underline: true})
+    doc.font('./fonts/Almarai-Bold.ttf').text("اسم المدرسة: ", {align: 'right', features: ['rtla'], underline: true})
+        .font('./fonts/Almarai.ttf')
         .text(application.schoolName, {align: 'right', features: ['rtla']});
-    doc.text("نوع المدرسة: ", {align: 'right', features: ['rtla'], underline: true})
+    doc.font('./fonts/Almarai-Bold.ttf').text("نوع المدرسة: ", {align: 'right', features: ['rtla'], underline: true})
+        .font('./fonts/Almarai.ttf')
         .text(arabicLocal[application.schoolType], {align: 'right', features: ['rtla']});
     doc.text(' ');
     doc.font('./fonts/Almarai-Bold.ttf').fontSize(14).text('تفاصيل الأهل:', {features: ['rtla'], align: 'right'});
-    doc.font('./fonts/Almarai.ttf').fontSize(12).text("اسم الأب: ", {align: 'right', features: ['rtla'], underline: true})
+    doc.font('./fonts/Almarai-Bold.ttf').fontSize(12).text("اسم الأب: ", {align: 'right', features: ['rtla'], underline: true})
+        .font('./fonts/Almarai.ttf')
         .text(parent.fatherFullName, {align: 'right', features: ['rtla']});
-    doc.text("الرقم المدني للأب: ", {align: 'right', features: ['rtla'], underline: true})
+    doc.font('./fonts/Almarai-Bold.ttf').font('./fonts/Almarai-Bold.ttf').text("الرقم المدني للأب: ", {align: 'right', features: ['rtla'], underline: true})
+        .font('./fonts/Almarai.ttf')
         .text(parent.fatherCPR, {align: 'right', features: ['rtla']});
-    doc.text("اسم الأم: ", {align: 'right', features: ['rtla'], underline: true})
+    doc.font('./fonts/Almarai-Bold.ttf').text("اسم الأم: ", {align: 'right', features: ['rtla'], underline: true})
+        .font('./fonts/Almarai.ttf')
         .text(parent.motherFullName, {align: 'right', features: ['rtla'], underline: true});
-    doc.text("الرقم المدني للأم: ", {align: 'right', features: ['rtla'], underline: true})
+    doc.font('./fonts/Almarai-Bold.ttf').text("الرقم المدني للأم: ", {align: 'right', features: ['rtla'], underline: true})
+        .font('./fonts/Almarai.ttf')
         .text(parent.motherCPR, {align: 'right', features: ['rtla']});
-    doc.text("اسم الولي: ", {align: 'right', features: ['rtla'], underline: true})
+    doc.font('./fonts/Almarai-Bold.ttf').text("اسم الولي: ", {align: 'right', features: ['rtla'], underline: true})
+        .font('./fonts/Almarai.ttf')
         .text(parent.guardianFullName, {align: 'right', features: ['rtla']});
-    doc.text("الرقم المدني للولي: ", {align: 'right', features: ['rtla'], underline: true})
+    doc.font('./fonts/Almarai-Bold.ttf').text("الرقم المدني للولي: ", {align: 'right', features: ['rtla'], underline: true})
+        .font('./fonts/Almarai.ttf')
         .text(parent.guardianCPR, {align: 'right', features: ['rtla']});
-    doc.text("الدخل الشهري: ", {align: 'right', features: ['rtla'], underline: true})
+    doc.font('./fonts/Almarai-Bold.ttf').text("الدخل الشهري: ", {align: 'right', features: ['rtla'], underline: true})
+        .font('./fonts/Almarai.ttf')
         .text(arabicLocal[parent.familyIncome], {align: 'right', features: ['rtla']});
     doc.text(' ');
     doc.font('./fonts/Almarai-Bold.ttf').fontSize(14).text('البرنامج المطلوب:', {features: ['rtla'], align: 'right'});
