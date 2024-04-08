@@ -161,16 +161,16 @@ async function getTopUniversities(tableName, batchValue) {
             }
         };
         const universityResult = await dynamoDB.get(universityParams).promise();
-        universityNames[universityID] = universityResult.Item.name;
+        universityNames[universityID] = universityResult.Item?.name;
     }
 
-    // merge the universityIDs with their names and counts
-    const topUniversitiesWithNames = topUniversities.map(([universityID, count]) => ({
-        name: universityNames[universityID],
-        count
-    }));
+    const topUniversitiesJson = {};
+    for (const [universityID, count] of topUniversities) {
+        topUniversitiesJson[universityNames[universityID]] = count;
+    }
 
-    return topUniversitiesWithNames;
+    return topUniversitiesJson;
+
 }
 
 async function getTopPrograms(tableName, batchValue) {
@@ -218,7 +218,7 @@ async function getTopPrograms(tableName, batchValue) {
             }
         };
         const programResult = await dynamoDB.get(programParams).promise();
-        programNames[programID] = programResult.Item.name;
+        programNames[programID] = programResult.Item?.name;
     }
 
     // merge the programIDs with their names and counts
@@ -330,6 +330,9 @@ async function updateStatistics(tableName, batchValue) {
     const applicationsCount = await getTotalApplications(tableName, batchValue);
     const topUniversities = await getTopUniversities(tableName, batchValue);
     const topPrograms = await getTopPrograms(tableName, batchValue);
+
+    console.log('Top Programs:', topPrograms);
+    console.log('Top Universities:', topUniversities);
 
     const params = {
         TableName: 'Statistics-cw7beg2perdtnl7onnneec4jfa-staging',
