@@ -221,13 +221,12 @@ async function getTopPrograms(tableName, batchValue) {
         programNames[programID] = programResult.Item?.name;
     }
 
-    // merge the programIDs with their names and counts
-    const topProgramsWithNames = topPrograms.map(([programID, count]) => ({
-        name: programNames[programID],
-        count
-    }));
+    const topProgramsJson = {};
+    for (const [programID, count] of topPrograms) {
+        topProgramsJson[programNames[programID]] = count;
+    }
 
-    return topProgramsWithNames;
+    return topProgramsJson;
 
 }
 
