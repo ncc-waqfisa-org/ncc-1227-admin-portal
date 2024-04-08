@@ -17,7 +17,7 @@ const arabicLocal = {
     "MORE_THAN_1500" :  "أكثر من ألف وخمسمائة دينار بحريني",
     "LESS_THAN_500" : "أقل من خمسمائة دينار بحريني",
     "BETWEEN_500_AND_700" : "بين خمسمائة وسبعمائة دينار بحريني",
-    "MORE_THAN_1000" : "أكثر من ألف دينار بحريني",
+    "OVER_1000" : "أكثر من ألف دينار بحريني",
     "REJECTED": "مرفوض",
     "APPROVED": "مقبول",
     "NOT_COMPLETED": "غير مكتمل",
@@ -260,19 +260,19 @@ async function generateArabicPdf(application, program, university, parent) {
     doc.font('./fonts/Almarai-Bold.ttf').fontSize(12).text("اسم الأب: ", {align: 'right', features: ['rtla'], underline: true})
         .font('./fonts/Almarai.ttf')
         .text(parent.fatherFullName, {align: 'right', features: ['rtla']});
-    doc.font('./fonts/Almarai-Bold.ttf').font('./fonts/Almarai-Bold.ttf').text("الرقم المدني للأب: ", {align: 'right', features: ['rtla'], underline: true})
+    doc.font('./fonts/Almarai-Bold.ttf').font('./fonts/Almarai-Bold.ttf').text("رقم البطاقة الذكية للأب: ", {align: 'right', features: ['rtla'], underline: true})
         .font('./fonts/Almarai.ttf')
         .text(parent.fatherCPR, {align: 'right', features: ['rtla']});
     doc.font('./fonts/Almarai-Bold.ttf').text("اسم الأم: ", {align: 'right', features: ['rtla'], underline: true})
         .font('./fonts/Almarai.ttf')
-        .text(parent.motherFullName, {align: 'right', features: ['rtla'], underline: true});
-    doc.font('./fonts/Almarai-Bold.ttf').text("الرقم المدني للأم: ", {align: 'right', features: ['rtla'], underline: true})
+        .text(parent.motherFullName, {align: 'right', features: ['rtla']});
+    doc.font('./fonts/Almarai-Bold.ttf').text("رقم البطاقة الذكية للأم: ", {align: 'right', features: ['rtla'], underline: true})
         .font('./fonts/Almarai.ttf')
         .text(parent.motherCPR, {align: 'right', features: ['rtla']});
     doc.font('./fonts/Almarai-Bold.ttf').text("اسم الولي: ", {align: 'right', features: ['rtla'], underline: true})
         .font('./fonts/Almarai.ttf')
         .text(parent.guardianFullName, {align: 'right', features: ['rtla']});
-    doc.font('./fonts/Almarai-Bold.ttf').text("الرقم المدني للولي: ", {align: 'right', features: ['rtla'], underline: true})
+    doc.font('./fonts/Almarai-Bold.ttf').text("رقم البطاقة الذكية للولي: ", {align: 'right', features: ['rtla'], underline: true})
         .font('./fonts/Almarai.ttf')
         .text(parent.guardianCPR, {align: 'right', features: ['rtla']});
     doc.font('./fonts/Almarai-Bold.ttf').text("الدخل الشهري: ", {align: 'right', features: ['rtla'], underline: true})
