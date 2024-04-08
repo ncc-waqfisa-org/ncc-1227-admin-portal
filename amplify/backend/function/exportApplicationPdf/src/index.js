@@ -13,8 +13,11 @@ const arabicLocal = {
     "NON_BAHRAINI": "غير بحريني",
     "PUBLIC": "حكومية",
     "PRIVATE": "خاصة",
-    "LESS_THAN_1500" : "أقل من 1500",
-    "MORE_THAN_1500" : "أكثر من 1500",
+    "LESS_THAN_1500" : "<1500",
+    "MORE_THAN_1500" :  ">1500",
+    "LESS_THAN_500" : "<500",
+    "BETWEEN_500_AND_700" : "بين 500 و 700",
+    "MORE_THAN_1000" : "أكثر من 1000",
     "REJECTED": "مرفوض",
     "APPROVED": "مقبول",
     "NOT_COMPLETED": "غير مكتمل",
@@ -198,90 +201,78 @@ async function generateArabicPdf(application, program, university, parent) {
 
     // Generate PDF
     const doc = new pdfKit();
-    // set the line height
     doc.lineGap(5);
     const pdfBuffer = [];
     doc.on('data', chunk => {
         pdfBuffer.push(chunk);
     });
-
     const pdfPromise = new Promise((resolve, reject) => {
         doc.on('end', () => {
             resolve(Buffer.concat(pdfBuffer));
         });
         doc.on('error', reject);
     });
-    // Add logo, top right. With 170 width
     doc.image(imageBuffer, 390, 20, { width: 170 });
-    // add a title on the top left
     doc.font('./fonts/Almarai-Bold.ttf').fontSize(20).text('طلب وقف عيسى', 20, 20, {features: ['rtla']});
-    // add a line under the title and logo
     doc.moveTo(20, 90).lineTo(600, 90).stroke();
-    // add today's date under the line
-    doc.font('./fonts/Almarai.ttf').fontSize(10).text(`التاريخ: ${new Date().toLocaleDateString()}`, 20, 95);
-    // take a gap
+    doc.font('./fonts/Almarai.ttf').fontSize(10).text(new Date().toLocaleDateString(), 20, 95, {features: ['rtla']});
     doc.text(' ');
-    // add a "to whom it may concern" text
     doc.font('./fonts/Almarai.ttf').fontSize(14).text('إلى من يهمه الأمر', {align: 'center', underline: true, features: ['rtla']});
     doc.text(' ');
-    doc.font('./fonts/Almarai-Bold.ttf').fontSize(12).text('نشهد بأن الطالب التالي قد قدم طلبًا لبرنامج منحة وقف عيسى. تفاصيل الطلب كالتالي:', {features: ['rtla'], align: 'right'});
-    doc.font('./fonts/Almarai.ttf').fontSize(12).text(`الرقم: ${application.id}`, {features: ['rtla'], align: 'right'});
-    doc.text(`الحالة: ${arabicLocal[application.status]}`, {features: ['rtla'], align: 'right'});
+    doc.font('./fonts/Almarai-Bold.ttf').fontSize(12).text('نشهد بأن الطالب التالي قد قدم طلب لبرنامج وقف عيسى. تفاصيل الطلب كما يلي:', {features: ['rtla'], align: 'right'});
+    doc.font('./fonts/Almarai.ttf').fontSize(12).text("الرقم: ", {align: 'right', features: ['rtla'], underline: true})
+    .text(application.id, {align: 'right'});
 
-    doc.text(`الدفعة: ${application.batch}`, {features: ['rtla'], align: 'right'});
-    // take a gap
+    doc.text("الحالة: ", {align: 'right', features: ['rtla'], underline: true})
+        .text(arabicLocal[application.status], {align: 'right'});
+    doc.text("الدفعة: ", {align: 'right', features: ['rtla'], underline: true})
+        .text(application.batch, {align: 'right'});
     doc.text(' ');
-
     doc.font('./fonts/Almarai-Bold.ttf').fontSize(14).text('تفاصيل الطالب:', {features: ['rtla'], align: 'right'});
-    doc.font('./fonts/Almarai.ttf').fontSize(12).text("الاسم: ", {continued: true});
-    doc.text(application.studentName, {features: ['rtla']});
-    doc.text("الرقم المدني: ", {continued: true, features: ['rtla']});
-    doc.text(application.studentCPR);
-    doc.text("الجنسية: ", {continued: true, features: ['rtla']});
-    doc.text(arabicLocal[application.nationalityCategory]);
-    doc.text("المعدل: ", {continued: true});
-    doc.text(application.gpa + "%");
-    doc.text("المعدل الموثق: " + application.verifiedGPA ? application.verifiedGPA : "في انتظار التحقق");
-    doc.text("اسم المدرسة: ", {continued: true, features: ['rtla']});
-    doc.text(application.schoolName, {features: ['rtla']});
-    doc.text("نوع المدرسة: ", {continued: true, features: ['rtla']});
-    doc.text(arabicLocal[application.schoolType]);
-    // take a gap
+    doc.font('./fonts/Almarai.ttf').fontSize(12).text("الاسم:" , { align: 'right', features: ['rtla'], underline: true})
+        .text(application.studentName, {align: 'right', features: ['rtla']});
+
+    doc.text("الرقم المدني: ", {align: 'right', features: ['rtla'], underline: true})
+        .text(application.studentCPR, {align: 'right'});
+    doc.text("الجنسية: ", {align: 'right', features: ['rtla'], underline: true})
+        .text(arabicLocal[application.nationalityCategory], {align: 'right'});
+    doc.text("المعدل: ", {align: 'right', features: ['rtla'], underline: true})
+        .text(application.gpa + "%", {align: 'right'});
+    doc.text("المعدل الموثق: ", {align: 'right', features: ['rtla'], underline: true})
+        .text(application.verifiedGPA ? application.verifiedGPA : "في انتظار التحقق", {align: 'right', features: ["rlta"]});
+
+    doc.text("اسم المدرسة: ", {align: 'right', features: ['rtla'], underline: true})
+        .text(application.schoolName, {align: 'right', features: ['rtla']});
+    doc.text("نوع المدرسة: ", {align: 'right', features: ['rtla'], underline: true})
+        .text(arabicLocal[application.schoolType], {align: 'right', features: ['rtla']});
     doc.text(' ');
-    doc.font('./fonts/Almarai-Bold.ttf').fontSize(14).text('تفاصيل الأهل:', {features: ['rtla']});
-    doc.font('./fonts/Almarai.ttf').fontSize(12).text("اسم الأب: ", {continued: true, features: ['rtla']});
-    doc.text(parent.fatherFullName, {features: ['rtla']});
-    doc.text("الرقم المدني للأب: ", {continued: true, features: ['rtla']});
-    doc.text(parent.fatherCPR);
-    doc.text("اسم الأم: ", {continued: true});
-    // align the text to the right
-    doc.text(parent.motherFullName, {features: ['rtla']});
-    doc.text("الرقم المدني للأم: ", {continued: true, features: ['rtla']});
-    doc.text(parent.motherCPR);
-    doc.text("اسم الوصي: ", {continued: true});
-    doc.text(parent.guardianFullName, {features: ['rtla']});
-    doc.text("الرقم المدني للوصي: ", {continued: true, features: ['rtla']});
-    doc.text(parent.guardianCPR);
-    doc.text("الدخل الشهري: ", {continued: true, features: ['rtla']});
-    doc.text(parent.familyIncome);
-    // take a gap
+    doc.font('./fonts/Almarai-Bold.ttf').fontSize(14).text('تفاصيل الأهل:', {features: ['rtla'], align: 'right'});
+    doc.font('./fonts/Almarai.ttf').fontSize(12).text("اسم الأب: ", {align: 'right', features: ['rtla'], underline: true})
+        .text(parent.fatherFullName, {align: 'right', features: ['rtla']});
+    doc.text("الرقم المدني للأب: ", {align: 'right', features: ['rtla'], underline: true})
+        .text(parent.fatherCPR, {align: 'right', features: ['rtla']});
+    doc.text("اسم الأم: ", {align: 'right', features: ['rtla'], underline: true})
+        .text(parent.motherFullName, {align: 'right', features: ['rtla'], underline: true});
+    doc.text("الرقم المدني للأم: ", {align: 'right', features: ['rtla'], underline: true})
+        .text(parent.motherCPR, {align: 'right', features: ['rtla']});
+    doc.text("اسم الولي: ", {align: 'right', features: ['rtla'], underline: true})
+        .text(parent.guardianFullName, {align: 'right', features: ['rtla']});
+    doc.text("الرقم المدني للولي: ", {align: 'right', features: ['rtla'], underline: true})
+        .text(parent.guardianCPR, {align: 'right', features: ['rtla']});
+    doc.text("الدخل الشهري: ", {align: 'right', features: ['rtla'], underline: true})
+        .text(arabicLocal[parent.familyIncome], {align: 'right', features: ['rtla']});
     doc.text(' ');
-    doc.font('./fonts/Almarai-Bold.ttf').fontSize(14).text('البرنامج المطلوب:');
+    doc.font('./fonts/Almarai-Bold.ttf').fontSize(14).text('البرنامج المطلوب:', {features: ['rtla'], align: 'right'});
     if(program) {
-        doc.font('./fonts/Almarai.ttf').fontSize(12).text(`${program.name} - ${university.name}`);
+        doc.font('./fonts/Almarai.ttf').fontSize(12).text(`${program.name} - ${university.name}`, {align: 'right', features: ['rtla']});
+
     }
     else {
-        doc.font('./fonts/Almarai.ttf').fontSize(12).text('N/A');
-
+        doc.font('./fonts/Almarai.ttf').fontSize(12).text('غير متوفر', {align: 'right', features: ['rtla']});
     }
-    // add a footer with a line above it
-    doc.moveTo(20, 690).lineTo(600, 690).stroke();
-    doc.font('./fonts/Almarai.ttf').fontSize(8).text('تم إنشاء هذا المستند بواسطة نظام وقف عيسى. جميع الحقوق محفوظة ' + new Date().getFullYear(), 20, 700);
-    // Finalize PDF file
     doc.end();
-
-    // Wait for the PDF generation to finish and return the result
     return await pdfPromise;
+
 
 }
 
