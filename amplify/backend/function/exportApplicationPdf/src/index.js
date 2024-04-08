@@ -13,11 +13,11 @@ const arabicLocal = {
     "NON_BAHRAINI": "غير بحريني",
     "PUBLIC": "حكومية",
     "PRIVATE": "خاصة",
-    "LESS_THAN_1500" : "<1500",
-    "MORE_THAN_1500" :  ">1500",
-    "LESS_THAN_500" : "<500",
-    "BETWEEN_500_AND_700" : "بين 500 و 700",
-    "MORE_THAN_1000" : "أكثر من 1000",
+    "LESS_THAN_1500" : "أقل من ألف وخمسمائة دينار بحريني",
+    "MORE_THAN_1500" :  "أكثر من ألف وخمسمائة دينار بحريني",
+    "LESS_THAN_500" : "أقل من خمسمائة دينار بحريني",
+    "BETWEEN_500_AND_700" : "بين خمسمائة وسبعمائة دينار بحريني",
+    "MORE_THAN_1000" : "أكثر من ألف دينار بحريني",
     "REJECTED": "مرفوض",
     "APPROVED": "مقبول",
     "NOT_COMPLETED": "غير مكتمل",
@@ -220,8 +220,9 @@ async function generateArabicPdf(application, program, university, parent) {
     doc.font('./fonts/Almarai.ttf').fontSize(14).text('إلى من يهمه الأمر', {align: 'center', underline: true, features: ['rtla']});
     doc.text(' ');
     doc.font('./fonts/Almarai-Bold.ttf').fontSize(12).text('نشهد بأن الطالب التالي قد قدم طلب لبرنامج وقف عيسى. تفاصيل الطلب كما يلي:', {features: ['rtla'], align: 'right'});
-    doc.font('./fonts/Almarai.ttf').fontSize(12).text("الرقم: ", {align: 'right', features: ['rtla'], underline: true})
-    .text(application.id, {align: 'right'});
+    doc.font('./fonts/Almarai-Bold.ttf').fontSize(12).text("الرقم: ", {align: 'right', features: ['rtla'], underline: true})
+        .font('./fonts/Almarai.ttf')
+        .text(application.id, {align: 'right'});
 
     doc.font('./fonts/Almarai-Bold.ttf').text("الحالة: ", {align: 'right', features: ['rtla'], underline: true})
         .font('./fonts/Almarai.ttf')
@@ -276,7 +277,7 @@ async function generateArabicPdf(application, program, university, parent) {
         .text(parent.guardianCPR, {align: 'right', features: ['rtla']});
     doc.font('./fonts/Almarai-Bold.ttf').text("الدخل الشهري: ", {align: 'right', features: ['rtla'], underline: true})
         .font('./fonts/Almarai.ttf')
-        .text(arabicLocal[parent.familyIncome], {align: 'right', features: ['rtla']});
+        .text(arabicLocal[application.familyIncome], {align: 'right', features: ['rtla']});
     doc.text(' ');
     doc.font('./fonts/Almarai-Bold.ttf').fontSize(14).text('البرنامج المطلوب:', {features: ['rtla'], align: 'right'});
     if(program) {
