@@ -1871,7 +1871,6 @@ export const createStatistics = /* GraphQL */ `mutation CreateStatistics(
     scoreHistogram
     gpaHistogram
     totalApplicationsPerUniversity
-    topPrograms
     topUniversities
     createdAt
     updatedAt
@@ -1897,7 +1896,6 @@ export const updateStatistics = /* GraphQL */ `mutation UpdateStatistics(
     scoreHistogram
     gpaHistogram
     totalApplicationsPerUniversity
-    topPrograms
     topUniversities
     createdAt
     updatedAt
@@ -1923,7 +1921,6 @@ export const deleteStatistics = /* GraphQL */ `mutation DeleteStatistics(
     scoreHistogram
     gpaHistogram
     totalApplicationsPerUniversity
-    topPrograms
     topUniversities
     createdAt
     updatedAt

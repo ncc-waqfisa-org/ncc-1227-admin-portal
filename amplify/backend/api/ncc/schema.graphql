@@ -219,7 +219,7 @@ type Statistics @model @auth(rules: [{ allow: public }]) {
   scoreHistogram: AWSJSON
   gpaHistogram: AWSJSON
   totalApplicationsPerUniversity: AWSJSON
-  topPrograms: AWSJSON
+#  topPrograms: AWSJSON
   topUniversities: AWSJSON
 }
 

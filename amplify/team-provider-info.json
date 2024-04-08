@@ -48,7 +48,7 @@
         },
         "updateStatistics": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
-          "s3Key": "amplify-builds/updateStatistics-442f6669694b64527436-build.zip"
+          "s3Key": "amplify-builds/updateStatistics-656b694b6852474c6f4b-build.zip"
         },
         "signScholarship": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",

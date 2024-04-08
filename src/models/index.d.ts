@@ -648,7 +648,6 @@ type EagerStatistics = {
   readonly scoreHistogram?: string | null;
   readonly gpaHistogram?: string | null;
   readonly totalApplicationsPerUniversity?: string | null;
-  readonly topPrograms?: string | null;
   readonly topUniversities?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
@@ -666,7 +665,6 @@ type LazyStatistics = {
   readonly scoreHistogram?: string | null;
   readonly gpaHistogram?: string | null;
   readonly totalApplicationsPerUniversity?: string | null;
-  readonly topPrograms?: string | null;
   readonly topUniversities?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;

@@ -1492,7 +1492,6 @@ export const getStatistics = /* GraphQL */ `query GetStatistics($id: Int!) {
     scoreHistogram
     gpaHistogram
     totalApplicationsPerUniversity
-    topPrograms
     topUniversities
     createdAt
     updatedAt
@@ -1528,7 +1527,6 @@ export const listStatistics = /* GraphQL */ `query ListStatistics(
       scoreHistogram
       gpaHistogram
       totalApplicationsPerUniversity
-      topPrograms
       topUniversities
       createdAt
       updatedAt
@@ -1566,7 +1564,6 @@ export const syncStatistics = /* GraphQL */ `query SyncStatistics(
       scoreHistogram
       gpaHistogram
       totalApplicationsPerUniversity
-      topPrograms
       topUniversities
       createdAt
       updatedAt
@@ -2125,7 +2122,6 @@ export const statisticsByBatchAndTotalApplications = /* GraphQL */ `query Statis
       scoreHistogram
       gpaHistogram
       totalApplicationsPerUniversity
-      topPrograms
       topUniversities
       createdAt
       updatedAt

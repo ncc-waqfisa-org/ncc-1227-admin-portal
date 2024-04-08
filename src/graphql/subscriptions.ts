@@ -1804,7 +1804,6 @@ export const onCreateStatistics = /* GraphQL */ `subscription OnCreateStatistics
     scoreHistogram
     gpaHistogram
     totalApplicationsPerUniversity
-    topPrograms
     topUniversities
     createdAt
     updatedAt
@@ -1829,7 +1828,6 @@ export const onUpdateStatistics = /* GraphQL */ `subscription OnUpdateStatistics
     scoreHistogram
     gpaHistogram
     totalApplicationsPerUniversity
-    topPrograms
     topUniversities
     createdAt
     updatedAt
@@ -1854,7 +1852,6 @@ export const onDeleteStatistics = /* GraphQL */ `subscription OnDeleteStatistics
     scoreHistogram
     gpaHistogram
     totalApplicationsPerUniversity
-    topPrograms
     topUniversities
     createdAt
     updatedAt
