@@ -105,7 +105,7 @@ async function generatePdf(application, program, university, parent, student) {
     // Generate PDF
     const doc = new pdfKit();
     // set the line height
-    doc.lineGap(5);
+    doc.lineGap(4);
     const pdfBuffer = [];
     doc.on('data', chunk => {
         pdfBuffer.push(chunk);
@@ -123,8 +123,8 @@ async function generatePdf(application, program, university, parent, student) {
     doc.font('./fonts/Almarai-Bold.ttf').fontSize(20).text('Waqf Isa Application', 20, 20);
     // add a line under the title and logo
     doc.moveTo(20, 90).lineTo(600, 90).stroke();
-    // add today's date under the line
-    doc.font('./fonts/Almarai.ttf').fontSize(10).text(`Date: ${new Date().toLocaleDateString()}`, 20, 95);
+    // add today's date under the line in dd/mm/yyyy format
+    doc.font('./fonts/Almarai.ttf').fontSize(10).text(new Date().toLocaleDateString(), 20, 95);
     // take a gap
     doc.text(' ');
     // add a "to whom it may concern" text
@@ -295,7 +295,7 @@ async function generateArabicPdf(application, program, university, parent, stude
     doc.text(' ');
     doc.font('./fonts/Almarai-Bold.ttf').fontSize(14).text('البرنامج المطلوب:', {features: ['rtla'], align: 'right'});
     if(program) {
-        doc.font('./fonts/Almarai.ttf').fontSize(12).text(`${program.name} - ${university.name}`, {align: 'right', features: ['rtla']});
+        doc.font('./fonts/Almarai.ttf').fontSize(12).text(`${program.nameAr} - ${university.nameAr}`, {align: 'right', features: ['rtla']});
 
     }
     else {
@@ -303,8 +303,6 @@ async function generateArabicPdf(application, program, university, parent, stude
     }
     doc.end();
     return await pdfPromise;
-
-
 }
 
 async function uploadToS3(pdfData) {

@@ -187,6 +187,7 @@ export const onCreateApplication = /* GraphQL */ `subscription OnCreateApplicati
     score
     adminPoints
     processed
+    isFamilyIncomeVerified
     createdAt
     updatedAt
     _version
@@ -318,6 +319,7 @@ export const onUpdateApplication = /* GraphQL */ `subscription OnUpdateApplicati
     score
     adminPoints
     processed
+    isFamilyIncomeVerified
     createdAt
     updatedAt
     _version
@@ -449,6 +451,7 @@ export const onDeleteApplication = /* GraphQL */ `subscription OnDeleteApplicati
     score
     adminPoints
     processed
+    isFamilyIncomeVerified
     createdAt
     updatedAt
     _version
@@ -510,6 +513,7 @@ export const onCreateProgramChoice = /* GraphQL */ `subscription OnCreateProgram
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -582,6 +586,7 @@ export const onUpdateProgramChoice = /* GraphQL */ `subscription OnUpdateProgram
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -654,6 +659,7 @@ export const onDeleteProgramChoice = /* GraphQL */ `subscription OnDeleteProgram
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -1638,6 +1644,7 @@ export const onCreateScholarship = /* GraphQL */ `subscription OnCreateScholarsh
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -1696,6 +1703,7 @@ export const onUpdateScholarship = /* GraphQL */ `subscription OnUpdateScholarsh
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -1754,6 +1762,7 @@ export const onDeleteScholarship = /* GraphQL */ `subscription OnDeleteScholarsh
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -1795,6 +1804,8 @@ export const onCreateStatistics = /* GraphQL */ `subscription OnCreateStatistics
     scoreHistogram
     gpaHistogram
     totalApplicationsPerUniversity
+    topPrograms
+    topUniversities
     createdAt
     updatedAt
     _version
@@ -1818,6 +1829,8 @@ export const onUpdateStatistics = /* GraphQL */ `subscription OnUpdateStatistics
     scoreHistogram
     gpaHistogram
     totalApplicationsPerUniversity
+    topPrograms
+    topUniversities
     createdAt
     updatedAt
     _version
@@ -1841,6 +1854,8 @@ export const onDeleteStatistics = /* GraphQL */ `subscription OnDeleteStatistics
     scoreHistogram
     gpaHistogram
     totalApplicationsPerUniversity
+    topPrograms
+    topUniversities
     createdAt
     updatedAt
     _version

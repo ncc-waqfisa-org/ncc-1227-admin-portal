@@ -36,6 +36,7 @@ type Application @model @auth(rules: [{ allow: public }]) {
   score: Float @index(name: "byScore", sortKeyFields: ["status"])
   adminPoints: Int
   processed: Int @index(name: "byProcessed", sortKeyFields: ["batch"])
+  isFamilyIncomeVerified: Boolean
 }
 
 type ProgramChoice @model @auth(rules: [{ allow: public }]) {
@@ -218,6 +219,8 @@ type Statistics @model @auth(rules: [{ allow: public }]) {
   scoreHistogram: AWSJSON
   gpaHistogram: AWSJSON
   totalApplicationsPerUniversity: AWSJSON
+  topPrograms: AWSJSON
+  topUniversities: AWSJSON
 }
 
 #type CurrentApplication @model @auth(rules: [{ allow: public }]) {
