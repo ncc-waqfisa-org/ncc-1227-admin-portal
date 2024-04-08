@@ -57,10 +57,10 @@ exports.handler = async (event) => {
         const parent = await getParentInfo(student.parentInfoID);
         let pdfBuffer;
        if(lang === 'ar') {
-           pdfBuffer = await generateArabicPdf(application, program, university, parent);
+           pdfBuffer = await generateArabicPdf(application, program, university, parent, student);
         }
         else {
-            pdfBuffer = await generatePdf(application, program, university, parent);
+            pdfBuffer = await generatePdf(application, program, university, parent, student);
        }
         const pdfUrl = await uploadToS3(pdfBuffer);
         return {
@@ -98,7 +98,7 @@ async function getApplication(applicationId) {
     return application.Item;
 }
 
-async function generatePdf(application, program, university, parent) {
+async function generatePdf(application, program, university, parent, student) {
     const logoUrl = 'https://amplify-ncc-staging-65406-deployment.s3.amazonaws.com/waqfisa_logo.png';
     const imageBuffer = await fetchImage(logoUrl);
 
@@ -151,11 +151,16 @@ async function generatePdf(application, program, university, parent) {
     doc.text("Verified GPA: " + application.verifiedGPA ? application.verifiedGPA : "Awaiting verification");
     doc.text("School Name: ", {continued: true});
     doc.text(application.schoolName, {features: ['rtla']});
-
-
-
     doc.text("School Type: ", {continued: true});
     doc.text(application.schoolType);
+    doc.text("Address: ", {continued: true});
+    doc.text(student.address, {features: ['rtla']});
+
+
+    doc.text("Email: ", {continued: true});
+    doc.text(student.email);
+    doc.text("Phone: ", {continued: true});
+    doc.text(student.phone);
     // take a gap
     doc.text(' ');
     doc.font('./fonts/Almarai-Bold.ttf').fontSize(14).text('Parents Details:');
@@ -174,7 +179,7 @@ async function generatePdf(application, program, university, parent) {
     doc.text("Guardian CPR: ", {continued: true});
     doc.text(parent.guardianCPR);
     doc.text("Family Income: ", {continued: true});
-    doc.text(parent.familyIncome);
+    doc.text(application.familyIncome);
     // take a gap
     doc.text(' ');
 
@@ -195,7 +200,7 @@ async function generatePdf(application, program, university, parent) {
     return await pdfPromise;
 }
 
-async function generateArabicPdf(application, program, university, parent) {
+async function generateArabicPdf(application, program, university, parent, student) {
     const logoUrl = 'https://amplify-ncc-staging-65406-deployment.s3.amazonaws.com/waqfisa_logo.png';
     const imageBuffer = await fetchImage(logoUrl);
 
@@ -255,6 +260,15 @@ async function generateArabicPdf(application, program, university, parent) {
     doc.font('./fonts/Almarai-Bold.ttf').text("نوع المدرسة: ", {align: 'right', features: ['rtla'], underline: true})
         .font('./fonts/Almarai.ttf')
         .text(arabicLocal[application.schoolType], {align: 'right', features: ['rtla']});
+    doc.font('./fonts/Almarai-Bold.ttf').text("العنوان: ", {align: 'right', features: ['rtla'], underline: true})
+        .font('./fonts/Almarai.ttf')
+        .text(student.address, {align: 'right', features: ['rtla']});
+    doc.font('./fonts/Almarai-Bold.ttf').text("البريد الإلكتروني: ", {align: 'right', features: ['rtla'], underline: true})
+        .font('./fonts/Almarai.ttf')
+        .text(student.email, {align: 'right', features: ['rtla']});
+    doc.font('./fonts/Almarai-Bold.ttf').text("رقم الهاتف: ", {align: 'right', features: ['rtla'], underline: true})
+        .font('./fonts/Almarai.ttf')
+        .text(student.phone, {align: 'right', features: ['rtla']});
     doc.text(' ');
     doc.font('./fonts/Almarai-Bold.ttf').fontSize(14).text('تفاصيل الأهل:', {features: ['rtla'], align: 'right'});
     doc.font('./fonts/Almarai-Bold.ttf').fontSize(12).text("اسم الأب: ", {align: 'right', features: ['rtla'], underline: true})
