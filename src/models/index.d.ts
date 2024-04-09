@@ -119,6 +119,7 @@ type EagerApplication = {
   readonly score?: number | null;
   readonly adminPoints?: number | null;
   readonly processed?: number | null;
+  readonly isFamilyIncomeVerified?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly applicationAttachmentId?: string | null;
@@ -157,6 +158,7 @@ type LazyApplication = {
   readonly score?: number | null;
   readonly adminPoints?: number | null;
   readonly processed?: number | null;
+  readonly isFamilyIncomeVerified?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly applicationAttachmentId?: string | null;
@@ -646,6 +648,7 @@ type EagerStatistics = {
   readonly scoreHistogram?: string | null;
   readonly gpaHistogram?: string | null;
   readonly totalApplicationsPerUniversity?: string | null;
+  readonly topUniversities?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -662,6 +665,7 @@ type LazyStatistics = {
   readonly scoreHistogram?: string | null;
   readonly gpaHistogram?: string | null;
   readonly totalApplicationsPerUniversity?: string | null;
+  readonly topUniversities?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

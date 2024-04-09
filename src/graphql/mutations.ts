@@ -191,6 +191,7 @@ export const createApplication = /* GraphQL */ `mutation CreateApplication(
     score
     adminPoints
     processed
+    isFamilyIncomeVerified
     createdAt
     updatedAt
     _version
@@ -323,6 +324,7 @@ export const updateApplication = /* GraphQL */ `mutation UpdateApplication(
     score
     adminPoints
     processed
+    isFamilyIncomeVerified
     createdAt
     updatedAt
     _version
@@ -455,6 +457,7 @@ export const deleteApplication = /* GraphQL */ `mutation DeleteApplication(
     score
     adminPoints
     processed
+    isFamilyIncomeVerified
     createdAt
     updatedAt
     _version
@@ -517,6 +520,7 @@ export const createProgramChoice = /* GraphQL */ `mutation CreateProgramChoice(
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -590,6 +594,7 @@ export const updateProgramChoice = /* GraphQL */ `mutation UpdateProgramChoice(
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -663,6 +668,7 @@ export const deleteProgramChoice = /* GraphQL */ `mutation DeleteProgramChoice(
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -1702,6 +1708,7 @@ export const createScholarship = /* GraphQL */ `mutation CreateScholarship(
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -1761,6 +1768,7 @@ export const updateScholarship = /* GraphQL */ `mutation UpdateScholarship(
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -1820,6 +1828,7 @@ export const deleteScholarship = /* GraphQL */ `mutation DeleteScholarship(
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -1862,6 +1871,7 @@ export const createStatistics = /* GraphQL */ `mutation CreateStatistics(
     scoreHistogram
     gpaHistogram
     totalApplicationsPerUniversity
+    topUniversities
     createdAt
     updatedAt
     _version
@@ -1886,6 +1896,7 @@ export const updateStatistics = /* GraphQL */ `mutation UpdateStatistics(
     scoreHistogram
     gpaHistogram
     totalApplicationsPerUniversity
+    topUniversities
     createdAt
     updatedAt
     _version
@@ -1910,6 +1921,7 @@ export const deleteStatistics = /* GraphQL */ `mutation DeleteStatistics(
     scoreHistogram
     gpaHistogram
     totalApplicationsPerUniversity
+    topUniversities
     createdAt
     updatedAt
     _version

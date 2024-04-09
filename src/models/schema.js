@@ -335,6 +335,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "isFamilyIncomeVerified": {
+                    "name": "isFamilyIncomeVerified",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -1965,6 +1972,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "topUniversities": {
+                    "name": "topUniversities",
+                    "isArray": false,
+                    "type": "AWSJSON",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -2096,5 +2110,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "efd6519fef211b6df805038fcb555d69"
+    "version": "e97a03d8592e6f6458cd1f7da452d4ab"
 };

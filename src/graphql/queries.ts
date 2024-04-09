@@ -203,6 +203,7 @@ export const getApplication = /* GraphQL */ `query GetApplication($id: ID!) {
     score
     adminPoints
     processed
+    isFamilyIncomeVerified
     createdAt
     updatedAt
     _version
@@ -244,6 +245,7 @@ export const listApplications = /* GraphQL */ `query ListApplications(
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -295,6 +297,7 @@ export const syncApplications = /* GraphQL */ `query SyncApplications(
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -358,6 +361,7 @@ export const getProgramChoice = /* GraphQL */ `query GetProgramChoice($id: ID!) 
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -1372,6 +1376,7 @@ export const getScholarship = /* GraphQL */ `query GetScholarship($id: ID!) {
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -1487,6 +1492,7 @@ export const getStatistics = /* GraphQL */ `query GetStatistics($id: Int!) {
     scoreHistogram
     gpaHistogram
     totalApplicationsPerUniversity
+    topUniversities
     createdAt
     updatedAt
     _version
@@ -1521,6 +1527,7 @@ export const listStatistics = /* GraphQL */ `query ListStatistics(
       scoreHistogram
       gpaHistogram
       totalApplicationsPerUniversity
+      topUniversities
       createdAt
       updatedAt
       _version
@@ -1557,6 +1564,7 @@ export const syncStatistics = /* GraphQL */ `query SyncStatistics(
       scoreHistogram
       gpaHistogram
       totalApplicationsPerUniversity
+      topUniversities
       createdAt
       updatedAt
       _version
@@ -1609,6 +1617,7 @@ export const applicationsByIdAndDateTime = /* GraphQL */ `query ApplicationsById
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -1664,6 +1673,7 @@ export const applicationsByNationalityCategoryAndBatch = /* GraphQL */ `query Ap
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -1719,6 +1729,7 @@ export const applicationsByStudentCPRAndGpa = /* GraphQL */ `query ApplicationsB
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -1774,6 +1785,7 @@ export const applicationsByBatchAndStatus = /* GraphQL */ `query ApplicationsByB
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -1829,6 +1841,7 @@ export const applicationsByScoreAndStatus = /* GraphQL */ `query ApplicationsByS
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -1884,6 +1897,7 @@ export const applicationsByProcessedAndBatch = /* GraphQL */ `query Applications
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -2108,6 +2122,7 @@ export const statisticsByBatchAndTotalApplications = /* GraphQL */ `query Statis
       scoreHistogram
       gpaHistogram
       totalApplicationsPerUniversity
+      topUniversities
       createdAt
       updatedAt
       _version

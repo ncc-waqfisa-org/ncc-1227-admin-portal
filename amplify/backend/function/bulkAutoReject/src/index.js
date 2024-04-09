@@ -75,7 +75,7 @@ async function getApplications(batch) {
     return allApplications;
 }
 
-async function bulkUpdateApplications(batchValue, applications, extendedUniversities, exceptionUniversities, universities, programs) {
+async function bulkUpdateApplications(batchValue, applications, extendedUniversities, exceptionUniversities, universities, programs, batchDetails) {
     const updatePromises = applications.map(async application => {
         let isProcessed = 1;
         // const student = await getStudent(application.studentCPR);
@@ -103,10 +103,13 @@ async function bulkUpdateApplications(batchValue, applications, extendedUniversi
             isNotCompleted = false;
         } else if(isExtended) {
             // check the date with extended deadline
-            const university = extendedUniversities.find(university => university.id === universityId);
-            const deadline = new Date(university.extendedTo);
             const today = new Date();
-            isNotCompleted = today < deadline;
+            const chosenUniversity = extendedUniversities.find(university => university.id === application.universityID);
+            // TODO: deadline is in days, convert it to a date
+            let deadline = new Date(batchDetails.updateApplicationEndDate);
+            deadline.setDate(deadline.getDate() + chosenUniversity.extensionDuration);
+
+            isNotCompleted = today > deadline;
         }
 
         let status;
