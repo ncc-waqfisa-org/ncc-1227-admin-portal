@@ -63,6 +63,8 @@ import {
   updateStudent,
 } from "./graphql/mutations";
 import { getBatch, listBatches } from "./graphql/queries";
+import { Statistics } from "./models";
+import { TStatistics } from "./custom-types";
 
 /* -------------------------------------------------------------------------- */
 /*                                 INTERFACES                                 */
@@ -1196,4 +1198,29 @@ export async function updateStudentInDB(
   })) as GraphQLResult<UpdateStudentMutation>;
 
   return res.data;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                 Statistics                                 */
+/* -------------------------------------------------------------------------- */
+
+type TGetStatistics = {
+  batch: number;
+  token?: string | null;
+  locale?: string | null;
+};
+export async function getStatistics({ token, batch, locale }: TGetStatistics) {
+  if (!token) {
+    return null;
+  }
+
+  return fetch(
+    `https://a69a50c47l.execute-api.us-east-1.amazonaws.com/default/applications/statistics?batch=${batch}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Accept-Language": locale ? locale : "en",
+      },
+    }
+  ).then((res) => res.json().then((data) => data.statistics as TStatistics));
 }

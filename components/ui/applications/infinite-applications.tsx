@@ -32,6 +32,8 @@ import {
 import { BatchApplicationsToolbar } from "./batch-applications-toolbar";
 import { Badge } from "../badge";
 import { useBatchContext } from "../../../context/BatchContext";
+import { schoolTypes, statuses } from "./data/data";
+import { Status } from "../../../src/API";
 
 export const InfiniteApplications = () => {
   //we need a reference to the scrolling element for logic down below
@@ -68,7 +70,7 @@ export const InfiniteApplications = () => {
     () => [
       {
         id: "select",
-        size: 33,
+        size: 40,
         header: ({ table }) => (
           <Checkbox
             checked={table.getIsAllPageRowsSelected()}
@@ -76,7 +78,7 @@ export const InfiniteApplications = () => {
               table.toggleAllPageRowsSelected(!!value)
             }
             aria-label="Select all"
-            className="translate-y-[2px]"
+            className="translate-y-[2px] mx-3"
           />
         ),
         cell: ({ row }) => (
@@ -84,7 +86,7 @@ export const InfiniteApplications = () => {
             checked={row.getIsSelected()}
             onCheckedChange={(value) => row.toggleSelected(!!value)}
             aria-label="Select row"
-            className="translate-y-[2px] mr-3"
+            className="translate-y-[2px] mx-3"
           />
         ),
         enableSorting: false,
@@ -104,7 +106,7 @@ export const InfiniteApplications = () => {
         cell: ({ row }) => (
           <Link
             href={`/applications/${row.original.id}`}
-            className="  hover:text-anzac-400"
+            className=" hover:text-anzac-400"
           >
             <p className="font-semibold">{row.original.studentName}</p>
             <div className="">{row.getValue("studentCPR")}</div>
@@ -116,18 +118,62 @@ export const InfiniteApplications = () => {
       },
       {
         accessorKey: "status",
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} title={t("Status")} />
-        ),
-        cell: ({ row }) => (
-          <Badge variant={"outline"} className="h-fit">
-            {row.getValue("status")}
-          </Badge>
-        ),
-
         enableSorting: false,
         enableHiding: false,
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Status" />
+        ),
+        cell: ({ row }) => {
+          const status = statuses.find(
+            (status) => status.value === row.getValue("status")
+          );
+
+          if (!status) {
+            return null;
+          }
+
+          return (
+            <Badge
+              variant={
+                status.value === Status.REJECTED ||
+                status.value === Status.ELIGIBLE ||
+                status.value === Status.APPROVED
+                  ? "destructive"
+                  : "outline"
+              }
+              className={`flex h-fit w-fit items-center justify-start ${
+                (status.value === Status.WITHDRAWN ||
+                  status.value === Status.NOT_COMPLETED) &&
+                "bg-slate-200"
+              } ${status.value === Status.REVIEW && "bg-amber-100"} ${
+                status.value === Status.ELIGIBLE && "bg-blue-500"
+              } ${status.value === Status.APPROVED && "bg-green-500"}`}
+            >
+              {status.icon && <status.icon className="w-6 h-6 p-1 me-2" />}
+              <span className="min-w-fit">
+                {locale === "ar" ? status.arLabel : status.label}
+              </span>
+            </Badge>
+          );
+        },
+        filterFn: (row, id, value) => {
+          return value.includes(row.getValue(id));
+        },
       },
+      // {
+      //   accessorKey: "status",
+      //   header: ({ column }) => (
+      //     <DataTableColumnHeader column={column} title={t("Status")} />
+      //   ),
+      //   cell: ({ row }) => (
+      //     <Badge variant={"outline"} className="h-fit">
+      //       {row.getValue("status")}
+      //     </Badge>
+      //   ),
+
+      //   enableSorting: false,
+      //   enableHiding: false,
+      // },
       {
         size: 60,
         accessorKey: "score",
@@ -155,7 +201,7 @@ export const InfiniteApplications = () => {
         cell: ({ row }) => {
           return (
             <div className="flex space-x-2">
-              <span className="  truncate font-medium">
+              <span className="font-medium truncate ">
                 {row.getValue("gpa")}
               </span>
             </div>
@@ -170,6 +216,26 @@ export const InfiniteApplications = () => {
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title={t("schoolType")} />
         ),
+        cell: ({ row }) => {
+          const schoolType = schoolTypes.find(
+            (schoolType) => schoolType.value === row.getValue("schoolType")
+          );
+
+          if (!schoolType) {
+            return null;
+          }
+
+          return (
+            <div className="flex items-center">
+              {schoolType.icon && (
+                <schoolType.icon className="w-4 h-4 me-2 text-muted-foreground" />
+              )}
+              <span>
+                {locale === "ar" ? schoolType.arLabel : schoolType.label}
+              </span>
+            </div>
+          );
+        },
         enableSorting: false,
         enableHiding: false,
       },
@@ -186,7 +252,7 @@ export const InfiniteApplications = () => {
         cell: ({ row }) => {
           return (
             <div className="flex space-x-2">
-              <span className="  truncate font-medium">
+              <span className="font-medium truncate ">
                 {Intl.DateTimeFormat(locale, {
                   timeStyle: "short",
                   dateStyle: "medium",
@@ -210,7 +276,7 @@ export const InfiniteApplications = () => {
         cell: ({ row }) => {
           return (
             <div className="flex space-x-2">
-              <span className="  truncate font-medium">
+              <span className="font-medium truncate ">
                 {Intl.DateTimeFormat(locale, {
                   timeStyle: "short",
                   dateStyle: "medium",
@@ -349,7 +415,7 @@ export const InfiniteApplications = () => {
 
   if (isInitialFetching) {
     return (
-      <div className="w-full h-96 flex flex-col justify-center items-center">
+      <div className="flex flex-col items-center justify-center w-full h-96">
         <p className="flex items-center gap-3">
           <span className="loading"></span> {t("loading")}
         </p>
@@ -358,7 +424,7 @@ export const InfiniteApplications = () => {
   }
 
   return (
-    <div className="flex flex-col gap-4 relative">
+    <div className="relative flex flex-col gap-4">
       <div className="flex flex-wrap items-baseline gap-3">
         <BatchApplicationsToolbar
           handleStatusChange={handleStatusChange}
@@ -374,9 +440,9 @@ export const InfiniteApplications = () => {
         ref={tableContainerRef}
       >
         {/* Even though we're still using sematic table tags, we must use CSS grid and flexbox for dynamic row heights */}
-        <table className="text-sm relative">
+        <table className="relative text-sm">
           <TableHeader
-            className="grid     pt-4  bg-background"
+            className="grid pt-4 bg-background"
             style={{
               display: "grid",
               position: "sticky",
@@ -386,7 +452,7 @@ export const InfiniteApplications = () => {
           >
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
-                className=" "
+                className=""
                 key={headerGroup.id}
                 style={{ display: "flex", width: "100%" }}
               >
@@ -477,7 +543,7 @@ export const InfiniteApplications = () => {
         </table>
       </div>
       {isFetching && (
-        <div className="flex gap-2 p-2 rounded-md border w-fit mx-auto">
+        <div className="flex gap-2 p-2 mx-auto border rounded-md w-fit">
           <span className="loading"></span>
           {common("fetchingMore")}
         </div>
