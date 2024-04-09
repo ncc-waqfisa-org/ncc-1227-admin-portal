@@ -25,6 +25,10 @@ import {
 import { LargeDonutGraphInfo } from "../components/graphs/large-donut-graph-info";
 import { GetStaticProps } from "next";
 import { BatchSelectorComponent } from "../components/batch-selector-component";
+import { BatchSelector } from "../components/batch/BatchSelector";
+import toast from "react-hot-toast";
+import { useAuth } from "../hooks/use-auth";
+import { Button } from "../components/ui/button";
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const { locale } = ctx;
@@ -46,7 +50,9 @@ const Home = () => {
   const { applications, batch, updateBatch, applicationsBeingFetched } =
     useStudent();
   const { t } = useTranslation("common");
-  const { t: application } = useTranslation("applications");
+  const { t: tApplications } = useTranslation("applications");
+  const { t: tErrors } = useTranslation("errors");
+  const { token } = useAuth();
 
   let sortedApplications = applications?.sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -91,16 +97,50 @@ const Home = () => {
               </div>
             </div>
             <div className="flex flex-wrap items-center justify-end gap-4 my-4">
-              <BatchSelectorComponent
+              {/* <BatchSelectorComponent
                 batch={batch}
                 updateBatch={updateBatch}
-              ></BatchSelectorComponent>
+              ></BatchSelectorComponent> */}
+              <BatchSelector />
               <PrimaryButton
                 name={t("allApplicationsButton")}
                 buttonClick={() => push("/applications")}
               ></PrimaryButton>
 
-              {!applicationsBeingFetched && (
+              <Button
+                className="rounded-xl"
+                variant={"outline"}
+                onClick={() => {
+                  toast.promise(
+                    fetch(
+                      `https://a69a50c47l.execute-api.us-east-1.amazonaws.com/default/applications/export?batch=${batch}}`,
+                      {
+                        headers: {
+                          Authorization: `Bearer ${token}`,
+                        },
+                      }
+                    ).then(async (res) => {
+                      const { url } = await res.json();
+                      if (url) {
+                        const a = document.createElement("a");
+                        a.href = url;
+                        a.download = `${batch}-Applications-${new Date().toISOString()}.csv`;
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                      }
+                    }),
+                    {
+                      loading: tApplications("loading"),
+                      success: tApplications("success"),
+                      error: tErrors("somethingWentWrong"),
+                    }
+                  );
+                }}
+              >
+                {t("exportCSV")}
+              </Button>
+
+              {/* {!applicationsBeingFetched && (
                 <CSVLink
                   filename={`${batch}-Applications-Summary-${new Date().toISOString()}.csv`}
                   data={
@@ -143,7 +183,7 @@ const Home = () => {
                 >
                   {t("exportCSV")}
                 </CSVLink>
-              )}
+              )} */}
             </div>
           </div>
 

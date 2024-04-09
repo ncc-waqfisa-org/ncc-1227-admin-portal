@@ -12,6 +12,7 @@ import { GraphQLResult } from "@aws-amplify/api-graphql";
 
 import { getAllApplicationsLambda } from "../src/CustomAPI";
 import { useAuth } from "../hooks/use-auth";
+import { useBatchContext } from "./BatchContext";
 
 // interface for all the values & functions
 interface IUseStudentContext {
@@ -67,11 +68,13 @@ export const StudentProvider: FC<PropsWithChildren> = ({ children }) => {
 
 //NOTE: declare vars and functions here
 function useProviderStudent() {
+  const { batch, setBatch } = useBatchContext();
+
   const [applications, setApplications] = useState<Application[] | undefined>(
     defaultState.applications
   );
 
-  const [batch, setBatch] = useState<number>(defaultState.batch);
+  // const [batch, setBatch] = useState<number>(defaultState.batch);
 
   const [applicationById, setApplicationById] = useState<
     Application | undefined
@@ -87,7 +90,7 @@ function useProviderStudent() {
     () => {
       // Run this
       if (isSignedIn) {
-        getAllApplications(batch);
+        // getAllApplications(batch);
       }
 
       // on destroy

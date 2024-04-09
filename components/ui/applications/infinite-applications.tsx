@@ -1,0 +1,487 @@
+//3 TanStack Libraries!!!
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  Row,
+  useReactTable,
+} from "@tanstack/react-table";
+import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
+import { useVirtualizer } from "@tanstack/react-virtual";
+
+import React, { useCallback, useState } from "react";
+import {
+  InfiniteApplication,
+  NextStartKey,
+  TInfiniteApplications,
+} from "./infinite-applications-type";
+import { Checkbox } from "../checkbox";
+import { DataTableColumnHeader } from "./data-table-column-header";
+import Link from "next/link";
+import { useTranslation } from "react-i18next";
+import { useRouter } from "next/router";
+import { Button } from "../button";
+import { useAuth } from "../../../hooks/use-auth";
+import {
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../table";
+import { BatchApplicationsToolbar } from "./batch-applications-toolbar";
+import { Badge } from "../badge";
+import { useBatchContext } from "../../../context/BatchContext";
+
+export const InfiniteApplications = () => {
+  //we need a reference to the scrolling element for logic down below
+  const tableContainerRef = React.useRef<HTMLDivElement>(null);
+
+  const [rowSelection, setRowSelection] = React.useState({});
+  const {
+    batch: selectedBatch,
+    selectedApplicationsStatus: selectedStatus,
+    setSelectedApplicationsStatus: setSelectedStatus,
+    setApplicationsData,
+    applicationsData,
+    nextApplicationsKey,
+    setNextApplicationsKey,
+    isInitialFetching,
+  } = useBatchContext();
+
+  // const [selectedStatus, setSelectedStatus] = useState<string | undefined>(
+  //   undefined
+  // );
+  // const [selectedBatch, setSelectedBatch] = useState<string | undefined>(
+  //   dayjs().year().toString()
+  // );
+
+  const [isFetching, setIsFetching] = useState(false);
+
+  const { t } = useTranslation("applications");
+  const { t: common } = useTranslation("common");
+  const { locale } = useRouter();
+
+  const { token } = useAuth();
+
+  const columns = React.useMemo<ColumnDef<InfiniteApplication>[]>(
+    () => [
+      {
+        id: "select",
+        size: 33,
+        header: ({ table }) => (
+          <Checkbox
+            checked={table.getIsAllPageRowsSelected()}
+            onCheckedChange={(value) =>
+              table.toggleAllPageRowsSelected(!!value)
+            }
+            aria-label="Select all"
+            className="translate-y-[2px]"
+          />
+        ),
+        cell: ({ row }) => (
+          <Checkbox
+            checked={row.getIsSelected()}
+            onCheckedChange={(value) => row.toggleSelected(!!value)}
+            aria-label="Select row"
+            className="translate-y-[2px] mr-3"
+          />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+        enablePinning: true,
+      },
+      {
+        accessorKey: "studentCPR",
+        size: 300,
+        header: ({ column }) => (
+          <DataTableColumnHeader
+            column={column}
+            title={t("student")}
+            // className="min-w-[13rem]"
+          />
+        ),
+        cell: ({ row }) => (
+          <Link
+            href={`/applications/${row.original.id}`}
+            className="  hover:text-anzac-400"
+          >
+            <p className="font-semibold">{row.original.studentName}</p>
+            <div className="">{row.getValue("studentCPR")}</div>
+          </Link>
+        ),
+        enableSorting: false,
+        enableHiding: false,
+        enablePinning: true,
+      },
+      {
+        accessorKey: "status",
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title={t("Status")} />
+        ),
+        cell: ({ row }) => (
+          <Badge variant={"outline"} className="h-fit">
+            {row.getValue("status")}
+          </Badge>
+        ),
+
+        enableSorting: false,
+        enableHiding: false,
+      },
+      {
+        size: 60,
+        accessorKey: "score",
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title={t("tableTitleScore")} />
+        ),
+        cell: ({ row }) => {
+          return (
+            <div className="flex space-x-2">
+              <span className="max-w-[500px] truncate font-medium">
+                {row.getValue("score")}
+              </span>
+            </div>
+          );
+        },
+        enableSorting: false,
+        enableHiding: false,
+      },
+      {
+        accessorKey: "gpa",
+        size: 60,
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title={t("tableTitleGpa")} />
+        ),
+        cell: ({ row }) => {
+          return (
+            <div className="flex space-x-2">
+              <span className="  truncate font-medium">
+                {row.getValue("gpa")}
+              </span>
+            </div>
+          );
+        },
+        enableSorting: false,
+        enableHiding: false,
+      },
+      {
+        accessorKey: "schoolType",
+        size: 100,
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title={t("schoolType")} />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+      },
+
+      {
+        accessorKey: "dateTime",
+        size: 200,
+        header: ({ column }) => (
+          <DataTableColumnHeader
+            column={column}
+            title={t("tableTitleApplicationDate")}
+          />
+        ),
+        cell: ({ row }) => {
+          return (
+            <div className="flex space-x-2">
+              <span className="  truncate font-medium">
+                {Intl.DateTimeFormat(locale, {
+                  timeStyle: "short",
+                  dateStyle: "medium",
+                }).format(new Date(row.original.dateTime))}
+              </span>
+            </div>
+          );
+        },
+        enableSorting: false,
+        enableHiding: false,
+      },
+      {
+        accessorKey: "updatedAt",
+        size: 200,
+        header: ({ column }) => (
+          <DataTableColumnHeader
+            column={column}
+            title={t("tableTitleLastUpdate")}
+          />
+        ),
+        cell: ({ row }) => {
+          return (
+            <div className="flex space-x-2">
+              <span className="  truncate font-medium">
+                {Intl.DateTimeFormat(locale, {
+                  timeStyle: "short",
+                  dateStyle: "medium",
+                }).format(new Date(row.original.updatedAt))}
+              </span>
+            </div>
+          );
+        },
+        enableSorting: false,
+        enableHiding: false,
+      },
+      {
+        accessorKey: "view",
+        size: 100,
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title={common("view")} />
+        ),
+        cell: ({ row }) => (
+          <Link href={`/applications/${row.original.id}`}>
+            <Button variant={"outline"}>{common("view")}</Button>
+          </Link>
+        ),
+        enableSorting: false,
+        enableHiding: false,
+        enablePinning: true,
+      },
+    ],
+    [common, locale, t]
+  );
+
+  const fetchApplications = useCallback(
+    async (nextKey: NextStartKey) => {
+      const next = nextKey ? `&startKey=${JSON.stringify(nextKey)}` : "";
+      const batchQuery = selectedBatch ? `batch=${selectedBatch}` : "";
+      const statusQuery = selectedStatus ? `&status=${selectedStatus}` : "";
+      setIsFetching(true);
+
+      const fetchedData = (await fetch(
+        `${process.env.NEXT_PUBLIC_APPLICATION_PAGINATION_ENDPOINT}?${batchQuery}${statusQuery}${next}`,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      )
+        .then((d) => d.json())
+        .finally(() => {
+          setIsFetching(false);
+        })) as TInfiniteApplications;
+
+      setApplicationsData((old) => [...old, ...fetchedData.data]);
+      setNextApplicationsKey(fetchedData.nextStartKey);
+      return fetchedData;
+    },
+    [
+      selectedBatch,
+      selectedStatus,
+      setApplicationsData,
+      setNextApplicationsKey,
+      token,
+    ]
+  );
+
+  //called on scroll and possibly on mount to fetch more data as the user scrolls and reaches bottom of table
+  const fetchMoreOnBottomReached = React.useCallback(
+    (containerRefElement?: HTMLDivElement | null) => {
+      if (containerRefElement) {
+        const { scrollHeight, scrollTop, clientHeight } = containerRefElement;
+        //once the user has scrolled within 500px of the bottom of the table, fetch more data if we can
+        if (
+          scrollHeight - scrollTop - clientHeight < 500 &&
+          !isFetching &&
+          !isInitialFetching &&
+          nextApplicationsKey
+        ) {
+          fetchApplications(nextApplicationsKey);
+        }
+      }
+    },
+    [fetchApplications, isFetching, isInitialFetching, nextApplicationsKey]
+  );
+
+  //a check on mount and after a fetch to see if the table is already scrolled to the bottom and immediately needs to fetch more data
+  React.useEffect(() => {
+    fetchMoreOnBottomReached(tableContainerRef.current);
+  }, [fetchMoreOnBottomReached]);
+
+  const table = useReactTable({
+    data: applicationsData,
+    columns,
+    state: {
+      rowSelection,
+    },
+    getCoreRowModel: getCoreRowModel(),
+    onRowSelectionChange: setRowSelection,
+    manualSorting: true,
+    debugTable: true,
+    enableRowSelection: true,
+    enablePinning: true,
+    meta: {
+      locale: locale ?? "en",
+    },
+  });
+
+  //scroll to top of table when sorting changes
+  const handleStatusChange = (updater: string) => {
+    // setSorting(updater);
+    setSelectedStatus(updater);
+    if (!!table.getRowModel().rows.length) {
+      rowVirtualizer.scrollToIndex?.(0);
+    }
+  };
+  const handleBatchChange = (updater: string) => {
+    // setSorting(updater);
+    // setSelectedBatch(updater);
+
+    if (!!table.getRowModel().rows.length) {
+      rowVirtualizer.scrollToIndex?.(0);
+    }
+  };
+
+  const { rows } = table.getRowModel();
+
+  const rowVirtualizer = useVirtualizer({
+    count: rows.length,
+    estimateSize: () => 56, //estimate row height for accurate scrollbar dragging
+    getScrollElement: () => tableContainerRef.current,
+    //measure dynamic row height, except in firefox because it measures table border height incorrectly
+    measureElement:
+      typeof window !== "undefined" &&
+      navigator.userAgent.indexOf("Firefox") === -1
+        ? (element) => element?.getBoundingClientRect().height
+        : undefined,
+    overscan: 5,
+  });
+
+  if (isInitialFetching) {
+    return (
+      <div className="w-full h-96 flex flex-col justify-center items-center">
+        <p className="flex items-center gap-3">
+          <span className="loading"></span> {t("loading")}
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-4 relative">
+      <div className="flex flex-wrap items-baseline gap-3">
+        <BatchApplicationsToolbar
+          handleStatusChange={handleStatusChange}
+          selectedStatus={selectedStatus}
+          handleBatchChange={handleBatchChange}
+          table={table}
+        />
+      </div>
+      {/* <DataTableToolbar table={table} /> */}
+      <div
+        className=" border rounded-md overflow-auto relative h-[600px] space-y-4"
+        onScroll={(e) => fetchMoreOnBottomReached(e.target as HTMLDivElement)}
+        ref={tableContainerRef}
+      >
+        {/* Even though we're still using sematic table tags, we must use CSS grid and flexbox for dynamic row heights */}
+        <table className="text-sm relative">
+          <TableHeader
+            className="grid     pt-4  bg-background"
+            style={{
+              display: "grid",
+              position: "sticky",
+              top: 0,
+              zIndex: 1,
+            }}
+          >
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow
+                className=" "
+                key={headerGroup.id}
+                style={{ display: "flex", width: "100%" }}
+              >
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead
+                      key={header.id}
+                      style={{
+                        display: "flex",
+                        width: header.getSize(),
+                      }}
+                    >
+                      <div
+                        {...{
+                          className: header.column.getCanSort()
+                            ? "cursor-pointer select-none"
+                            : "",
+                          onClick: header.column.getToggleSortingHandler(),
+                        }}
+                      >
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                        {{
+                          asc: " 🔼",
+                          desc: " 🔽",
+                        }[header.column.getIsSorted() as string] ?? null}
+                      </div>
+                    </TableHead>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody
+            style={{
+              display: "grid",
+              height: `${rowVirtualizer.getTotalSize()}px`, //tells scrollbar how big the table is
+              position: "relative", //needed for absolute positioning of rows
+            }}
+          >
+            {rowVirtualizer.getVirtualItems().length > 0 ? (
+              rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                const row = rows[virtualRow.index] as Row<InfiniteApplication>;
+                return (
+                  <TableRow
+                    data-index={virtualRow.index} //needed for dynamic row height measurement
+                    ref={(node) => rowVirtualizer.measureElement(node)} //measure dynamic row height
+                    key={row.id}
+                    style={{
+                      display: "flex",
+                      position: "absolute",
+                      transform: `translateY(${virtualRow.start}px)`, //this should always be a `style` as it changes on scroll
+                      width: "100%",
+                    }}
+                  >
+                    {row.getVisibleCells().map((cell) => {
+                      return (
+                        <TableCell
+                          key={cell.id}
+                          style={{
+                            display: "flex",
+                            width: cell.column.getSize(),
+                          }}
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                );
+              })
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  {common("noResults")}
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </table>
+      </div>
+      {isFetching && (
+        <div className="flex gap-2 p-2 rounded-md border w-fit mx-auto">
+          <span className="loading"></span>
+          {common("fetchingMore")}
+        </div>
+      )}
+    </div>
+  );
+};

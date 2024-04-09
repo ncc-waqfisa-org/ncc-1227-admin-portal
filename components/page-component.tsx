@@ -84,7 +84,7 @@ export const PageComponent: FC<PropsWithChildren<Props>> = (props) => {
         </div>
 
         {isSignedIn && (
-          <div className="drawer-side">
+          <div className="drawer-side z-10">
             <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
             <NavbarComponent></NavbarComponent>
           </div>

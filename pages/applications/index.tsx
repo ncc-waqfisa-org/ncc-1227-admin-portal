@@ -13,7 +13,7 @@ import { getStatusOrder } from "../../src/Helpers";
 import { BatchSelectorComponent } from "../../components/batch-selector-component";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { DataTable } from "../../components/ui/applications/data-table";
+import { DataTable } from "../../components/ui/applications/data-table-scroll";
 import { Checkbox } from "../../components/ui/checkbox";
 import { Badge } from "../../components/ui/badge";
 import { Button } from "../../components/ui/button";
@@ -22,6 +22,9 @@ import {
   statuses,
   schoolTypes,
 } from "../../components/ui/applications/data/data";
+import { InfiniteApplications } from "../../components/ui/applications/infinite-applications";
+import { useBatchContext } from "../../context/BatchContext";
+import { BatchSelector } from "../../components/batch/BatchSelector";
 
 interface InitialFilterValues {
   search: string;
@@ -57,8 +60,8 @@ const Applications = () => {
     program: "",
   };
 
-  const { applications, batch, updateBatch, applicationsBeingFetched } =
-    useStudent();
+  const { applications, applicationsBeingFetched } = useStudent();
+  const { batch, setBatch: updateBatch } = useBatchContext();
   const { universityList, programsList } = useEducation();
   const { push, locale } = useRouter();
   const { t } = useTranslation("applications");
@@ -421,19 +424,21 @@ const Applications = () => {
           </Link>
         </div>
 
-        <BatchSelectorComponent
+        {/* <BatchSelectorComponent
           batch={batch}
           updateBatch={updateBatch}
-        ></BatchSelectorComponent>
+        ></BatchSelectorComponent> */}
+        {/* <BatchSelector /> */}
       </div>
 
-      {applicationsBeingFetched ? (
+      {/* {applicationsBeingFetched ? (
         <div className="min-h-[12.8rem] flex justify-center items-center animate-pulse bg-black/10 rounded-md">
           <p>{t("loading")}</p>
         </div>
       ) : (
         <DataTable columns={columns} data={applications ?? []}></DataTable>
-      )}
+      )} */}
+      <InfiniteApplications></InfiniteApplications>
     </PageComponent>
   );
 };

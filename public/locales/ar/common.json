@@ -13,6 +13,8 @@
   "gpaSummary": "ملخص المعدل التراكمي",
   "topProgram": "أفضل البرامج",
   "manualReport": "تقرير يدوي",
+  "noResults": "لا توجد نتائج.",
+  "fetchingMore": "جاري تحميل المزيد...",
   "search": "بحث",
   "all": "الكل",
   "view": "مراجعة",

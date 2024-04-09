@@ -12,6 +12,8 @@
   "resetFilters": "Reset Filters",
   "tableTitleStudent": "Student",
   "tableTitleGpa": "GPA",
+  "tableTitleScore": "Score",
+
   "tableTitleEducation": "Program - University",
   "tableTitleApplicationDate": "Application Date",
   "tableTitleLastUpdate": "Last Updated",
@@ -24,6 +26,7 @@
   "studentInformation": "Student Information",
   "parentsInformation": "Parents Information",
   "updatedSuccessfully": "Updated Successfully",
+  "success": "Success",
   "dragDropTheFileHereOr": "Drag and drop the file here or click to select",
   "clear": "Clear",
   "dropTheFilesHere": "Drop some files here...",

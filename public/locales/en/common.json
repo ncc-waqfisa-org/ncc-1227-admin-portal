@@ -13,6 +13,8 @@
   "gpaSummary": "GPA Summary",
   "topProgram": "Top Programs",
   "createReport": "Create Report",
+  "noResults": "No Results.",
+  "fetchingMore": "Fetching More...",
   "search": "Search",
   "all": "All",
   "ADMIN": "Admin",
