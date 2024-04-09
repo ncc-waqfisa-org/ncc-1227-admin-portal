@@ -1419,6 +1419,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "batch": {
+                    "name": "batch",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "email": {
                     "name": "email",
                     "isArray": false,
@@ -2103,5 +2110,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "60614362ec353def0ee7246ac21f19f9"
+    "version": "bff31e1c95ccce5430971765067cf3fe"
 };

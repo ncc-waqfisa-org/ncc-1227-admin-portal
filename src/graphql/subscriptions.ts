@@ -158,6 +158,7 @@ export const onCreateApplication = /* GraphQL */ `subscription OnCreateApplicati
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -289,6 +290,7 @@ export const onUpdateApplication = /* GraphQL */ `subscription OnUpdateApplicati
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -420,6 +422,7 @@ export const onDeleteApplication = /* GraphQL */ `subscription OnDeleteApplicati
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -1060,6 +1063,7 @@ export const onCreateStudentLog = /* GraphQL */ `subscription OnCreateStudentLog
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -1112,6 +1116,7 @@ export const onUpdateStudentLog = /* GraphQL */ `subscription OnUpdateStudentLog
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -1164,6 +1169,7 @@ export const onDeleteStudentLog = /* GraphQL */ `subscription OnDeleteStudentLog
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -1360,6 +1366,7 @@ export const onCreateStudent = /* GraphQL */ `subscription OnCreateStudent($filt
     cpr
     cprDoc
     fullName
+    batch
     email
     phone
     gender
@@ -1424,6 +1431,7 @@ export const onUpdateStudent = /* GraphQL */ `subscription OnUpdateStudent($filt
     cpr
     cprDoc
     fullName
+    batch
     email
     phone
     gender
@@ -1488,6 +1496,7 @@ export const onDeleteStudent = /* GraphQL */ `subscription OnDeleteStudent($filt
     cpr
     cprDoc
     fullName
+    batch
     email
     phone
     gender

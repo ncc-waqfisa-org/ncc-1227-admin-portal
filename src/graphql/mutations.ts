@@ -162,6 +162,7 @@ export const createApplication = /* GraphQL */ `mutation CreateApplication(
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -294,6 +295,7 @@ export const updateApplication = /* GraphQL */ `mutation UpdateApplication(
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -426,6 +428,7 @@ export const deleteApplication = /* GraphQL */ `mutation DeleteApplication(
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -1091,6 +1094,7 @@ export const createStudentLog = /* GraphQL */ `mutation CreateStudentLog(
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -1144,6 +1148,7 @@ export const updateStudentLog = /* GraphQL */ `mutation UpdateStudentLog(
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -1197,6 +1202,7 @@ export const deleteStudentLog = /* GraphQL */ `mutation DeleteStudentLog(
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -1408,6 +1414,7 @@ export const createStudent = /* GraphQL */ `mutation CreateStudent(
     cpr
     cprDoc
     fullName
+    batch
     email
     phone
     gender
@@ -1475,6 +1482,7 @@ export const updateStudent = /* GraphQL */ `mutation UpdateStudent(
     cpr
     cprDoc
     fullName
+    batch
     email
     phone
     gender
@@ -1542,6 +1550,7 @@ export const deleteStudent = /* GraphQL */ `mutation DeleteStudent(
     cpr
     cprDoc
     fullName
+    batch
     email
     phone
     gender

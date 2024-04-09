@@ -49,6 +49,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "dummyUpdate": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "exportApplicationPdf": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -122,6 +127,22 @@
         {
           "category": "function",
           "resourceName": "bulkAutoReject"
+        }
+      ]
+    },
+    "AMPLIFY_function_dummyUpdate_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "dummyUpdate"
+        }
+      ]
+    },
+    "AMPLIFY_function_dummyUpdate_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "dummyUpdate"
         }
       ]
     },

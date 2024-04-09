@@ -174,6 +174,7 @@ export const getApplication = /* GraphQL */ `query GetApplication($id: ID!) {
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -796,6 +797,7 @@ export const getStudentLog = /* GraphQL */ `query GetStudentLog($id: ID!) {
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -1097,6 +1099,7 @@ export const getStudent = /* GraphQL */ `query GetStudent($cpr: String!) {
     cpr
     cprDoc
     fullName
+    batch
     email
     phone
     gender
@@ -1174,6 +1177,7 @@ export const listStudents = /* GraphQL */ `query ListStudents(
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -1223,6 +1227,7 @@ export const syncStudents = /* GraphQL */ `query SyncStudents(
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -2014,6 +2019,7 @@ export const studentsByNationalityCategoryAndGraduationDate = /* GraphQL */ `que
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender

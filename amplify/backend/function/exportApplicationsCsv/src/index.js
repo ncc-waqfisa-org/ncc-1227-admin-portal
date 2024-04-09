@@ -110,20 +110,24 @@ async function uploadToS3(csv) {
 }
 
 async function getStudents(batchValue) {
-    const startDate = new Date();
-    startDate.setFullYear(batchValue);
-    startDate.setMonth(0); // September
-    startDate.setDate(1); // 1st
-    const endDate = new Date();
-    endDate.setMonth(11); // December
-    endDate.setDate(31); // 31st
+    // const startDate = new Date();
+    // startDate.setFullYear(batchValue);
+    // startDate.setMonth(0); // September
+    // startDate.setDate(1); // 1st
+    // const endDate = new Date();
+    // endDate.setMonth(11); // December
+    // endDate.setDate(31); // 31st
     const params = {
         TableName: 'Student-cw7beg2perdtnl7onnneec4jfa-staging',
         // graduationDate is contained in the batch attribute
-        FilterExpression: 'graduationDate BETWEEN :startDate AND :endDate',
+        FilterExpression: '#batch = :batchValue',
         ExpressionAttributeValues: {
-            ':startDate': startDate.toISOString(),
-            ':endDate': endDate.toISOString()
+            // ':startDate': startDate.toISOString(),
+            // ':endDate': endDate.toISOString()
+            ':batchValue': batchValue
+        },
+        ExpressionAttributeNames: {
+            '#batch': 'batch'
         }
     };
     let allStudents = [];
