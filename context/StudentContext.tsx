@@ -328,7 +328,6 @@ export async function getApplicationByIdAPI(
         createdAt
         email
         graduationDate
-        householdIncome
         phone
         placeOfBirth
         preferredLanguage

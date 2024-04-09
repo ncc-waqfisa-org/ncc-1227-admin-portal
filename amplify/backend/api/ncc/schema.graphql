@@ -171,7 +171,7 @@ type Student @model @auth(rules: [{ allow: public }]) {
   specialization: String
   placeOfBirth: String
   studentOrderAmongSiblings: Int
-  householdIncome: Float
+#  householdIncome: Float
   familyIncome: FamilyIncome
   familyIncomeProofDoc: String
   familyIncomeProofDocs: [String]

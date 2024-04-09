@@ -184,7 +184,6 @@ export const getApplication = /* GraphQL */ `query GetApplication($id: ID!) {
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -807,7 +806,6 @@ export const getStudentLog = /* GraphQL */ `query GetStudentLog($id: ID!) {
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -1109,7 +1107,6 @@ export const getStudent = /* GraphQL */ `query GetStudent($cpr: String!) {
     specialization
     placeOfBirth
     studentOrderAmongSiblings
-    householdIncome
     familyIncome
     familyIncomeProofDoc
     familyIncomeProofDocs
@@ -1187,7 +1184,6 @@ export const listStudents = /* GraphQL */ `query ListStudents(
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -1237,7 +1233,6 @@ export const syncStudents = /* GraphQL */ `query SyncStudents(
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -2029,7 +2024,6 @@ export const studentsByNationalityCategoryAndGraduationDate = /* GraphQL */ `que
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs

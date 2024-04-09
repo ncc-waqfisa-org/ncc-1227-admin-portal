@@ -80,12 +80,12 @@ const Applications = () => {
 
   // let selectedApplication: Application[] = [];
 
+  // .sort(
+  //   (a, b) =>
+  //     (a.student?.householdIncome ?? 0) - (b.student?.householdIncome ?? 0)
+  // )
   let sortedApplications = applications
-    ?.sort(
-      (a, b) =>
-        (a.student?.householdIncome ?? 0) - (b.student?.householdIncome ?? 0)
-    )
-    .sort((a, b) => (b.gpa ?? 0) - (a.gpa ?? 0))
+    ?.sort((a, b) => (b.gpa ?? 0) - (a.gpa ?? 0))
     .sort((a, b) => {
       if (a.status && b.status) {
         if (getStatusOrder(b.status) > getStatusOrder(a.status)) return 1;

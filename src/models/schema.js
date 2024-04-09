@@ -1495,13 +1495,6 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "householdIncome": {
-                    "name": "householdIncome",
-                    "isArray": false,
-                    "type": "Float",
-                    "isRequired": false,
-                    "attributes": []
-                },
                 "familyIncome": {
                     "name": "familyIncome",
                     "isArray": false,
@@ -2110,5 +2103,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "e97a03d8592e6f6458cd1f7da452d4ab"
+    "version": "60614362ec353def0ee7246ac21f19f9"
 };

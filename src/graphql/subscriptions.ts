@@ -168,7 +168,6 @@ export const onCreateApplication = /* GraphQL */ `subscription OnCreateApplicati
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -300,7 +299,6 @@ export const onUpdateApplication = /* GraphQL */ `subscription OnUpdateApplicati
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -432,7 +430,6 @@ export const onDeleteApplication = /* GraphQL */ `subscription OnDeleteApplicati
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -1073,7 +1070,6 @@ export const onCreateStudentLog = /* GraphQL */ `subscription OnCreateStudentLog
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -1126,7 +1122,6 @@ export const onUpdateStudentLog = /* GraphQL */ `subscription OnUpdateStudentLog
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -1179,7 +1174,6 @@ export const onDeleteStudentLog = /* GraphQL */ `subscription OnDeleteStudentLog
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -1376,7 +1370,6 @@ export const onCreateStudent = /* GraphQL */ `subscription OnCreateStudent($filt
     specialization
     placeOfBirth
     studentOrderAmongSiblings
-    householdIncome
     familyIncome
     familyIncomeProofDoc
     familyIncomeProofDocs
@@ -1441,7 +1434,6 @@ export const onUpdateStudent = /* GraphQL */ `subscription OnUpdateStudent($filt
     specialization
     placeOfBirth
     studentOrderAmongSiblings
-    householdIncome
     familyIncome
     familyIncomeProofDoc
     familyIncomeProofDocs
@@ -1506,7 +1498,6 @@ export const onDeleteStudent = /* GraphQL */ `subscription OnDeleteStudent($filt
     specialization
     placeOfBirth
     studentOrderAmongSiblings
-    householdIncome
     familyIncome
     familyIncomeProofDoc
     familyIncomeProofDocs

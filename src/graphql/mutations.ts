@@ -172,7 +172,6 @@ export const createApplication = /* GraphQL */ `mutation CreateApplication(
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -305,7 +304,6 @@ export const updateApplication = /* GraphQL */ `mutation UpdateApplication(
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -438,7 +436,6 @@ export const deleteApplication = /* GraphQL */ `mutation DeleteApplication(
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -1104,7 +1101,6 @@ export const createStudentLog = /* GraphQL */ `mutation CreateStudentLog(
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -1158,7 +1154,6 @@ export const updateStudentLog = /* GraphQL */ `mutation UpdateStudentLog(
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -1212,7 +1207,6 @@ export const deleteStudentLog = /* GraphQL */ `mutation DeleteStudentLog(
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -1424,7 +1418,6 @@ export const createStudent = /* GraphQL */ `mutation CreateStudent(
     specialization
     placeOfBirth
     studentOrderAmongSiblings
-    householdIncome
     familyIncome
     familyIncomeProofDoc
     familyIncomeProofDocs
@@ -1492,7 +1485,6 @@ export const updateStudent = /* GraphQL */ `mutation UpdateStudent(
     specialization
     placeOfBirth
     studentOrderAmongSiblings
-    householdIncome
     familyIncome
     familyIncomeProofDoc
     familyIncomeProofDocs
@@ -1560,7 +1552,6 @@ export const deleteStudent = /* GraphQL */ `mutation DeleteStudent(
     specialization
     placeOfBirth
     studentOrderAmongSiblings
-    householdIncome
     familyIncome
     familyIncomeProofDoc
     familyIncomeProofDocs
