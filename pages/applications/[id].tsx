@@ -10,6 +10,14 @@ import StudentInfoComponent from "../../components/student-info-component";
 import ParentsInfoComponent from "../../components/parents-info-component";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "react-i18next";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "../../components/ui/accordion";
+import StudentUpdate from "../../components/student/StudentUpdate";
+import UpdateParentInfo from "../../components/student/UpdateParentInfo";
 
 interface Props {
   application: Application;
@@ -47,7 +55,7 @@ const ApplicationInfo: FC<Props> = (props) => {
           <div className="text-2xl font-semibold ">{t("application")}</div>
         </div>
 
-        <div>
+        {/* <div>
           <div className="mt-10 ">
             <div className="text-base font-medium text-gray-500 ">
               {t("studentInformation")}
@@ -68,10 +76,59 @@ const ApplicationInfo: FC<Props> = (props) => {
           <ParentsInfoComponent
             parents={props.application.student?.ParentInfo}
           ></ParentsInfoComponent>
-        </div>
+        </div> */}
 
-        <div className=" divider"></div>
-        <ViewApplication
+        {props.application.student && (
+          <Accordion
+            className="w-full"
+            type="single"
+            defaultValue="applicationInformation"
+            collapsible
+          >
+            <AccordionItem value="applicationInformation">
+              <AccordionTrigger className="text-xl font-medium">
+                {" "}
+                {t("applicationInformation")}
+              </AccordionTrigger>
+              <AccordionContent>
+                <ViewApplication
+                  application={props.application}
+                  downloadLinks={{
+                    schoolCertificate:
+                      props.application.attachment?.schoolCertificate,
+                    transcriptDoc: props.application.attachment?.transcriptDoc,
+                    signedContractDoc:
+                      props.application.attachment?.signedContractDoc,
+                  }}
+                  readOnly={false}
+                ></ViewApplication>
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="studentInformation">
+              <AccordionTrigger className="text-xl font-medium">
+                {" "}
+                {t("studentInformation")}
+              </AccordionTrigger>
+              <AccordionContent>
+                <StudentUpdate student={props.application.student} />
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="parentsInformation">
+              <AccordionTrigger className="text-xl font-medium">
+                {t("parentsInformation")}
+              </AccordionTrigger>
+              <AccordionContent>
+                {props.application.student.ParentInfo && (
+                  <UpdateParentInfo
+                    parentInfo={props.application.student.ParentInfo}
+                  />
+                )}
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        )}
+
+        {/* <ViewApplication
           application={props.application}
           downloadLinks={{
             schoolCertificate: props.application.attachment?.schoolCertificate,
@@ -79,7 +136,7 @@ const ApplicationInfo: FC<Props> = (props) => {
             signedContractDoc: props.application.attachment?.signedContractDoc,
           }}
           readOnly={false}
-        ></ViewApplication>
+        ></ViewApplication> */}
       </PageComponent>
     </div>
   );
