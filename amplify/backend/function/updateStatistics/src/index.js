@@ -74,6 +74,10 @@ async function getScoreHistograms(tableName, batchValue) {
         lastEvaluatedKey = scoreResult.LastEvaluatedKey;
     } while (lastEvaluatedKey);
 
+    // // sort the histogram by key
+    // const sortedHistogram = Object.entries(histogramJson).sort((a, b) => a[0] - b[0]);
+    // histogramJson = Object.fromEntries(sortedHistogram);
+
     return histogramJson;
 }
 

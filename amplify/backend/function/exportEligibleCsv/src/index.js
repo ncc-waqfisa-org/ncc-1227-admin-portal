@@ -69,7 +69,7 @@ async function getApplications(tableName, batchValue, exceptionUniversities, ext
 
     allApplications = allApplications.filter(application => {
         // Filter out rejected applications
-        if (application.status === 'REJECTED') {
+        if (application.status === 'REJECTED' || application.status === 'WITHDRAWN') {
             return false;
         }
         // Filter out not completed applications unless they are from exception or extended universities

@@ -486,6 +486,7 @@ type EagerStudent = {
   readonly cpr: string;
   readonly cprDoc?: string | null;
   readonly fullName?: string | null;
+  readonly batch?: number | null;
   readonly email?: string | null;
   readonly phone?: string | null;
   readonly gender?: Gender | keyof typeof Gender | null;
@@ -518,6 +519,7 @@ type LazyStudent = {
   readonly cpr: string;
   readonly cprDoc?: string | null;
   readonly fullName?: string | null;
+  readonly batch?: number | null;
   readonly email?: string | null;
   readonly phone?: string | null;
   readonly gender?: Gender | keyof typeof Gender | null;

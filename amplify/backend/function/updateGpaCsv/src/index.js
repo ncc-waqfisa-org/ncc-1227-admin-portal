@@ -70,7 +70,7 @@ async function bulkUpdateApplications(tableName, batchValue, dataStream){
         // if (!student) {
         //     return Promise.resolve();
         // }
-        let score = calculateScore(row.familyIncome, row.GPA, row.adminPoints);
+        let score = calculateScore(row.familyIncome, row.verifiedGPA, row.adminPoints);
         if(isNaN(score) || score < 0 || isNaN(row.verifiedGPA)){
            score = 0;
         }
@@ -100,18 +100,22 @@ async function bulkUpdateApplications(tableName, batchValue, dataStream){
         }
     });
     return Promise.all(updatePromises);
-
 }
 
 function processCsv(csvData, applications) {
     let csvString = Buffer.from(csvData, 'base64').toString('utf-8');
     const rows = csvString.split(/\r?\n/).slice(1);
 
-
     const dataStream = rows.map(row => {
         const columns = row.split(',');
-        const cpr = // take only the digits and remove any spaces or special characters or quotes
+        let cpr = // take only the digits and remove any spaces or special characters or quotes
             columns[0]?.replace(/[^0-9]/g, '');
+
+        if(cpr.length !== 9){
+            // add the missing zeros
+            cpr = '0'.repeat(9 - cpr.length) + cpr;
+        }
+
         return {
             // id: columns[0],
             // name: // remove the quotes around the name
@@ -155,6 +159,9 @@ async function checkIsAdmin(token) {
 function calculateScore(familyIncome, gpa, adminPoints= 0) {
     let score = gpa * 0.7 + adminPoints;
     if(familyIncome === "LESS_THAN_1500") {
+        score += 20;
+    }
+    else if(familyIncome === "MORE_THAN_1500") {
         score += 10;
     }
     // convert to 2 decimal places
