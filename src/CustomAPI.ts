@@ -891,7 +891,6 @@ export async function getAllApplicationsAPI(
         createdAt
         updatedAt
         student {
-          householdIncome
           fullName
         }
       }
@@ -1036,7 +1035,6 @@ export async function getAllApplicationsWithPaginationAPI(
       createdAt
       updatedAt
       student {
-        householdIncome
         fullName
         email
         phone
@@ -1113,7 +1111,6 @@ export async function getAllApprovedApplicationsAPI(
         createdAt
         updatedAt
         student {
-          householdIncome
           fullName
         }
       }
