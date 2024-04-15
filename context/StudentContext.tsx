@@ -262,15 +262,19 @@ export async function getApplicationByIdAPI(
         schoolCertificate
         cprDoc
         id
+        _version
         signedContractDoc
         transcriptDoc
         updatedAt
       }
       attachmentID
       gpa
+      verifiedGPA
       id
       programs {
         items {
+          id
+          _version
           choiceOrder
           programID
           acceptanceLetterDoc
@@ -280,6 +284,11 @@ export async function getApplicationByIdAPI(
             university {
               name
               nameAr
+              isException
+              isExtended
+              extensionDuration
+              isTrashed
+              isDeactivated
             }
           }
         }

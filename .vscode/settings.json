@@ -13,6 +13,7 @@
     "chartjs",
     "daisyui",
     "Formik",
+    "hookform",
     "Ilist",
     "lspace",
     "msal",

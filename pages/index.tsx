@@ -19,6 +19,7 @@ import { Button } from "../components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { useBatchContext } from "../context/BatchContext";
 import { getStatistics } from "../src/CustomAPI";
+import { DownloadFileFromUrl } from "../components/download-file-from-url";
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const { locale } = ctx;
@@ -70,48 +71,18 @@ const Home = () => {
               </div>
             </div>
             <div className="flex flex-wrap items-center justify-end gap-4 my-4">
-              {/* <BatchSelectorComponent
-                batch={batch}
-                updateBatch={updateBatch}
-              ></BatchSelectorComponent> */}
               <BatchSelector />
               <PrimaryButton
                 name={t("allApplicationsButton")}
                 buttonClick={() => push("/applications")}
               ></PrimaryButton>
 
-              <Button
-                className="rounded-xl"
-                variant={"outline"}
-                onClick={() => {
-                  toast.promise(
-                    fetch(
-                      `https://a69a50c47l.execute-api.us-east-1.amazonaws.com/default/applications/export?batch=${batch}}`,
-                      {
-                        headers: {
-                          Authorization: `Bearer ${token}`,
-                        },
-                      }
-                    ).then(async (res) => {
-                      const { url } = await res.json();
-                      if (url) {
-                        const a = document.createElement("a");
-                        a.href = url;
-                        a.download = `${batch}-Applications-${new Date().toISOString()}.csv`;
-                        a.click();
-                        window.URL.revokeObjectURL(url);
-                      }
-                    }),
-                    {
-                      loading: tApplications("loading"),
-                      success: tApplications("success"),
-                      error: tErrors("somethingWentWrong"),
-                    }
-                  );
-                }}
+              <DownloadFileFromUrl
+                fileName={`${batch}-Applications`}
+                url={`https://a69a50c47l.execute-api.us-east-1.amazonaws.com/default/applications/export?batch=${batch}}`}
               >
                 {t("exportCSV")}
-              </Button>
+              </DownloadFileFromUrl>
             </div>
           </div>
           {/* mini graphs */}

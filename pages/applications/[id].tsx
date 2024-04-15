@@ -18,6 +18,7 @@ import {
 } from "../../components/ui/accordion";
 import StudentUpdate from "../../components/student/StudentUpdate";
 import UpdateParentInfo from "../../components/student/UpdateParentInfo";
+import { ApplicationForm } from "../../components/application/ApplicationForm";
 
 interface Props {
   application: Application;
@@ -91,7 +92,8 @@ const ApplicationInfo: FC<Props> = (props) => {
                 {t("applicationInformation")}
               </AccordionTrigger>
               <AccordionContent>
-                <ViewApplication
+                <ApplicationForm application={props.application} />
+                {/* <ViewApplication
                   application={props.application}
                   downloadLinks={{
                     schoolCertificate:
@@ -101,7 +103,7 @@ const ApplicationInfo: FC<Props> = (props) => {
                       props.application.attachment?.signedContractDoc,
                   }}
                   readOnly={false}
-                ></ViewApplication>
+                ></ViewApplication> */}
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="studentInformation">

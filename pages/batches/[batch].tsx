@@ -10,11 +10,12 @@ import { getSingleBatch, updateSingleBatch } from "../../src/CustomAPI";
 import { Batch } from "../../src/models";
 import { UpdateBatchMutationVariables } from "../../src/API";
 import toast from "react-hot-toast";
-import { useRouter } from "next/router";
+
 import { useTranslation } from "react-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { C } from "chart.js/dist/chunks/helpers.core";
 import { cn } from "../../src/utils";
+import { DownloadFileFromUrl } from "../../components/download-file-from-url";
+import { BulkUploadGpa } from "../../components/batch/BulkUploadGpa";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { batch } = ctx.query;
@@ -25,6 +26,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       ...(await serverSideTranslations(locale ?? "en", [
         "batches",
         "pageTitles",
+        "applications",
         "signIn",
         "common",
         "errors",
@@ -39,7 +41,6 @@ type PageType = {
 };
 
 const SingleBatchPage: FC<PageType> = ({ batchYear }) => {
-  const { push } = useRouter();
   const { t } = useTranslation("batches");
   const queryClient = useQueryClient();
   const { data: batch, isPending } = useQuery({
@@ -98,12 +99,25 @@ const SingleBatchPage: FC<PageType> = ({ batchYear }) => {
 
   return (
     <PageComponent title="Batch">
-      <div className="flex relative flex-col w-full max-w-3xl mx-auto">
+      <div className="relative flex flex-col w-full max-w-3xl gap-4 mx-auto">
         {/* header */}
-        <div className=" p-6">
+        <div className="p-6 ">
           <div className="text-2xl font-semibold ">{t("batch")}</div>
           <div className="text-base font-medium text-gray-500 ">
             {`${t("editBatch")} ${batch?.getBatch?.batch}`}
+          </div>
+        </div>
+
+        <div className="grid gap-2 px-4">
+          <p className="font-medium">{t("toolbar")}</p>
+          <div className="flex flex-wrap gap-3 p-3 border rounded-lg">
+            <DownloadFileFromUrl
+              fileName={"unverified-CPR's"}
+              url={`https://zcpmds4jptbtkcc6ynxxxsmcee0kjlud.lambda-url.us-east-1.on.aws?batch=${batchYear}`}
+            >
+              {t("downloadCPRsList")}
+            </DownloadFileFromUrl>
+            {batchYear && <BulkUploadGpa batch={batchYear} />}
           </div>
         </div>
 

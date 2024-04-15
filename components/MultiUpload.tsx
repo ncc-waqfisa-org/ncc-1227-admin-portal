@@ -11,9 +11,9 @@ interface Props {
   maxSize?: number;
   maxFiles?: number;
   single?: boolean;
-  handleChange: (event: any) => void;
+  handleChange?: (event: any) => void;
   handleOnClear: () => void;
-  value: any;
+  value?: any;
   filedName: string;
   title: string;
   disabled?: boolean;
@@ -79,7 +79,7 @@ export default function MultiUpload(props: Props) {
             <span className="text-red-500 ">*</span>
           </div>
           <button
-            className="ml-auto btn btn-ghost btn-xs"
+            className="ms-auto btn btn-ghost btn-xs"
             type="button"
             onClick={() => {
               handleCleanFiles();
@@ -116,9 +116,9 @@ export default function MultiUpload(props: Props) {
             name={props.filedName}
             title={props.filedName}
             onChange={(event) => {
-              props.handleChange(event);
+              props.handleChange && props.handleChange(event);
             }}
-            value={props.value}
+            // value={props.value}
             {...getInputProps()}
           />
           {props.single && files.length > 0 ? (
@@ -143,7 +143,7 @@ export default function MultiUpload(props: Props) {
             <div className="flex flex-wrap gap-3 text-sm">
               {files.map((file: File, index) => (
                 <div
-                  className="flex flex-col justify-start px-3 py-2 bg-gray-200 text-gray-500 border border-gray-300 rounded-md"
+                  className="flex flex-col justify-start px-3 py-2 text-gray-500 bg-gray-200 border border-gray-300 rounded-md"
                   key={index}
                 >
                   <p>{file.name}</p>
