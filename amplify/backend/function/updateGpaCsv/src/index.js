@@ -84,7 +84,7 @@ async function bulkUpdateApplications(tableName, batchValue, dataStream){
             Key: {
                 id: row.id
             },
-            UpdateExpression: 'set verifiedGpa = :gpa, score = :score',
+            UpdateExpression: 'set verifiedGPA = :gpa, score = :score',
             ExpressionAttributeValues: {
                 ':gpa': !isNaN(row.verifiedGPA) ? row.verifiedGPA : 0,
                 // ':studentName': row.name,

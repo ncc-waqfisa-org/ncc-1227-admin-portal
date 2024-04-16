@@ -93,7 +93,7 @@ export const getApplication = /* GraphQL */ `query GetApplication($id: ID!) {
   getApplication(id: $id) {
     id
     gpa
-    verifiedGpa
+    verifiedGPA
     status
     attachmentID
     adminLogs {
@@ -228,7 +228,7 @@ export const listApplications = /* GraphQL */ `query ListApplications(
     items {
       id
       gpa
-      verifiedGpa
+      verifiedGPA
       status
       attachmentID
       dateTime
@@ -280,7 +280,7 @@ export const syncApplications = /* GraphQL */ `query SyncApplications(
     items {
       id
       gpa
-      verifiedGpa
+      verifiedGPA
       status
       attachmentID
       dateTime
@@ -344,7 +344,7 @@ export const getProgramChoice = /* GraphQL */ `query GetProgramChoice($id: ID!) 
     application {
       id
       gpa
-      verifiedGpa
+      verifiedGPA
       status
       attachmentID
       dateTime
@@ -1359,7 +1359,7 @@ export const getScholarship = /* GraphQL */ `query GetScholarship($id: ID!) {
     application {
       id
       gpa
-      verifiedGpa
+      verifiedGPA
       status
       attachmentID
       dateTime
@@ -1600,7 +1600,7 @@ export const applicationsByIdAndDateTime = /* GraphQL */ `query ApplicationsById
     items {
       id
       gpa
-      verifiedGpa
+      verifiedGPA
       status
       attachmentID
       dateTime
@@ -1656,7 +1656,7 @@ export const applicationsByNationalityCategoryAndBatch = /* GraphQL */ `query Ap
     items {
       id
       gpa
-      verifiedGpa
+      verifiedGPA
       status
       attachmentID
       dateTime
@@ -1712,7 +1712,7 @@ export const applicationsByStudentCPRAndGpa = /* GraphQL */ `query ApplicationsB
     items {
       id
       gpa
-      verifiedGpa
+      verifiedGPA
       status
       attachmentID
       dateTime
@@ -1768,7 +1768,7 @@ export const applicationsByBatchAndStatus = /* GraphQL */ `query ApplicationsByB
     items {
       id
       gpa
-      verifiedGpa
+      verifiedGPA
       status
       attachmentID
       dateTime
@@ -1824,7 +1824,7 @@ export const applicationsByScoreAndStatus = /* GraphQL */ `query ApplicationsByS
     items {
       id
       gpa
-      verifiedGpa
+      verifiedGPA
       status
       attachmentID
       dateTime
@@ -1880,7 +1880,7 @@ export const applicationsByProcessedAndBatch = /* GraphQL */ `query Applications
     items {
       id
       gpa
-      verifiedGpa
+      verifiedGPA
       status
       attachmentID
       dateTime

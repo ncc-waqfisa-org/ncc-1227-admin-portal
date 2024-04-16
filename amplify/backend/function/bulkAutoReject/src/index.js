@@ -95,7 +95,7 @@ async function bulkUpdateApplications(batchValue, applications, extendedUniversi
         const isExtended = extendedUniversities.some(university => university.id === universityId);
         const isException = exceptionUniversities.some(university => university.id === universityId);
         const isNonBahraini = application.nationalityCategory === 'NON_BAHRAINI';
-        const isEligible = application.verifiedGPA? application.verifiedGPA >= programs.find(program => program.id === programId).minimumGPA: true;
+        const isEligible = application.verifiedGPA? application.verifiedGPA >= programs.find(program => program.id === programId).minimumGPA || 85 : false;
 
 
         let isNotCompleted = application.status === 'NOT_COMPLETED';
