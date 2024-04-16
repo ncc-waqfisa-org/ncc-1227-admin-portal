@@ -129,16 +129,21 @@ async function bulkUpdateApplications(batchValue, applications, extendedUniversi
         else if(application.verifiedGPA && application.verifiedGPA < 88) {
             status = 'REJECTED';
             isProcessed = 1;
-        } else if(isNotCompleted) {
+        }
+        else if(isNotCompleted) {
             status = 'REJECTED';
             isProcessed = 1;
         }
-        else if(!isNotCompleted && !isEligible && ! application.verifiedGPA) {
+        else if(!isNotCompleted && !application.verifiedGPA) {
             status = 'REVIEW';
             isProcessed = 0;
         }
         else if(isEligible) {
             status = 'ELIGIBLE';
+            isProcessed = 1;
+        }
+        else if(!isEligible && application.verifiedGPA) {
+            status = 'REJECTED';
             isProcessed = 1;
         }
         else {

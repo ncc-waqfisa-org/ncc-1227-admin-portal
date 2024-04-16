@@ -28,7 +28,8 @@ exports.handler = async (event) => {
         };
     }
 
-    const csvData = JSON.parse(event.body).csv;
+    // const csvData = JSON.parse(event.body).csv;
+    const csvData = event.body;
     if(!csvData){
         return {
             statusCode: 400,
@@ -93,7 +94,7 @@ async function bulkUpdateApplications(tableName, batchValue, dataStream){
                 // ':familyIncome': student.familyIncome
             },
         };
-        if (row.id && row.GPA) {
+        if (row.id && row.verifiedGPA) {
             return dynamoDB.update(params).promise();
         } else {
             return Promise.resolve();
@@ -122,8 +123,8 @@ function processCsv(csvData, applications) {
             //     columns[2]?.replace(/^"(.*)"$/, '$1'),
             id: applications.find(application => application.studentCPR === cpr)?.id,
             cpr: cpr,
-            GPA: columns[1],
-            verifiedGPA: columns[2],
+            // GPA: columns[1],
+            verifiedGPA: columns[1],
             familyIncome: applications.find(application => application.studentCPR === cpr)?.familyIncome,
             adminPoints: applications.find(application => application.studentCPR === cpr)?.adminPoints ?? 0,
             // familyIncome: columns[2],
