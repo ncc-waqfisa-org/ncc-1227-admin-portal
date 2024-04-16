@@ -135,19 +135,30 @@ export const InfiniteApplications = () => {
           return (
             <Badge
               variant={
-                status.value === Status.REJECTED ||
-                status.value === Status.ELIGIBLE ||
-                status.value === Status.APPROVED
-                  ? "destructive"
-                  : "outline"
+                // status.value === Status.REJECTED ||
+                // status.value === Status.ELIGIBLE ||
+                // status.value === Status.APPROVED
+                //   ? "destructive"
+                //   : "outline"
+                "outline"
               }
               className={`flex h-fit w-fit items-center justify-start ${
                 (status.value === Status.WITHDRAWN ||
                   status.value === Status.NOT_COMPLETED) &&
                 "bg-slate-200"
-              } ${status.value === Status.REVIEW && "bg-amber-100"} ${
-                status.value === Status.ELIGIBLE && "bg-blue-500"
-              } ${status.value === Status.APPROVED && "bg-green-500"}`}
+              } ${
+                status.value === Status.REVIEW &&
+                "bg-amber-100 border-amber-300 "
+              } ${
+                status.value === Status.REJECTED &&
+                "border-red-300 text-red-600 bg-red-50"
+              } ${
+                status.value === Status.ELIGIBLE &&
+                "border-blue-300 text-blue-600 bg-blue-50"
+              } ${
+                status.value === Status.APPROVED &&
+                "border-green-400 bg-green-50 text-green-600"
+              }`}
             >
               {status.icon && <status.icon className="w-6 h-6 p-1 me-2" />}
               <span className="min-w-fit">
@@ -203,6 +214,29 @@ export const InfiniteApplications = () => {
             <div className="flex space-x-2">
               <span className="font-medium truncate ">
                 {row.getValue("gpa")}
+              </span>
+            </div>
+          );
+        },
+        enableSorting: false,
+        enableHiding: false,
+      },
+      {
+        accessorKey: "verifiedGPA",
+
+        header: ({ column }) => (
+          <DataTableColumnHeader
+            column={column}
+            title={t("tableTitleVerifiedGpa")}
+          />
+        ),
+        cell: ({ row }) => {
+          return (
+            <div className="flex space-x-2">
+              <span className="font-medium truncate ">
+                {row.getValue("verifiedGPA") === 0
+                  ? "-"
+                  : row.getValue("verifiedGPA") ?? "-"}
               </span>
             </div>
           );

@@ -30,7 +30,7 @@ export interface InfiniteApplication {
   isEmailSent: boolean;
   id: string;
   batch: number;
-  verifiedGpa: number;
+  verifiedGPA: number;
 }
 
 export interface NextStartKey {

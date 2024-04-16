@@ -247,6 +247,11 @@ export async function getApplicationByIdAPI(
       schoolType
       schoolName
       _deleted
+      familyIncome
+      studentName
+      nationalityCategory
+      isFamilyIncomeVerified
+      adminPoints
       _lastChangedAt
       _version
       adminLogs {

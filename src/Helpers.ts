@@ -1,5 +1,5 @@
-import _ from "lodash";
-import { Admin, Application, Program, Status } from "./API";
+import _, { round } from "lodash";
+import { Admin, Application, FamilyIncome, Program, Status } from "./API";
 
 /* -------------------------------------------------------------------------- */
 /*                                  INTERFACE                                 */
@@ -43,6 +43,25 @@ export interface ApplicationSnapshot {
 /* -------------------------------------------------------------------------- */
 /*                                  FUNCTIONS                                 */
 /* -------------------------------------------------------------------------- */
+
+type TCalculateScore = {
+  familyIncome: FamilyIncome | null | undefined;
+  gpa: number;
+  adminScore?: number;
+};
+export function calculateScore({
+  familyIncome,
+  gpa,
+  adminScore = 0,
+}: TCalculateScore) {
+  let score = gpa * 0.7 + adminScore;
+  if (familyIncome === FamilyIncome.LESS_THAN_1500) {
+    score += 20;
+  } else if (familyIncome === FamilyIncome.MORE_THAN_1500) {
+    score += 10;
+  }
+  return round(score, 2);
+}
 
 export function giveMeTopUniversities(
   programs: (Program | null | undefined)[],

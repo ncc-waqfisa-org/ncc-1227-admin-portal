@@ -9,6 +9,7 @@ import {
   SelectGroup,
   SelectLabel,
 } from "../select";
+import { IoIosClose } from "react-icons/io";
 
 import { BatchSelector } from "../../batch/BatchSelector";
 import { Table } from "@tanstack/react-table";
@@ -37,28 +38,39 @@ export const BatchApplicationsToolbar: React.FC<
   table,
   //   selectedBatch,
 }) => {
-  const { batch } = useBatchContext();
+  const { batch, resetApplicationsFilter } = useBatchContext();
   const { t } = useTranslation("applications");
   const { t: tErrors } = useTranslation("errors");
   const { token } = useAuth();
 
   return (
     <div className="flex flex-wrap gap-3">
-      <Select onValueChange={handleStatusChange} value={selectedStatus}>
-        <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Select status" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectGroup>
-            <SelectLabel>Status</SelectLabel>
-            {Object.values(Status).map((status) => (
-              <SelectItem key={status} value={status}>
-                {status}
-              </SelectItem>
-            ))}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
+      <div className="flex items-center gap-2">
+        <Select onValueChange={handleStatusChange} value={selectedStatus}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Select status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Status</SelectLabel>
+              {Object.values(Status).map((status) => (
+                <SelectItem key={status} value={status}>
+                  {status}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+        {selectedStatus && (
+          <Button
+            variant={"outline"}
+            size={"icon"}
+            onClick={resetApplicationsFilter}
+          >
+            <IoIosClose />
+          </Button>
+        )}
+      </div>
       <BatchSelector handleBatchChange={handleBatchChange} />
       {(table.getIsSomeRowsSelected() || table.getIsAllRowsSelected()) && (
         <Button

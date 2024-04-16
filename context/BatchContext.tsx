@@ -9,13 +9,13 @@ import {
   useEffect,
   useState,
 } from "react";
-import { Status } from "../src/API";
+
 import {
   InfiniteApplication,
   TInfiniteApplications,
   NextStartKey,
 } from "../components/ui/applications/infinite-applications-type";
-import { InfiniteData } from "@tanstack/react-query";
+
 import { useAuth } from "../hooks/use-auth";
 
 // interface for all the values & functions
@@ -25,7 +25,8 @@ interface IUseBatchContext {
 
   nextApplicationsKey: NextStartKey | undefined;
   setNextApplicationsKey: Dispatch<SetStateAction<NextStartKey | undefined>>;
-
+  resetApplications: () => void;
+  resetApplicationsFilter: () => void;
   isInitialFetching: boolean;
   batch: number;
   setBatch: Dispatch<SetStateAction<number>>;
@@ -58,6 +59,12 @@ const defaultState: IUseBatchContext = {
     throw new Error("Function not implemented.");
   },
   isInitialFetching: false,
+  resetApplications: function (): void {
+    throw new Error("Function not implemented.");
+  },
+  resetApplicationsFilter: function (): void {
+    throw new Error("Function not implemented.");
+  },
 };
 
 // creating the app contexts
@@ -90,6 +97,40 @@ function useBatchProviderApp() {
     defaultState.applicationsData
   );
 
+  function resetApplications() {
+    setNextApplicationsKey(undefined);
+    setApplicationsData([]);
+    fetchFirstApplicationsPage();
+  }
+
+  async function fetchFirstApplicationsPage() {
+    const batchQuery = batch ? `batch=${batch}` : "";
+    const statusQuery = selectedApplicationsStatus
+      ? `&status=${selectedApplicationsStatus}`
+      : "";
+    setIsInitialFetching(true);
+    const fetchedData = (await fetch(
+      `${process.env.NEXT_PUBLIC_APPLICATION_PAGINATION_ENDPOINT}?${batchQuery}${statusQuery}`,
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    )
+      .then((d) => d.json())
+      .finally(() => {
+        setIsInitialFetching(false);
+      })) as TInfiniteApplications;
+    setApplicationsData(fetchedData.data);
+    setNextApplicationsKey(fetchedData.nextStartKey);
+    return fetchedData;
+  }
+  function resetApplicationsFilter() {
+    setNextApplicationsKey(undefined);
+    setApplicationsData([]);
+    setSelectedApplicationsStatus(undefined);
+  }
+
   useEffect(() => {
     setNextApplicationsKey(undefined);
     setApplicationsData([]);
@@ -119,8 +160,7 @@ function useBatchProviderApp() {
         .finally(() => {
           setIsInitialFetching(false);
         })) as TInfiniteApplications;
-
-      setApplicationsData((old) => [...old, ...fetchedData.data]);
+      setApplicationsData(fetchedData.data);
       setNextApplicationsKey(fetchedData.nextStartKey);
       return fetchedData;
     }
@@ -139,5 +179,7 @@ function useBatchProviderApp() {
     setApplicationsData,
     nextApplicationsKey,
     setNextApplicationsKey,
+    resetApplications,
+    resetApplicationsFilter,
   };
 }

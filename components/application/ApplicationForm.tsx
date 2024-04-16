@@ -34,23 +34,69 @@ import { cn } from "../../src/utils";
 import { Label } from "../ui/label";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
-import { createAdminLogInDB, updateApplicationInDB } from "../../src/CustomAPI";
+import {
+  DocType,
+  createAdminLogInDB,
+  updateApplicationInDB,
+  updateAttachmentInDB,
+  updateProgramChoiceInDB,
+  uploadFile,
+} from "../../src/CustomAPI";
 import { useAuth } from "../../hooks/use-auth";
 import { useStudent } from "../../context/StudentContext";
+import { calculateScore } from "../../src/Helpers";
+import { Switch } from "../ui/switch";
+import GetStorageLinkComponent from "../get-storage-link-component";
+import { FileIcon } from "@radix-ui/react-icons";
+import { useQueryClient } from "@tanstack/react-query";
+import { useBatchContext } from "../../context/BatchContext";
 
 type TApplicationForm = {
   application: Application;
 };
+
+function createChangeSnapshot(oldData: any, newData: any): string {
+  const changes = [];
+  if (newData.status !== oldData.status) {
+    changes.push(`status from "${oldData.status}" to "${newData.status}"`);
+  }
+  if (newData.adminPoints !== oldData.adminPoints) {
+    changes.push(
+      `admin points from "${oldData.adminPoints}" to "${newData.adminPoints}"`
+    );
+  }
+  if (newData.isFamilyIncomeVerified !== oldData.isFamilyIncomeVerified) {
+    changes.push(
+      `family income verification from "${
+        oldData.isFamilyIncomeVerified ? "yes" : "no"
+      }" to "${newData.isFamilyIncomeVerified ? "yes" : "no"}"`
+    );
+  }
+  if (newData.verifiedGPA !== oldData.verifiedGPA) {
+    changes.push(
+      `verified GPA from "${oldData.verifiedGPA}" to "${newData.verifiedGPA}"`
+    );
+  }
+  if (newData.gpa !== oldData.gpa) {
+    changes.push(`GPA from "${oldData.gpa}" to "${newData.gpa}"`);
+  }
+
+  return changes.join(", ");
+}
+
 export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
   const { t } = useTranslation("applications");
   const { t: tL } = useTranslation("applicationLog");
-  const { syncUpdatedApplication } = useStudent();
+  const { resetApplications } = useBatchContext();
+
   const { locale, push } = useRouter();
   const { cpr } = useAuth();
 
   const formSchema = z.object({
+    adminPoints: z.number().min(0).max(10).optional(),
     gpa: z.number().min(0).max(100),
     verifiedGPA: z.number().min(0).max(100),
+    isFamilyIncomeVerified: z.boolean().default(false),
     status: z.enum(Object.values(Status) as [Status]),
     acceptanceLetter: z.string().optional(),
     schoolCertificate: z.string().optional(),
@@ -64,6 +110,8 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      adminPoints: application.adminPoints ?? undefined,
+      isFamilyIncomeVerified: application.isFamilyIncomeVerified ?? false,
       gpa: application.gpa ?? 0,
       verifiedGPA: application.verifiedGPA ?? undefined,
       status: application.status ?? undefined,
@@ -75,40 +123,102 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // TODO: upload new docs if selected
-
-    // TODO: replace the storage keys with the old ones
-    // TODO: update attachment
-    // TODO: update programChoice
+    // upload new docs if selected
+    const acceptanceLetterKey = values.acceptanceLetterFile
+      ? uploadFile(
+          values.acceptanceLetterFile,
+          DocType.PRIMARY_PROGRAM_ACCEPTANCE,
+          application.studentCPR
+        )
+      : Promise.resolve(application.programs?.items[0]?.acceptanceLetterDoc);
+    const transcriptKey = values.transcriptFile
+      ? uploadFile(
+          values.transcriptFile,
+          DocType.TRANSCRIPT,
+          application.studentCPR
+        )
+      : Promise.resolve(application.attachment?.transcriptDoc);
+    const schoolCertificateKey = values.schoolCertificateFile
+      ? uploadFile(
+          values.schoolCertificateFile,
+          DocType.SCHOOL_CERTIFICATE,
+          application.studentCPR
+        )
+      : Promise.resolve(application.attachment?.schoolCertificate);
+    // replace the storage keys with the old ones
+    const [acceptanceLetter, transcript, schoolCertificate] = await Promise.all(
+      [acceptanceLetterKey, transcriptKey, schoolCertificateKey]
+    );
 
     let updateVariables: UpdateApplicationMutationVariables = {
       input: {
         id: application.id,
         status: values.status,
+        adminPoints: values.adminPoints,
+        isFamilyIncomeVerified: values.isFamilyIncomeVerified,
         gpa: values.gpa,
+        score: calculateScore({
+          familyIncome: application.familyIncome,
+          gpa: values.verifiedGPA ?? values.gpa,
+          adminScore: values?.adminPoints,
+        }),
         verifiedGPA: values.verifiedGPA,
         _version: application._version,
       },
     };
-    console.log(
-      "🚀 ~ onSubmit ~ updateVariables: UpdateApplicationMutationVariables.input:",
-      updateVariables
-    );
 
     await toast
-      .promise(updateApplicationInDB(updateVariables), {
-        loading: "Updating...",
-        success: "Application updated successfully",
-        error: "Failed to update application",
-      })
+      .promise(
+        Promise.all([
+          updateAttachmentInDB({
+            input: {
+              id: application.attachment?.id ?? "",
+              transcriptDoc: transcript,
+              schoolCertificate: schoolCertificate,
+              _version: application.attachment?._version,
+            },
+          }),
+          updateProgramChoiceInDB({
+            input: {
+              id: application.programs?.items[0]?.id ?? "",
+              acceptanceLetterDoc: acceptanceLetter,
+              _version: application.programs?.items[0]?._version,
+            },
+          }),
+          updateApplicationInDB(updateVariables),
+        ]),
+        {
+          loading: "Updating...",
+          success: "Application updated successfully",
+          error: "Failed to update application",
+        }
+      )
       .then(async (value) => {
+        const oldData = {
+          status: application.status,
+          adminPoints: application.adminPoints,
+          isFamilyIncomeVerified: application.isFamilyIncomeVerified,
+          verifiedGPA: application.verifiedGPA,
+          gpa: application.gpa,
+        };
+
+        const newData = {
+          status: values.status,
+          adminPoints: values.adminPoints,
+          isFamilyIncomeVerified: values.isFamilyIncomeVerified,
+          verifiedGPA: values.verifiedGPA,
+          gpa: values.gpa,
+        };
+
+        // Calculate changes
+        const snapshot = createChangeSnapshot(oldData, newData);
+
         let createAdminLogVariables: CreateAdminLogMutationVariables = {
           input: {
             applicationID: application.id,
             adminCPR: cpr ?? "",
             dateTime: new Date().toISOString(),
-            // TODO: snapshot update
-            snapshot: `changed application status from ${application.status} to ${values.status}`,
+            snapshot: snapshot,
             reason: values.reason,
             applicationAdminLogsId: application.id,
             adminAdminLogsCpr: cpr ?? "",
@@ -117,9 +227,12 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
 
         await createAdminLogInDB(createAdminLogVariables)
           .then(async (logValue) => {
-            const updatedApplication = value?.updateApplication as Application;
+            // const updatedApplication = value[2]
+            //   ?.updateApplication as Application;
 
-            await syncUpdatedApplication(updatedApplication);
+            // TODO INVALIDATE
+            resetApplications();
+            // await syncUpdatedApplication(updatedApplication);
 
             push("/applications");
             return logValue;
@@ -129,8 +242,6 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
             throw err;
           });
       });
-
-    console.log(values);
   }
 
   return (
@@ -201,6 +312,28 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
           />
           <FormField
             control={form.control}
+            name="adminPoints"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("adminPoints")}</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    max={10}
+                    min={0}
+                    placeholder="Not Added yet"
+                    {...field}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
+                </FormControl>
+                <FormDescription>{t("adminPointsD")}</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
             name="status"
             render={({ field }) => (
               <FormItem>
@@ -227,8 +360,41 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="isFamilyIncomeVerified"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-center justify-between gap-2 p-4 border rounded-lg">
+                <div className="space-y-0.5">
+                  <FormLabel className="text-base">
+                    {t("isFamilyIncomeVerified")}
+                  </FormLabel>
+                  <FormDescription>
+                    {`${t("studentFamilyIncome")} ${t(
+                      `${application.familyIncome}`
+                    )}`}
+                  </FormDescription>
+                  <div className="flex items-center gap-1 py-1 border rounded-md w-fit ps-3 pe-2">
+                    <FileIcon />
+                    <GetStorageLinkComponent
+                      storageKey={
+                        application.student?.familyIncomeProofDocs?.[0]
+                      }
+                      showName
+                    />
+                  </div>
+                </div>
+                <FormControl>
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
           <FormItem>
-            <FormLabel>{tL("program")}</FormLabel>
+            <FormLabel>{t("searchProgram")}</FormLabel>
             <FormControl>
               <Input
                 disabled
