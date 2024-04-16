@@ -32,7 +32,7 @@ exports.handler = async (event) => {
     console.log('universities', universities);
     const extendedUniversities = universities.filter(university => university.isExtended);
     const exceptionUniversities = universities.filter(university => university.isException);
-    await bulkUpdateApplications(batchValue, applications, extendedUniversities, exceptionUniversities, universities, programs);
+    await bulkUpdateApplications(batchValue, applications, extendedUniversities, exceptionUniversities, universities, programs, batchDetails);
 
 
 
@@ -95,21 +95,29 @@ async function bulkUpdateApplications(batchValue, applications, extendedUniversi
         const isExtended = extendedUniversities.some(university => university.id === universityId);
         const isException = exceptionUniversities.some(university => university.id === universityId);
         const isNonBahraini = application.nationalityCategory === 'NON_BAHRAINI';
-        const isEligible = application.verifiedGPA? application.verifiedGPA >= programs.find(program => program.id === programId).minimumGPA: true;
+        const isEligible = application.verifiedGPA? application.verifiedGPA >= programs.find(program => program.id === programId).minimumGPA || 88 : false;
 
 
         let isNotCompleted = application.status === 'NOT_COMPLETED';
         if(isException) {
             isNotCompleted = false;
         } else if(isExtended) {
-            // check the date with extended deadline
             const today = new Date();
             const chosenUniversity = extendedUniversities.find(university => university.id === application.universityID);
-            // TODO: deadline is in days, convert it to a date
-            let deadline = new Date(batchDetails.updateApplicationEndDate);
+
+            const updateApplicationEndDate = batchDetails.updateApplicationEndDate;
+
+            const [year, month, day] = updateApplicationEndDate.split('-').map(Number);
+
+            let deadline = new Date(year, month - 1, day);
+
             deadline.setDate(deadline.getDate() + chosenUniversity.extensionDuration);
 
-            isNotCompleted = today > deadline;
+            console.log('Today:', today);
+            console.log('Deadline:', deadline);
+            console.log('Is today before deadline:', today <= deadline);
+
+            isNotCompleted = today <= deadline;
         }
 
         let status;
@@ -117,16 +125,25 @@ async function bulkUpdateApplications(batchValue, applications, extendedUniversi
         if(isNonBahraini) {
             status = 'REJECTED';
             isProcessed = 1;
-        } else if(isNotCompleted) {
+        }
+        else if(application.verifiedGPA && application.verifiedGPA < 88) {
             status = 'REJECTED';
             isProcessed = 1;
         }
-        else if(!isNotCompleted && !isEligible && ! application.verifiedGPA) {
+        else if(isNotCompleted) {
+            status = 'REJECTED';
+            isProcessed = 1;
+        }
+        else if(!isNotCompleted && !application.verifiedGPA) {
             status = 'REVIEW';
             isProcessed = 0;
         }
         else if(isEligible) {
             status = 'ELIGIBLE';
+            isProcessed = 1;
+        }
+        else if(!isEligible && application.verifiedGPA) {
+            status = 'REJECTED';
             isProcessed = 1;
         }
         else {

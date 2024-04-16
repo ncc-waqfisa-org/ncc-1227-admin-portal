@@ -283,10 +283,10 @@ async function generateArabicPdf(application, program, university, parent, stude
     doc.font('./fonts/Almarai-Bold.ttf').text("رقم البطاقة الذكية للأم: ", {align: 'right', features: ['rtla'], underline: true})
         .font('./fonts/Almarai.ttf')
         .text(parent.motherCPR, {align: 'right', features: ['rtla']});
-    doc.font('./fonts/Almarai-Bold.ttf').text("اسم الولي: ", {align: 'right', features: ['rtla'], underline: true})
+    doc.font('./fonts/Almarai-Bold.ttf').text("اسم ولي الأمر: ", {align: 'right', features: ['rtla'], underline: true})
         .font('./fonts/Almarai.ttf')
         .text(parent.guardianFullName, {align: 'right', features: ['rtla']});
-    doc.font('./fonts/Almarai-Bold.ttf').text("رقم البطاقة الذكية للولي: ", {align: 'right', features: ['rtla'], underline: true})
+    doc.font('./fonts/Almarai-Bold.ttf').text("رقم البطاقة الذكية لولي الأمر: ", {align: 'right', features: ['rtla'], underline: true})
         .font('./fonts/Almarai.ttf')
         .text(parent.guardianCPR, {align: 'right', features: ['rtla']});
     doc.font('./fonts/Almarai-Bold.ttf').text("الدخل الشهري: ", {align: 'right', features: ['rtla'], underline: true})
