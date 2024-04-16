@@ -111,8 +111,9 @@ function processCsv(csvData, applications) {
         const columns = row.split(',');
         let cpr = // take only the digits and remove any spaces or special characters or quotes
             columns[0]?.replace(/[^0-9]/g, '');
+        console.log('CPR:', cpr);
 
-        if(cpr.length !== 9){
+        if(cpr.length < 9){
             // add the missing zeros
             cpr = '0'.repeat(9 - cpr.length) + cpr;
         }
@@ -130,7 +131,7 @@ function processCsv(csvData, applications) {
             // familyIncome: columns[2],
             // adminPoints: columns[3],
         };
-    }).filter(row => row.id && row.GPA && !isNaN(row.GPA));
+    }).filter(row => row.id && row.verifiedGPA && !isNaN(row.verifiedGPA) && row.cpr.length === 9);
     // console.log('Data Stream:', dataStream);
 
     return dataStream;
