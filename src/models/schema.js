@@ -1787,6 +1787,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "batch": {
+                    "name": "batch",
+                    "isArray": false,
+                    "type": "Int",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "isConfirmed": {
                     "name": "isConfirmed",
                     "isArray": false,
@@ -1891,6 +1898,16 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byBatch",
+                        "fields": [
+                            "batch",
+                            "status"
+                        ]
+                    }
                 },
                 {
                     "type": "key",
@@ -2110,5 +2127,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "bff31e1c95ccce5430971765067cf3fe"
+    "version": "bc866a51624155a134574f23e48989c2"
 };

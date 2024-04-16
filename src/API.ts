@@ -997,6 +997,7 @@ export type CreateScholarshipInput = {
   id?: string | null,
   status?: ScholarshipStatus | null,
   applicationID: string,
+  batch?: number | null,
   isConfirmed?: boolean | null,
   studentCPR?: string | null,
   unsignedContractDoc?: string | null,
@@ -1020,6 +1021,7 @@ export enum ScholarshipStatus {
 export type ModelScholarshipConditionInput = {
   status?: ModelScholarshipStatusInput | null,
   applicationID?: ModelIDInput | null,
+  batch?: ModelIntInput | null,
   isConfirmed?: ModelBooleanInput | null,
   studentCPR?: ModelStringInput | null,
   unsignedContractDoc?: ModelStringInput | null,
@@ -1045,6 +1047,7 @@ export type Scholarship = {
   id: string,
   status?: ScholarshipStatus | null,
   applicationID: string,
+  batch?: number | null,
   isConfirmed?: boolean | null,
   application?: Application | null,
   studentCPR?: string | null,
@@ -1066,6 +1069,7 @@ export type UpdateScholarshipInput = {
   id: string,
   status?: ScholarshipStatus | null,
   applicationID?: string | null,
+  batch?: number | null,
   isConfirmed?: boolean | null,
   studentCPR?: string | null,
   unsignedContractDoc?: string | null,
@@ -1386,6 +1390,7 @@ export type ModelScholarshipFilterInput = {
   id?: ModelIDInput | null,
   status?: ModelScholarshipStatusInput | null,
   applicationID?: ModelIDInput | null,
+  batch?: ModelIntInput | null,
   isConfirmed?: ModelBooleanInput | null,
   studentCPR?: ModelStringInput | null,
   unsignedContractDoc?: ModelStringInput | null,
@@ -1691,6 +1696,7 @@ export type ModelSubscriptionScholarshipFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   status?: ModelSubscriptionStringInput | null,
   applicationID?: ModelSubscriptionIDInput | null,
+  batch?: ModelSubscriptionIntInput | null,
   isConfirmed?: ModelSubscriptionBooleanInput | null,
   studentCPR?: ModelSubscriptionStringInput | null,
   unsignedContractDoc?: ModelSubscriptionStringInput | null,
@@ -3368,6 +3374,7 @@ export type CreateScholarshipMutation = {
     id: string,
     status?: ScholarshipStatus | null,
     applicationID: string,
+    batch?: number | null,
     isConfirmed?: boolean | null,
     application?:  {
       __typename: "Application",
@@ -3427,6 +3434,7 @@ export type UpdateScholarshipMutation = {
     id: string,
     status?: ScholarshipStatus | null,
     applicationID: string,
+    batch?: number | null,
     isConfirmed?: boolean | null,
     application?:  {
       __typename: "Application",
@@ -3486,6 +3494,7 @@ export type DeleteScholarshipMutation = {
     id: string,
     status?: ScholarshipStatus | null,
     applicationID: string,
+    batch?: number | null,
     isConfirmed?: boolean | null,
     application?:  {
       __typename: "Application",
@@ -4880,6 +4889,7 @@ export type GetScholarshipQuery = {
     id: string,
     status?: ScholarshipStatus | null,
     applicationID: string,
+    batch?: number | null,
     isConfirmed?: boolean | null,
     application?:  {
       __typename: "Application",
@@ -4942,6 +4952,7 @@ export type ListScholarshipsQuery = {
       id: string,
       status?: ScholarshipStatus | null,
       applicationID: string,
+      batch?: number | null,
       isConfirmed?: boolean | null,
       studentCPR?: string | null,
       unsignedContractDoc?: string | null,
@@ -4977,6 +4988,7 @@ export type SyncScholarshipsQuery = {
       id: string,
       status?: ScholarshipStatus | null,
       applicationID: string,
+      batch?: number | null,
       isConfirmed?: boolean | null,
       studentCPR?: string | null,
       unsignedContractDoc?: string | null,
@@ -5484,6 +5496,44 @@ export type StudentsByNationalityCategoryAndGraduationDateQuery = {
   } | null,
 };
 
+export type ScholarshipsByBatchAndStatusQueryVariables = {
+  batch: number,
+  status?: ModelStringKeyConditionInput | null,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelScholarshipFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ScholarshipsByBatchAndStatusQuery = {
+  scholarshipsByBatchAndStatus?:  {
+    __typename: "ModelScholarshipConnection",
+    items:  Array< {
+      __typename: "Scholarship",
+      id: string,
+      status?: ScholarshipStatus | null,
+      applicationID: string,
+      batch?: number | null,
+      isConfirmed?: boolean | null,
+      studentCPR?: string | null,
+      unsignedContractDoc?: string | null,
+      signedContractDoc?: string | null,
+      studentSignature?: string | null,
+      guardianSignature?: string | null,
+      bankName?: string | null,
+      IBAN?: string | null,
+      IBANLetterDoc?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
 export type ScholarshipsByStudentCPRAndStatusQueryVariables = {
   studentCPR: string,
   status?: ModelStringKeyConditionInput | null,
@@ -5501,6 +5551,7 @@ export type ScholarshipsByStudentCPRAndStatusQuery = {
       id: string,
       status?: ScholarshipStatus | null,
       applicationID: string,
+      batch?: number | null,
       isConfirmed?: boolean | null,
       studentCPR?: string | null,
       unsignedContractDoc?: string | null,
@@ -7169,6 +7220,7 @@ export type OnCreateScholarshipSubscription = {
     id: string,
     status?: ScholarshipStatus | null,
     applicationID: string,
+    batch?: number | null,
     isConfirmed?: boolean | null,
     application?:  {
       __typename: "Application",
@@ -7227,6 +7279,7 @@ export type OnUpdateScholarshipSubscription = {
     id: string,
     status?: ScholarshipStatus | null,
     applicationID: string,
+    batch?: number | null,
     isConfirmed?: boolean | null,
     application?:  {
       __typename: "Application",
@@ -7285,6 +7338,7 @@ export type OnDeleteScholarshipSubscription = {
     id: string,
     status?: ScholarshipStatus | null,
     applicationID: string,
+    batch?: number | null,
     isConfirmed?: boolean | null,
     application?:  {
       __typename: "Application",

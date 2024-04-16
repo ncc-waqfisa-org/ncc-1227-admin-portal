@@ -1623,6 +1623,7 @@ export const onCreateScholarship = /* GraphQL */ `subscription OnCreateScholarsh
     id
     status
     applicationID
+    batch
     isConfirmed
     application {
       id
@@ -1682,6 +1683,7 @@ export const onUpdateScholarship = /* GraphQL */ `subscription OnUpdateScholarsh
     id
     status
     applicationID
+    batch
     isConfirmed
     application {
       id
@@ -1741,6 +1743,7 @@ export const onDeleteScholarship = /* GraphQL */ `subscription OnDeleteScholarsh
     id
     status
     applicationID
+    batch
     isConfirmed
     application {
       id
