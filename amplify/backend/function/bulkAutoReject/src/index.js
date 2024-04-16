@@ -102,14 +102,22 @@ async function bulkUpdateApplications(batchValue, applications, extendedUniversi
         if(isException) {
             isNotCompleted = false;
         } else if(isExtended) {
-            // check the date with extended deadline
             const today = new Date();
             const chosenUniversity = extendedUniversities.find(university => university.id === application.universityID);
-            // TODO: deadline is in days, convert it to a date
-            let deadline = new Date(batchDetails.updateApplicationEndDate);
+
+            const updateApplicationEndDate = batchDetails.updateApplicationEndDate;
+
+            const [year, month, day] = updateApplicationEndDate.split('-').map(Number);
+
+            let deadline = new Date(year, month - 1, day);
+
             deadline.setDate(deadline.getDate() + chosenUniversity.extensionDuration);
 
-            isNotCompleted = today > deadline;
+            console.log('Today:', today);
+            console.log('Deadline:', deadline);
+            console.log('Is today before deadline:', today <= deadline);
+
+            isNotCompleted = today <= deadline;
         }
 
         let status;

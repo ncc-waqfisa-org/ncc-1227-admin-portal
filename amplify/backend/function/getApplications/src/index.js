@@ -58,7 +58,7 @@ exports.handler = async (event) => {
          Limit: pageSize,
          ExclusiveStartKey: startKey,
          IndexName: 'byScore',
-         KeyConditionExpression: '#batch = :batchValue AND score > :score',
+         KeyConditionExpression: '#batch = :batchValue AND score >= :score',
          ScanIndexForward: false,
          ExpressionAttributeNames: {
              '#batch': 'batch' // Using ExpressionAttributeNames to alias the reserved keyword 'batch'
