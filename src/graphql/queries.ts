@@ -2,7 +2,7 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-import * as APITypes from "../../amplify/backend/function/dummyUpdate/src/src/API";
+import * as APITypes from "../API";
 type GeneratedQuery<InputType, OutputType> = string & {
   __generatedQueryInput: InputType;
   __generatedQueryOutput: OutputType;
@@ -1355,6 +1355,7 @@ export const getScholarship = /* GraphQL */ `query GetScholarship($id: ID!) {
     id
     status
     applicationID
+    batch
     isConfirmed
     application {
       id
@@ -1417,6 +1418,7 @@ export const listScholarships = /* GraphQL */ `query ListScholarships(
       id
       status
       applicationID
+      batch
       isConfirmed
       studentCPR
       unsignedContractDoc
@@ -1458,6 +1460,7 @@ export const syncScholarships = /* GraphQL */ `query SyncScholarships(
       id
       status
       applicationID
+      batch
       isConfirmed
       studentCPR
       unsignedContractDoc
@@ -2053,6 +2056,52 @@ export const studentsByNationalityCategoryAndGraduationDate = /* GraphQL */ `que
   APITypes.StudentsByNationalityCategoryAndGraduationDateQueryVariables,
   APITypes.StudentsByNationalityCategoryAndGraduationDateQuery
 >;
+export const scholarshipsByBatchAndStatus = /* GraphQL */ `query ScholarshipsByBatchAndStatus(
+  $batch: Int!
+  $status: ModelStringKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelScholarshipFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  scholarshipsByBatchAndStatus(
+    batch: $batch
+    status: $status
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      status
+      applicationID
+      batch
+      isConfirmed
+      studentCPR
+      unsignedContractDoc
+      signedContractDoc
+      studentSignature
+      guardianSignature
+      bankName
+      IBAN
+      IBANLetterDoc
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ScholarshipsByBatchAndStatusQueryVariables,
+  APITypes.ScholarshipsByBatchAndStatusQuery
+>;
 export const scholarshipsByStudentCPRAndStatus = /* GraphQL */ `query ScholarshipsByStudentCPRAndStatus(
   $studentCPR: String!
   $status: ModelStringKeyConditionInput
@@ -2073,6 +2122,7 @@ export const scholarshipsByStudentCPRAndStatus = /* GraphQL */ `query Scholarshi
       id
       status
       applicationID
+      batch
       isConfirmed
       studentCPR
       unsignedContractDoc

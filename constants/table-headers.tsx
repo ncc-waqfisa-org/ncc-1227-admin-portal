@@ -25,3 +25,10 @@ export const BatchesTableHeaders = [
   "tableBatchUpdateApplicationEndDate",
   "tableBatchCreateApplicationEndDate",
 ];
+export const ScholarshipsTableHeaders = [
+  "tableScholarshipStudentCpr",
+  "tableScholarshipStudentStatus",
+  "tableScholarshipContractSigned",
+  "tableScholarshipBankDetailsAdded",
+  "tableScholarshipCreatedDate",
+];

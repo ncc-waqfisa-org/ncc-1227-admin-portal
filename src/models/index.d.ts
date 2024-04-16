@@ -594,6 +594,7 @@ type EagerScholarship = {
   readonly id: string;
   readonly status?: ScholarshipStatus | keyof typeof ScholarshipStatus | null;
   readonly applicationID: string;
+  readonly batch?: number | null;
   readonly isConfirmed?: boolean | null;
   readonly application?: Application | null;
   readonly studentCPR?: string | null;
@@ -616,6 +617,7 @@ type LazyScholarship = {
   readonly id: string;
   readonly status?: ScholarshipStatus | keyof typeof ScholarshipStatus | null;
   readonly applicationID: string;
+  readonly batch?: number | null;
   readonly isConfirmed?: boolean | null;
   readonly application: AsyncItem<Application | undefined>;
   readonly studentCPR?: string | null;

@@ -17,17 +17,27 @@ import {
 } from "../components/ui/applications/infinite-applications-type";
 
 import { useAuth } from "../hooks/use-auth";
+import { Scholarship } from "../src/API";
+import { listAllScholarships } from "../src/CustomAPI";
 
 // interface for all the values & functions
 interface IUseBatchContext {
   applicationsData: InfiniteApplication[];
   setApplicationsData: Dispatch<SetStateAction<InfiniteApplication[]>>;
 
+  scholarshipsData: Scholarship[];
+  setScholarshipsData: Dispatch<SetStateAction<Scholarship[]>>;
+
+  nextScholarshipsKey: string | null;
+  setNextScholarshipsKey: Dispatch<SetStateAction<string | null>>;
+
   nextApplicationsKey: NextStartKey | undefined;
   setNextApplicationsKey: Dispatch<SetStateAction<NextStartKey | undefined>>;
+  resetScholarships: () => void;
   resetApplications: () => void;
   resetApplicationsFilter: () => void;
   isInitialFetching: boolean;
+  isScholarshipsInitialFetching: boolean;
   batch: number;
   setBatch: Dispatch<SetStateAction<number>>;
   selectedApplicationsStatus: string | undefined;
@@ -65,6 +75,20 @@ const defaultState: IUseBatchContext = {
   resetApplicationsFilter: function (): void {
     throw new Error("Function not implemented.");
   },
+  nextScholarshipsKey: null,
+  setNextScholarshipsKey: function (
+    value: SetStateAction<string | null>
+  ): void {
+    throw new Error("Function not implemented.");
+  },
+  scholarshipsData: [],
+  setScholarshipsData: function (value: SetStateAction<Scholarship[]>): void {
+    throw new Error("Function not implemented.");
+  },
+  resetScholarships: function (): void {
+    throw new Error("Function not implemented.");
+  },
+  isScholarshipsInitialFetching: false,
 };
 
 // creating the app contexts
@@ -85,10 +109,15 @@ function useBatchProviderApp() {
   const [isInitialFetching, setIsInitialFetching] = useState(
     defaultState.isInitialFetching
   );
+  const [isScholarshipsInitialFetching, setIsScholarshipsInitialFetching] =
+    useState(defaultState.isScholarshipsInitialFetching);
   const [batch, setBatch] = useState<number>(defaultState.batch);
   const [nextApplicationsKey, setNextApplicationsKey] = useState<
     NextStartKey | undefined
-  >();
+  >(defaultState.nextApplicationsKey);
+  const [nextScholarshipsKey, setNextScholarshipsKey] = useState<string | null>(
+    defaultState.nextScholarshipsKey
+  );
   const [selectedApplicationsStatus, setSelectedApplicationsStatus] = useState<
     string | undefined
   >(defaultState.selectedApplicationsStatus);
@@ -96,6 +125,14 @@ function useBatchProviderApp() {
   const [applicationsData, setApplicationsData] = useState(
     defaultState.applicationsData
   );
+  const [scholarshipsData, setScholarshipsData] = useState(
+    defaultState.scholarshipsData
+  );
+
+  function resetScholarships() {
+    setNextScholarshipsKey(null);
+    setScholarshipsData([]);
+  }
 
   function resetApplications() {
     setNextApplicationsKey(undefined);
@@ -125,6 +162,22 @@ function useBatchProviderApp() {
     setNextApplicationsKey(fetchedData.nextStartKey);
     return fetchedData;
   }
+
+  async function fetchFirstScholarshipsPage() {
+    const batchQuery = batch ? `batch=${batch}` : "";
+
+    setIsInitialFetching(true);
+    const fetchedData = await listAllScholarships({
+      batch,
+      nextToken: nextScholarshipsKey,
+    }).finally(() => {
+      setIsInitialFetching(false);
+    });
+    setScholarshipsData(fetchedData.items);
+    setNextScholarshipsKey(fetchedData.nextToken);
+    return fetchedData;
+  }
+
   function resetApplicationsFilter() {
     setNextApplicationsKey(undefined);
     setApplicationsData([]);
@@ -138,6 +191,24 @@ function useBatchProviderApp() {
     return () => {};
   }, [batch, selectedApplicationsStatus]);
 
+  useEffect(() => {
+    fetchFirstScholarshipsPage();
+
+    async function fetchFirstScholarshipsPage() {
+      setIsInitialFetching(true);
+      const fetchedData = await listAllScholarships({
+        batch,
+        nextToken: nextScholarshipsKey,
+      }).finally(() => {
+        setIsInitialFetching(false);
+      });
+      setScholarshipsData(fetchedData.items);
+      setNextScholarshipsKey(fetchedData.nextToken);
+      return fetchedData;
+    }
+
+    return () => {};
+  }, [batch, nextScholarshipsKey]);
   useEffect(() => {
     if (token) {
       fetchFirstApplicationsPage();
@@ -181,5 +252,11 @@ function useBatchProviderApp() {
     setNextApplicationsKey,
     resetApplications,
     resetApplicationsFilter,
+    isScholarshipsInitialFetching,
+    scholarshipsData,
+    setScholarshipsData,
+    nextScholarshipsKey,
+    setNextScholarshipsKey,
+    resetScholarships,
   };
 }

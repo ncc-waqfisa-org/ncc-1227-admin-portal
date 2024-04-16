@@ -76,8 +76,10 @@ if (student.nationalityCategory.S !== oldStudent.nationalityCategory.S) {
 }
 
 if (student.familyIncome.S !== oldStudent.familyIncome.S) {
-    params.UpdateExpression += 'familyIncome = :familyIncome, ';
+    const score = calculateScore(student.familyIncome.S, student.verifiedGPA?.N, student.adminPoints?.N);
+    params.UpdateExpression += 'familyIncome = :familyIncome, score = :score, ';
     params.ExpressionAttributeValues[':familyIncome'] = student.familyIncome.S;
+    params.ExpressionAttributeValues[':score'] = score;
 }
 
 console.log(params.UpdateExpression);
@@ -100,4 +102,20 @@ async function getApplication(studentCPR) {
     };
     const application = await dynamoDB.query(params).promise();
     return application.Items[0];
+}
+
+function calculateScore(familyIncome, verifiedGPA, adminPoints) {
+    if(!verifiedGPA) {
+        return 0;
+    }
+    let score = verifiedGPA * 0.7;
+    if (familyIncome === "LESS_THAN_1500") {
+        score += 20;
+    }
+    else if (familyIncome === "MORE_THAN_1500") {
+        score += 10;
+    }
+
+    score += adminPoints ? parseInt(adminPoints) : 0;
+    return Math.round(score * 100) / 100;
 }

@@ -32,7 +32,7 @@
         },
         "updateGpaCsv": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
-          "s3Key": "amplify-builds/updateGpaCsv-62514f6634736e644534-build.zip"
+          "s3Key": "amplify-builds/updateGpaCsv-34704c706e55476e6870-build.zip"
         },
         "getApplications": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
@@ -64,7 +64,7 @@
         },
         "syncApplications": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
-          "s3Key": "amplify-builds/syncApplications-3830486d73766952384b-build.zip"
+          "s3Key": "amplify-builds/syncApplications-70766468716641687331-build.zip"
         },
         "exportApplicationPdf": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",

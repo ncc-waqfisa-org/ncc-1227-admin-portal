@@ -20,9 +20,12 @@ import {
   CreateStudentLogMutationVariables,
   GetBatchQuery,
   GetBatchQueryVariables,
+  GetScholarshipQuery,
+  GetScholarshipQueryVariables,
   ListBatchesQuery,
   ListBatchesQueryVariables,
   Program,
+  Scholarship,
   StudentLog,
   University,
   UpdateAdminMutation,
@@ -39,6 +42,8 @@ import {
   UpdateProgramChoiceMutationVariables,
   UpdateProgramMutation,
   UpdateProgramMutationVariables,
+  UpdateScholarshipMutation,
+  UpdateScholarshipMutationVariables,
   UpdateStudentMutation,
   UpdateStudentMutationVariables,
   UpdateUniversityMutation,
@@ -61,8 +66,9 @@ import {
   createBatch,
   updateParentInfo,
   updateStudent,
+  updateScholarship,
 } from "./graphql/mutations";
-import { getBatch, listBatches } from "./graphql/queries";
+import { getBatch, getScholarship, listBatches } from "./graphql/queries";
 import { Statistics } from "./models";
 import { TStatistics } from "./custom-types";
 
@@ -1141,6 +1147,48 @@ export async function getAllApprovedApplicationsAPI(
   return temp;
 }
 
+export async function listAllScholarships({
+  nextToken,
+  batch,
+}: {
+  batch: number;
+  nextToken?: string | null;
+}): Promise<{ nextToken: string | null; items: Scholarship[] }> {
+  let query = `query listAllScholarshipsByBatch {
+    scholarshipsByBatchAndStatus(batch: ${batch}, nextToken: ${
+    `${nextToken}` ?? null
+  }) {
+    nextToken
+      items {
+        id
+        _version
+        createdAt
+        IBANLetterDoc
+        signedContractDoc
+        isConfirmed
+        status
+        studentCPR
+        IBAN
+        bankName
+        guardianSignature
+        studentSignature
+        unsignedContractDoc
+      }
+    }
+  }
+  `;
+
+  let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;
+
+  if (res.data === null) {
+    throw new Error("Failed to get all APPROVED scholarships");
+  }
+
+  let tempScholarshipList = res.data?.scholarshipsByBatchAndStatus;
+
+  return tempScholarshipList;
+}
+
 /* -------------------------------------------------------------------------- */
 /*                              Batches                                       */
 /* -------------------------------------------------------------------------- */
@@ -1166,6 +1214,28 @@ export async function getSingleBatch(
 
   return res.data;
 }
+
+export async function getSingleScholarship(
+  variables: GetScholarshipQueryVariables
+): Promise<GetScholarshipQuery | undefined> {
+  let res = (await API.graphql({
+    query: getScholarship,
+    variables: variables,
+  })) as GraphQLResult<GetScholarshipQuery>;
+
+  return res.data;
+}
+export async function updateSingleScholarship(
+  variables: UpdateScholarshipMutationVariables
+): Promise<UpdateScholarshipMutation | undefined> {
+  let res = (await API.graphql({
+    query: updateScholarship,
+    variables: variables,
+  })) as GraphQLResult<UpdateScholarshipMutation>;
+
+  return res.data;
+}
+
 export async function createSingleBatch(
   variables: CreateBatchMutationVariables
 ): Promise<CreateBatchMutation | undefined> {

@@ -78,7 +78,7 @@ export const BulkUploadGpa: FC<TBulkUploadGpa> = ({ batch }) => {
       console.log("🚀 ~ onSuccess ~ res:", res);
       console.log("🚀 ~ onSuccess ~ data:", data);
       if (res.ok) {
-        toast.success(t("uploadedSuccessfully"));
+        toast.success(data.message ?? t("uploadedSuccessfully"));
         setIsOpen(false);
       } else {
         toast.error(data.message ? data.message : t("failedToUpload"));
