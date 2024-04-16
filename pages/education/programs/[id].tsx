@@ -8,6 +8,7 @@ import ProgramFormComponent from "../../../components/program-form-component";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
+import { minimumGPA } from "../../../src/Helpers";
 
 interface Props {
   program: Program;
@@ -54,6 +55,7 @@ export default function ProgramInfo({ program }: Props) {
             universityID={program.universityID}
             requirements={program.requirements ?? ""}
             requirementsAr={program.requirementsAr ?? ""}
+            minimumGPA={program.minimumGPA ?? minimumGPA}
             isDeactivated={program.isDeactivated ?? false}
           ></ProgramFormComponent>
         </div>

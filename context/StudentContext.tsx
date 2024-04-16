@@ -346,6 +346,7 @@ export async function getApplicationByIdAPI(
         familyIncome
         familyIncomeProofDocs
         nationality
+        nationalityCategory
         schoolType
       }
       updatedAt

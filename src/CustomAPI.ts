@@ -148,7 +148,9 @@ export async function getApplicationData(
                     program {
                       id
                       name
+                      minimumGPA
                       requirements
+                      requirementsAr
                       availability
                       university {
                         id
@@ -223,6 +225,7 @@ export async function listAllPrograms() {
         nameAr
         requirements
         requirementsAr
+        minimumGPA
         universityID
         universityProgramsId
         updatedAt
@@ -713,6 +716,7 @@ export async function getProgramById(id: string): Promise<Program | undefined> {
       name
       nameAr
       requirements
+      minimumGPA
       requirementsAr
       university {
         name
@@ -787,6 +791,7 @@ export async function getUniversityByID(
           universityProgramsId
           updatedAt
           createdAt
+          minimumGPA
           availability
           id
           _version
@@ -882,6 +887,7 @@ export async function getAllApplicationsAPI(
               id
               name
               nameAr
+              minimumGPA
               university {
                 name
                 nameAr
@@ -1026,6 +1032,7 @@ export async function getAllApplicationsWithPaginationAPI(
             id
             name
             nameAr
+            minimumGPA
             university {
               name
               nameAr
@@ -1103,6 +1110,7 @@ export async function getAllApprovedApplicationsAPI(
             program {
               id
               name
+              minimumGPA
               university {
                 name
                 id

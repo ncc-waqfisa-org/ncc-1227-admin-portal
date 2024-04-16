@@ -40,15 +40,26 @@ const ACCEPTED_FILE_TYPES = [
   "application/csv",
 ];
 
+const toBase64 = (file: File) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+  });
+
 export const BulkUploadGpa: FC<TBulkUploadGpa> = ({ batch }) => {
   const { t } = useTranslation("batches");
   const { token } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
 
   const uploadVerifiedGPAs = useMutation({
-    mutationFn: (file: File) => {
+    mutationFn: async (file: File) => {
+      // const base64string = await toBase64(file);
+      // console.log("🚀 ~ mutationFn: ~ base64string:", base64string);
       const formData = new FormData();
       formData.append("csv", file);
+
       return fetch(
         `https://ob7e09fm1m.execute-api.us-east-1.amazonaws.com/default/gpas?batch=${batch}`,
         {
@@ -57,6 +68,9 @@ export const BulkUploadGpa: FC<TBulkUploadGpa> = ({ batch }) => {
             ...(token ? { Authorization: `Bearer ${token}` } : {}),
           },
           body: formData,
+          // body: JSON.stringify({
+          //   csv: base64string,
+          // }),
         }
       );
     },

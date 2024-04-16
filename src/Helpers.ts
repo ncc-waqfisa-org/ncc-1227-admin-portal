@@ -184,6 +184,8 @@ export function getStatusOrder(status: Status) {
 /*                                    VARS                                    */
 /* -------------------------------------------------------------------------- */
 
+export const minimumGPA = 88;
+
 export const monthNames = [
   "January",
   "February",

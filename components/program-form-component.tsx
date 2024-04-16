@@ -8,6 +8,7 @@ import { useEducation } from "../context/EducationContext";
 import { Program, UpdateProgramMutationVariables } from "../src/API";
 import { updateProgramById } from "../src/CustomAPI";
 import { useAuth } from "../hooks/use-auth";
+import { minimumGPA } from "../src/Helpers";
 
 interface Props {
   program?: Program;
@@ -17,6 +18,7 @@ interface Props {
   requirements: string;
   requirementsAr: string;
   isDeactivated: boolean;
+  minimumGPA: number;
 }
 
 export default function ProgramFormComponent({ program }: Props) {
@@ -34,6 +36,7 @@ export default function ProgramFormComponent({ program }: Props) {
     requirements: program?.requirements ?? "",
     requirementsAr: program?.requirementsAr ?? "",
     isDeactivated: program?.isDeactivated ?? false,
+    minimumGPA: program?.minimumGPA ?? minimumGPA,
   };
 
   return (
@@ -46,6 +49,10 @@ export default function ProgramFormComponent({ program }: Props) {
           universityID: yup.string().required(`${tErrors("requiredField")}`),
           requirements: yup.string().required(`${tErrors("requiredField")}`),
           requirementsAr: yup.string().required(`${tErrors("requiredField")}`),
+          minimumGPA: yup
+            .number()
+            .default(minimumGPA)
+            .required(`${tErrors("requiredField")}`),
         })}
         onSubmit={async (values, actions) => {
           let getPrograms = await getProgramsFromUniID(values.universityID!);
@@ -66,9 +73,14 @@ export default function ProgramFormComponent({ program }: Props) {
                 requirements: values.requirements,
                 requirementsAr: values.requirementsAr,
                 isDeactivated: values.isDeactivated,
+                minimumGPA: values.minimumGPA,
                 _version: program._version,
               },
             };
+            console.log(
+              "🚀 ~ onSubmit={ ~ programVariables: UpdateProgramMutationVariables.input:",
+              programVariables
+            );
 
             await toast
               .promise(
@@ -96,14 +108,15 @@ export default function ProgramFormComponent({ program }: Props) {
             } else {
               toast
                 .promise(
-                  addProgramToUni(
-                    values.universityID!,
-                    values.programName,
-                    values.programNameAr,
-                    values.requirements,
-                    values.requirementsAr,
-                    values.isDeactivated
-                  ).catch((error) => {
+                  addProgramToUni({
+                    uniID: values.universityID!,
+                    programName: values.programName,
+                    programNameAr: values.programNameAr,
+                    requirements: values.requirements,
+                    requirementsAr: values.requirementsAr,
+                    minimumGPA: values.minimumGPA,
+                    isDeactivated: values.isDeactivated,
+                  }).catch((error) => {
                     throw error;
                   }),
                   {
@@ -134,7 +147,7 @@ export default function ProgramFormComponent({ program }: Props) {
           isSubmitting,
           isValid,
         }) => (
-          <Form className="flex flex-col gap-3 max-w-3xl">
+          <Form className="flex flex-col max-w-3xl gap-3">
             <div className="flex flex-col">
               <label className="label">{t("programName")}</label>
               <Field
@@ -226,6 +239,22 @@ export default function ProgramFormComponent({ program }: Props) {
                     errors.isDeactivated}
                 </label>
               </div>
+            </div>
+            <div className="flex flex-col">
+              <label className="label">{t("minimumGPA")}</label>
+              <Field
+                name="minimumGPA"
+                type="number"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className={`input input-bordered input-primary ${
+                  errors.minimumGPA && "input-error"
+                }`}
+                value={values.minimumGPA}
+              />
+              <label className="label-text-alt text-error">
+                {errors.minimumGPA && touched.minimumGPA && errors.minimumGPA}
+              </label>
             </div>
 
             <div className="form-control">
