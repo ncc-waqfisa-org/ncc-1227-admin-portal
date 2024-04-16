@@ -32,7 +32,7 @@ exports.handler = async (event) => {
     console.log('universities', universities);
     const extendedUniversities = universities.filter(university => university.isExtended);
     const exceptionUniversities = universities.filter(university => university.isException);
-    await bulkUpdateApplications(batchValue, applications, extendedUniversities, exceptionUniversities, universities, programs);
+    await bulkUpdateApplications(batchValue, applications, extendedUniversities, exceptionUniversities, universities, programs, batchDetails);
 
 
 

@@ -97,8 +97,8 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "verifiedGPA": {
-                    "name": "verifiedGPA",
+                "verifiedGpa": {
+                    "name": "verifiedGpa",
                     "isArray": false,
                     "type": "Float",
                     "isRequired": false,
@@ -2110,5 +2110,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "bff31e1c95ccce5430971765067cf3fe"
+    "version": "01f7c64c428781c1bdf194869e0d8ffc"
 };

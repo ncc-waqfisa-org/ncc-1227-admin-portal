@@ -2,7 +2,7 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-import * as APITypes from "../API";
+import * as APITypes from "../../amplify/backend/function/dummyUpdate/src/src/API";
 type GeneratedSubscription<InputType, OutputType> = string & {
   __generatedSubscriptionInput: InputType;
   __generatedSubscriptionOutput: OutputType;
@@ -77,7 +77,7 @@ export const onCreateApplication = /* GraphQL */ `subscription OnCreateApplicati
   onCreateApplication(filter: $filter) {
     id
     gpa
-    verifiedGPA
+    verifiedGpa
     status
     attachmentID
     adminLogs {
@@ -209,7 +209,7 @@ export const onUpdateApplication = /* GraphQL */ `subscription OnUpdateApplicati
   onUpdateApplication(filter: $filter) {
     id
     gpa
-    verifiedGPA
+    verifiedGpa
     status
     attachmentID
     adminLogs {
@@ -341,7 +341,7 @@ export const onDeleteApplication = /* GraphQL */ `subscription OnDeleteApplicati
   onDeleteApplication(filter: $filter) {
     id
     gpa
-    verifiedGPA
+    verifiedGpa
     status
     attachmentID
     adminLogs {
@@ -496,7 +496,7 @@ export const onCreateProgramChoice = /* GraphQL */ `subscription OnCreateProgram
     application {
       id
       gpa
-      verifiedGPA
+      verifiedGpa
       status
       attachmentID
       dateTime
@@ -569,7 +569,7 @@ export const onUpdateProgramChoice = /* GraphQL */ `subscription OnUpdateProgram
     application {
       id
       gpa
-      verifiedGPA
+      verifiedGpa
       status
       attachmentID
       dateTime
@@ -642,7 +642,7 @@ export const onDeleteProgramChoice = /* GraphQL */ `subscription OnDeleteProgram
     application {
       id
       gpa
-      verifiedGPA
+      verifiedGpa
       status
       attachmentID
       dateTime
@@ -1627,7 +1627,7 @@ export const onCreateScholarship = /* GraphQL */ `subscription OnCreateScholarsh
     application {
       id
       gpa
-      verifiedGPA
+      verifiedGpa
       status
       attachmentID
       dateTime
@@ -1686,7 +1686,7 @@ export const onUpdateScholarship = /* GraphQL */ `subscription OnUpdateScholarsh
     application {
       id
       gpa
-      verifiedGPA
+      verifiedGpa
       status
       attachmentID
       dateTime
@@ -1745,7 +1745,7 @@ export const onDeleteScholarship = /* GraphQL */ `subscription OnDeleteScholarsh
     application {
       id
       gpa
-      verifiedGPA
+      verifiedGpa
       status
       attachmentID
       dateTime
