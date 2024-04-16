@@ -76,7 +76,7 @@ if (student.nationalityCategory.S !== oldStudent.nationalityCategory.S) {
 }
 
 if (student.familyIncome.S !== oldStudent.familyIncome.S) {
-    const score = calculateScore(student.familyIncome.S, student.verifiedGPA.N, student.adminPoints.N);
+    const score = calculateScore(student.familyIncome.S, student.verifiedGPA?.N, student.adminPoints?.N);
     params.UpdateExpression += 'familyIncome = :familyIncome, score = :score, ';
     params.ExpressionAttributeValues[':familyIncome'] = student.familyIncome.S;
     params.ExpressionAttributeValues[':score'] = score;
@@ -105,6 +105,9 @@ async function getApplication(studentCPR) {
 }
 
 function calculateScore(familyIncome, verifiedGPA, adminPoints) {
+    if(!verifiedGPA) {
+        return 0;
+    }
     let score = verifiedGPA * 0.7;
     if (familyIncome === "LESS_THAN_1500") {
         score += 20;
@@ -113,6 +116,6 @@ function calculateScore(familyIncome, verifiedGPA, adminPoints) {
         score += 10;
     }
 
-    score += adminPoints;
+    score += adminPoints ? parseInt(adminPoints) : 0;
     return Math.round(score * 100) / 100;
 }
