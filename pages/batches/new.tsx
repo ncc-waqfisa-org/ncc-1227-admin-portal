@@ -1,27 +1,14 @@
 import React, { FC } from "react";
 import { PageComponent } from "../../components/page-component";
-import BatchUpdateForm, {
-  BatchUpdateFormInputValues,
-} from "../../components/batch/BatchUpdateForm";
 import { GetServerSideProps } from "next";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  createSingleBatch,
-  getSingleBatch,
-  updateSingleBatch,
-} from "../../src/CustomAPI";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createSingleBatch } from "../../src/CustomAPI";
 
-import { Batch } from "../../src/models";
-import {
-  CreateBatchInput,
-  CreateBatchMutationVariables,
-  UpdateBatchMutationVariables,
-} from "../../src/API";
+import { CreateBatchInput, CreateBatchMutationVariables } from "../../src/API";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { C } from "chart.js/dist/chunks/helpers.core";
 import { cn } from "../../src/utils";
 import BatchCreateForm, {
   BatchCreateFormInputValues,
@@ -81,9 +68,9 @@ const CreateSingleBatchPage: FC<PageType> = ({}) => {
 
   return (
     <PageComponent title="Batch">
-      <div className="flex relative flex-col w-full max-w-3xl mx-auto">
+      <div className="relative flex flex-col w-full max-w-3xl mx-auto">
         {/* header */}
-        <div className=" p-6">
+        <div className="p-6 ">
           <div className="text-2xl font-semibold ">{t("batch")}</div>
           <div className="text-base font-medium text-gray-500 ">
             {`${t("createNewBatch")}`}
