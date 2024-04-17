@@ -167,13 +167,11 @@ async function bulkUpdateApplications(batchValue, applications, extendedUniversi
             params.UpdateExpression = params.UpdateExpression.slice(0, -2);
         }
 
-
         params.ExpressionAttributeValues[':status'] = status;
         params.ExpressionAttributeValues[':processedValue'] = isProcessed;
 
         params.ExpressionAttributeNames['#status'] = 'status';
         params.ExpressionAttributeNames['#processed'] = 'processed';
-
 
         return dynamoDB.update(params).promise();
     });
@@ -296,4 +294,21 @@ async function getPrograms(){
     } while (params.ExclusiveStartKey);
 
     return allPrograms;
+}
+async function createAdminLog(reason, snapshot, applicationId){
+    const params = {
+        TableName: 'AdminLog-cw7beg2perdtnl7onnneec4jfa-staging',
+        Item: {
+            '__typename': 'AdminLog',
+            '_version': 1,
+            'reason': reason,
+            'snapshot': snapshot,
+            'createdAt': new Date().toISOString(),
+            'updatedAt': new Date().toISOString(),
+            'dateTime': new Date().toISOString(),
+            'applicationID': applicationId
+        }
+    };
+
+    await dynamoDB.put(params).promise();
 }
