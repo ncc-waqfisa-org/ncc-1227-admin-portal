@@ -16,6 +16,8 @@ import {
   CreateBatchMutationVariables,
   CreateProgramChoiceMutation,
   CreateProgramChoiceMutationVariables,
+  CreateScholarshipMutation,
+  CreateScholarshipMutationVariables,
   CreateStudentLogMutation,
   CreateStudentLogMutationVariables,
   GetBatchQuery,
@@ -67,6 +69,7 @@ import {
   updateParentInfo,
   updateStudent,
   updateScholarship,
+  createScholarship,
 } from "./graphql/mutations";
 import { getBatch, getScholarship, listBatches } from "./graphql/queries";
 import { Statistics } from "./models";
@@ -98,6 +101,7 @@ export enum DocType {
   ACCEPTANCE,
   TRANSCRIPT,
   SIGNED_CONTRACT,
+  UNSIGNED_CONTRACT,
   SCHOOL_CERTIFICATE,
   FAMILY_INCOME_PROOF,
   PRIMARY_PROGRAM_ACCEPTANCE,
@@ -1147,48 +1151,6 @@ export async function getAllApprovedApplicationsAPI(
   return temp;
 }
 
-export async function listAllScholarships({
-  nextToken,
-  batch,
-}: {
-  batch: number;
-  nextToken?: string | null;
-}): Promise<{ nextToken: string | null; items: Scholarship[] }> {
-  let query = `query listAllScholarshipsByBatch {
-    scholarshipsByBatchAndStatus(batch: ${batch}, nextToken: ${
-    `${nextToken}` ?? null
-  }) {
-    nextToken
-      items {
-        id
-        _version
-        createdAt
-        IBANLetterDoc
-        signedContractDoc
-        isConfirmed
-        status
-        studentCPR
-        IBAN
-        bankName
-        guardianSignature
-        studentSignature
-        unsignedContractDoc
-      }
-    }
-  }
-  `;
-
-  let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;
-
-  if (res.data === null) {
-    throw new Error("Failed to get all APPROVED scholarships");
-  }
-
-  let tempScholarshipList = res.data?.scholarshipsByBatchAndStatus;
-
-  return tempScholarshipList;
-}
-
 /* -------------------------------------------------------------------------- */
 /*                              Batches                                       */
 /* -------------------------------------------------------------------------- */
@@ -1225,6 +1187,7 @@ export async function getSingleScholarship(
 
   return res.data;
 }
+
 export async function updateSingleScholarship(
   variables: UpdateScholarshipMutationVariables
 ): Promise<UpdateScholarshipMutation | undefined> {
@@ -1234,6 +1197,164 @@ export async function updateSingleScholarship(
   })) as GraphQLResult<UpdateScholarshipMutation>;
 
   return res.data;
+}
+
+export async function createSingleScholarship(
+  variables: CreateScholarshipMutationVariables
+): Promise<CreateScholarshipMutation | undefined> {
+  let res = (await API.graphql({
+    query: createScholarship,
+    variables: variables,
+  })) as GraphQLResult<CreateScholarshipMutation>;
+
+  return res.data;
+}
+
+export async function listAllScholarshipsOfBatch({
+  nextToken,
+  batch,
+}: {
+  batch: number;
+  nextToken?: string | null;
+}): Promise<{ nextToken: string | null; items: Scholarship[] }> {
+  let query = `query listAllScholarshipsByBatch {
+    scholarshipsByBatchAndStatus(batch: ${batch}, nextToken: ${
+    `${nextToken}` ?? null
+  }) {
+    nextToken
+      items {
+        id
+        _version
+        createdAt
+        IBANLetterDoc
+        signedContractDoc
+        isConfirmed
+        status
+        studentCPR
+        IBAN
+        bankName
+        guardianSignature
+        studentSignature
+        unsignedContractDoc
+        application {
+          studentName
+        }
+      }
+    }
+  }
+  `;
+
+  let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;
+
+  if (res.data === null) {
+    throw new Error("Failed to get all scholarships");
+  }
+
+  let tempScholarshipList = res.data?.scholarshipsByBatchAndStatus;
+
+  return tempScholarshipList;
+}
+export async function listScholarshipsOfApplicationId({
+  applicationId,
+}: {
+  applicationId: string;
+}): Promise<Scholarship[]> {
+  let query = `query ListScholarshipsByApplicationID {
+    scholarshipsByApplicationID(applicationID: "${applicationId}") {
+      items {
+        id
+        signedContractDoc
+        IBANLetterDoc
+        isConfirmed
+      }
+    }
+  }  
+  `;
+
+  let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;
+
+  if (res.data === null) {
+    throw new Error("Failed to get all scholarships");
+  }
+
+  let tempScholarshipList = res.data?.scholarshipsByApplicationID?.items;
+
+  return tempScholarshipList ?? [];
+}
+
+export async function getScholarshipsWithId({
+  id,
+}: {
+  id: string;
+}): Promise<Scholarship | null> {
+  let query = `query GetSingleScholarship {
+    getScholarship(id: "${id}") {
+      id
+      _version
+      batch
+      IBAN
+      IBANLetterDoc
+      bankName
+      guardianSignature
+      isConfirmed
+      signedContractDoc
+      status
+      studentCPR
+      studentSignature
+      unsignedContractDoc
+      applicationID
+      application {
+        id
+        _version
+        adminPoints
+        batch
+        createdAt
+        dateTime
+        familyIncome
+        gpa
+        isEmailSent
+        isFamilyIncomeVerified
+        nationalityCategory
+        processed
+        programApplicationId
+        programID
+        schoolName
+        schoolType
+        score
+        status
+        studentCPR
+        studentName
+        universityApplicationsId
+        universityID
+        verifiedGPA
+        programs {
+          items {
+            program {
+              id
+              name
+              nameAr
+              university {
+                name
+                nameAr
+                id
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  `;
+
+  let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;
+
+  if (res.data === null) {
+    throw new Error(`Failed to get the scholarship with id: ${id}`);
+  }
+
+  let scholarship = res.data?.getScholarship;
+
+  return scholarship;
 }
 
 export async function createSingleBatch(

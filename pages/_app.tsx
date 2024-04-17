@@ -25,6 +25,7 @@ import { useRouter } from "next/router";
 import { appWithTranslation } from "next-i18next";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BatchProvider } from "../context/BatchContext";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 Amplify.configure({ ...awsExports, ssr: true });
 
@@ -70,6 +71,7 @@ function App({ Component, pageProps }: AppProps) {
             </BatchProvider>
           </AppProvider>
         </AuthProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </div>
   );

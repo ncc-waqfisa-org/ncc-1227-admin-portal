@@ -18,7 +18,7 @@ import {
 
 import { useAuth } from "../hooks/use-auth";
 import { Scholarship } from "../src/API";
-import { listAllScholarships } from "../src/CustomAPI";
+import { listAllScholarshipsOfBatch } from "../src/CustomAPI";
 
 // interface for all the values & functions
 interface IUseBatchContext {
@@ -132,6 +132,7 @@ function useBatchProviderApp() {
   function resetScholarships() {
     setNextScholarshipsKey(null);
     setScholarshipsData([]);
+    fetchFirstScholarshipsPage();
   }
 
   function resetApplications() {
@@ -167,7 +168,7 @@ function useBatchProviderApp() {
     const batchQuery = batch ? `batch=${batch}` : "";
 
     setIsInitialFetching(true);
-    const fetchedData = await listAllScholarships({
+    const fetchedData = await listAllScholarshipsOfBatch({
       batch,
       nextToken: nextScholarshipsKey,
     }).finally(() => {
@@ -196,7 +197,7 @@ function useBatchProviderApp() {
 
     async function fetchFirstScholarshipsPage() {
       setIsInitialFetching(true);
-      const fetchedData = await listAllScholarships({
+      const fetchedData = await listAllScholarshipsOfBatch({
         batch,
         nextToken: nextScholarshipsKey,
       }).finally(() => {

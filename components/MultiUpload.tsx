@@ -12,7 +12,8 @@ interface Props {
   maxFiles?: number;
   single?: boolean;
   handleChange?: (event: any) => void;
-  handleOnClear: () => void;
+  handleOnClear?: () => void;
+  notClearable?: boolean;
   value?: any;
   filedName: string;
   title: string;
@@ -67,7 +68,7 @@ export default function MultiUpload(props: Props) {
     if (inputRef.current) {
       inputRef.current.dispatchEvent(new Event("input", { bubbles: true })); // Trigger the onChange event
     }
-    props.handleOnClear();
+    props.handleOnClear && props.handleOnClear();
   }
 
   return (
@@ -78,15 +79,17 @@ export default function MultiUpload(props: Props) {
             <p>{props.title}</p>
             <span className="text-red-500 ">*</span>
           </div>
-          <button
-            className="ms-auto btn btn-ghost btn-xs"
-            type="button"
-            onClick={() => {
-              handleCleanFiles();
-            }}
-          >
-            {t("clear")}
-          </button>
+          {!props.notClearable && (
+            <button
+              className="ms-auto btn btn-ghost btn-xs"
+              type="button"
+              onClick={() => {
+                handleCleanFiles();
+              }}
+            >
+              {t("clear")}
+            </button>
+          )}
         </div>
       </label>
       {(props.storageKeys ?? [])?.length > 0 && (

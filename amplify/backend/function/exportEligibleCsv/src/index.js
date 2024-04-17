@@ -103,8 +103,10 @@ async function getApplications(tableName, batchValue, exceptionUniversities, ext
         return true;
     });
 
+
     return allApplications;
 }
+
 
 async function convertToCsv(applications) {
     // TODO: REMOVE THE Status, UniversityID, ProgramID from the CSV

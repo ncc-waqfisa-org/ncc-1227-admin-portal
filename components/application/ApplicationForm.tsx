@@ -5,7 +5,7 @@ import {
   Status,
   UpdateApplicationMutationVariables,
 } from "../../src/API";
-import { ZodEnum, z } from "zod";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
@@ -43,12 +43,10 @@ import {
   uploadFile,
 } from "../../src/CustomAPI";
 import { useAuth } from "../../hooks/use-auth";
-import { useStudent } from "../../context/StudentContext";
 import { calculateScore } from "../../src/Helpers";
 import { Switch } from "../ui/switch";
 import GetStorageLinkComponent from "../get-storage-link-component";
 import { FileIcon } from "@radix-ui/react-icons";
-import { useQueryClient } from "@tanstack/react-query";
 import { useBatchContext } from "../../context/BatchContext";
 
 type TApplicationForm = {

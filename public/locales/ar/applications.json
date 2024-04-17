@@ -108,6 +108,7 @@
   "rowsPerPage": "صفوف في الصفحة",
   "page": "صفحة",
   "update": "تحديث",
+  "create": "إنشاء",
   "of": "من",
   "row": "صفوف",
   "selected": "محددة",
@@ -115,5 +116,11 @@
   "asc": "تصاعدي",
   "desc": "تنازلي",
   "hide": "إخفاء",
+  "thisApplicationIsApproved": "تمت الموافقة على هذا الطلب.",
+  "scholarshipHasBeenCreated": "تم إنشاء منحة دراسية لهذا الطالب للبرنامج:",
+  "createScholarshipFor": "إنشائ منحة دراسية لهذا الطالب للبرنامج",
+  "goToScholarship": "اذهب إلى المنحة",
+  "createScholarship": "أنشاء منحة",
+  "thisWillCreateScholarship": "هذا سينشئ منحة دراسية للطالب",
   "exportAllAsCSV": "تصدير الكل CSV"
 }

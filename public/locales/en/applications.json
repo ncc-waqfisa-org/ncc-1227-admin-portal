@@ -115,6 +115,13 @@
   "asc": "Asc",
   "desc": "Desc",
   "hide": "Hide",
+  "create": "Create",
   "toggleColumns": "Toggle columns",
+  "thisApplicationIsApproved": "This application is approved.",
+  "scholarshipHasBeenCreated": "A scholarship has been created for this student for:",
+  "createScholarshipFor": "Create a scholarship for this student for",
+  "goToScholarship": "Go to scholarship",
+  "createScholarship": "Create Scholarship",
+  "thisWillCreateScholarship": "This will create a scholarship to the student",
   "exportAllAsCSV": "Export all as CSV"
 }

@@ -6,6 +6,7 @@ import { GetStaticProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { InfiniteScholarships } from "../../components/scholarships/infinite-scholarships";
 import { BatchSelector } from "../../components/batch/BatchSelector";
+import { useBatchContext } from "../../context/BatchContext";
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const { locale } = ctx;
@@ -30,6 +31,7 @@ const ScholarshipsPage = () => {
 
   const { t: common } = useTranslation("common");
   const { t: tErrors } = useTranslation("errors");
+  const { batch } = useBatchContext();
 
   return (
     <PageComponent title={"Scholarships"}>
@@ -39,7 +41,7 @@ const ScholarshipsPage = () => {
           <div className="">
             <div className="text-2xl font-semibold ">{t("scholarships")}</div>
             <div className="text-base font-medium text-gray-500 ">
-              {t("scholarshipsSubtitle")}
+              {`${t("scholarshipsSubtitle")} ${batch}`}
             </div>
           </div>
           <BatchSelector />

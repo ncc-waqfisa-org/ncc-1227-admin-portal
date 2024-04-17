@@ -30,7 +30,7 @@ import {
 } from "../ui/table";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
-import { listAllScholarships } from "../../src/CustomAPI";
+import { listAllScholarshipsOfBatch } from "../../src/CustomAPI";
 import { cn } from "../../src/utils";
 
 interface TInfiniteScholarships {
@@ -91,11 +91,7 @@ export const InfiniteScholarships = () => {
         accessorKey: "studentCPR",
         size: 300,
         header: ({ column }) => (
-          <DataTableColumnHeader
-            column={column}
-            title={t("studentCPR")}
-            // className="min-w-[13rem]"
-          />
+          <DataTableColumnHeader column={column} title={t("studentCPR")} />
         ),
         cell: ({ row }) => (
           <Link
@@ -103,6 +99,9 @@ export const InfiniteScholarships = () => {
             className="my-auto hover:text-anzac-400"
           >
             <div className="">{row.getValue("studentCPR")}</div>
+            <p className="font-medium">
+              {row.original.application?.studentName}
+            </p>
           </Link>
         ),
         enableSorting: false,
@@ -114,7 +113,10 @@ export const InfiniteScholarships = () => {
         enableSorting: false,
         enableHiding: false,
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="ScholarshipStatus" />
+          <DataTableColumnHeader
+            column={column}
+            title={t("scholarshipStatus")}
+          />
         ),
         cell: ({ row }) => {
           const status = scholarshipStatuses.find(
@@ -167,7 +169,7 @@ export const InfiniteScholarships = () => {
                 : "bg-amber-100 border-amber-300 "
             )}
           >
-            {row.getValue("isConfirmed") ? "Yes" : "No"}
+            {row.getValue("isConfirmed") ? t("yes") : t("no")}
           </Badge>
         ),
 
@@ -184,7 +186,7 @@ export const InfiniteScholarships = () => {
         ),
         cell: ({ row }) => (
           <Badge variant={"outline"} className="my-auto h-fit">
-            {row.getValue("IBANLetterDoc") ? "Yes" : "No"}
+            {row.getValue("IBANLetterDoc") ? t("yes") : t("no")}
           </Badge>
         ),
 
@@ -198,7 +200,7 @@ export const InfiniteScholarships = () => {
         ),
         cell: ({ row }) => (
           <Badge variant={"outline"} className="my-auto h-fit">
-            {row.getValue("signedContractDoc") ? "Yes" : "No"}
+            {row.getValue("signedContractDoc") ? t("yes") : t("no")}
           </Badge>
         ),
 
@@ -224,143 +226,6 @@ export const InfiniteScholarships = () => {
         enableSorting: false,
         enableHiding: false,
       },
-      // {
-      //   size: 60,
-      //   accessorKey: "score",
-      //   header: ({ column }) => (
-      //     <DataTableColumnHeader column={column} title={t("tableTitleScore")} />
-      //   ),
-      //   cell: ({ row }) => {
-      //     return (
-      //       <div className="flex space-x-2">
-      //         <span className="max-w-[500px] truncate font-medium">
-      //           {row.getValue("score")}
-      //         </span>
-      //       </div>
-      //     );
-      //   },
-      //   enableSorting: false,
-      //   enableHiding: false,
-      // },
-      // {
-      //   accessorKey: "gpa",
-      //   size: 60,
-      //   header: ({ column }) => (
-      //     <DataTableColumnHeader column={column} title={t("tableTitleGpa")} />
-      //   ),
-      //   cell: ({ row }) => {
-      //     return (
-      //       <div className="flex space-x-2">
-      //         <span className="font-medium truncate ">
-      //           {row.getValue("gpa")}
-      //         </span>
-      //       </div>
-      //     );
-      //   },
-      //   enableSorting: false,
-      //   enableHiding: false,
-      // },
-      // {
-      //   accessorKey: "verifiedGPA",
-
-      //   header: ({ column }) => (
-      //     <DataTableColumnHeader
-      //       column={column}
-      //       title={t("tableTitleVerifiedGpa")}
-      //     />
-      //   ),
-      //   cell: ({ row }) => {
-      //     return (
-      //       <div className="flex space-x-2">
-      //         <span className="font-medium truncate ">
-      //           {row.getValue("verifiedGPA") === 0
-      //             ? "-"
-      //             : row.getValue("verifiedGPA") ?? "-"}
-      //         </span>
-      //       </div>
-      //     );
-      //   },
-      //   enableSorting: false,
-      //   enableHiding: false,
-      // },
-      // {
-      //   accessorKey: "schoolType",
-      //   size: 100,
-      //   header: ({ column }) => (
-      //     <DataTableColumnHeader column={column} title={t("schoolType")} />
-      //   ),
-      //   cell: ({ row }) => {
-      //     const schoolType = schoolTypes.find(
-      //       (schoolType) => schoolType.value === row.getValue("schoolType")
-      //     );
-
-      //     if (!schoolType) {
-      //       return null;
-      //     }
-
-      //     return (
-      //       <div className="flex items-center">
-      //         {schoolType.icon && (
-      //           <schoolType.icon className="w-4 h-4 me-2 text-muted-foreground" />
-      //         )}
-      //         <span>
-      //           {locale === "ar" ? schoolType.arLabel : schoolType.label}
-      //         </span>
-      //       </div>
-      //     );
-      //   },
-      //   enableSorting: false,
-      //   enableHiding: false,
-      // },
-
-      // {
-      //   accessorKey: "createdAt",
-      //   size: 200,
-      //   header: ({ column }) => (
-      //     <DataTableColumnHeader
-      //       column={column}
-      //       title={t("tableTitleApplicationDate")}
-      //     />
-      //   ),
-      //   cell: ({ row }) => {
-      //     return (
-      //       <div className="flex space-x-2">
-      //         <span className="font-medium truncate ">
-      //           {Intl.DateTimeFormat(locale, {
-      //             timeStyle: "short",
-      //             dateStyle: "medium",
-      //           }).format(new Date(row.original.createdAt))}
-      //         </span>
-      //       </div>
-      //     );
-      //   },
-      //   enableSorting: false,
-      //   enableHiding: false,
-      // },
-      // {
-      //   accessorKey: "updatedAt",
-      //   size: 200,
-      //   header: ({ column }) => (
-      //     <DataTableColumnHeader
-      //       column={column}
-      //       title={t("tableTitleLastUpdate")}
-      //     />
-      //   ),
-      //   cell: ({ row }) => {
-      //     return (
-      //       <div className="flex space-x-2">
-      //         <span className="font-medium truncate ">
-      //           {Intl.DateTimeFormat(locale, {
-      //             timeStyle: "short",
-      //             dateStyle: "medium",
-      //           }).format(new Date(row.original.updatedAt))}
-      //         </span>
-      //       </div>
-      //     );
-      //   },
-      //   enableSorting: false,
-      //   enableHiding: false,
-      // },
       {
         accessorKey: "view",
         size: 100,
@@ -380,25 +245,11 @@ export const InfiniteScholarships = () => {
     [common, locale, t]
   );
 
-  // async function fetchFirstScholarshipsPage() {
-  //   const batchQuery = batch ? `batch=${batch}` : "";
-
-  //   setIsInitialFetching(true);
-  //   const fetchedData = await listAllScholarships({
-  //     nextToken: nextScholarshipsKey,
-  //   }).finally(() => {
-  //     setIsInitialFetching(false);
-  //   });
-  //   setScholarshipsData(fetchedData.items);
-  //   setNextScholarshipsKey(fetchedData.nextToken);
-  //   return fetchedData;
-  // }
-
   const fetchScholarships = useCallback(
     async (nextKey: string | null) => {
       setIsFetching(true);
 
-      const fetchedData = (await listAllScholarships({
+      const fetchedData = (await listAllScholarshipsOfBatch({
         batch,
         nextToken: nextKey,
       }).finally(() => {
