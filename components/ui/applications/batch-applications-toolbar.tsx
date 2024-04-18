@@ -86,7 +86,7 @@ export const BatchApplicationsToolbar: React.FC<
             );
             const url = `https://a69a50c47l.execute-api.us-east-1.amazonaws.com/default/applications/export?batch=${batch}`;
             const test = JSON.stringify({ ids: selectedApplicationsIds });
-            console.log("🚀 ~ test:", test);
+
             toast.promise(
               fetch(url, {
                 headers: {

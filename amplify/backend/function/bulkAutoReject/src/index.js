@@ -2,7 +2,7 @@ const AWS = require('aws-sdk');
 const uuid = require('uuid');
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
-const cognito = new AWS.CognitoIdentityServiceProvider();
+
 
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
@@ -123,18 +123,26 @@ async function bulkUpdateApplications(batchValue, applications, extendedUniversi
         }
 
         let status;
+        let reason = "Processed by system"
+        let snapshot = "";
 
         if(isNonBahraini) {
             status = 'REJECTED';
             isProcessed = 1;
+            reason = "Student is not Bahraini";
+            snapshot = "Changed from " + application.status + " to " + status;
         }
         else if(application.verifiedGPA && application.verifiedGPA < 88) {
             status = 'REJECTED';
             isProcessed = 1;
+            reason = "GPA is less than 88";
+            snapshot = "Changed from " + application.status + " to " + status;
         }
         else if(isNotCompleted) {
             status = 'REJECTED';
             isProcessed = 1;
+            reason = "Application is not completed";
+            snapshot = "Changed from " + application.status + " to " + status;
         }
         else if(!isNotCompleted && !application.verifiedGPA) {
             status = 'REVIEW';
@@ -147,6 +155,8 @@ async function bulkUpdateApplications(batchValue, applications, extendedUniversi
         else if(!isEligible && application.verifiedGPA) {
             status = 'REJECTED';
             isProcessed = 1;
+            reason = "GPA is less than program minimum GPA";
+            snapshot = "Changed from " + application.status + " to " + status;
         }
         else {
             isProcessed = 0;
@@ -177,7 +187,8 @@ async function bulkUpdateApplications(batchValue, applications, extendedUniversi
         params.ExpressionAttributeNames['#status'] = 'status';
         params.ExpressionAttributeNames['#processed'] = 'processed';
 
-        return dynamoDB.update(params).promise();
+        await dynamoDB.update(params).promise();
+        await createAdminLog(reason, snapshot, application.id);
     });
     return Promise.all(updatePromises);
     }
@@ -300,17 +311,22 @@ async function getPrograms(){
     return allPrograms;
 }
 async function createAdminLog(reason, snapshot, applicationId){
+    const id = uuid.v4();
     const params = {
         TableName: 'AdminLog-cw7beg2perdtnl7onnneec4jfa-staging',
         Item: {
-            '__typename': 'AdminLog',
-            '_version': 1,
-            'reason': reason,
-            'snapshot': snapshot,
-            'createdAt': new Date().toISOString(),
-            'updatedAt': new Date().toISOString(),
-            'dateTime': new Date().toISOString(),
-            'applicationID': applicationId
+            id: id,
+            __typename: 'AdminLog',
+            _version: 1,
+            reason: reason,
+            snapshot: snapshot,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            dateTime: new Date().toISOString(),
+            applicationID: applicationId,
+            applicationAdminLogsId: applicationId,
+            adminCPR: '970900767',
+            lastChangedAt: new Date().getTime(),
         }
     };
 

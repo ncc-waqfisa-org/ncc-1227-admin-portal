@@ -56,11 +56,11 @@
         },
         "bulkAutoReject": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
-          "s3Key": "amplify-builds/bulkAutoReject-7a56467a513630775059-build.zip"
+          "s3Key": "amplify-builds/bulkAutoReject-6d66586d64716f435066-build.zip"
         },
         "exportEligibleCsv": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
-          "s3Key": "amplify-builds/exportEligibleCsv-3773662f4b2b79444d6b-build.zip"
+          "s3Key": "amplify-builds/exportEligibleCsv-43332b5a4f377a745267-build.zip"
         },
         "syncApplications": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
