@@ -2,7 +2,7 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-import * as APITypes from "../API";
+import * as APITypes from "../../amplify/backend/function/dummyUpdate/src/src/API";
 type GeneratedQuery<InputType, OutputType> = string & {
   __generatedQueryInput: InputType;
   __generatedQueryOutput: OutputType;
@@ -2055,6 +2055,50 @@ export const studentsByNationalityCategoryAndGraduationDate = /* GraphQL */ `que
 ` as GeneratedQuery<
   APITypes.StudentsByNationalityCategoryAndGraduationDateQueryVariables,
   APITypes.StudentsByNationalityCategoryAndGraduationDateQuery
+>;
+export const scholarshipsByApplicationID = /* GraphQL */ `query ScholarshipsByApplicationID(
+  $applicationID: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelScholarshipFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  scholarshipsByApplicationID(
+    applicationID: $applicationID
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      status
+      applicationID
+      batch
+      isConfirmed
+      studentCPR
+      unsignedContractDoc
+      signedContractDoc
+      studentSignature
+      guardianSignature
+      bankName
+      IBAN
+      IBANLetterDoc
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ScholarshipsByApplicationIDQueryVariables,
+  APITypes.ScholarshipsByApplicationIDQuery
 >;
 export const scholarshipsByBatchAndStatus = /* GraphQL */ `query ScholarshipsByBatchAndStatus(
   $batch: Int!

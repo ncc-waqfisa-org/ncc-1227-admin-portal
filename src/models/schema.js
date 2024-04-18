@@ -1902,6 +1902,15 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
+                        "name": "byApplication",
+                        "fields": [
+                            "applicationID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
                         "name": "byBatch",
                         "fields": [
                             "batch",

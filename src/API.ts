@@ -5496,6 +5496,43 @@ export type StudentsByNationalityCategoryAndGraduationDateQuery = {
   } | null,
 };
 
+export type ScholarshipsByApplicationIDQueryVariables = {
+  applicationID: string,
+  sortDirection?: ModelSortDirection | null,
+  filter?: ModelScholarshipFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ScholarshipsByApplicationIDQuery = {
+  scholarshipsByApplicationID?:  {
+    __typename: "ModelScholarshipConnection",
+    items:  Array< {
+      __typename: "Scholarship",
+      id: string,
+      status?: ScholarshipStatus | null,
+      applicationID: string,
+      batch?: number | null,
+      isConfirmed?: boolean | null,
+      studentCPR?: string | null,
+      unsignedContractDoc?: string | null,
+      signedContractDoc?: string | null,
+      studentSignature?: string | null,
+      guardianSignature?: string | null,
+      bankName?: string | null,
+      IBAN?: string | null,
+      IBANLetterDoc?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
 export type ScholarshipsByBatchAndStatusQueryVariables = {
   batch: number,
   status?: ModelStringKeyConditionInput | null,

@@ -1,4 +1,6 @@
 const AWS = require('aws-sdk');
+const uuid = require('uuid');
+
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 const cognito = new AWS.CognitoIdentityServiceProvider();
 
@@ -162,10 +164,12 @@ async function bulkUpdateApplications(batchValue, applications, extendedUniversi
         if(status) {
             params.UpdateExpression += '#status = :status';
         }
-        else{
+        else {
             // remove the last comma
             params.UpdateExpression = params.UpdateExpression.slice(0, -2);
         }
+
+        console.log('UpdateExpression:', params.UpdateExpression);
 
         params.ExpressionAttributeValues[':status'] = status;
         params.ExpressionAttributeValues[':processedValue'] = isProcessed;
