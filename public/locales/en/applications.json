@@ -101,6 +101,7 @@
   "studentFamilyIncome": "Student family income",
   "isFamilyIncomeVerified": "Verified Family Income",
   "adminPoints": "Admin Review Points",
+  "exportSelectedCSV": "Export Selected CSV",
   "adminPointsD": "Points added by the admin for the student.",
   "moreThan1500": "1500 BD and above",
   "schoolCertificate": "School certificate",

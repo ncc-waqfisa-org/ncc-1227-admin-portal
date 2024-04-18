@@ -103,6 +103,7 @@
   "studentFamilyIncome": "دخل الأسرة للطالب",
   "isFamilyIncomeVerified": "تم التحقق من دخل الأسرة",
   "adminPoints": "نقاط مراجعة المسؤول",
+  "exportSelectedCSV": "تصدير CSV المحددة",
   "adminPointsD": "النقاط المضافة من قبل المسؤل للطالب.",
   "filterStudents": "تصفية الطلاب حسب الهوية الشخصية...",
   "rowsPerPage": "صفوف في الصفحة",

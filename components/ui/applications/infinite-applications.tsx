@@ -51,13 +51,6 @@ export const InfiniteApplications = () => {
     isInitialFetching,
   } = useBatchContext();
 
-  // const [selectedStatus, setSelectedStatus] = useState<string | undefined>(
-  //   undefined
-  // );
-  // const [selectedBatch, setSelectedBatch] = useState<string | undefined>(
-  //   dayjs().year().toString()
-  // );
-
   const [isFetching, setIsFetching] = useState(false);
 
   const { t } = useTranslation("applications");
@@ -171,20 +164,6 @@ export const InfiniteApplications = () => {
           return value.includes(row.getValue(id));
         },
       },
-      // {
-      //   accessorKey: "status",
-      //   header: ({ column }) => (
-      //     <DataTableColumnHeader column={column} title={t("Status")} />
-      //   ),
-      //   cell: ({ row }) => (
-      //     <Badge variant={"outline"} className="h-fit">
-      //       {row.getValue("status")}
-      //     </Badge>
-      //   ),
-
-      //   enableSorting: false,
-      //   enableHiding: false,
-      // },
       {
         size: 60,
         accessorKey: "score",
@@ -241,6 +220,7 @@ export const InfiniteApplications = () => {
             </div>
           );
         },
+        size: 110,
         enableSorting: false,
         enableHiding: false,
       },
@@ -552,6 +532,7 @@ export const InfiniteApplications = () => {
                             display: "flex",
                             width: cell.column.getSize(),
                           }}
+                          className="items-center"
                         >
                           {flexRender(
                             cell.column.columnDef.cell,

@@ -21,6 +21,8 @@ import { useBatchContext } from "../../../context/BatchContext";
 import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import { useAuth } from "../../../hooks/use-auth";
+import { DownloadFileFromUrl } from "../../download-file-from-url";
+import dayjs from "dayjs";
 
 interface ApplicationsStatusFilterProps {
   handleStatusChange: (value: string) => void;
@@ -76,10 +78,42 @@ export const BatchApplicationsToolbar: React.FC<
         <Button
           onClick={() => {
             table.toggleAllRowsSelected(false);
-            console.log(
-              "🚀 ~ table.getSelectedRowModel().rows:",
-              table.getSelectedRowModel().rows.map((row) => row.original)
+            const selectedApplications = table
+              .getSelectedRowModel()
+              .rows.map((row) => row.original);
+            const selectedApplicationsIds = selectedApplications.map(
+              (a) => a.id
             );
+            const url = `https://a69a50c47l.execute-api.us-east-1.amazonaws.com/default/applications/export?batch=${batch}`;
+            toast.promise(
+              fetch(url, {
+                headers: {
+                  ...(token && { Authorization: `Bearer ${token}` }),
+                },
+                body: JSON.stringify({ ids: selectedApplicationsIds }),
+              }).then(async (res) => {
+                if (res.ok) {
+                  const { url } = await res.json();
+                  if (url) {
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = `selected-applications-${dayjs().toISOString()}.csv`;
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                  }
+                } else {
+                  const { message } = await res.json();
+                  throw new Error(message);
+                }
+              }),
+              {
+                loading: t("loading"),
+                success: t("success"),
+                error: (err) =>
+                  err ? err.message : tErrors("somethingWentWrong"),
+              }
+            );
+
             toast.error(
               "Unimplemented functionality batch-applications-toolbar"
             );
