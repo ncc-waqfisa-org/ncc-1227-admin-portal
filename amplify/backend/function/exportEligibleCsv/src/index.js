@@ -15,13 +15,15 @@ exports.handler = async (event) => {
     const batchValue = parseInt(event.queryStringParameters?.batch) || new Date().getFullYear();
     const exceptionUniversities = await getExceptionUniversities();
     const extendedUniversities = await getExtendedUniversities();
+    const batchDetails = await getBatchDetails(batchValue);
 
     console.log('Universities:', exceptionUniversities);
     console.log(`EVENT: ${JSON.stringify(event)}`);
 
     try {
-        const applications = await getApplications('Application-cw7beg2perdtnl7onnneec4jfa-staging', batchValue, exceptionUniversities);
-        const csv = convertToCsv(applications);
+        const applications = await getApplications('Application-cw7beg2perdtnl7onnneec4jfa-staging', batchValue, exceptionUniversities,
+        extendedUniversities, batchDetails);
+        const csv = await convertToCsv(applications);
         const url = await uploadToS3(csv);
         return {
             statusCode: 200,
@@ -37,7 +39,7 @@ exports.handler = async (event) => {
     }
 };
 
-async function getApplications(tableName, batchValue, exceptionUniversities, extendedUniversities) {
+async function getApplications(tableName, batchValue, exceptionUniversities, extendedUniversities, batchDetails) {
     // const programs = await getPrograms();
     const params = {
         TableName: tableName,
@@ -64,20 +66,58 @@ async function getApplications(tableName, batchValue, exceptionUniversities, ext
 
     // Remove the NOT_COMPLETED application unless the university is an exception]
 
-    console.log('Universities:', exceptionUniversities);
-    allApplications = allApplications.filter(
-        application => application.status !== 'NOT_COMPLETED'
-            || exceptionUniversities.some(async university => university.id === application.universityID) || extendedUniversities.some(async university => university.id === application.universityID));
+    allApplications = allApplications.filter(application => {
+        // Filter out rejected applications
+        if (application.status === 'REJECTED' || application.status === 'WITHDRAWN') {
+            return false;
+        }
+        // Filter out not completed applications unless they are from exception or extended universities
+        if (application.status === 'NOT_COMPLETED') {
+            // return exceptionUniversities.some(university => university.id === application.universityID)
+            //     || extendedUniversities.some(university => university.id === application.universityID);
+            if(exceptionUniversities.some(university => university.id === application.universityID)){
+                return true;
+            }
+            if (extendedUniversities.some(university => university.id === application.universityID)) {
+                // Check if today is before the extended deadline
+                const today = new Date();
+                const chosenUniversity = extendedUniversities.find(university => university.id === application.universityID);
+
+                const updateApplicationEndDate = batchDetails.updateApplicationEndDate;
+
+                const [year, month, day] = updateApplicationEndDate.split('-').map(Number);
+
+                let deadline = new Date(year, month - 1, day);
+
+                deadline.setDate(deadline.getDate() + chosenUniversity.extensionDuration);
+
+                console.log('Today:', today);
+                console.log('Deadline:', deadline);
+                console.log('Is today before deadline:', today <= deadline);
+
+                return today <= deadline;
+            }
+            return false;
+        }
+        // Keep all other applications
+        return true;
+    });
+
 
     return allApplications;
 }
 
 
-function convertToCsv(applications) {
+async function convertToCsv(applications) {
+    // TODO: REMOVE THE Status, UniversityID, ProgramID from the CSV
+    // let csv = 'StudentCPR,GPA,verifiedGPA,Status,University\n';
     let csv = 'StudentCPR,GPA,verifiedGPA\n';
-    applications.forEach(application => {
+    for (const application of applications) {
+        // let university = application.universityID? await getUniversity(application.universityID): {name: 'UNKNOWN'};
+        // csv += `=""${application.studentCPR}"",${application.gpa},PLEASE VERIFY,${application.status},${university?.name}\n`;
         csv += `=""${application.studentCPR}"",${application.gpa},PLEASE VERIFY\n`;
-    });
+
+    }
     return csv;
 }
 
@@ -91,6 +131,7 @@ async function uploadToS3(csv) {
     // return the URL of the uploaded file
     return s3.getSignedUrl('getObject', {Bucket: params.Bucket, Key: params.Key});
 }
+
 
 async function getExceptionUniversities() {
 
@@ -112,7 +153,7 @@ async function getExceptionUniversities() {
         const universities = await dynamoDB.query(params).promise();
         allUniversities = allUniversities.concat(universities.Items);
         params.ExclusiveStartKey = universities.LastEvaluatedKey;
-    } while (params.ExclusiveStartKey);
+    } while (params.ExclusiveStartKey)
 
     return allUniversities;
 }
@@ -139,8 +180,21 @@ async function getExtendedUniversities() {
         allUniversities = allUniversities.concat(universities.Items);
         params.ExclusiveStartKey = universities.LastEvaluatedKey;
     } while (params.ExclusiveStartKey);
+    console.log('Extended Universities:', allUniversities);
 
     return allUniversities;
+}
+
+async function getBatchDetails(batch) {
+    const params = {
+        TableName: 'Batch-cw7beg2perdtnl7onnneec4jfa-staging',
+        Key: {
+            batch: batch
+        }
+    };
+
+    const batchDetails = await dynamoDB.get(params).promise();
+    return batchDetails.Item;
 }
 
 // async function getPrograms() {
@@ -160,3 +214,14 @@ async function getExtendedUniversities() {
 // }
 //
 
+// async function getUniversity(universityID) {
+//     const params = {
+//         TableName: 'University-cw7beg2perdtnl7onnneec4jfa-staging',
+//         Key: {
+//             id: universityID
+//         }
+//     };
+//
+//     const university = await dynamoDB.get(params).promise();
+//     return university.Item;
+// }

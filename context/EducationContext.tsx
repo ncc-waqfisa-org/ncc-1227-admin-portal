@@ -22,14 +22,23 @@ interface IUseEducationContext {
     availability: number
   ) => Promise<University | undefined>;
   getProgramsFromUniID: (id: string) => Promise<University | undefined>;
-  addProgramToUni: (
-    uniID: string,
-    programName: string,
-    programNameAr: string,
-    requirements: string,
-    requirementsAr: string,
-    isDeactivated: boolean
-  ) => Promise<Program | undefined>;
+  addProgramToUni: ({
+    uniID,
+    programName,
+    programNameAr,
+    requirements,
+    requirementsAr,
+    minimumGPA,
+    isDeactivated,
+  }: {
+    uniID: string;
+    programName: string;
+    programNameAr: string;
+    requirements: string;
+    requirementsAr: string;
+    minimumGPA: number;
+    isDeactivated: boolean;
+  }) => Promise<Program | undefined>;
   syncUniList: () => Promise<void>;
 }
 
@@ -106,6 +115,10 @@ function useProviderEducation() {
           nameAr
           availability
           isDeactivated
+          isException
+          isExtended
+          extensionDuration
+          isTrashed
           Programs {
             items {
               id
@@ -117,6 +130,7 @@ function useProviderEducation() {
               name
               nameAr
               requirements
+              minimumGPA
               requirementsAr
               universityID
               universityProgramsId
@@ -153,6 +167,7 @@ function useProviderEducation() {
           id
           universityID
           universityProgramsId
+          minimumGPA
         }
       }
     }    
@@ -211,14 +226,23 @@ function useProviderEducation() {
   }
 
   // add programs to uni
-  async function addProgramToUni(
-    uniID: string,
-    programName: string,
-    programNameAr: string,
-    requirements: string,
-    requirementsAr: string,
-    isDeactivated: boolean
-  ): Promise<Program | undefined> {
+  async function addProgramToUni({
+    uniID,
+    programName,
+    programNameAr,
+    requirements,
+    requirementsAr,
+    minimumGPA,
+    isDeactivated,
+  }: {
+    uniID: string;
+    programName: string;
+    programNameAr: string;
+    requirements: string;
+    requirementsAr: string;
+    minimumGPA: number;
+    isDeactivated: boolean;
+  }): Promise<Program | undefined> {
     let query = `
     mutation CreateProgramForUniversity {
       createProgram(input: {universityID: "${uniID}",
@@ -227,6 +251,7 @@ function useProviderEducation() {
        requirements: "${requirements}",
        requirementsAr: "${requirementsAr}",
        universityProgramsId: "${uniID}", 
+       minimumGPA: ${minimumGPA}, 
        isDeactivated: ${isDeactivated}}) {
         name
         _deleted
@@ -238,6 +263,7 @@ function useProviderEducation() {
         requirements
         universityID
         universityProgramsId
+        minimumGPA
         updatedAt
       }
     }

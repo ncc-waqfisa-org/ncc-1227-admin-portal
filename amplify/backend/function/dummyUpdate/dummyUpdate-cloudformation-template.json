@@ -47,12 +47,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "autoReject",
+            "dummyUpdate",
             {
               "Fn::Join": [
                 "",
                 [
-                  "autoReject",
+                  "dummyUpdate",
                   "-",
                   {
                     "Ref": "env"
@@ -89,12 +89,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "nccLambdaRolee4cf60ca",
+            "nccLambdaRole42399d7e",
             {
               "Fn::Join": [
                 "",
                 [
-                  "nccLambdaRolee4cf60ca",
+                  "nccLambdaRole42399d7e",
                   "-",
                   {
                     "Ref": "env"

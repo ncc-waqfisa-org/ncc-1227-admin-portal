@@ -14,6 +14,9 @@ export const StudentsTableHeaders = [
 export const EducationTableHeaders = [
   "tableUniName",
   "availability",
+  "exceptionHeader",
+  "extended",
+  "extensionDuration",
   "tableUniPrograms",
 ];
 
@@ -24,4 +27,11 @@ export const BatchesTableHeaders = [
   "tableBatchCreateApplicationStartDate",
   "tableBatchUpdateApplicationEndDate",
   "tableBatchCreateApplicationEndDate",
+];
+export const ScholarshipsTableHeaders = [
+  "tableScholarshipStudentCpr",
+  "tableScholarshipStudentStatus",
+  "tableScholarshipContractSigned",
+  "tableScholarshipBankDetailsAdded",
+  "tableScholarshipCreatedDate",
 ];

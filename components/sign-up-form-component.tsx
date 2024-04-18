@@ -248,11 +248,10 @@ const SignUpFormComponent: FC<Props> = ({ admin }) => {
 
                     <button
                       type="submit"
-                      className={`btn btn-primary md:col-span-2 ${
-                        isSubmitting && "loading"
-                      }`}
+                      className={`btn btn-primary md:col-span-2`}
                       disabled={isSubmitting}
                     >
+                      {isSubmitting && <span className="loading"></span>}
                       {admin ? t("updateAdminButton") : t("addAdminButton")}
                     </button>
                   </Form>

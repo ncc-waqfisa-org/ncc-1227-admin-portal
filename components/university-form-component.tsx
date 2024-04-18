@@ -1,281 +1,340 @@
-import { Field, Form, Formik } from "formik";
 import React, { useState } from "react";
 import {
   University,
   UpdateProgramMutationVariables,
   UpdateUniversityMutationVariables,
 } from "../src/API";
-import * as yup from "yup";
 import { updateProgramById, updateUniversityById } from "../src/CustomAPI";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
 import { useEducation } from "../context/EducationContext";
 import { useTranslation } from "react-i18next";
-import { useAuth } from "../hooks/use-auth";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
+import { Input } from "./ui/input";
+import { Checkbox } from "./ui/checkbox";
+import { Button } from "./ui/button";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "./ui/form";
 
 interface Props {
-  university: University | undefined;
+  university: University | null;
 }
 
 export default function UniversityFormComponent({ university }: Props) {
-  const { push, back, locale } = useRouter();
-  const { isSuperAdmin } = useAuth();
+  const { push } = useRouter();
+
   const { syncUniList } = useEducation();
   const { t } = useTranslation("education");
-  const { t: tErrors } = useTranslation("errors");
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const initialValues = {
-    universityName: university?.name ?? "",
-    universityArName: university?.nameAr ?? "",
-    universityAvailability: university?.availability ?? "",
-    isDeactivated: university?.isDeactivated ?? false,
-  };
+  const formSchema = z.object({
+    universityName: z.string(),
+    universityArName: z.string(),
+    universityAvailability: z.number().min(0),
+    isDeactivated: z.boolean().default(false),
+    isException: z.number().min(0).max(1).default(0),
+    isExtended: z.number().min(0).max(1).default(0),
+    extensionDuration: z.number().min(0).default(0),
+  });
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      universityName: university?.name ?? "",
+      universityArName: university?.nameAr ?? "",
+      universityAvailability: university?.availability ?? 0,
+      isDeactivated: university?.isDeactivated ?? false,
+      isException: university?.isException ?? 0,
+      isExtended: university?.isExtended ?? 0,
+      extensionDuration: university?.extensionDuration ?? 0,
+    },
+  });
+
+  // 2. Define a submit handler.
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
+    if (university) {
+      let updatedUniDetails: UpdateUniversityMutationVariables = {
+        input: {
+          id: university.id,
+          _version: university?._version,
+          name: values.universityName,
+          nameAr: values.universityArName,
+          availability: values.universityAvailability,
+          isDeactivated: values.isDeactivated,
+          isException: values.isException,
+          isExtended: values.isExtended,
+          extensionDuration: values.extensionDuration,
+        },
+      };
+
+      await toast.promise(
+        updateUniversityById(updatedUniDetails)
+          .then(() => {
+            university?.Programs?.items.map(async (uniProgram) => {
+              if (uniProgram) {
+                let updateProgram: UpdateProgramMutationVariables = {
+                  input: {
+                    id: uniProgram.id,
+                    isDeactivated: values.isDeactivated,
+                    _version: uniProgram?._version,
+                  },
+                };
+                await updateProgramById(updateProgram)
+                  .catch((err) => {
+                    throw err;
+                  })
+                  .finally(async () => {
+                    await syncUniList();
+                    push("/education");
+                  });
+              }
+            });
+          })
+          .catch((err) => {
+            throw err;
+          }),
+        {
+          loading: "Loading...",
+          success: "University updated successfully",
+          error: (error: any) => {
+            return `${error?.message}`;
+          },
+        }
+      );
+    }
+    setIsLoading(false);
+  }
 
   return (
     <div>
-      <Formik
-        initialValues={initialValues}
-        validationSchema={yup.object({
-          universityName: yup.string().required(`${tErrors("requiredField")}`),
-          universityArName: yup
-            .string()
-            .required(`${tErrors("requiredField")}`),
-          universityAvailability: yup
-            .number()
-            .integer()
-            .required(`${tErrors("requiredField")}`),
-        })}
-        onSubmit={async (values, actions) => {
-          setIsLoading(true);
-          if (university) {
-            let updatedUniDetails: UpdateUniversityMutationVariables = {
-              input: {
-                id: university.id,
-                name: values.universityName,
-                nameAr: values.universityArName,
-                availability: Number(values.universityAvailability),
-                isDeactivated: values.isDeactivated,
-                _version: university?._version,
-              },
-            };
+      <Card>
+        <CardHeader>
+          <CardTitle>{t("updateUniversity")}</CardTitle>
+          <CardDescription>{t("updateUniversityD")}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+              <div className="grid gap-4 sm:grid-cols-2">
+                <FormField
+                  control={form.control}
+                  name="universityName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor="name">{t("tableUniName")}</FormLabel>
+                      <FormControl>
+                        <div className="space-y-2">
+                          <Input
+                            id="name"
+                            placeholder="Enter university name"
+                            {...field}
+                          />
+                        </div>
+                      </FormControl>
+                      <FormDescription>{t("tableUniNameD")}</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-            await toast.promise(
-              updateUniversityById(updatedUniDetails)
-                .then(() => {
-                  university?.Programs?.items.map(async (uniProgram) => {
-                    if (uniProgram) {
-                      let updateProgram: UpdateProgramMutationVariables = {
-                        input: {
-                          id: uniProgram.id,
-                          isDeactivated: values.isDeactivated,
-                          _version: uniProgram?._version,
-                        },
-                      };
-                      await updateProgramById(updateProgram)
-                        .catch((err) => {
-                          throw err;
-                        })
-                        .finally(async () => {
-                          await syncUniList();
-                          back();
-                        });
-                    }
-                  });
-                })
-                .catch((err) => {
-                  throw err;
-                }),
-              {
-                loading: "Loading...",
-                success: "University updated successfully",
-                error: (error: any) => {
-                  return `${error?.message}`;
-                },
-              }
-            );
-          }
-
-          actions.setSubmitting(false);
-          setIsLoading(false);
-        }}
-      >
-        {({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          isSubmitting,
-          isValid,
-        }) => (
-          <Form className="flex flex-col gap-6">
-            <div className="flex justify-between gap-6">
-              <div className="flex items-center justify-between gap-10 grow">
-                <div className="text-base font-medium">{t("tableUniName")}</div>
-                <div className="grow">
-                  <Field
-                    name="universityName"
-                    type="text"
-                    placeholder="University Name"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    disabled={!isSuperAdmin}
-                    className={`input w-full input-bordered input-primary ${
-                      errors.universityName && "input-error"
-                    }`}
-                  />
-                  <label className="label-text-alt text-error">
-                    {errors.universityName &&
-                      touched.universityName &&
-                      errors.universityName}
-                  </label>
-                </div>
+                <FormField
+                  control={form.control}
+                  name="universityArName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor="name">
+                        {t("tableUniArName")}
+                      </FormLabel>
+                      <FormControl>
+                        <div className="space-y-2">
+                          <Input
+                            id="name"
+                            placeholder="أدخل اسم الجامعة بالعربية"
+                            {...field}
+                          />
+                        </div>
+                      </FormControl>
+                      <FormDescription>{t("tableUniArNameD")}</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <FormField
+                  control={form.control}
+                  name="universityAvailability"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor="name">{t("availability")}</FormLabel>
+                      <FormControl>
+                        <div className="space-y-2">
+                          <Input
+                            id="name"
+                            placeholder={`${t("availability")}`}
+                            type="number"
+                            {...field}
+                            onChange={(e) => field.onChange(Number(e))}
+                          />
+                        </div>
+                      </FormControl>
+                      <FormDescription>{t("availabilityD")}</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-              <div className="flex items-center justify-between gap-10 grow">
-                <div className="text-base font-medium">
-                  {t("tableUniArName")}
-                </div>
-                <div className="grow">
-                  <Field
-                    name="universityArName"
-                    type="text"
-                    disabled={!isSuperAdmin}
-                    placeholder="University Name"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    className={`input w-full input-bordered input-primary ${
-                      errors.universityArName && "input-error"
-                    }`}
-                  />
-                  <label className="label-text-alt text-error">
-                    {errors.universityArName &&
-                      touched.universityArName &&
-                      errors.universityArName}
-                  </label>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex justify-between">
-              <div className="flex items-center justify-between gap-10 ">
-                <div className="text-base font-medium">{t("availability")}</div>
-                <div>
-                  <Field
-                    name="universityAvailability"
-                    type="text"
-                    disabled={!isSuperAdmin}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    className={`input input-bordered input-primary ${
-                      errors.universityAvailability && "input-error"
-                    }`}
-                  />
-                  <label className="label-text-alt text-error">
-                    {errors.universityAvailability &&
-                      touched.universityAvailability &&
-                      errors.universityAvailability}
-                  </label>
-                </div>
-              </div>
-
-              <div className=" w-[150px] flex justify-between items-center">
-                <div className="text-base font-medium">{t("deactivate")}</div>
-                <div>
-                  <Field
-                    name="isDeactivated"
-                    type="checkbox"
-                    disabled={!isSuperAdmin}
-                    placeholder="Deactivate?"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    className={` checkbox text-orange-50 checkbox-error ${
-                      errors.isDeactivated && "input-error"
-                    }`}
-                  />
-                  <label className="label-text-alt text-error">
-                    {errors.isDeactivated &&
-                      touched.isDeactivated &&
-                      errors.isDeactivated}
-                  </label>
-                </div>
-              </div>
-            </div>
-
-            <div className="text-base font-medium">{t("tableUniPrograms")}</div>
-            <div dir="ltr">
-              <div className="overflow-x-auto">
-                <table className="table w-full">
-                  <thead>
-                    <tr>
-                      <th>{t("tableUniName")}</th>
-                      <th>{t("tableUniPrograms")}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {(university?.Programs?.items?.length ?? 0) == 0 && (
-                      <tr className="">
-                        <td className="text-error">{t("noPrograms")}</td>
-                        <td className="text-error">-</td>
-                      </tr>
-                    )}
-                    {(university?.Programs?.items?.length ?? 0) > 0 &&
-                      university?.Programs?.items
-                        .sort((a: any, b: any) => {
-                          let bD = b.isDeactivated === true ? -1 : 1;
-                          return bD;
-                        })
-                        .map((program) => {
-                          return (
-                            <tr
-                              className={`hover:cursor-pointer hover:bg-anzac-50 hover:text-anzac-500 ${
-                                program?.isDeactivated ? "bg-gray-200" : ""
-                              }`}
-                              onClick={() => {
-                                push(`/education/programs/${program?.id}`);
-                              }}
-                              key={program?.id}
-                            >
-                              <td className="bg-transparent">
-                                {locale == "ar"
-                                  ? program?.nameAr ?? "-"
-                                  : program?.name}
-                              </td>
-                              <td className="bg-transparent ">
-                                <div
-                                  className={`badge ${
-                                    program?.isDeactivated ? "" : "badge-accent"
-                                  }`}
-                                >
-                                  {program?.isDeactivated
-                                    ? t("inactive")
-                                    : t("active")}
+                <FormField
+                  control={form.control}
+                  name="extensionDuration"
+                  render={({ field }) => (
+                    <FormItem>
+                      <div className="flex items-center justify-between py-1">
+                        <FormLabel htmlFor="name">
+                          {t("extensionDuration")}
+                        </FormLabel>
+                        <FormField
+                          control={form.control}
+                          name="isExtended"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormControl>
+                                <div className="flex items-center gap-2">
+                                  <Checkbox
+                                    id="isExtended"
+                                    checked={field.value === 1 ? true : false}
+                                    onCheckedChange={(checkedState) =>
+                                      field.onChange(
+                                        typeof checkedState == "boolean"
+                                          ? checkedState
+                                            ? 1
+                                            : 0
+                                          : 0
+                                      )
+                                    }
+                                  />
+                                  <FormLabel htmlFor="name">
+                                    {t("extended")}
+                                  </FormLabel>
                                 </div>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
+                              </FormControl>
 
-            {isSuperAdmin && (
-              <button
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <FormControl>
+                        <div className="flex items-center gap-2">
+                          <Input
+                            id="extensionDuration"
+                            placeholder={`${t("extensionDuration")}`}
+                            type="number"
+                            {...field}
+                            onChange={(e) => {
+                              field.onChange(Number(e.target.value));
+                            }}
+                          />
+                          <p>{t("days")}</p>
+                        </div>
+                      </FormControl>
+                      <FormDescription>
+                        {t("extensionDurationD")}
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div className="grid gap-4">
+                <FormField
+                  control={form.control}
+                  name="isDeactivated"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            id="deactivated"
+                            checked={field.value}
+                            onCheckedChange={(checkedState) =>
+                              field.onChange(
+                                typeof checkedState == "boolean"
+                                  ? checkedState
+                                  : false
+                              )
+                            }
+                          />
+                          <FormLabel htmlFor="name">
+                            {t("deactivate")}
+                          </FormLabel>
+                        </div>
+                      </FormControl>
+                      <FormDescription>{t("deactivateD")}</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="isException"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <div className="flex items-center gap-2">
+                          <Checkbox
+                            id="isException"
+                            checked={field.value === 1 ? true : false}
+                            onCheckedChange={(checkedState) =>
+                              field.onChange(
+                                typeof checkedState == "boolean"
+                                  ? checkedState
+                                    ? 1
+                                    : 0
+                                  : 0
+                              )
+                            }
+                          />
+                          <FormLabel htmlFor="name">{t("exception")}</FormLabel>
+                        </div>
+                      </FormControl>
+                      <FormDescription>{t("exceptionD")}</FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <Button
+                className="flex items-center gap-2 w-fit"
+                disabled={isLoading}
                 type="submit"
-                className={`btn btn-primary text-white ${
-                  isSubmitting && "loading"
-                }`}
-                disabled={isSubmitting || isLoading || !isValid}
               >
+                {isLoading && <span className="loading"></span>}
                 {t("saveButton")}
-              </button>
-            )}
+              </Button>
+            </form>
           </Form>
-        )}
-      </Formik>
+        </CardContent>
+      </Card>
     </div>
   );
 }

@@ -1,30 +1,25 @@
 import { useRouter } from "next/router";
 
-import MiniGraphInfo, {
-  GraphColor,
-} from "../components/graphs/mini-graph-info";
 import { LargeBarGraphInfo } from "../components/graphs/large-bar-graph-info";
 
 import { PageComponent } from "../components/page-component";
 import PrimaryButton from "../components/primary-button";
-import { useStudent } from "../context/StudentContext";
-import { Status } from "../src/API";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 
 import _ from "lodash";
 import { CSVLink } from "react-csv";
 
-import {
-  getMeGpaSummary,
-  getMeWeeklySummary,
-  giveMeApplicationsThisMonth,
-  giveMeTopProgram,
-  giveMeTopUniversities,
-} from "../src/Helpers";
 import { LargeDonutGraphInfo } from "../components/graphs/large-donut-graph-info";
 import { GetStaticProps } from "next";
-import { BatchSelectorComponent } from "../components/batch-selector-component";
+import { BatchSelector } from "../components/batch/BatchSelector";
+import toast from "react-hot-toast";
+import { useAuth } from "../hooks/use-auth";
+import { Button } from "../components/ui/button";
+import { useQuery } from "@tanstack/react-query";
+import { useBatchContext } from "../context/BatchContext";
+import { getStatistics } from "../src/CustomAPI";
+import { DownloadFileFromUrl } from "../components/download-file-from-url";
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const { locale } = ctx;
@@ -33,6 +28,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
     props: {
       ...(await serverSideTranslations(locale ?? "en", [
         "common",
+        "applications",
         "pageTitles",
         "signIn",
         "errors",
@@ -43,40 +39,24 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 
 const Home = () => {
   const { push, locale } = useRouter();
-  const { applications, batch, updateBatch, applicationsBeingFetched } =
-    useStudent();
   const { t } = useTranslation("common");
-  const { t: application } = useTranslation("applications");
+  const { t: tApplications } = useTranslation("applications");
+  const { t: tErrors } = useTranslation("errors");
+  const { token } = useAuth();
 
-  let sortedApplications = applications?.sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
+  const { batch } = useBatchContext();
 
-  let applicationThisMonthGraph =
-    giveMeApplicationsThisMonth(sortedApplications);
-
-  let pendingApprovalGraph = sortedApplications?.filter(
-    (element) =>
-      element.status === Status.ELIGIBLE || element.status === Status.REVIEW
-    // || element.status === Status.NOT_COMPLETED
-  );
-
-  let listOfPrograms = sortedApplications
-    ? sortedApplications
-        ?.map((app) => app.programs?.items)
-        .map((p) => p?.map((pc) => pc?.program))
-        .flat()
-    : [];
-
-  let topUniversitiesGraph = giveMeTopUniversities(listOfPrograms, 4);
-  let topProgramsGraph = giveMeTopProgram(listOfPrograms, 4);
-  let gpaSummaryGraph = getMeGpaSummary(sortedApplications);
-  let weeklySummaryGraph = getMeWeeklySummary(sortedApplications);
+  const { data: statistics, isPending } = useQuery({
+    queryKey: ["statistics", batch, token, locale],
+    queryFn: () =>
+      getStatistics({ batch: batch, token: token, locale: locale }),
+  });
 
   return (
     <PageComponent title={"Home"}>
       {
         <div className="flex flex-col justify-between gap-4 mb-14">
+          {/* Header */}
           <div className="flex flex-wrap justify-between ">
             <div className="flex flex-col ">
               <div className="mb-5 ">
@@ -91,126 +71,78 @@ const Home = () => {
               </div>
             </div>
             <div className="flex flex-wrap items-center justify-end gap-4 my-4">
-              <BatchSelectorComponent
-                batch={batch}
-                updateBatch={updateBatch}
-              ></BatchSelectorComponent>
+              <BatchSelector />
               <PrimaryButton
                 name={t("allApplicationsButton")}
                 buttonClick={() => push("/applications")}
               ></PrimaryButton>
 
-              {!applicationsBeingFetched && (
-                <CSVLink
-                  filename={`${batch}-Applications-Summary-${new Date().toISOString()}.csv`}
-                  data={
-                    sortedApplications
-                      ? [
-                          ...sortedApplications.map((app, index) => {
-                            let sortedProgramChoices =
-                              app.programs?.items?.sort(
-                                (a, b) =>
-                                  (a?.choiceOrder ?? 0) - (b?.choiceOrder ?? 0)
-                              );
-
-                            return {
-                              row: index + 1,
-                              applicationId: app.id,
-                              gpa: app.gpa,
-                              status: app.status,
-                              studentCPR: app.studentCPR,
-                              gender: app.student?.gender,
-
-                              graduationDate: app.student?.graduationDate,
-                              nationality: app.student?.nationality,
-                              schoolType: app.schoolType,
-                              familyIncome: app.student?.familyIncome,
-                              familyMembers:
-                                app.student?.ParentInfo?.numberOfFamilyMembers,
-                              dateTime: app.dateTime,
-                              primaryProgramID:
-                                sortedProgramChoices?.[0]?.program?.id,
-                              primaryProgram: `${sortedProgramChoices?.[0]?.program?.name}-${sortedProgramChoices?.[0]?.program?.university?.name}`,
-                              secondaryProgramID:
-                                sortedProgramChoices?.[1]?.program?.id,
-                              secondaryProgram: `${sortedProgramChoices?.[1]?.program?.name}-${sortedProgramChoices?.[1]?.program?.university?.name}`,
-                            };
-                          }),
-                        ]
-                      : []
-                  }
-                  className="text-xs hover:!text-white btn btn-primary btn-sm btn-outline"
-                >
-                  {t("exportCSV")}
-                </CSVLink>
-              )}
+              <DownloadFileFromUrl
+                fileName={`${batch}-Applications`}
+                url={`https://a69a50c47l.execute-api.us-east-1.amazonaws.com/default/applications/export?batch=${batch}}`}
+              >
+                {t("exportCSV")}
+              </DownloadFileFromUrl>
             </div>
           </div>
-
           {/* mini graphs */}
           <div className="grid justify-between grid-cols-1 gap-8 mb-8 md:grid-cols-2 xl:grid-cols-3 min-h-fit">
-            <MiniGraphInfo
-              loading={applicationsBeingFetched}
-              color={GraphColor.YELLOW}
-              title={t("totalApplications")}
-              graphNum={applications?.length ?? 0}
-              graph={{
-                labels: gpaSummaryGraph
-                  ? [...gpaSummaryGraph.map((perMonth) => perMonth.monthName)]
-                  : [],
-                datasets: [
-                  {
-                    data: gpaSummaryGraph
-                      ? [...gpaSummaryGraph.map((perMonth) => perMonth.meanGpa)]
-                      : [],
-                  },
-                ],
-              }}
-            ></MiniGraphInfo>
-            <MiniGraphInfo
-              loading={applicationsBeingFetched}
-              color={GraphColor.RED}
-              title={t("applicationsThisMonth")}
-              graphNum={applicationThisMonthGraph?.length ?? 0}
-              graph={{
-                labels: applicationThisMonthGraph
-                  ? [
-                      ...applicationThisMonthGraph.map(
-                        (app) => `${new Date(app.createdAt).getDate()}`
-                      ),
-                    ]
-                  : [],
-                datasets: [
-                  {
-                    data: applicationThisMonthGraph
-                      ? [
-                          ...applicationThisMonthGraph.map((app) =>
-                            new Date(app.createdAt).getDate()
-                          ),
-                        ]
-                      : [],
-                  },
-                ],
-              }}
-            ></MiniGraphInfo>
-            <MiniGraphInfo
-              loading={applicationsBeingFetched}
-              color={GraphColor.GREEN}
-              title={t("pendingApplications")}
-              graphNum={pendingApprovalGraph?.length ?? 0}
-              graph={{
-                labels: pendingApprovalGraph
-                  ? [...pendingApprovalGraph.map((app) => `${app.status}`)]
-                  : [],
-                datasets: [
-                  {
-                    data: pendingApprovalGraph
-                      ? [...pendingApprovalGraph.map((app) => app.gpa ?? 0)]
-                      : [],
-                  },
-                ],
-              }}
-            ></MiniGraphInfo>
+            {/* Total applications */}
+            <div className={`w-full rounded-xl p-7 ${"bg-anzac-50"} `}>
+              <div className="flex flex-col w-full">
+                <div className="text-xs font-semibold text-gray-600 ">
+                  {t("totalApplications")}
+                </div>
+                {isPending ? (
+                  <div className="flex items-center justify-center p-4 rounded-md animate-pulse bg-black/10">
+                    <p>{t("loading")}</p>
+                  </div>
+                ) : (
+                  <div className="flex flex-col justify-between w-full p-4">
+                    <div className="w-8 text-2xl ">
+                      {statistics?.totalApplications ?? 0}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className={`w-full rounded-xl p-7 ${"bg-goblin-50"} `}>
+              <div className="flex flex-col w-full">
+                <div className="text-xs font-semibold text-gray-600 ">
+                  {t("approvedApplications")}
+                </div>
+                {isPending ? (
+                  <div className="flex items-center justify-center p-4 rounded-md animate-pulse bg-black/10">
+                    <p>{t("loading")}</p>
+                  </div>
+                ) : (
+                  <div className="flex flex-col justify-between w-full p-4">
+                    <div className="w-8 text-2xl ">
+                      {statistics?.totalApplicationsPerStatus.APPROVED ?? 0}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className={`w-full rounded-xl p-7 ${"bg-pomegranate-50"} `}>
+              <div className="flex flex-col w-full">
+                <div className="text-xs font-semibold text-gray-600 ">
+                  {t("pendingApplications")}
+                </div>
+                {isPending ? (
+                  <div className="flex items-center justify-center p-4 rounded-md animate-pulse bg-black/10">
+                    <p>{t("loading")}</p>
+                  </div>
+                ) : (
+                  <div className="flex flex-col justify-between w-full p-4">
+                    <div className="w-8 text-2xl ">
+                      {statistics?.totalApplicationsPerStatus.REVIEW ?? 0}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
 
           {/* reports and graphs */}
@@ -229,26 +161,38 @@ const Home = () => {
             {/* large graphs */}
             <div className="grid items-center justify-center w-full h-full grid-cols-2 gap-x-8 gap-y-10 [grid-auto-rows:1fr]">
               <LargeBarGraphInfo
-                loading={applicationsBeingFetched}
-                title={t("weeklySummary")}
+                loading={isPending}
+                title={t("scoresSummary")}
                 barLabel={"Applications"}
-                subBarLabel={"Applications last 7 days"}
-                labels={weeklySummaryGraph.map((perDay) => perDay.dayName)}
-                data={weeklySummaryGraph.map((perDay) => perDay.count)}
+                subBarLabel={"Accumulated scores"}
+                labels={
+                  statistics?.scoreHistogram
+                    ? Object.keys(statistics.scoreHistogram)
+                    : []
+                }
+                data={
+                  statistics?.scoreHistogram
+                    ? Object.values(statistics.scoreHistogram)
+                    : []
+                }
               >
                 <CSVLink
-                  filename={`Weekly-Summary-${new Date().toISOString()}.csv`}
+                  filename={`ScoreHistogram-${new Date().toISOString()}.csv`}
                   data={
-                    weeklySummaryGraph
+                    statistics?.scoreHistogram
                       ? [
-                          ...weeklySummaryGraph.map((perDay) => {
-                            return {
-                              dayOfWeek: perDay.dayName,
-                              numberOfApplications: perDay.count,
-                            };
-                          }),
+                          ...Object.keys(statistics.scoreHistogram).map(
+                            (sh, i) => {
+                              return {
+                                score: sh,
+                                applications: Object.values(
+                                  statistics.scoreHistogram
+                                )[i],
+                              };
+                            }
+                          ),
                         ]
-                      : []
+                      : [{ score: "none", applications: 0 }]
                   }
                   className="text-xs text-white btn btn-primary btn-sm"
                 >
@@ -256,55 +200,76 @@ const Home = () => {
                 </CSVLink>
               </LargeBarGraphInfo>
               <LargeDonutGraphInfo
-                loading={applicationsBeingFetched}
+                loading={isPending}
                 title={t("topUniversities")}
-                labels={topUniversitiesGraph.map((p) =>
-                  locale == "ar" ? p.nameAr : p.name
-                )}
-                data={topUniversitiesGraph.map((p) => p.count)}
+                labels={
+                  statistics?.topUniversities
+                    ? Object.keys(statistics.topUniversities)
+                    : []
+                }
+                data={
+                  statistics?.topUniversities
+                    ? Object.values(statistics.topUniversities)
+                    : []
+                }
               >
                 <CSVLink
                   filename={`Top-Universities-${new Date().toISOString()}.csv`}
                   data={
-                    topUniversitiesGraph
+                    statistics?.topUniversities
                       ? [
-                          ...topUniversitiesGraph.map((p) => {
-                            return {
-                              university: p.name,
-                              numberOfApplications: p.count,
-                            };
-                          }),
+                          ...Object.keys(statistics.topUniversities).map(
+                            (sh, i) => {
+                              return {
+                                university: sh,
+                                applications: Object.values(
+                                  statistics.topUniversities
+                                )[i],
+                              };
+                            }
+                          ),
                         ]
-                      : []
+                      : [{ university: "none", applications: 0 }]
                   }
                   className="text-xs text-white btn btn-primary btn-sm"
                 >
                   {t("exportCSV")}
                 </CSVLink>
               </LargeDonutGraphInfo>
+
               <LargeBarGraphInfo
-                loading={applicationsBeingFetched}
+                loading={isPending}
                 title={t("gpaSummary")}
-                barLabel={"GPA"}
-                subBarLabel={"Mean of the applications"}
-                min={85}
-                max={100}
-                labels={gpaSummaryGraph.map((perMonth) => perMonth.monthName)}
-                data={gpaSummaryGraph.map((perMonth) => perMonth.meanGpa)}
+                barLabel={"Applications"}
+                subBarLabel={"gpa"}
+                labels={
+                  statistics?.gpaHistogram
+                    ? Object.keys(statistics.gpaHistogram)
+                    : []
+                }
+                data={
+                  statistics?.gpaHistogram
+                    ? Object.values(statistics.gpaHistogram)
+                    : []
+                }
               >
                 <CSVLink
-                  filename={`GPA-Summary-${new Date().toISOString()}.csv`}
+                  filename={`GPA-Histogram-${new Date().toISOString()}.csv`}
                   data={
-                    gpaSummaryGraph
+                    statistics?.gpaHistogram
                       ? [
-                          ...gpaSummaryGraph.map((perMonth) => {
-                            return {
-                              month: perMonth.monthName,
-                              meanGpa: perMonth.meanGpa,
-                            };
-                          }),
+                          ...Object.keys(statistics.gpaHistogram).map(
+                            (sh, i) => {
+                              return {
+                                gpa: sh,
+                                applications: Object.values(
+                                  statistics.gpaHistogram
+                                )[i],
+                              };
+                            }
+                          ),
                         ]
-                      : []
+                      : [{ gpa: "none", applications: 0 }]
                   }
                   className="text-xs text-white btn btn-primary btn-sm"
                 >
@@ -312,26 +277,39 @@ const Home = () => {
                 </CSVLink>
               </LargeBarGraphInfo>
               <LargeDonutGraphInfo
-                loading={applicationsBeingFetched}
-                title={t("topProgram")}
-                labels={topProgramsGraph.map((p) =>
-                  locale == "ar" ? p.nameAr : p.name
-                )}
-                data={topProgramsGraph.map((p) => p.count)}
+                loading={isPending}
+                title={t("applicationStatus")}
+                labels={
+                  statistics?.totalApplicationsPerStatus
+                    ? Object.keys(statistics.totalApplicationsPerStatus)
+                    : []
+                }
+                data={
+                  statistics?.totalApplicationsPerStatus
+                    ? Object.values(statistics.totalApplicationsPerStatus).map(
+                        (v) => v ?? 0
+                      )
+                    : []
+                }
               >
                 <CSVLink
-                  filename={`Top-Programs-${new Date().toISOString()}.csv`}
+                  filename={`Applications-Status-${new Date().toISOString()}.csv`}
                   data={
-                    topProgramsGraph
+                    statistics?.totalApplicationsPerStatus
                       ? [
-                          ...topProgramsGraph.map((p) => {
+                          ...Object.keys(
+                            statistics.totalApplicationsPerStatus
+                          ).map((sh, i) => {
                             return {
-                              program: p.name,
-                              numberOfApplications: p.count,
+                              gpa: sh,
+                              applications:
+                                Object.values(
+                                  statistics.totalApplicationsPerStatus
+                                )[i] ?? 0,
                             };
                           }),
                         ]
-                      : []
+                      : [{ gpa: "none", applications: 0 }]
                   }
                   className="text-xs text-white btn btn-primary btn-sm"
                 >

@@ -6,5 +6,10 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@types/aws-lambda": "^8.10.92"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1590.0",
+    "pdfkit": "^0.15.0",
+    "twitter_cldr": "^2.3.0"
   }
 }

@@ -1,4 +1,6 @@
 const AWS = require('aws-sdk');
+const uuid = require('uuid');
+
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 const cognito = new AWS.CognitoIdentityServiceProvider();
 
@@ -10,14 +12,16 @@ exports.handler = async (event) => {
     const  today = new Date();
     const batchValue = today.getFullYear();
     const batchDetails = await getBatchDetails(batchValue);
+    console.log('batchDetails', batchDetails);
     if (!batchDetails) {
         return {
             statusCode: 404,
             body: JSON.stringify({ message: 'Batch not found' })
         };
     }
+    const updateApplicationEndDate = new Date(batchDetails.updateApplicationEndDate);
 
-    if(batchDetails.updateApplicationEndDate < today){
+    if(today < updateApplicationEndDate) {
         return {
             statusCode: 200,
             body: JSON.stringify({ message: 'Batch update period has not finished yet. Skipping auto reject' })
@@ -30,7 +34,7 @@ exports.handler = async (event) => {
     console.log('universities', universities);
     const extendedUniversities = universities.filter(university => university.isExtended);
     const exceptionUniversities = universities.filter(university => university.isException);
-    await bulkUpdateApplications(batchValue, applications, extendedUniversities, exceptionUniversities, universities, programs);
+    await bulkUpdateApplications(batchValue, applications, extendedUniversities, exceptionUniversities, universities, programs, batchDetails);
 
 
 
@@ -73,37 +77,49 @@ async function getApplications(batch) {
     return allApplications;
 }
 
-async function bulkUpdateApplications(batchValue, applications, extendedUniversities, exceptionUniversities, universities, programs) {
+async function bulkUpdateApplications(batchValue, applications, extendedUniversities, exceptionUniversities, universities, programs, batchDetails) {
     const updatePromises = applications.map(async application => {
         let isProcessed = 1;
-        const student = await getStudent(application.studentCPR);
+        // const student = await getStudent(application.studentCPR);
         const params = {
             TableName: 'Application-cw7beg2perdtnl7onnneec4jfa-staging',
             Key: {
                 id: application.id
             },
-            UpdateExpression: 'set processed = :processedValue',
+            UpdateExpression: 'set #processed = :processedValue',
             ExpressionAttributeValues: {
                 ':processedValue': isProcessed
-            }
+            },
+            ExpressionAttributeNames: {}
         };
         const universityId = application.universityID;
         const programId = application.programID;
         const isExtended = extendedUniversities.some(university => university.id === universityId);
         const isException = exceptionUniversities.some(university => university.id === universityId);
-        const isNonBahraini = student.nationalityCategory === 'NON_BAHRAINI';
-        const isEligible = application.verifiedGPA? application.verifiedGPA >= programs.find(program => program.id === programId).minimumGPA: true;
+        const isNonBahraini = application.nationalityCategory === 'NON_BAHRAINI';
+        const isEligible = application.verifiedGPA? application.verifiedGPA >= programs.find(program => program.id === programId).minimumGPA || 88 : false;
 
 
         let isNotCompleted = application.status === 'NOT_COMPLETED';
         if(isException) {
             isNotCompleted = false;
         } else if(isExtended) {
-            // check the date with extended deadline
-            const university = extendedUniversities.find(university => university.id === universityId);
-            const deadline = new Date(university.extendedTo);
             const today = new Date();
-            isNotCompleted = today < deadline;
+            const chosenUniversity = extendedUniversities.find(university => university.id === application.universityID);
+
+            const updateApplicationEndDate = batchDetails.updateApplicationEndDate;
+
+            const [year, month, day] = updateApplicationEndDate.split('-').map(Number);
+
+            let deadline = new Date(year, month - 1, day);
+
+            deadline.setDate(deadline.getDate() + chosenUniversity.extensionDuration);
+
+            console.log('Today:', today);
+            console.log('Deadline:', deadline);
+            console.log('Is today before deadline:', today <= deadline);
+
+            isNotCompleted = today <= deadline;
         }
 
         let status;
@@ -111,25 +127,55 @@ async function bulkUpdateApplications(batchValue, applications, extendedUniversi
         if(isNonBahraini) {
             status = 'REJECTED';
             isProcessed = 1;
-        } else if(isNotCompleted) {
+        }
+        else if(application.verifiedGPA && application.verifiedGPA < 88) {
             status = 'REJECTED';
             isProcessed = 1;
         }
-        else if(!isEligible) {
+        else if(isNotCompleted) {
+            status = 'REJECTED';
+            isProcessed = 1;
+        }
+        else if(!isNotCompleted && !application.verifiedGPA) {
+            status = 'REVIEW';
+            isProcessed = 0;
+        }
+        else if(isEligible) {
+            status = 'ELIGIBLE';
+            isProcessed = 1;
+        }
+        else if(!isEligible && application.verifiedGPA) {
             status = 'REJECTED';
             isProcessed = 1;
         }
         else {
-            status = 'ELIGIBLE';
             isProcessed = 0;
         }
-        params.UpdateExpression = 'set processed = :processedValue, #status = :status';
+        // console.log('status', status);
+        // console.log('isProcessed', isProcessed);
+        // console.log('isNonBahraini', isNonBahraini);
+        // console.log('isNotCompleted', isNotCompleted);
+        // console.log('isEligible', isEligible);
+        // console.log('isExtended', isExtended);
+        // console.log('isException', isException);
+
+        params.UpdateExpression = 'set #processed = :processedValue, ';
+
+        if(status) {
+            params.UpdateExpression += '#status = :status';
+        }
+        else {
+            // remove the last comma
+            params.UpdateExpression = params.UpdateExpression.slice(0, -2);
+        }
+
+        console.log('UpdateExpression:', params.UpdateExpression);
 
         params.ExpressionAttributeValues[':status'] = status;
         params.ExpressionAttributeValues[':processedValue'] = isProcessed;
 
         params.ExpressionAttributeNames['#status'] = 'status';
-
+        params.ExpressionAttributeNames['#processed'] = 'processed';
 
         return dynamoDB.update(params).promise();
     });
@@ -252,4 +298,21 @@ async function getPrograms(){
     } while (params.ExclusiveStartKey);
 
     return allPrograms;
+}
+async function createAdminLog(reason, snapshot, applicationId){
+    const params = {
+        TableName: 'AdminLog-cw7beg2perdtnl7onnneec4jfa-staging',
+        Item: {
+            '__typename': 'AdminLog',
+            '_version': 1,
+            'reason': reason,
+            'snapshot': snapshot,
+            'createdAt': new Date().toISOString(),
+            'updatedAt': new Date().toISOString(),
+            'dateTime': new Date().toISOString(),
+            'applicationID': applicationId
+        }
+    };
+
+    await dynamoDB.put(params).promise();
 }

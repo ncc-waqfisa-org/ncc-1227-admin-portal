@@ -119,6 +119,7 @@ type EagerApplication = {
   readonly score?: number | null;
   readonly adminPoints?: number | null;
   readonly processed?: number | null;
+  readonly isFamilyIncomeVerified?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly applicationAttachmentId?: string | null;
@@ -157,6 +158,7 @@ type LazyApplication = {
   readonly score?: number | null;
   readonly adminPoints?: number | null;
   readonly processed?: number | null;
+  readonly isFamilyIncomeVerified?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly applicationAttachmentId?: string | null;
@@ -484,6 +486,7 @@ type EagerStudent = {
   readonly cpr: string;
   readonly cprDoc?: string | null;
   readonly fullName?: string | null;
+  readonly batch?: number | null;
   readonly email?: string | null;
   readonly phone?: string | null;
   readonly gender?: Gender | keyof typeof Gender | null;
@@ -494,7 +497,6 @@ type EagerStudent = {
   readonly specialization?: string | null;
   readonly placeOfBirth?: string | null;
   readonly studentOrderAmongSiblings?: number | null;
-  readonly householdIncome?: number | null;
   readonly familyIncome?: FamilyIncome | keyof typeof FamilyIncome | null;
   readonly familyIncomeProofDoc?: string | null;
   readonly familyIncomeProofDocs?: (string | null)[] | null;
@@ -517,6 +519,7 @@ type LazyStudent = {
   readonly cpr: string;
   readonly cprDoc?: string | null;
   readonly fullName?: string | null;
+  readonly batch?: number | null;
   readonly email?: string | null;
   readonly phone?: string | null;
   readonly gender?: Gender | keyof typeof Gender | null;
@@ -527,7 +530,6 @@ type LazyStudent = {
   readonly specialization?: string | null;
   readonly placeOfBirth?: string | null;
   readonly studentOrderAmongSiblings?: number | null;
-  readonly householdIncome?: number | null;
   readonly familyIncome?: FamilyIncome | keyof typeof FamilyIncome | null;
   readonly familyIncomeProofDoc?: string | null;
   readonly familyIncomeProofDocs?: (string | null)[] | null;
@@ -592,6 +594,7 @@ type EagerScholarship = {
   readonly id: string;
   readonly status?: ScholarshipStatus | keyof typeof ScholarshipStatus | null;
   readonly applicationID: string;
+  readonly batch?: number | null;
   readonly isConfirmed?: boolean | null;
   readonly application?: Application | null;
   readonly studentCPR?: string | null;
@@ -614,6 +617,7 @@ type LazyScholarship = {
   readonly id: string;
   readonly status?: ScholarshipStatus | keyof typeof ScholarshipStatus | null;
   readonly applicationID: string;
+  readonly batch?: number | null;
   readonly isConfirmed?: boolean | null;
   readonly application: AsyncItem<Application | undefined>;
   readonly studentCPR?: string | null;
@@ -646,6 +650,7 @@ type EagerStatistics = {
   readonly scoreHistogram?: string | null;
   readonly gpaHistogram?: string | null;
   readonly totalApplicationsPerUniversity?: string | null;
+  readonly topUniversities?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -662,6 +667,7 @@ type LazyStatistics = {
   readonly scoreHistogram?: string | null;
   readonly gpaHistogram?: string | null;
   readonly totalApplicationsPerUniversity?: string | null;
+  readonly topUniversities?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

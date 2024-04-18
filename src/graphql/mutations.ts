@@ -2,7 +2,7 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-import * as APITypes from "../API";
+import * as APITypes from "../../amplify/backend/function/dummyUpdate/src/src/API";
 type GeneratedMutation<InputType, OutputType> = string & {
   __generatedMutationInput: InputType;
   __generatedMutationOutput: OutputType;
@@ -162,6 +162,7 @@ export const createApplication = /* GraphQL */ `mutation CreateApplication(
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -172,7 +173,6 @@ export const createApplication = /* GraphQL */ `mutation CreateApplication(
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -191,6 +191,7 @@ export const createApplication = /* GraphQL */ `mutation CreateApplication(
     score
     adminPoints
     processed
+    isFamilyIncomeVerified
     createdAt
     updatedAt
     _version
@@ -294,6 +295,7 @@ export const updateApplication = /* GraphQL */ `mutation UpdateApplication(
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -304,7 +306,6 @@ export const updateApplication = /* GraphQL */ `mutation UpdateApplication(
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -323,6 +324,7 @@ export const updateApplication = /* GraphQL */ `mutation UpdateApplication(
     score
     adminPoints
     processed
+    isFamilyIncomeVerified
     createdAt
     updatedAt
     _version
@@ -426,6 +428,7 @@ export const deleteApplication = /* GraphQL */ `mutation DeleteApplication(
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -436,7 +439,6 @@ export const deleteApplication = /* GraphQL */ `mutation DeleteApplication(
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -455,6 +457,7 @@ export const deleteApplication = /* GraphQL */ `mutation DeleteApplication(
     score
     adminPoints
     processed
+    isFamilyIncomeVerified
     createdAt
     updatedAt
     _version
@@ -517,6 +520,7 @@ export const createProgramChoice = /* GraphQL */ `mutation CreateProgramChoice(
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -590,6 +594,7 @@ export const updateProgramChoice = /* GraphQL */ `mutation UpdateProgramChoice(
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -663,6 +668,7 @@ export const deleteProgramChoice = /* GraphQL */ `mutation DeleteProgramChoice(
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -1088,6 +1094,7 @@ export const createStudentLog = /* GraphQL */ `mutation CreateStudentLog(
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -1098,7 +1105,6 @@ export const createStudentLog = /* GraphQL */ `mutation CreateStudentLog(
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -1142,6 +1148,7 @@ export const updateStudentLog = /* GraphQL */ `mutation UpdateStudentLog(
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -1152,7 +1159,6 @@ export const updateStudentLog = /* GraphQL */ `mutation UpdateStudentLog(
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -1196,6 +1202,7 @@ export const deleteStudentLog = /* GraphQL */ `mutation DeleteStudentLog(
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -1206,7 +1213,6 @@ export const deleteStudentLog = /* GraphQL */ `mutation DeleteStudentLog(
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -1408,6 +1414,7 @@ export const createStudent = /* GraphQL */ `mutation CreateStudent(
     cpr
     cprDoc
     fullName
+    batch
     email
     phone
     gender
@@ -1418,7 +1425,6 @@ export const createStudent = /* GraphQL */ `mutation CreateStudent(
     specialization
     placeOfBirth
     studentOrderAmongSiblings
-    householdIncome
     familyIncome
     familyIncomeProofDoc
     familyIncomeProofDocs
@@ -1476,6 +1482,7 @@ export const updateStudent = /* GraphQL */ `mutation UpdateStudent(
     cpr
     cprDoc
     fullName
+    batch
     email
     phone
     gender
@@ -1486,7 +1493,6 @@ export const updateStudent = /* GraphQL */ `mutation UpdateStudent(
     specialization
     placeOfBirth
     studentOrderAmongSiblings
-    householdIncome
     familyIncome
     familyIncomeProofDoc
     familyIncomeProofDocs
@@ -1544,6 +1550,7 @@ export const deleteStudent = /* GraphQL */ `mutation DeleteStudent(
     cpr
     cprDoc
     fullName
+    batch
     email
     phone
     gender
@@ -1554,7 +1561,6 @@ export const deleteStudent = /* GraphQL */ `mutation DeleteStudent(
     specialization
     placeOfBirth
     studentOrderAmongSiblings
-    householdIncome
     familyIncome
     familyIncomeProofDoc
     familyIncomeProofDocs
@@ -1681,6 +1687,7 @@ export const createScholarship = /* GraphQL */ `mutation CreateScholarship(
     id
     status
     applicationID
+    batch
     isConfirmed
     application {
       id
@@ -1702,6 +1709,7 @@ export const createScholarship = /* GraphQL */ `mutation CreateScholarship(
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -1740,6 +1748,7 @@ export const updateScholarship = /* GraphQL */ `mutation UpdateScholarship(
     id
     status
     applicationID
+    batch
     isConfirmed
     application {
       id
@@ -1761,6 +1770,7 @@ export const updateScholarship = /* GraphQL */ `mutation UpdateScholarship(
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -1799,6 +1809,7 @@ export const deleteScholarship = /* GraphQL */ `mutation DeleteScholarship(
     id
     status
     applicationID
+    batch
     isConfirmed
     application {
       id
@@ -1820,6 +1831,7 @@ export const deleteScholarship = /* GraphQL */ `mutation DeleteScholarship(
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -1862,6 +1874,7 @@ export const createStatistics = /* GraphQL */ `mutation CreateStatistics(
     scoreHistogram
     gpaHistogram
     totalApplicationsPerUniversity
+    topUniversities
     createdAt
     updatedAt
     _version
@@ -1886,6 +1899,7 @@ export const updateStatistics = /* GraphQL */ `mutation UpdateStatistics(
     scoreHistogram
     gpaHistogram
     totalApplicationsPerUniversity
+    topUniversities
     createdAt
     updatedAt
     _version
@@ -1910,6 +1924,7 @@ export const deleteStatistics = /* GraphQL */ `mutation DeleteStatistics(
     scoreHistogram
     gpaHistogram
     totalApplicationsPerUniversity
+    topUniversities
     createdAt
     updatedAt
     _version

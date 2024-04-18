@@ -24,6 +24,8 @@ import NextNProgress from "nextjs-progressbar";
 import { useRouter } from "next/router";
 import { appWithTranslation } from "next-i18next";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BatchProvider } from "../context/BatchContext";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 Amplify.configure({ ...awsExports, ssr: true });
 
@@ -45,7 +47,13 @@ ChartJS.register(
 function App({ Component, pageProps }: AppProps) {
   const { locale } = useRouter();
 
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 30 * 60 * 1000,
+      },
+    },
+  });
 
   const dir = locale === "ar" ? "rtl" : "ltr";
   return (
@@ -53,14 +61,17 @@ function App({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <AppProvider>
-            <StudentProvider>
-              <EducationProvider>
-                <NextNProgress color="#E1BA3D" />
-                <Component {...pageProps} />
-              </EducationProvider>
-            </StudentProvider>
+            <BatchProvider>
+              <StudentProvider>
+                <EducationProvider>
+                  <NextNProgress color="#E1BA3D" />
+                  <Component {...pageProps} />
+                </EducationProvider>
+              </StudentProvider>
+            </BatchProvider>
           </AppProvider>
         </AuthProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </div>
   );

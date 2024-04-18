@@ -1,5 +1,5 @@
-import _ from "lodash";
-import { Admin, Application, Program, Status } from "./API";
+import _, { round } from "lodash";
+import { Admin, Application, FamilyIncome, Program, Status } from "./API";
 
 /* -------------------------------------------------------------------------- */
 /*                                  INTERFACE                                 */
@@ -43,6 +43,25 @@ export interface ApplicationSnapshot {
 /* -------------------------------------------------------------------------- */
 /*                                  FUNCTIONS                                 */
 /* -------------------------------------------------------------------------- */
+
+type TCalculateScore = {
+  familyIncome: FamilyIncome | null | undefined;
+  gpa: number;
+  adminScore?: number;
+};
+export function calculateScore({
+  familyIncome,
+  gpa,
+  adminScore = 0,
+}: TCalculateScore) {
+  let score = gpa * 0.7 + adminScore;
+  if (familyIncome === FamilyIncome.LESS_THAN_1500) {
+    score += 20;
+  } else if (familyIncome === FamilyIncome.MORE_THAN_1500) {
+    score += 10;
+  }
+  return round(score, 2);
+}
 
 export function giveMeTopUniversities(
   programs: (Program | null | undefined)[],
@@ -184,6 +203,8 @@ export function getStatusOrder(status: Status) {
 /*                                    VARS                                    */
 /* -------------------------------------------------------------------------- */
 
+export const minimumGPA = 88;
+
 export const monthNames = [
   "January",
   "February",
@@ -253,4 +274,21 @@ export function formatDateTime(date: Date): string {
     .padStart(2, "0")}:${minutes.toString().padStart(2, "0")} ${ampm}`;
 
   return formattedDateTime;
+}
+
+/**
+ * It checks if a file is too big
+ * @param {File} [file] - The file that is being checked.
+ * @returns A boolean value.
+ */
+export function checkIfFilesAreTooBig(file?: File, maxSize?: number): boolean {
+  let valid = true;
+  const allowedSizeInMegabytes = maxSize ?? 2;
+  if (file) {
+    const size = file.size / 1024 / 1024;
+    if (size > allowedSizeInMegabytes) {
+      valid = false;
+    }
+  }
+  return valid;
 }

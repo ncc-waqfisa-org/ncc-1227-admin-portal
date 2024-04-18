@@ -12,6 +12,9 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { GetStaticProps } from "next";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "../../hooks/use-auth";
+import { Badge } from "../../components/ui/badge";
+import { cn } from "../../src/utils";
+import { Checkbox } from "../../components/ui/checkbox";
 
 interface InitialFilterValues {
   search: string;
@@ -382,10 +385,11 @@ const Education = () => {
                     </div>
                     <button
                       type="submit"
-                      className={`btn btn-primary ${isSubmitting && "loading"}`}
+                      className={`btn btn-primary`}
                       disabled={isSubmitting || !isValid}
                     >
-                      Submit
+                      {isSubmitting && <span className="loading"></span>}
+                      {t("submit")}
                     </button>
                   </Form>
                 )}
@@ -396,9 +400,9 @@ const Education = () => {
       </div>
 
       {/* Education Table */}
-      <div dir="ltr">
-        <div className="w-full overflow-x-auto">
-          <table className="table w-full table-auto">
+      <div>
+        <div className="w-full overflow-x-auto border rounded-xl">
+          <table className="table w-full border-b table-auto">
             <thead className="">
               <tr>
                 {EducationTableHeaders.map((title, index) => (
@@ -417,9 +421,11 @@ const Education = () => {
                 .map((datum: any, index: number) => (
                   <tr
                     key={index}
-                    className={` hover:bg-anzac-50 hover:text-anzac-500 ${
+                    className={cn(
+                      `hover:bg-anzac-50 hover:text-anzac-500`,
+                      index % 2 !== 0 && "bg-anzac-50",
                       datum.isDeactivated && " bg-gray-200"
-                    }`}
+                    )}
                   >
                     <td
                       key={`${datum.id}-isDeactivated`}
@@ -446,27 +452,55 @@ const Education = () => {
                         }`}
                       >{`${datum.availability}`}</div>
                     </td>
-                    <td className="overflow-x-scroll gap-3 flex flex-wrap  bg-transparent ">
+                    <td
+                      key={`${datum.id}-isException`}
+                      className="bg-transparent"
+                    >
+                      <Checkbox
+                        className="pointer-events-none"
+                        checked={datum.isException === 1}
+                      />
+                    </td>
+                    <td
+                      key={`${datum.id}-isExtended`}
+                      className="bg-transparent"
+                    >
+                      <Checkbox
+                        className="pointer-events-none"
+                        checked={datum.isExtended === 1}
+                      />
+                    </td>
+                    <td
+                      key={`${datum.id}-extensionDuration`}
+                      className="bg-transparent"
+                    >
+                      {`${datum.extensionDuration ?? 0} ${t("days")}`}
+                    </td>
+                    <td className="flex flex-wrap gap-3 overflow-x-scroll bg-transparent ">
                       {datum.Programs?.items
                         ?.sort((a: any, b: any) => {
                           let bD = b.isDeactivated === true ? -1 : 1;
                           return bD;
                         })
                         .map((program: Program) => (
-                          <div
-                            key={program?.id}
-                            className={`mr-2 h-fit badge hover:cursor-pointer hover:badge-warning duration-150 ${
+                          <Badge
+                            variant={
+                              program.isDeactivated ? "destructive" : "default"
+                            }
+                            className={cn(
+                              "hover:cursor-pointer",
                               !program.isDeactivated &&
-                              "badge-accent text-primary-content"
-                            }`}
-                            onClick={() => {
-                              push(`/education/programs/${program.id}`);
-                            }}
+                                "bg-anzac-200 text-black hover:bg-anzac-400"
+                            )}
+                            onClick={() =>
+                              push(`/education/programs/${program.id}`)
+                            }
+                            key={program.id}
                           >
                             {locale == "ar"
                               ? program?.nameAr ?? "-"
                               : program?.name}
-                          </div>
+                          </Badge>
                         ))}
 
                       {datum.Programs?.items.length === 0 && (
@@ -480,7 +514,7 @@ const Education = () => {
             </tbody>
           </table>
           {/* fake pagination */}
-          <div className="flex justify-center mt-8 ">
+          <div className="flex justify-center my-4 ">
             <div className="join">
               <button
                 className="btn btn-accent join-item text-anzac-500"

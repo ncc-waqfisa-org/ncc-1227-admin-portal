@@ -31,7 +31,7 @@ const AddProgram = () => {
       <PageComponent title={"AddProgram"}>
         {!isSuperAdmin && (
           <div>
-            <p className="text-error text-xl font-bold text-center p-8">
+            <p className="p-8 text-xl font-bold text-center text-error">
               {tErrors("accessDenied")}
             </p>
           </div>
@@ -55,6 +55,7 @@ const AddProgram = () => {
               requirements={""}
               requirementsAr={""}
               isDeactivated={false}
+              minimumGPA={0}
             ></ProgramFormComponent>
           </div>
         )}

@@ -2,7 +2,7 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-import * as APITypes from "../API";
+import * as APITypes from "../../amplify/backend/function/dummyUpdate/src/src/API";
 type GeneratedSubscription<InputType, OutputType> = string & {
   __generatedSubscriptionInput: InputType;
   __generatedSubscriptionOutput: OutputType;
@@ -158,6 +158,7 @@ export const onCreateApplication = /* GraphQL */ `subscription OnCreateApplicati
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -168,7 +169,6 @@ export const onCreateApplication = /* GraphQL */ `subscription OnCreateApplicati
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -187,6 +187,7 @@ export const onCreateApplication = /* GraphQL */ `subscription OnCreateApplicati
     score
     adminPoints
     processed
+    isFamilyIncomeVerified
     createdAt
     updatedAt
     _version
@@ -289,6 +290,7 @@ export const onUpdateApplication = /* GraphQL */ `subscription OnUpdateApplicati
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -299,7 +301,6 @@ export const onUpdateApplication = /* GraphQL */ `subscription OnUpdateApplicati
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -318,6 +319,7 @@ export const onUpdateApplication = /* GraphQL */ `subscription OnUpdateApplicati
     score
     adminPoints
     processed
+    isFamilyIncomeVerified
     createdAt
     updatedAt
     _version
@@ -420,6 +422,7 @@ export const onDeleteApplication = /* GraphQL */ `subscription OnDeleteApplicati
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -430,7 +433,6 @@ export const onDeleteApplication = /* GraphQL */ `subscription OnDeleteApplicati
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -449,6 +451,7 @@ export const onDeleteApplication = /* GraphQL */ `subscription OnDeleteApplicati
     score
     adminPoints
     processed
+    isFamilyIncomeVerified
     createdAt
     updatedAt
     _version
@@ -510,6 +513,7 @@ export const onCreateProgramChoice = /* GraphQL */ `subscription OnCreateProgram
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -582,6 +586,7 @@ export const onUpdateProgramChoice = /* GraphQL */ `subscription OnUpdateProgram
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -654,6 +659,7 @@ export const onDeleteProgramChoice = /* GraphQL */ `subscription OnDeleteProgram
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -1057,6 +1063,7 @@ export const onCreateStudentLog = /* GraphQL */ `subscription OnCreateStudentLog
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -1067,7 +1074,6 @@ export const onCreateStudentLog = /* GraphQL */ `subscription OnCreateStudentLog
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -1110,6 +1116,7 @@ export const onUpdateStudentLog = /* GraphQL */ `subscription OnUpdateStudentLog
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -1120,7 +1127,6 @@ export const onUpdateStudentLog = /* GraphQL */ `subscription OnUpdateStudentLog
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -1163,6 +1169,7 @@ export const onDeleteStudentLog = /* GraphQL */ `subscription OnDeleteStudentLog
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -1173,7 +1180,6 @@ export const onDeleteStudentLog = /* GraphQL */ `subscription OnDeleteStudentLog
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -1360,6 +1366,7 @@ export const onCreateStudent = /* GraphQL */ `subscription OnCreateStudent($filt
     cpr
     cprDoc
     fullName
+    batch
     email
     phone
     gender
@@ -1370,7 +1377,6 @@ export const onCreateStudent = /* GraphQL */ `subscription OnCreateStudent($filt
     specialization
     placeOfBirth
     studentOrderAmongSiblings
-    householdIncome
     familyIncome
     familyIncomeProofDoc
     familyIncomeProofDocs
@@ -1425,6 +1431,7 @@ export const onUpdateStudent = /* GraphQL */ `subscription OnUpdateStudent($filt
     cpr
     cprDoc
     fullName
+    batch
     email
     phone
     gender
@@ -1435,7 +1442,6 @@ export const onUpdateStudent = /* GraphQL */ `subscription OnUpdateStudent($filt
     specialization
     placeOfBirth
     studentOrderAmongSiblings
-    householdIncome
     familyIncome
     familyIncomeProofDoc
     familyIncomeProofDocs
@@ -1490,6 +1496,7 @@ export const onDeleteStudent = /* GraphQL */ `subscription OnDeleteStudent($filt
     cpr
     cprDoc
     fullName
+    batch
     email
     phone
     gender
@@ -1500,7 +1507,6 @@ export const onDeleteStudent = /* GraphQL */ `subscription OnDeleteStudent($filt
     specialization
     placeOfBirth
     studentOrderAmongSiblings
-    householdIncome
     familyIncome
     familyIncomeProofDoc
     familyIncomeProofDocs
@@ -1617,6 +1623,7 @@ export const onCreateScholarship = /* GraphQL */ `subscription OnCreateScholarsh
     id
     status
     applicationID
+    batch
     isConfirmed
     application {
       id
@@ -1638,6 +1645,7 @@ export const onCreateScholarship = /* GraphQL */ `subscription OnCreateScholarsh
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -1675,6 +1683,7 @@ export const onUpdateScholarship = /* GraphQL */ `subscription OnUpdateScholarsh
     id
     status
     applicationID
+    batch
     isConfirmed
     application {
       id
@@ -1696,6 +1705,7 @@ export const onUpdateScholarship = /* GraphQL */ `subscription OnUpdateScholarsh
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -1733,6 +1743,7 @@ export const onDeleteScholarship = /* GraphQL */ `subscription OnDeleteScholarsh
     id
     status
     applicationID
+    batch
     isConfirmed
     application {
       id
@@ -1754,6 +1765,7 @@ export const onDeleteScholarship = /* GraphQL */ `subscription OnDeleteScholarsh
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -1795,6 +1807,7 @@ export const onCreateStatistics = /* GraphQL */ `subscription OnCreateStatistics
     scoreHistogram
     gpaHistogram
     totalApplicationsPerUniversity
+    topUniversities
     createdAt
     updatedAt
     _version
@@ -1818,6 +1831,7 @@ export const onUpdateStatistics = /* GraphQL */ `subscription OnUpdateStatistics
     scoreHistogram
     gpaHistogram
     totalApplicationsPerUniversity
+    topUniversities
     createdAt
     updatedAt
     _version
@@ -1841,6 +1855,7 @@ export const onDeleteStatistics = /* GraphQL */ `subscription OnDeleteStatistics
     scoreHistogram
     gpaHistogram
     totalApplicationsPerUniversity
+    topUniversities
     createdAt
     updatedAt
     _version

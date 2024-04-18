@@ -2,7 +2,7 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-import * as APITypes from "../API";
+import * as APITypes from "../../amplify/backend/function/dummyUpdate/src/src/API";
 type GeneratedQuery<InputType, OutputType> = string & {
   __generatedQueryInput: InputType;
   __generatedQueryOutput: OutputType;
@@ -174,6 +174,7 @@ export const getApplication = /* GraphQL */ `query GetApplication($id: ID!) {
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -184,7 +185,6 @@ export const getApplication = /* GraphQL */ `query GetApplication($id: ID!) {
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -203,6 +203,7 @@ export const getApplication = /* GraphQL */ `query GetApplication($id: ID!) {
     score
     adminPoints
     processed
+    isFamilyIncomeVerified
     createdAt
     updatedAt
     _version
@@ -244,6 +245,7 @@ export const listApplications = /* GraphQL */ `query ListApplications(
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -295,6 +297,7 @@ export const syncApplications = /* GraphQL */ `query SyncApplications(
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -358,6 +361,7 @@ export const getProgramChoice = /* GraphQL */ `query GetProgramChoice($id: ID!) 
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -793,6 +797,7 @@ export const getStudentLog = /* GraphQL */ `query GetStudentLog($id: ID!) {
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -803,7 +808,6 @@ export const getStudentLog = /* GraphQL */ `query GetStudentLog($id: ID!) {
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -1095,6 +1099,7 @@ export const getStudent = /* GraphQL */ `query GetStudent($cpr: String!) {
     cpr
     cprDoc
     fullName
+    batch
     email
     phone
     gender
@@ -1105,7 +1110,6 @@ export const getStudent = /* GraphQL */ `query GetStudent($cpr: String!) {
     specialization
     placeOfBirth
     studentOrderAmongSiblings
-    householdIncome
     familyIncome
     familyIncomeProofDoc
     familyIncomeProofDocs
@@ -1173,6 +1177,7 @@ export const listStudents = /* GraphQL */ `query ListStudents(
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -1183,7 +1188,6 @@ export const listStudents = /* GraphQL */ `query ListStudents(
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -1223,6 +1227,7 @@ export const syncStudents = /* GraphQL */ `query SyncStudents(
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -1233,7 +1238,6 @@ export const syncStudents = /* GraphQL */ `query SyncStudents(
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -1351,6 +1355,7 @@ export const getScholarship = /* GraphQL */ `query GetScholarship($id: ID!) {
     id
     status
     applicationID
+    batch
     isConfirmed
     application {
       id
@@ -1372,6 +1377,7 @@ export const getScholarship = /* GraphQL */ `query GetScholarship($id: ID!) {
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -1412,6 +1418,7 @@ export const listScholarships = /* GraphQL */ `query ListScholarships(
       id
       status
       applicationID
+      batch
       isConfirmed
       studentCPR
       unsignedContractDoc
@@ -1453,6 +1460,7 @@ export const syncScholarships = /* GraphQL */ `query SyncScholarships(
       id
       status
       applicationID
+      batch
       isConfirmed
       studentCPR
       unsignedContractDoc
@@ -1487,6 +1495,7 @@ export const getStatistics = /* GraphQL */ `query GetStatistics($id: Int!) {
     scoreHistogram
     gpaHistogram
     totalApplicationsPerUniversity
+    topUniversities
     createdAt
     updatedAt
     _version
@@ -1521,6 +1530,7 @@ export const listStatistics = /* GraphQL */ `query ListStatistics(
       scoreHistogram
       gpaHistogram
       totalApplicationsPerUniversity
+      topUniversities
       createdAt
       updatedAt
       _version
@@ -1557,6 +1567,7 @@ export const syncStatistics = /* GraphQL */ `query SyncStatistics(
       scoreHistogram
       gpaHistogram
       totalApplicationsPerUniversity
+      topUniversities
       createdAt
       updatedAt
       _version
@@ -1609,6 +1620,7 @@ export const applicationsByIdAndDateTime = /* GraphQL */ `query ApplicationsById
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -1664,6 +1676,7 @@ export const applicationsByNationalityCategoryAndBatch = /* GraphQL */ `query Ap
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -1719,6 +1732,7 @@ export const applicationsByStudentCPRAndGpa = /* GraphQL */ `query ApplicationsB
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -1774,6 +1788,7 @@ export const applicationsByBatchAndStatus = /* GraphQL */ `query ApplicationsByB
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -1829,6 +1844,7 @@ export const applicationsByScoreAndStatus = /* GraphQL */ `query ApplicationsByS
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -1884,6 +1900,7 @@ export const applicationsByProcessedAndBatch = /* GraphQL */ `query Applications
       score
       adminPoints
       processed
+      isFamilyIncomeVerified
       createdAt
       updatedAt
       _version
@@ -2005,6 +2022,7 @@ export const studentsByNationalityCategoryAndGraduationDate = /* GraphQL */ `que
       cpr
       cprDoc
       fullName
+      batch
       email
       phone
       gender
@@ -2015,7 +2033,6 @@ export const studentsByNationalityCategoryAndGraduationDate = /* GraphQL */ `que
       specialization
       placeOfBirth
       studentOrderAmongSiblings
-      householdIncome
       familyIncome
       familyIncomeProofDoc
       familyIncomeProofDocs
@@ -2039,6 +2056,96 @@ export const studentsByNationalityCategoryAndGraduationDate = /* GraphQL */ `que
   APITypes.StudentsByNationalityCategoryAndGraduationDateQueryVariables,
   APITypes.StudentsByNationalityCategoryAndGraduationDateQuery
 >;
+export const scholarshipsByApplicationID = /* GraphQL */ `query ScholarshipsByApplicationID(
+  $applicationID: ID!
+  $sortDirection: ModelSortDirection
+  $filter: ModelScholarshipFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  scholarshipsByApplicationID(
+    applicationID: $applicationID
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      status
+      applicationID
+      batch
+      isConfirmed
+      studentCPR
+      unsignedContractDoc
+      signedContractDoc
+      studentSignature
+      guardianSignature
+      bankName
+      IBAN
+      IBANLetterDoc
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ScholarshipsByApplicationIDQueryVariables,
+  APITypes.ScholarshipsByApplicationIDQuery
+>;
+export const scholarshipsByBatchAndStatus = /* GraphQL */ `query ScholarshipsByBatchAndStatus(
+  $batch: Int!
+  $status: ModelStringKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelScholarshipFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  scholarshipsByBatchAndStatus(
+    batch: $batch
+    status: $status
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      status
+      applicationID
+      batch
+      isConfirmed
+      studentCPR
+      unsignedContractDoc
+      signedContractDoc
+      studentSignature
+      guardianSignature
+      bankName
+      IBAN
+      IBANLetterDoc
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ScholarshipsByBatchAndStatusQueryVariables,
+  APITypes.ScholarshipsByBatchAndStatusQuery
+>;
 export const scholarshipsByStudentCPRAndStatus = /* GraphQL */ `query ScholarshipsByStudentCPRAndStatus(
   $studentCPR: String!
   $status: ModelStringKeyConditionInput
@@ -2059,6 +2166,7 @@ export const scholarshipsByStudentCPRAndStatus = /* GraphQL */ `query Scholarshi
       id
       status
       applicationID
+      batch
       isConfirmed
       studentCPR
       unsignedContractDoc
@@ -2108,6 +2216,7 @@ export const statisticsByBatchAndTotalApplications = /* GraphQL */ `query Statis
       scoreHistogram
       gpaHistogram
       totalApplicationsPerUniversity
+      topUniversities
       createdAt
       updatedAt
       _version

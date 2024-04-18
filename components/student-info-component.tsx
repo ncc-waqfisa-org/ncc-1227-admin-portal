@@ -12,7 +12,7 @@ interface Props {
 export default function StudentInfoComponent({ student, showAll }: Props) {
   const { t } = useTranslation("applications");
   return (
-    <div dir="ltr">
+    <div>
       <table className="table w-full mb-4 table-fixed">
         <thead>
           <tr>

@@ -1,4 +1,5 @@
 {
+  "somethingWentWrong": "هناك خطأ ما",
   "accessDenied": "غير مصرح بالدخول",
   "requiredField": "الحقل مطلوب",
   "passwordMustMatch": "كلمة المرور يجب ان تتطابق",

@@ -12,6 +12,7 @@ import { GraphQLResult } from "@aws-amplify/api-graphql";
 
 import { getAllApplicationsLambda } from "../src/CustomAPI";
 import { useAuth } from "../hooks/use-auth";
+import { useBatchContext } from "./BatchContext";
 
 // interface for all the values & functions
 interface IUseStudentContext {
@@ -67,11 +68,13 @@ export const StudentProvider: FC<PropsWithChildren> = ({ children }) => {
 
 //NOTE: declare vars and functions here
 function useProviderStudent() {
+  const { batch, setBatch } = useBatchContext();
+
   const [applications, setApplications] = useState<Application[] | undefined>(
     defaultState.applications
   );
 
-  const [batch, setBatch] = useState<number>(defaultState.batch);
+  // const [batch, setBatch] = useState<number>(defaultState.batch);
 
   const [applicationById, setApplicationById] = useState<
     Application | undefined
@@ -87,7 +90,7 @@ function useProviderStudent() {
     () => {
       // Run this
       if (isSignedIn) {
-        getAllApplications(batch);
+        // getAllApplications(batch);
       }
 
       // on destroy
@@ -166,6 +169,7 @@ function useProviderStudent() {
         gender
         graduationDate
         nationality
+        nationalityCategory
         phone
         placeOfBirth
         preferredLanguage
@@ -243,6 +247,11 @@ export async function getApplicationByIdAPI(
       schoolType
       schoolName
       _deleted
+      familyIncome
+      studentName
+      nationalityCategory
+      isFamilyIncomeVerified
+      adminPoints
       _lastChangedAt
       _version
       adminLogs {
@@ -258,15 +267,19 @@ export async function getApplicationByIdAPI(
         schoolCertificate
         cprDoc
         id
+        _version
         signedContractDoc
         transcriptDoc
         updatedAt
       }
       attachmentID
       gpa
+      verifiedGPA
       id
       programs {
         items {
+          id
+          _version
           choiceOrder
           programID
           acceptanceLetterDoc
@@ -276,6 +289,11 @@ export async function getApplicationByIdAPI(
             university {
               name
               nameAr
+              isException
+              isExtended
+              extensionDuration
+              isTrashed
+              isDeactivated
             }
           }
         }
@@ -324,7 +342,6 @@ export async function getApplicationByIdAPI(
         createdAt
         email
         graduationDate
-        householdIncome
         phone
         placeOfBirth
         preferredLanguage
@@ -334,6 +351,7 @@ export async function getApplicationByIdAPI(
         familyIncome
         familyIncomeProofDocs
         nationality
+        nationalityCategory
         schoolType
       }
       updatedAt

@@ -142,9 +142,10 @@ export default function ResetPasswordFormComponent() {
                     </div>
                     <button
                       type="submit"
-                      className={`btn btn-primary ${isSubmitting && "loading"}`}
+                      className={`btn btn-primary `}
                       disabled={isSubmitting || !isValid}
                     >
+                      {isSubmitting && <span className="loading"></span>}
                       {t("getValidation")}
                     </button>
                   </Form>
@@ -229,9 +230,10 @@ export default function ResetPasswordFormComponent() {
                     </div>
                     <button
                       type="submit"
-                      className={`btn btn-primary ${isSubmitting && "loading"}`}
+                      className={`btn btn-primary`}
                       disabled={isSubmitting || !isValid}
                     >
+                      {isSubmitting && <span className="loading"></span>}
                       {t("resetPassword")}
                     </button>
                   </Form>

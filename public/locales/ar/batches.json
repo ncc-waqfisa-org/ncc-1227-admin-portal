@@ -19,5 +19,14 @@
   "submit": "تقديم",
   "clear": "مسح",
   "reset": "إعادة تعيين",
+  "toolbar": "شريط الأدوات",
+  "downloadCPRsList": "تحميل CPR المؤهلين",
+  "uploadVerifiedGPAs": "ارفع المعدلات التراكمية الذي تم التحقق منها",
+  "verifiedGPAs": "GPA's تم التحقق منها",
+  "csvFormatWarning": "ملاحظة: سترفض هذه العملية تلقائيًا الطلاب غير المؤهلين.",
+  "csvFormatDescription": "يجب أن يتبع CSV التنسيق التالي",
+  "csvFormat": "(cpr, verified gpa)",
+  "uploadedSuccessfully": "تم الرفع بنجاح",
+  "failedToUpload": "فشل الرفع",
   "loading": "يرجى الإنتظار"
 }

@@ -1,12 +1,4 @@
 import React from "react";
-import { AiOutlineAppstore } from "react-icons/ai";
-import { BsBook } from "react-icons/bs";
-import {
-  HiOutlineBriefcase,
-  HiOutlineUsers,
-  HiOutlineClipboardList,
-  HiOutlineChatAlt2,
-} from "react-icons/hi";
 import NavBarButton from "./navbar-button";
 import Image from "next/image";
 import { useAuth } from "../hooks/use-auth";
@@ -14,7 +6,17 @@ import { useTranslation } from "react-i18next";
 import { LangSwitcher } from "./langSwitcher";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { CalendarIcon } from "@radix-ui/react-icons";
+
+import {
+  FiStar,
+  FiCalendar,
+  FiBriefcase,
+  FiUsers,
+  FiMessageCircle,
+  FiBook,
+  FiGrid,
+  FiUser,
+} from "react-icons/fi";
 
 export default function NavbarComponent() {
   const { signOut, isSignedIn, user, admin, isSuperAdmin } = useAuth();
@@ -27,7 +29,7 @@ export default function NavbarComponent() {
   }
 
   return (
-    <div className="flex flex-col h-[100svh] w-full max-w-64 justify-between p-4 py-24 bg-nccGray-50">
+    <div className="flex flex-col h-[100svh] w-full max-w-64 justify-between  p-4 py-24 bg-nccGray-50">
       <div className="flex flex-col gap-4">
         {!isHomePage && (
           <button className="btn btn-ghost" onClick={goBack}>
@@ -69,28 +71,28 @@ export default function NavbarComponent() {
         <NavBarButton
           name={t("Dashboard")}
           icon={
-            <AiOutlineAppstore className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
+            <FiGrid className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
           }
           linkTo={"/"}
         ></NavBarButton>
         <NavBarButton
           name={t("Applications")}
           icon={
-            <HiOutlineBriefcase className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
+            <FiBriefcase className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
           }
           linkTo={"/applications"}
         ></NavBarButton>
         <NavBarButton
           name={t("Education")}
           icon={
-            <BsBook className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
+            <FiBook className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
           }
           linkTo={"/education"}
         ></NavBarButton>
         <NavBarButton
           name={t("Students")}
           icon={
-            <HiOutlineUsers className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
+            <FiUsers className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
           }
           linkTo={"/students"}
         ></NavBarButton>
@@ -98,7 +100,7 @@ export default function NavbarComponent() {
           <NavBarButton
             name={t("Admins")}
             icon={
-              <HiOutlineUsers className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
+              <FiUser className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
             }
             linkTo={"/users"}
           ></NavBarButton>
@@ -107,11 +109,18 @@ export default function NavbarComponent() {
           <NavBarButton
             name={t("Batches")}
             icon={
-              <CalendarIcon className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
+              <FiCalendar className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
             }
             linkTo={"/batches"}
           ></NavBarButton>
         )}
+        <NavBarButton
+          name={t("Scholarships")}
+          icon={
+            <FiStar className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
+          }
+          linkTo={"/scholarships"}
+        ></NavBarButton>
         {/* <NavBarButton
           name={t("Logs")}
           icon={
@@ -123,7 +132,7 @@ export default function NavbarComponent() {
           name={t("Support")}
           disabled
           icon={
-            <HiOutlineChatAlt2 className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
+            <FiMessageCircle className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
           }
           linkTo={"https://app.crisp.chat/"}
           target={"_blank"}
