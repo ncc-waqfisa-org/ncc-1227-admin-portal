@@ -300,9 +300,10 @@ export default function ProgramFormComponent({ program }: Props) {
             {isSuperAdmin && (
               <button
                 type="submit"
-                className={`btn btn-primary ${isSubmitting && "loading"}`}
+                className={`btn btn-primary`}
                 disabled={isSubmitting || !isValid}
               >
+                {isSubmitting && <span className="loading"></span>}
                 {program ? t("saveButton") : t("submitButton")}
               </button>
             )}

@@ -105,13 +105,12 @@ const AdminLogs: FC<Props> = ({ adminsLogsRes }) => {
           <div className="flex justify-center items-center w-full py-3 pb-8">
             {nextToken ? (
               <button
-                className={`btn btn-ghost btn-sm mx-auto ${
-                  loading && "loading"
-                } `}
+                className={`btn btn-ghost btn-sm mx-auto `}
                 disabled={loading}
                 onClick={() => void getNextLogsBatch()}
                 type="button"
               >
+                {loading && <span className="loading"></span>}
                 {t("loadMoreLogs")}
               </button>
             ) : (

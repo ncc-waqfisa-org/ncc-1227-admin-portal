@@ -382,10 +382,11 @@ const Education = () => {
                     </div>
                     <button
                       type="submit"
-                      className={`btn btn-primary ${isSubmitting && "loading"}`}
+                      className={`btn btn-primary`}
                       disabled={isSubmitting || !isValid}
                     >
-                      Submit
+                      {isSubmitting && <span className="loading"></span>}
+                      {t("submit")}
                     </button>
                   </Form>
                 )}
@@ -446,7 +447,7 @@ const Education = () => {
                         }`}
                       >{`${datum.availability}`}</div>
                     </td>
-                    <td className="overflow-x-scroll gap-3 flex flex-wrap  bg-transparent ">
+                    <td className="flex flex-wrap gap-3 overflow-x-scroll bg-transparent ">
                       {datum.Programs?.items
                         ?.sort((a: any, b: any) => {
                           let bD = b.isDeactivated === true ? -1 : 1;

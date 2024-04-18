@@ -37,7 +37,7 @@ export default function SignInFormComponent() {
         </div>
         <div className="flex flex-col w-full max-w-md p-10 bg-white shadow-2xl rounded-2xl shadow-primary-focus/20">
           <div className="flex flex-col items-center w-full gap-6">
-            <div className="flex justify-between items-center w-full">
+            <div className="flex items-center justify-between w-full">
               <div className="text-xl font-bold ">{t("signIn")}</div>
               <LangSwitcher></LangSwitcher>
             </div>
@@ -94,9 +94,10 @@ export default function SignInFormComponent() {
                   <Link href={"/resetPassword"}>{t("forgetPassword")}</Link>
                   <button
                     type="submit"
-                    className={`btn btn-primary ${isSubmitting && "loading"}`}
+                    className={`btn btn-primary `}
                     disabled={isSubmitting}
                   >
+                    {isSubmitting && <span className="loading"></span>}
                     {t("signIn")}
                   </button>
                 </Form>
