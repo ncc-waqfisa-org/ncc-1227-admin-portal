@@ -115,6 +115,10 @@ function useProviderEducation() {
           nameAr
           availability
           isDeactivated
+          isException
+          isExtended
+          extensionDuration
+          isTrashed
           Programs {
             items {
               id

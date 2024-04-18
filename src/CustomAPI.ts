@@ -24,6 +24,8 @@ import {
   GetBatchQueryVariables,
   GetScholarshipQuery,
   GetScholarshipQueryVariables,
+  GetUniversityQuery,
+  GetUniversityQueryVariables,
   ListBatchesQuery,
   ListBatchesQueryVariables,
   Program,
@@ -71,7 +73,12 @@ import {
   updateScholarship,
   createScholarship,
 } from "./graphql/mutations";
-import { getBatch, getScholarship, listBatches } from "./graphql/queries";
+import {
+  getBatch,
+  getScholarship,
+  getUniversity,
+  listBatches,
+} from "./graphql/queries";
 import { Statistics } from "./models";
 import { TStatistics } from "./custom-types";
 
@@ -780,16 +787,20 @@ export async function getUniversityByID(
   let query = `
   query GetUniInfo {
     getUniversity(id: "${id}") {
+      id
       _version
+      _lastChangedAt
+      _deleted
       name
       nameAr
       updatedAt
-      id
       createdAt
       availability
-      _lastChangedAt
-      _deleted
-      isDeactivated 
+      isDeactivated
+      isException
+      isExtended
+      extensionDuration
+      isTrashed
       Programs {
         items {
           isDeactivated

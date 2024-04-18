@@ -14,6 +14,9 @@ export const StudentsTableHeaders = [
 export const EducationTableHeaders = [
   "tableUniName",
   "availability",
+  "exceptionHeader",
+  "extended",
+  "extensionDuration",
   "tableUniPrograms",
 ];
 

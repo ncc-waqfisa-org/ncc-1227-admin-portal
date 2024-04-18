@@ -10,17 +10,18 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "react-i18next";
 
 interface Props {
-  getUni: University | undefined;
+  university: University | null;
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { id } = ctx.query;
   const { locale } = ctx;
 
-  const getUni = await getUniversityByID(`${id}`);
+  const university = id ? await getUniversityByID(`${id}`) : null;
+
   return {
     props: {
-      getUni,
+      university: university,
       ...(await serverSideTranslations(locale ?? "en", [
         "education",
         "pageTitles",
@@ -32,7 +33,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   };
 };
 
-export default function UniversityInfo({ getUni }: Props) {
+export default function UniversityInfo({ university }: Props) {
   const { locale } = useRouter();
   const { t } = useTranslation("education");
 
@@ -42,11 +43,13 @@ export default function UniversityInfo({ getUni }: Props) {
         <Toaster />
         <div className="mb-8 ">
           <div className="text-2xl font-semibold ">{`${t("universityTitle")}: ${
-            locale == "ar" ? getUni?.nameAr ?? "-" : getUni?.name
+            locale == "ar" ? university?.nameAr ?? "-" : university?.name
           }`}</div>
         </div>
 
-        <UniversityFormComponent university={getUni}></UniversityFormComponent>
+        <UniversityFormComponent
+          university={university}
+        ></UniversityFormComponent>
       </PageComponent>
     </div>
   );
