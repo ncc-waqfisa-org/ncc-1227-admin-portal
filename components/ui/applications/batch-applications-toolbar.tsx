@@ -85,11 +85,14 @@ export const BatchApplicationsToolbar: React.FC<
               (a) => a.id
             );
             const url = `https://a69a50c47l.execute-api.us-east-1.amazonaws.com/default/applications/export?batch=${batch}`;
+            const test = JSON.stringify({ ids: selectedApplicationsIds });
+            console.log("🚀 ~ test:", test);
             toast.promise(
               fetch(url, {
                 headers: {
                   ...(token && { Authorization: `Bearer ${token}` }),
                 },
+                method: "POST",
                 body: JSON.stringify({ ids: selectedApplicationsIds }),
               }).then(async (res) => {
                 if (res.ok) {
@@ -112,10 +115,6 @@ export const BatchApplicationsToolbar: React.FC<
                 error: (err) =>
                   err ? err.message : tErrors("somethingWentWrong"),
               }
-            );
-
-            toast.error(
-              "Unimplemented functionality batch-applications-toolbar"
             );
           }}
         >
