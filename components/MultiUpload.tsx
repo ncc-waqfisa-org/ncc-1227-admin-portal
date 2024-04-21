@@ -77,7 +77,9 @@ export default function MultiUpload(props: Props) {
         <div className="flex items-center justify-between w-full">
           <div className="flex justify-start gap-1">
             <p>{props.title}</p>
-            <span className="text-red-500 ">*</span>
+            {props.required !== false && (
+              <span className="text-red-500 ">*</span>
+            )}
           </div>
           {!props.notClearable && (
             <button

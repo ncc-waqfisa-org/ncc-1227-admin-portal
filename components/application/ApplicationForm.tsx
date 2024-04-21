@@ -43,11 +43,12 @@ import {
   uploadFile,
 } from "../../src/CustomAPI";
 import { useAuth } from "../../hooks/use-auth";
-import { calculateScore } from "../../src/Helpers";
+import { calculateScore, minimumGPA } from "../../src/Helpers";
 import { Switch } from "../ui/switch";
 import GetStorageLinkComponent from "../get-storage-link-component";
 import { FileIcon } from "@radix-ui/react-icons";
 import { useBatchContext } from "../../context/BatchContext";
+import { FiAlertCircle, FiCheckCircle } from "react-icons/fi";
 
 type TApplicationForm = {
   application: Application;
@@ -93,7 +94,7 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
   const formSchema = z.object({
     adminPoints: z.number().min(0).max(10).optional(),
     gpa: z.number().min(0).max(100),
-    verifiedGPA: z.number().min(0).max(100),
+    verifiedGPA: z.number().min(0).max(100).optional(),
     isFamilyIncomeVerified: z.boolean().default(false),
     status: z.enum(Object.values(Status) as [Status]),
     acceptanceLetter: z.string().optional(),
@@ -294,7 +295,14 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
             name="verifiedGPA"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{tL("verifiedGPA")}</FormLabel>
+                <div className="flex items-center gap-2 py-1">
+                  <FormLabel>{tL("verifiedGPA")}</FormLabel>
+                  {application.verifiedGPA ? (
+                    <FiCheckCircle className="text-success" />
+                  ) : (
+                    <FiAlertCircle className="text-warning" />
+                  )}
+                </div>
                 <FormControl>
                   <Input
                     type="number"
@@ -313,7 +321,14 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
             name="adminPoints"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{t("adminPoints")}</FormLabel>
+                <div className="flex items-center gap-2 py-1">
+                  <FormLabel>{t("adminPoints")}</FormLabel>
+                  {application.adminPoints ? (
+                    <FiCheckCircle className="text-success" />
+                  ) : (
+                    <FiAlertCircle className="text-warning" />
+                  )}
+                </div>
                 <FormControl>
                   <Input
                     type="number"
@@ -364,9 +379,16 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
             render={({ field }) => (
               <FormItem className="flex flex-row items-center justify-between gap-2 p-4 border rounded-lg">
                 <div className="space-y-0.5">
-                  <FormLabel className="text-base">
-                    {t("isFamilyIncomeVerified")}
-                  </FormLabel>
+                  <div className="flex items-center gap-2">
+                    <FormLabel className="text-base">
+                      {t("isFamilyIncomeVerified")}
+                    </FormLabel>
+                    {application.isFamilyIncomeVerified ? (
+                      <FiCheckCircle className="text-success" />
+                    ) : (
+                      <FiAlertCircle className="text-warning" />
+                    )}
+                  </div>
                   <FormDescription>
                     {`${t("studentFamilyIncome")} ${t(
                       `${application.familyIncome}`
@@ -411,6 +433,13 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
                   ? application.programs?.items[0]?.program?.university?.nameAr
                   : application.programs?.items[0]?.program?.university?.name}
               </p>
+              <div className="flex flex-wrap items-center gap-2">
+                <p>{t("minimumGPA")}</p>
+                <p>
+                  {application.programs?.items[0]?.program?.minimumGPA ??
+                    minimumGPA}
+                </p>
+              </div>
             </FormDescription>
             <FormMessage />
           </FormItem>
@@ -540,7 +569,9 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
             name="reason"
             render={({ field }) => (
               <FormItem className="sm:col-span-2">
-                <FormLabel>{tL("reason")}</FormLabel>
+                <FormLabel>
+                  {tL("reason")} <span className="text-error">*</span>{" "}
+                </FormLabel>
                 <FormControl>
                   <Input
                     {...field}

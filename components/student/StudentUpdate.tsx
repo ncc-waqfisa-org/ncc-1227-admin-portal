@@ -82,7 +82,6 @@ export default function ViewAccount({ student }: Props) {
       if (value === undefined) {
         throw new Error("Failed to update");
       }
-
       return value;
     });
   }
@@ -127,6 +126,7 @@ export default function ViewAccount({ student }: Props) {
             })
           : student.cprDoc;
 
+        // TODO: make sure
         const storageKeys =
           familyIncomeProofDocsFile.length > 0
             ? await toast.promise(
@@ -172,6 +172,7 @@ export default function ViewAccount({ student }: Props) {
             _version: student._version,
           },
         };
+        console.log("🚀 ~ onSubmit={ ~ updateVars:", updateVars);
 
         await toast.promise(updateProcess(updateVars), {
           loading: "Updating...",
