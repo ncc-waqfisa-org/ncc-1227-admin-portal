@@ -20,13 +20,11 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "../../components/ui/dialog";
 import { Button, buttonVariants } from "../../components/ui/button";
-import { DialogClose } from "@radix-ui/react-dialog";
 import { CreateScholarshipForm } from "../../components/scholarships/NewScholarshipForm";
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -46,7 +44,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const res = await getApplicationByIdAPI(`${id}`);
 
-  // TODO: check if application have scholarship
+  // check if application have scholarship
   const scholarships = await listScholarshipsOfApplicationId({
     applicationId: `${id}`,
   });
