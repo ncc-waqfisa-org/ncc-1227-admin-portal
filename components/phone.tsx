@@ -35,15 +35,33 @@ const PhoneNumberInput = React.forwardRef<
           padding: 0 0.8rem;
       }
         `;
+  const disabledCss = `
+  .phoneNumber {
+    direction: ltr;
+  }
+  .phoneNumber input {
+      background: transparent;
+      height: 3rem;
+      border-inline-start-width: 1px;
+      border-radius: 0px;
+      padding: 0rem 0.5rem;
+      border-color: rgb(209 213 219 / var(--tw-border-opacity));
+        }
+
+        .PhoneInputCountry {
+          padding: 0 0.8rem;
+        }
+        `;
   return (
     <>
-      <style>{css}</style>
+      <style>{props.disabled ? disabledCss : css}</style>
       <PhoneInput
         international
         defaultCountry="BH"
         {...props}
         className={cn(
           "phoneNumber border-[#e1ba3d] flex h-12 w-full rounded-md  border pl-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+          props.disabled ? "border-gray-300 bg-gray-50" : "border-[#e1ba3d]",
           className
         )}
         type="phone"

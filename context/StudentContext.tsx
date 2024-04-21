@@ -287,6 +287,7 @@ export async function getApplicationByIdAPI(
           program {
             name
             nameAr
+            minimumGPA
             university {
               name
               nameAr

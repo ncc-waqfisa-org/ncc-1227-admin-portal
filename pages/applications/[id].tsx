@@ -29,6 +29,8 @@ import { CreateScholarshipForm } from "../../components/scholarships/NewScholars
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { cn } from "../../src/utils";
+import { PhoneNumberInput } from "../../components/phone";
+import { E164Number } from "libphonenumber-js/types.cjs";
 
 interface Props {
   application: Application;
@@ -79,6 +81,21 @@ const ApplicationInfo: FC<Props> = (props) => {
         <Toaster />
         <div className="">
           <div className="text-2xl font-semibold ">{t("application")}</div>
+        </div>
+
+        {/*  */}
+        <div className="flex flex-col gap-3 p-4 mt-4 border rounded-lg">
+          <p className="w-fit">{props.application.student?.fullName}</p>
+          <p className="p-1 border rounded-md w-fit">
+            {props.application.student?.cpr}
+          </p>
+          <p className="w-fit">{props.application.student?.email}</p>
+          <PhoneNumberInput
+            className="w-fit"
+            value={props.application.student?.phone?.toString() ?? ""}
+            disabled
+            onChange={() => {}}
+          />
         </div>
 
         {props.scholarship.canCreateNewScholarship && (
