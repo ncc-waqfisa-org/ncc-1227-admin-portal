@@ -85,6 +85,8 @@
   "gender": "Gender",
   "graduationDate": "Graduation date",
   "nationality": "Nationality",
+  "NON_BAHRAINI": "Not Bahraini",
+  "BAHRAINI": "Bahraini",
   "placeOfBirth": "Place of birth",
   "preferredLanguage": "Preferred language",
   "schoolName": "School name",

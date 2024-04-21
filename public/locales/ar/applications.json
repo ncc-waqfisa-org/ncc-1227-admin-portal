@@ -97,6 +97,8 @@
   "schoolCertificate": "شهادة مدرسية",
   "clearFilters": "مسح الفلاتر",
   "minimumGPA": "الحد الأدنى من المعدل التراكمي",
+  "NON_BAHRAINI": "غير بحريني",
+  "BAHRAINI": "بحريني",
   "acceptanceLetter": "خطاب القبول",
   "lessThan500": "أقل من 500",
   "moreThan1000": "أكثر من 1000",

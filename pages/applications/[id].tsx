@@ -31,6 +31,7 @@ import Link from "next/link";
 import { cn } from "../../src/utils";
 import { PhoneNumberInput } from "../../components/phone";
 import { E164Number } from "libphonenumber-js/types.cjs";
+import { FiAlertCircle, FiCheckCircle } from "react-icons/fi";
 
 interface Props {
   application: Application;
@@ -84,18 +85,55 @@ const ApplicationInfo: FC<Props> = (props) => {
         </div>
 
         {/*  */}
-        <div className="flex flex-col gap-3 p-4 mt-4 border rounded-lg">
-          <p className="w-fit">{props.application.student?.fullName}</p>
-          <p className="p-1 border rounded-md w-fit">
-            {props.application.student?.cpr}
-          </p>
-          <p className="w-fit">{props.application.student?.email}</p>
-          <PhoneNumberInput
-            className="w-fit"
-            value={props.application.student?.phone?.toString() ?? ""}
-            disabled
-            onChange={() => {}}
-          />
+        <div className="grid gap-3 p-4 mt-4 border rounded-lg sm:grid-cols-2">
+          <div className="flex flex-col gap-3">
+            <p className="w-fit">{props.application.student?.fullName}</p>
+            <p className="p-1 border rounded-md w-fit">
+              {props.application.student?.cpr}
+            </p>
+            <p className="w-fit">{props.application.student?.email}</p>
+            <PhoneNumberInput
+              className="w-fit"
+              value={props.application.student?.phone?.toString() ?? ""}
+              disabled
+              onChange={() => {}}
+            />
+          </div>
+          <div className="flex flex-col gap-3">
+            <p>{`${t("nationality")} ${t(
+              props.application.nationalityCategory?.toString() ?? ""
+            )}`}</p>
+            <p>{`${t("tableTitleGpa")} ${
+              props.application?.verifiedGPA ?? props.application?.gpa ?? 0
+            }`}</p>
+            <div className="flex items-center gap-4">
+              <p>{t("tableTitleVerifiedGpa")}</p>
+
+              {props.application.verifiedGPA ? (
+                <FiCheckCircle className="text-success" />
+              ) : (
+                <FiAlertCircle className="text-warning" />
+              )}
+            </div>
+            <div className="flex items-center gap-4">
+              <p>{t("adminPoints")}</p>
+
+              {props.application.adminPoints ? (
+                <FiCheckCircle className="text-success" />
+              ) : (
+                <FiAlertCircle className="text-warning" />
+              )}
+            </div>
+            <div className="flex items-center gap-4">
+              <p>{t("isFamilyIncomeVerified")}</p>
+
+              {props.application.isFamilyIncomeVerified ? (
+                <FiCheckCircle className="text-success" />
+              ) : (
+                <FiAlertCircle className="text-warning" />
+              )}
+            </div>
+          </div>
         </div>
 
         {props.scholarship.canCreateNewScholarship && (
