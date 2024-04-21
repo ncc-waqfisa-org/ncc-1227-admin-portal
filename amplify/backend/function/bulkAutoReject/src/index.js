@@ -325,8 +325,8 @@ async function createAdminLog(reason, snapshot, applicationId){
             dateTime: new Date().toISOString(),
             applicationID: applicationId,
             applicationAdminLogsId: applicationId,
-            adminCPR: '970900767',
-            lastChangedAt: new Date().getTime(),
+            adminCPR: '999999999',
+            _lastChangedAt: new Date().getTime(),
         }
     };
 

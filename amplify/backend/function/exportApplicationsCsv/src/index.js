@@ -145,17 +145,31 @@ async function getStudents(batchValue) {
 }
 
 
-async function getSelectedApplications(tableName, batchValue, status) {
+async function getSelectedApplications(tableName, batchValue, selectedApplications) {
     const params = {
+        TableName: tableName,
        IndexName: 'batch-id-index',
-         KeyConditionExpression: '#batch = :batchValue',
+         KeyConditionExpression: '#batch = :batchValue AND id IN (:ids)',
             ExpressionAttributeNames: {
                 '#batch': 'batch'
             },
             ExpressionAttributeValues: {
-                ':batchValue': batchValue
+                ':batchValue': batchValue,
+                ':ids': selectedApplications
             }
         };
+
+    let allApplications = [];
+
+    do {
+            const applications = await dynamoDB.query(params).promise();
+            allApplications = allApplications.concat(applications.Items);
+
+            // Check if there are more items to fetch
+            params.ExclusiveStartKey = applications.LastEvaluatedKey;
+        } while (params.ExclusiveStartKey);
+
+        return allApplications;
 
 }
 
