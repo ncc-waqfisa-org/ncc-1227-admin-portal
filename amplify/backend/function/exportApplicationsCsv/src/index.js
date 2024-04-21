@@ -11,7 +11,8 @@ const tableName = 'Application-cw7beg2perdtnl7onnneec4jfa-staging';
 exports.handler = async (event) => {
     console.log(`EVENT: ${JSON.stringify(event)}`);
     try {
-        const batchValue = parseInt(event.queryStringParameters?.batch) || 2024;
+        const batchValue = parseInt(event.queryStringParameters?.batch) || new Date().getFullYear();
+        const selectedApplications = event.queryStringParameters?.ids || null;
         const status = event.queryStringParameters?.status || null;
         if(status && !['APPROVED', 'WITHDRAWN', 'REJECTED', 'ELIGIBLE', 'NOT_COMPLETED'].includes(status)) {
             return {
@@ -19,7 +20,7 @@ exports.handler = async (event) => {
                 body: JSON.stringify({ message: 'Invalid status. Must be one of: APPROVED, WITHDRAWN, REJECTED, ELIGIBLE, NOT_COMPLETED' })
             };
         }
-        const csv = await exportApplicationsCsv(tableName, batchValue, status);
+        const csv = await exportApplicationsCsv(tableName, batchValue, status, selectedApplications);
 
 
 
@@ -46,8 +47,8 @@ exports.handler = async (event) => {
     }
 };
 
-async function exportApplicationsCsv(tableName, batchValue, status) {
-    const applications = await getApplications(tableName, batchValue, status);
+async function exportApplicationsCsv(tableName, batchValue, status, selectedApplications) {
+    const applications = selectedApplications? await getSelectedApplications(tableName, batchValue, status) :  await getApplications(tableName, batchValue, status);
     const students = await getStudents(batchValue);
     const csv = convertToCsv(applications, students);
     return uploadToS3(csv);
@@ -92,7 +93,7 @@ function convertToCsv(applications, students) {
     applications.forEach(application => {
         const student = students.find(student => student.cpr === application.studentCPR);
         if(student) {
-            csv += `${application.id},${application.studentCPR},"${student?.fullName}",${student?.gender},${student?.nationalityCategory},"${student?.specialization}",${student?.phone},${student?.email},${application.batch},${application.status},${application.gpa},${application.score},"${application.schoolName}",${application.schoolType},${application.familyIncome}\n`;
+            csv += `${application.id},=""${application.studentCPR}"","${student?.fullName}",${student?.gender},${student?.nationalityCategory},"${student?.specialization}",${student?.phone},${student?.email},${application.batch},${application.status},${application.gpa},${application.score},"${application.schoolName}",${application.schoolType},${application.familyIncome}\n`;
         }
     });
     return csv;
@@ -141,6 +142,21 @@ async function getStudents(batchValue) {
     } while (params.ExclusiveStartKey);
 
     return allStudents;
+}
+
+
+async function getSelectedApplications(tableName, batchValue, status) {
+    const params = {
+       IndexName: 'batch-id-index',
+         KeyConditionExpression: '#batch = :batchValue',
+            ExpressionAttributeNames: {
+                '#batch': 'batch'
+            },
+            ExpressionAttributeValues: {
+                ':batchValue': batchValue
+            }
+        };
+
 }
 
 
