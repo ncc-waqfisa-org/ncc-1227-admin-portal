@@ -28,7 +28,7 @@
         },
         "updateStudentEmail": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
-          "s3Key": "amplify-builds/updateStudentEmail-63684241762f37366847-build.zip"
+          "s3Key": "amplify-builds/updateStudentEmail-32565852444473614e4a-build.zip"
         },
         "updateGpaCsv": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
@@ -44,7 +44,7 @@
         },
         "exportApplicationsCsv": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
-          "s3Key": "amplify-builds/exportApplicationsCsv-6f4774466e386c347470-build.zip"
+          "s3Key": "amplify-builds/exportApplicationsCsv-714a3859386f31417974-build.zip"
         },
         "updateStatistics": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
@@ -56,11 +56,11 @@
         },
         "bulkAutoReject": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
-          "s3Key": "amplify-builds/bulkAutoReject-473778356a31796c696d-build.zip"
+          "s3Key": "amplify-builds/bulkAutoReject-7771334b34386f732b2b-build.zip"
         },
         "exportEligibleCsv": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
-          "s3Key": "amplify-builds/exportEligibleCsv-43332b5a4f377a745267-build.zip"
+          "s3Key": "amplify-builds/exportEligibleCsv-56656835592b71557478-build.zip"
         },
         "syncApplications": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
@@ -73,6 +73,10 @@
         "dummyUpdate": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
           "s3Key": "amplify-builds/dummyUpdate-36665a55766c49484e33-build.zip"
+        },
+        "getCprFromToken": {
+          "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
+          "s3Key": "amplify-builds/getCprFromToken-6d727765715259526b59-build.zip"
         }
       }
     }

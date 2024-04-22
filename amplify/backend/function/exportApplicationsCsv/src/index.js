@@ -11,8 +11,17 @@ const tableName = 'Application-cw7beg2perdtnl7onnneec4jfa-staging';
 exports.handler = async (event) => {
     console.log(`EVENT: ${JSON.stringify(event)}`);
     try {
+        const token = event.headers?.authorization?.slice(7);
+        const isAdmin = await checkIsAdmin(token);
+        if (!isAdmin) {
+            return {
+                statusCode: 403,
+                body: JSON.stringify({ message: 'Forbidden. You are not an admin' })
+            };
+        }
         const batchValue = parseInt(event.queryStringParameters?.batch) || new Date().getFullYear();
-        const selectedApplications = event.queryStringParameters?.ids || null;
+        const selectedApplications = JSON.parse(event.body).ids || null;
+
         const status = event.queryStringParameters?.status || null;
         if(status && !['APPROVED', 'WITHDRAWN', 'REJECTED', 'ELIGIBLE', 'NOT_COMPLETED'].includes(status)) {
             return {
@@ -21,7 +30,6 @@ exports.handler = async (event) => {
             };
         }
         const csv = await exportApplicationsCsv(tableName, batchValue, status, selectedApplications);
-
 
 
         return {
@@ -171,6 +179,26 @@ async function getSelectedApplications(tableName, batchValue, selectedApplicatio
 
         return allApplications;
 
+}
+
+async function checkIsAdmin(token) {
+    // get the username from the token using cognito
+    try {
+        const cognitoUser = await cognito.getUser({AccessToken: token}).promise();
+        const username = cognitoUser.Username;
+
+        const params = {
+            TableName: 'Admin-cw7beg2perdtnl7onnneec4jfa-staging',
+            Key: {
+                cpr: username
+            }
+        };
+        const {Item} = await dynamoDB.get(params).promise();
+        return Item !== undefined;
+    } catch (error) {
+        console.error('Error checking if user is admin', error);
+        return false;
+    }
 }
 
 
