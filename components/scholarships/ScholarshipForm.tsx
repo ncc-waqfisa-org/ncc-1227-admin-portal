@@ -53,8 +53,8 @@ export const ScholarshipForm: FC<TScholarshipForm> = ({ scholarship }) => {
     unsignedContractFile: z.instanceof(File).optional(),
     signedContractFile: z.instanceof(File).optional(),
     IBANLetterFile: z.instanceof(File).optional(),
-    IBAN: z.string(),
-    bankName: z.string(),
+    IBAN: z.string().optional(),
+    bankName: z.string().optional(),
     isConfirmed: z.boolean().default(false),
     status: z.enum(Object.values(ScholarshipStatus) as [ScholarshipStatus]),
   });

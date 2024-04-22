@@ -12,6 +12,7 @@ import { toast } from "react-hot-toast";
 import { Admin, AdminRole } from "../src/API";
 import { useRouter } from "next/router";
 import { getAdminByCPR } from "../src/CustomAPI";
+import { useQueryClient } from "@tanstack/react-query";
 
 Auth.configure({ ...config, ssr: true });
 
@@ -75,6 +76,7 @@ function useProvideAuth() {
   );
 
   const { push } = useRouter();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     async function getAuthUser(): Promise<void> {
@@ -84,7 +86,9 @@ function useProvideAuth() {
           await checkAuthUser(authUser).then((isAdmin) => {
             if (isAdmin) {
               setUser(authUser);
-              console.log(authUser.getSignInUserSession()?.getAccessToken().getJwtToken());
+              console.log(
+                authUser.getSignInUserSession()?.getAccessToken().getJwtToken()
+              );
               setToken(
                 authUser.getSignInUserSession()?.getAccessToken().getJwtToken()
               );
@@ -95,6 +99,7 @@ function useProvideAuth() {
             }
           });
         }
+        queryClient.invalidateQueries();
         setIsInitializing(false);
       } catch (error) {
         setIsSignedIn(false);
@@ -114,7 +119,7 @@ function useProvideAuth() {
       // reset the user to it
       getAuthUser();
     }
-  }, [user]);
+  }, [queryClient, user]);
 
   /**
    * This function checks if a CPR number exists for an admin and returns a boolean value.
@@ -151,6 +156,8 @@ function useProvideAuth() {
       setAdmin(tempAdmin);
       setIsSuperAdmin(tempAdmin.role === AdminRole.SUPER_ADMIN);
       setIsSignedIn(true);
+      setToken(user.getSignInUserSession()?.getAccessToken().getJwtToken());
+      setCpr(user.getSignInUserSession()?.getAccessToken().payload.cpr);
     }
     return tempAdmin !== undefined;
   }
@@ -238,6 +245,7 @@ function useProvideAuth() {
       {
         loading: "Signing Out...",
         success: () => {
+          queryClient.invalidateQueries();
           push("/");
           return "Signed out";
         },

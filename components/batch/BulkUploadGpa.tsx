@@ -119,7 +119,7 @@ export const BulkUploadGpa: FC<TBulkUploadGpa> = ({ batch }) => {
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
           <Button className={"rounded-xl"} variant="outline">
-            {t("verifiedGPAs")}
+            {t("uploadVerifiedGPAs")}
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">

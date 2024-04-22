@@ -30,8 +30,8 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { cn } from "../../src/utils";
 import { PhoneNumberInput } from "../../components/phone";
-import { E164Number } from "libphonenumber-js/types.cjs";
-import { FiAlertCircle, FiCheckCircle } from "react-icons/fi";
+import { FiAlertCircle, FiCheckCircle, FiPrinter } from "react-icons/fi";
+import { DownloadFileFromUrl } from "../../components/download-file-from-url";
 
 interface Props {
   application: Application;
@@ -80,8 +80,19 @@ const ApplicationInfo: FC<Props> = (props) => {
     <div>
       <PageComponent title={"ApplicationInfo"}>
         <Toaster />
-        <div className="">
+        <div className="flex items-center justify-between">
           <div className="text-2xl font-semibold ">{t("application")}</div>
+          <DownloadFileFromUrl
+            url={`https://a69a50c47l.execute-api.us-east-1.amazonaws.com/default/applications/pdf?applicationId=${
+              props.application.id
+            }&lang=${locale ?? "en"}`}
+            fileName={`${props.application.student?.cpr}-application`}
+          >
+            <div className="flex items-center gap-2">
+              <FiPrinter />
+              {t("print")}
+            </div>
+          </DownloadFileFromUrl>
         </div>
 
         {/*  */}

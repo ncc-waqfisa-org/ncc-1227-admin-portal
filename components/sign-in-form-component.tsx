@@ -5,6 +5,7 @@ import { useAuth } from "../hooks/use-auth";
 import Image from "next/image";
 import { LangSwitcher } from "./langSwitcher";
 import Link from "next/link";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface ISignInForm {
   cpr: string;
@@ -15,6 +16,8 @@ export default function SignInFormComponent() {
   const auth = useAuth();
   const { t } = useTranslation("signIn");
   const { t: tErrors } = useTranslation("errors");
+
+  const queryClient = useQueryClient();
 
   const initialValues: ISignInForm = {
     cpr: "",
@@ -53,6 +56,7 @@ export default function SignInFormComponent() {
               })}
               onSubmit={async (values, actions) => {
                 await auth.signIn(values.cpr, values.password);
+
                 actions.setSubmitting(false);
               }}
             >

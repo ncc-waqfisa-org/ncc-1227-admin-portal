@@ -23,6 +23,9 @@ import toast from "react-hot-toast";
 import { useAuth } from "../../../hooks/use-auth";
 import { DownloadFileFromUrl } from "../../download-file-from-url";
 import dayjs from "dayjs";
+import Link from "next/link";
+import { FiRefreshCw } from "react-icons/fi";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface ApplicationsStatusFilterProps {
   handleStatusChange: (value: string) => void;
@@ -40,10 +43,12 @@ export const BatchApplicationsToolbar: React.FC<
   table,
   //   selectedBatch,
 }) => {
-  const { batch, resetApplicationsFilter } = useBatchContext();
+  const { batch, resetApplicationsFilter, resetApplications } =
+    useBatchContext();
   const { t } = useTranslation("applications");
   const { t: tErrors } = useTranslation("errors");
   const { token } = useAuth();
+  const queryClient = useQueryClient();
 
   return (
     <div className="flex flex-wrap gap-3">
@@ -155,6 +160,22 @@ export const BatchApplicationsToolbar: React.FC<
         }}
       >
         {t("exportAllAsCSV")}
+      </Button>
+      <Link
+        className={cn(buttonVariants({ variant: "outline" }))}
+        href={`/batches/${batch}`}
+      >
+        {t("goToBatch")}
+      </Link>
+      <Button
+        onClick={() => {
+          resetApplications();
+          queryClient.invalidateQueries();
+        }}
+        size={"icon"}
+        variant={"outline"}
+      >
+        <FiRefreshCw />
       </Button>
     </div>
   );

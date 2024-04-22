@@ -99,13 +99,6 @@ const SingleScholarshipPage: FC<PageType> = ({ id }) => {
           <div className="text-base font-medium text-gray-500 "></div>
         </div>
 
-        {/* <div className="grid gap-2 px-4">
-          <p className="font-medium">{t("toolbar")}</p>
-          <div className="flex flex-wrap gap-3 p-3 border rounded-lg">
-            <p>Tooliy</p>
-          </div>
-        </div> */}
-
         {scholarship && (
           <div>
             <ScholarshipForm scholarship={scholarship} />

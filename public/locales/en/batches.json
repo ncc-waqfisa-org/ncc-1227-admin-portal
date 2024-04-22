@@ -23,7 +23,7 @@
   "failedToUpload": "Failed to Upload",
   "csvFormatWarning": "Note: This process will auto reject ineligible students.",
   "csvFormatDescription": "The CSV must follow the following format",
-  "csvFormat": "(cpr, verified gpa)",
+  "csvFormat": "(cpr, verified-gpa) respectively",
   "toolbar": "Toolbar",
   "submit": "Submit",
   "clear": "Clear",

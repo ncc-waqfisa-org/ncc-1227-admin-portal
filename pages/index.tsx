@@ -13,9 +13,7 @@ import { CSVLink } from "react-csv";
 import { LargeDonutGraphInfo } from "../components/graphs/large-donut-graph-info";
 import { GetStaticProps } from "next";
 import { BatchSelector } from "../components/batch/BatchSelector";
-import toast from "react-hot-toast";
 import { useAuth } from "../hooks/use-auth";
-import { Button } from "../components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { useBatchContext } from "../context/BatchContext";
 import { getStatistics } from "../src/CustomAPI";
@@ -40,16 +38,17 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 const Home = () => {
   const { push, locale } = useRouter();
   const { t } = useTranslation("common");
-  const { t: tApplications } = useTranslation("applications");
-  const { t: tErrors } = useTranslation("errors");
   const { token } = useAuth();
-
   const { batch } = useBatchContext();
 
   const { data: statistics, isPending } = useQuery({
     queryKey: ["statistics", batch, token, locale],
     queryFn: () =>
-      getStatistics({ batch: batch, token: token, locale: locale }),
+      getStatistics({ batch: batch, token: token, locale: locale }).finally(
+        () => {
+          console.log(token);
+        }
+      ),
   });
 
   return (

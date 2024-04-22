@@ -13,8 +13,10 @@
   "tableTitleStudent": "Student",
   "tableTitleGpa": "GPA",
   "tableTitleVerifiedGpa": "Verified GPA",
+  "uploadVerifiedGpa": "Upload Verified GPA",
   "tableTitleScore": "Score",
-
+  "goToBatch": "Go To Batch",
+  "print": "Print",
   "tableTitleEducation": "Program - University",
   "tableTitleApplicationDate": "Application Date",
   "tableTitleLastUpdate": "Last Updated",

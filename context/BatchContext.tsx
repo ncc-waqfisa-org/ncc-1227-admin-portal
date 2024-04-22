@@ -193,7 +193,9 @@ function useBatchProviderApp() {
   }, [batch, selectedApplicationsStatus]);
 
   useEffect(() => {
-    fetchFirstScholarshipsPage();
+    if (token) {
+      fetchFirstScholarshipsPage();
+    }
 
     async function fetchFirstScholarshipsPage() {
       setIsInitialFetching(true);
@@ -209,7 +211,8 @@ function useBatchProviderApp() {
     }
 
     return () => {};
-  }, [batch, nextScholarshipsKey]);
+  }, [batch, nextScholarshipsKey, token]);
+
   useEffect(() => {
     if (token) {
       fetchFirstApplicationsPage();

@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import dayjs from "dayjs";
 
 type TDownloadFileFromUrl = {
-  fileName: string;
+  fileName?: string;
   url: string;
 
   variant?:
@@ -39,11 +39,13 @@ export const DownloadFileFromUrl: FC<
             if (res.ok) {
               const { url } = await res.json();
               if (url) {
-                const a = document.createElement("a");
-                a.href = url;
-                a.download = `${fileName}-${dayjs().toISOString()}.csv`;
-                a.click();
-                window.URL.revokeObjectURL(url);
+                // const a = document.createElement("a");
+                // a.href = url;
+                // a.download = `${fileName}-${dayjs().toISOString()}.csv`;
+                // a.click();
+                // window.URL.revokeObjectURL(url);
+
+                window.open(url, "_blank");
               }
             } else {
               const { message } = await res.json();

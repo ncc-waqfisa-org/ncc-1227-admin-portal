@@ -54,35 +54,6 @@ type TApplicationForm = {
   application: Application;
 };
 
-function createChangeSnapshot(oldData: any, newData: any): string {
-  const changes = [];
-  if (newData.status !== oldData.status) {
-    changes.push(`status from "${oldData.status}" to "${newData.status}"`);
-  }
-  if (newData.adminPoints !== oldData.adminPoints) {
-    changes.push(
-      `admin points from "${oldData.adminPoints}" to "${newData.adminPoints}"`
-    );
-  }
-  if (newData.isFamilyIncomeVerified !== oldData.isFamilyIncomeVerified) {
-    changes.push(
-      `family income verification from "${
-        oldData.isFamilyIncomeVerified ? "yes" : "no"
-      }" to "${newData.isFamilyIncomeVerified ? "yes" : "no"}"`
-    );
-  }
-  if (newData.verifiedGPA !== oldData.verifiedGPA) {
-    changes.push(
-      `verified GPA from "${oldData.verifiedGPA}" to "${newData.verifiedGPA}"`
-    );
-  }
-  if (newData.gpa !== oldData.gpa) {
-    changes.push(`GPA from "${oldData.gpa}" to "${newData.gpa}"`);
-  }
-
-  return changes.join(", ");
-}
-
 export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
   const { t } = useTranslation("applications");
   const { t: tL } = useTranslation("applicationLog");
@@ -226,13 +197,7 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
 
         await createAdminLogInDB(createAdminLogVariables)
           .then(async (logValue) => {
-            // const updatedApplication = value[2]
-            //   ?.updateApplication as Application;
-
-            // TODO INVALIDATE
             resetApplications();
-            // await syncUpdatedApplication(updatedApplication);
-
             push("/applications");
             return logValue;
           })
@@ -591,3 +556,36 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
     </div>
   );
 };
+
+/* -------------------------------------------------------------------------- */
+/*                                  FUNCTIONS                                 */
+/* -------------------------------------------------------------------------- */
+
+function createChangeSnapshot(oldData: any, newData: any): string {
+  const changes = [];
+  if (newData.status !== oldData.status) {
+    changes.push(`status from "${oldData.status}" to "${newData.status}"`);
+  }
+  if (newData.adminPoints !== oldData.adminPoints) {
+    changes.push(
+      `admin points from "${oldData.adminPoints}" to "${newData.adminPoints}"`
+    );
+  }
+  if (newData.isFamilyIncomeVerified !== oldData.isFamilyIncomeVerified) {
+    changes.push(
+      `family income verification from "${
+        oldData.isFamilyIncomeVerified ? "yes" : "no"
+      }" to "${newData.isFamilyIncomeVerified ? "yes" : "no"}"`
+    );
+  }
+  if (newData.verifiedGPA !== oldData.verifiedGPA) {
+    changes.push(
+      `verified GPA from "${oldData.verifiedGPA}" to "${newData.verifiedGPA}"`
+    );
+  }
+  if (newData.gpa !== oldData.gpa) {
+    changes.push(`GPA from "${oldData.gpa}" to "${newData.gpa}"`);
+  }
+
+  return changes.join(", ");
+}
