@@ -92,12 +92,16 @@ async function bulkUpdateApplications(batchValue, applications, extendedUniversi
             },
             ExpressionAttributeNames: {}
         };
+        const minimumGPA = programs.find(program => program.id === application.programID).minimumGPA || 88;
         const universityId = application.universityID;
-        const programId = application.programID;
         const isExtended = extendedUniversities.some(university => university.id === universityId);
         const isException = exceptionUniversities.some(university => university.id === universityId);
         const isNonBahraini = application.nationalityCategory === 'NON_BAHRAINI';
-        const isEligible = application.verifiedGPA? application.verifiedGPA >= programs.find(program => program.id === programId).minimumGPA || 88 : false;
+        const isEligible = application.verifiedGPA? application.verifiedGPA >= minimumGPA : false;
+        const isGpaVerified = !!application.verifiedGPA;
+        console.log('isEligible', isEligible);
+        console.log('Program minimum GPA:', minimumGPA);
+        console.log('Application verified GPA:', application.verifiedGPA);
 
 
         let isNotCompleted = application.status === 'NOT_COMPLETED';
