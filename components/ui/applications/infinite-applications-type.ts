@@ -1,37 +1,38 @@
-import {
-  FamilyIncome,
-  Nationality,
-  SchoolType,
-  Status,
-} from "../../../src/API";
+import { FamilyIncome, Nationality, SchoolType } from "../../../src/API";
 
 export interface TInfiniteApplications {
   data: InfiniteApplication[];
   nextStartKey: NextStartKey;
 }
 
-export interface InfiniteApplication {
-  _lastChangedAt: number;
-  dateTime: Date;
-  applicationAttachmentId: string;
+export type InfiniteApplication = {
   schoolType: SchoolType;
   nationalityCategory: Nationality;
-  studentName: string;
   familyIncome: FamilyIncome;
-  status: Status;
+  dateTime: Date;
+  studentName: string;
+  status: string;
   schoolName: string;
-  createdAt: Date;
   score: number;
-  studentCPR: string;
+  universityID: string;
   _version: number;
-  gpa: number;
-  updatedAt: Date;
-  attachmentID: string;
-  isEmailSent: boolean;
   id: string;
   batch: number;
   verifiedGPA: number;
-}
+  __typename: string;
+  isFamilyIncomeVerified: boolean;
+  _lastChangedAt: number;
+  applicationAttachmentId: string;
+  processed: number;
+  createdAt: Date;
+  studentCPR: string;
+  gpa: number;
+  programID: string;
+  updatedAt: Date;
+  adminPoints: number;
+  attachmentID: string;
+  isEmailSent: boolean;
+};
 
 export interface NextStartKey {
   id: string;

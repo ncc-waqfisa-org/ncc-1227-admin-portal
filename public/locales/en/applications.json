@@ -13,6 +13,7 @@
   "tableTitleStudent": "Student",
   "tableTitleGpa": "GPA",
   "tableTitleVerifiedGpa": "Verified GPA",
+  "tableTitleAttention": "Attention",
   "uploadVerifiedGpa": "Upload Verified GPA",
   "tableTitleScore": "Score",
   "goToBatch": "Go To Batch",

@@ -34,6 +34,7 @@ import { Badge } from "../badge";
 import { useBatchContext } from "../../../context/BatchContext";
 import { schoolTypes, statuses } from "./data/data";
 import { Status } from "../../../src/API";
+import { FiAlertCircle, FiCircle } from "react-icons/fi";
 
 export const InfiniteApplications = () => {
   //we need a reference to the scrolling element for logic down below
@@ -165,6 +166,33 @@ export const InfiniteApplications = () => {
         },
       },
       {
+        size: 100,
+        accessorKey: "attentionNeeded",
+        header: ({ column }) => (
+          <DataTableColumnHeader
+            column={column}
+            title={t("tableTitleAttention")}
+          />
+        ),
+        cell: ({ row }) => {
+          return (
+            <div className="flex w-full space-x-2">
+              <span className="font-medium truncate ">
+                {!row.original.isFamilyIncomeVerified ||
+                !row.original.verifiedGPA ||
+                !row.original.adminPoints ? (
+                  <FiAlertCircle className="text-warning" />
+                ) : (
+                  <FiCircle className="text-gray-300" />
+                )}
+              </span>
+            </div>
+          );
+        },
+        enableSorting: false,
+        enableHiding: false,
+      },
+      {
         size: 60,
         accessorKey: "score",
         header: ({ column }) => (
@@ -175,24 +203,6 @@ export const InfiniteApplications = () => {
             <div className="flex space-x-2">
               <span className="max-w-[500px] truncate font-medium">
                 {row.getValue("score")}
-              </span>
-            </div>
-          );
-        },
-        enableSorting: false,
-        enableHiding: false,
-      },
-      {
-        accessorKey: "gpa",
-        size: 60,
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} title={t("tableTitleGpa")} />
-        ),
-        cell: ({ row }) => {
-          return (
-            <div className="flex space-x-2">
-              <span className="font-medium truncate ">
-                {row.getValue("gpa")}
               </span>
             </div>
           );
@@ -224,6 +234,25 @@ export const InfiniteApplications = () => {
         enableSorting: false,
         enableHiding: false,
       },
+      {
+        accessorKey: "gpa",
+        size: 60,
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title={t("tableTitleGpa")} />
+        ),
+        cell: ({ row }) => {
+          return (
+            <div className="flex space-x-2">
+              <span className="font-medium truncate ">
+                {row.getValue("gpa")}
+              </span>
+            </div>
+          );
+        },
+        enableSorting: false,
+        enableHiding: false,
+      },
+
       {
         accessorKey: "schoolType",
         size: 100,

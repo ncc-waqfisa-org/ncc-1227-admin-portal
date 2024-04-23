@@ -16,7 +16,7 @@ import { useRouter } from "next/router";
 
 import { Scholarship, ScholarshipStatus } from "../../src/API";
 import { useBatchContext } from "../../context/BatchContext";
-import { useAuth } from "../../hooks/use-auth";
+
 import { Checkbox } from "../ui/checkbox";
 
 import { DataTableColumnHeader } from "../ui/applications/data-table-column-header";
@@ -57,8 +57,6 @@ export const InfiniteScholarships = () => {
   const { t } = useTranslation("scholarships");
   const { t: common } = useTranslation("common");
   const { locale } = useRouter();
-
-  const { token } = useAuth();
 
   const columns = React.useMemo<ColumnDef<Scholarship>[]>(
     () => [
@@ -309,22 +307,22 @@ export const InfiniteScholarships = () => {
     },
   });
 
-  //scroll to top of table when sorting changes
-  const handleScholarshipStatusChange = (updater: string) => {
-    // setSorting(updater);
-    // setSelectedScholarshipStatus(updater);
-    // if (!!table.getRowModel().rows.length) {
-    //   rowVirtualizer.scrollToIndex?.(0);
-    // }
-  };
-  const handleBatchChange = (updater: string) => {
-    // setSorting(updater);
-    // setSelectedBatch(updater);
+  // //scroll to top of table when sorting changes
+  // const handleScholarshipStatusChange = (updater: string) => {
+  //   // setSorting(updater);
+  //   // setSelectedScholarshipStatus(updater);
+  //   // if (!!table.getRowModel().rows.length) {
+  //   //   rowVirtualizer.scrollToIndex?.(0);
+  //   // }
+  // };
+  // const handleBatchChange = (updater: string) => {
+  //   // setSorting(updater);
+  //   // setSelectedBatch(updater);
 
-    if (!!table.getRowModel().rows.length) {
-      rowVirtualizer.scrollToIndex?.(0);
-    }
-  };
+  //   if (!!table.getRowModel().rows.length) {
+  //     rowVirtualizer.scrollToIndex?.(0);
+  //   }
+  // };
 
   const { rows } = table.getRowModel();
 
