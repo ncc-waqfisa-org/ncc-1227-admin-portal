@@ -85,6 +85,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "sendSubmissionEmail": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "signScholarship": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -244,6 +249,22 @@
         {
           "category": "function",
           "resourceName": "getStatistics"
+        }
+      ]
+    },
+    "AMPLIFY_function_sendSubmissionEmail_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sendSubmissionEmail"
+        }
+      ]
+    },
+    "AMPLIFY_function_sendSubmissionEmail_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sendSubmissionEmail"
         }
       ]
     },

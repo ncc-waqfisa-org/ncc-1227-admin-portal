@@ -247,6 +247,7 @@ export async function getApplicationByIdAPI(
       schoolType
       schoolName
       _deleted
+      reason
       batch
       familyIncome
       studentName

@@ -32,6 +32,7 @@ import { cn } from "../../src/utils";
 import { PhoneNumberInput } from "../../components/phone";
 import { FiAlertCircle, FiCheckCircle, FiPrinter } from "react-icons/fi";
 import { DownloadFileFromUrl } from "../../components/download-file-from-url";
+import { Textarea } from "../../components/ui/textarea";
 
 interface Props {
   application: Application;
@@ -144,6 +145,15 @@ const ApplicationInfo: FC<Props> = (props) => {
                 <FiAlertCircle className="text-warning" />
               )}
             </div>
+          </div>
+          <div className="flex flex-col gap-3 sm:col-span-2">
+            <p className="font-medium">{t("studentReasonD")}</p>
+            <Textarea
+              disabled
+              className="max-h-96 min-h-40  sm:min-h-20 !cursor-default"
+            >
+              {props.application.reason ?? t("empty")}
+            </Textarea>
           </div>
         </div>
 

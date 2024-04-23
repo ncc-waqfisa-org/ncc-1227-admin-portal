@@ -49,6 +49,8 @@ import GetStorageLinkComponent from "../get-storage-link-component";
 import { FileIcon } from "@radix-ui/react-icons";
 import { useBatchContext } from "../../context/BatchContext";
 import { FiAlertCircle, FiCheckCircle } from "react-icons/fi";
+import { Textarea } from "../ui/textarea";
+import WordCounter from "../ui/word-counter";
 
 type TApplicationForm = {
   application: Application;
@@ -74,12 +76,25 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
     acceptanceLetterFile: z.instanceof(File).optional(),
     schoolCertificateFile: z.instanceof(File).optional(),
     transcriptFile: z.instanceof(File).optional(),
-    reason: z.string(),
+    reason: z
+      .string()
+      .optional()
+      .refine(
+        (reason) => {
+          return (reason || "").split(/\s+/).filter(Boolean).length <= 100;
+        },
+        {
+          message: t("reasonWords") ?? "Reason must not exceed 100 words.",
+        }
+      ),
+    adminReason: z.string(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      reason: application.reason ?? undefined,
+      adminReason: "",
       adminPoints: application.adminPoints ?? undefined,
       isFamilyIncomeVerified: application.isFamilyIncomeVerified ?? false,
       gpa: application.gpa ?? 0,
@@ -124,6 +139,7 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
       input: {
         id: application.id,
         status: values.status,
+        reason: values.reason,
         adminPoints: values.adminPoints,
         isFamilyIncomeVerified: values.isFamilyIncomeVerified,
         gpa: values.gpa,
@@ -170,6 +186,7 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
           isFamilyIncomeVerified: application.isFamilyIncomeVerified,
           verifiedGPA: application.verifiedGPA,
           gpa: application.gpa,
+          reason: application.reason,
         };
 
         const newData = {
@@ -178,6 +195,7 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
           isFamilyIncomeVerified: values.isFamilyIncomeVerified,
           verifiedGPA: values.verifiedGPA,
           gpa: values.gpa,
+          reason: values.reason,
         };
 
         // Calculate changes
@@ -189,7 +207,7 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
             adminCPR: cpr ?? "",
             dateTime: new Date().toISOString(),
             snapshot: snapshot,
-            reason: values.reason,
+            reason: values.adminReason,
             applicationAdminLogsId: application.id,
             adminAdminLogsCpr: cpr ?? "",
           },
@@ -408,6 +426,27 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
             </FormDescription>
             <FormMessage />
           </FormItem>
+          <FormField
+            control={form.control}
+            name="reason"
+            render={({ field }) => (
+              <FormItem className="sm:col-span-2">
+                <FormLabel>{tL("reason")}</FormLabel>
+                <FormControl>
+                  <div className="flex flex-col gap-2">
+                    <Textarea
+                      {...field}
+                      className="min-h-40 max-h-96"
+                      onChange={(e) => field.onChange(e.target.value)}
+                    />
+                    <WordCounter value={field.value} maxWords={100} />
+                  </div>
+                </FormControl>
+                <FormDescription>{t("studentReasonD")}</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
           <div className="flex items-center gap-4 sm:col-span-2">
             <span className="w-full h-[1px] bg-border "></span>{" "}
@@ -531,11 +570,11 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
           />
           <FormField
             control={form.control}
-            name="reason"
+            name="adminReason"
             render={({ field }) => (
               <FormItem className="sm:col-span-2">
                 <FormLabel>
-                  {tL("reason")} <span className="text-error">*</span>{" "}
+                  {tL("reasonD")} <span className="text-error">*</span>{" "}
                 </FormLabel>
                 <FormControl>
                   <Input
@@ -543,7 +582,7 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
                     onChange={(e) => field.onChange(e.target.value)}
                   />
                 </FormControl>
-                <FormDescription>{tL("reasonD")}</FormDescription>
+                {/* <FormDescription>{tL("reasonD")}</FormDescription> */}
                 <FormMessage />
               </FormItem>
             )}
@@ -585,6 +624,11 @@ function createChangeSnapshot(oldData: any, newData: any): string {
   }
   if (newData.gpa !== oldData.gpa) {
     changes.push(`GPA from "${oldData.gpa}" to "${newData.gpa}"`);
+  }
+  if (newData.reason !== oldData.reason) {
+    changes.push(
+      `Student reason from "${oldData.reason}" to "${newData.reason}"`
+    );
   }
 
   return changes.join(", ");
