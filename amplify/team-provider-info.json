@@ -77,6 +77,10 @@
         "getCprFromToken": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
           "s3Key": "amplify-builds/getCprFromToken-6d727765715259526b59-build.zip"
+        },
+        "sendSubmissionEmail": {
+          "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
+          "s3Key": "amplify-builds/sendSubmissionEmail-6e306465393732614461-build.zip"
         }
       }
     }
