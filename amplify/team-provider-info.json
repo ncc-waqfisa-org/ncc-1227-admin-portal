@@ -68,7 +68,7 @@
         },
         "exportApplicationPdf": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
-          "s3Key": "amplify-builds/exportApplicationPdf-703569766b564b664f79-build.zip"
+          "s3Key": "amplify-builds/exportApplicationPdf-2b3631374244366b7177-build.zip"
         },
         "dummyUpdate": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
