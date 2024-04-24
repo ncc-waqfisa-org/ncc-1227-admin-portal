@@ -1,4 +1,6 @@
 const AWS = require('aws-sdk');
+const dynamoDB = new AWS.DynamoDB.DocumentClient();
+
 const {ConfidentialClientApplication} = require("@azure/msal-node");
 
 const clientSecret = process.env.AZURE_APP_SECRET;
@@ -30,10 +32,12 @@ const tokenRequest = {
  */
 exports.handler = async (event) => {
     console.log(`EVENT: ${JSON.stringify(event)}`);
+    // get the email from dynamodb event
+    const cpr = event.Records[0].dynamodb.NewImage.studentCPR.S;
+    const email = await getStudentEmail(cpr);
 
     const logo =
         "https://res.cloudinary.com/dedap3cb9/image/upload/v1688627927/logos/nccEmailLogo_mjrwyk.png";
-    const email = event.body;
     const cca = new ConfidentialClientApplication(msalConfig);
     const tokenInfo = await cca.acquireTokenByClientCredential(tokenRequest);
     const headers = new Headers();
@@ -78,3 +82,16 @@ exports.handler = async (event) => {
 
 
 };
+
+
+async function getStudentEmail(cpr) {
+    const params = {
+        TableName: 'Student-cw7beg2perdtnl7onnneec4jfa-staging',
+        Key: {
+            cpr: cpr
+        }
+    };
+
+    const student = await dynamoDB.get(params).promise();
+    return student.Item.email;
+}
