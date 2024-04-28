@@ -51,7 +51,7 @@ exports.handler = async (event) => {
     };
 };
 
- async function getApplications(pageSize, startKey, batch, status = null, cpr= null) {
+ async function getApplications(pageSize, startKey, batch, status = null) {
 
      const params = {
          TableName: 'Application-cw7beg2perdtnl7onnneec4jfa-staging',
@@ -75,15 +75,15 @@ exports.handler = async (event) => {
          params.ExpressionAttributeValues[':status'] = status;
      }
 
-     if(cpr) {
-            // params.FilterExpression = '#studentCPR = :cpr';
-            // params.ExpressionAttributeNames['#studentCPR'] = 'cpr';
-            // params.ExpressionAttributeValues[':studentCPR'] = cpr;
-            // non exact match
-            params.FilterExpression = 'contains(#studentCPR, :cpr)';
-            params.ExpressionAttributeNames['#studentCPR'] = 'cpr';
-            params.ExpressionAttributeValues[':studentCPR'] = cpr;
-        }
+     // if(cpr) {
+     //        // params.FilterExpression = '#studentCPR = :cpr';
+     //        // params.ExpressionAttributeNames['#studentCPR'] = 'cpr';
+     //        // params.ExpressionAttributeValues[':studentCPR'] = cpr;
+     //        // non exact match
+     //        params.FilterExpression = 'contains(#studentCPR, :studentCPR)';
+     //        params.ExpressionAttributeNames['#studentCPR'] = 'studentCPR';
+     //        params.ExpressionAttributeValues[':studentCPR'] = cpr;
+     //    }
 
 
      try {
@@ -94,7 +94,7 @@ exports.handler = async (event) => {
                     return result;
              }
              const remaining = pageSize - result.Items.length;
-             const nextResult = await getApplications(remaining, result.LastEvaluatedKey, batch, status, cpr);
+             const nextResult = await getApplications(remaining, result.LastEvaluatedKey, batch, status);
              result.Items = result.Items.concat(nextResult.Items);
              result.LastEvaluatedKey = nextResult.LastEvaluatedKey;
          }
