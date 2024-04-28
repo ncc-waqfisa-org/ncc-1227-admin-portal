@@ -33,7 +33,16 @@ exports.handler = async (event) => {
     const batch = parseInt(event.queryStringParameters?.batch) || new Date().getFullYear();
     const status = event.queryStringParameters?.status || null;
     const cpr = event.queryStringParameters?.cpr || null;
-    const applications = await getApplications(pageSize, startKey, batch, status, cpr);
+    if(cpr) {
+        // must be 9 digits
+        if(cpr.length !== 9 || isNaN(cpr)) {
+            return {
+                statusCode: 400,
+                body: JSON.stringify({ message: 'Invalid CPR' })
+            };
+        }
+    }
+    const applications = cpr ? await getApplicationsByCPR(cpr, batch) : await getApplications(pageSize, startKey, batch, status);
 
     return {
         statusCode: 200,
@@ -104,6 +113,30 @@ exports.handler = async (event) => {
             console.error('Error getting applications', error);
             throw new Error('Error getting applications');
         }
+}
+
+
+async function getApplicationsByCPR(cpr, batch) {
+    const params = {
+        TableName: 'Application-cw7beg2perdtnl7onnneec4jfa-staging',
+        IndexName: 'byCPR',
+        KeyConditionExpression: 'studentCPR = :cpr',
+        ExpressionAttributeValues: {
+            ':cpr': cpr
+        }
+    };
+
+    try {
+        const result = await dynamoDB.query(params).promise();
+        // filter applications by current year
+        result.Items = result.Items.filter(application => application.batch === batch);
+        return result;
+
+    } catch (error) {
+        console.error('Error getting application by CPR', error);
+        throw new Error('Error getting application by CPR');
+    }
+
 }
 
 // async function getApplications(pageSize, startKey, batch, status = null, cpr = null) {
