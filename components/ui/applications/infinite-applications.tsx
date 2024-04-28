@@ -53,6 +53,7 @@ export const InfiniteApplications = () => {
   } = useBatchContext();
 
   const [isFetching, setIsFetching] = useState(false);
+  const [search, setSearch] = useState("");
 
   const { t } = useTranslation("applications");
   const { t: common } = useTranslation("common");
@@ -377,9 +378,9 @@ export const InfiniteApplications = () => {
     [
       selectedBatch,
       selectedStatus,
+      token,
       setApplicationsData,
       setNextApplicationsKey,
-      token,
     ]
   );
 
@@ -426,20 +427,22 @@ export const InfiniteApplications = () => {
 
   //scroll to top of table when sorting changes
   const handleStatusChange = (updater: string) => {
-    // setSorting(updater);
     setSelectedStatus(updater);
     if (!!table.getRowModel().rows.length) {
       rowVirtualizer.scrollToIndex?.(0);
     }
   };
   const handleBatchChange = (updater: string) => {
-    // setSorting(updater);
-    // setSelectedBatch(updater);
-
     if (!!table.getRowModel().rows.length) {
       rowVirtualizer.scrollToIndex?.(0);
     }
   };
+  // const handleSearchChange = (updater: string) => {
+  //   setSearch(updater);
+  //   if (!!table.getRowModel().rows.length) {
+  //     rowVirtualizer.scrollToIndex?.(0);
+  //   }
+  // };
 
   const { rows } = table.getRowModel();
 
@@ -473,6 +476,7 @@ export const InfiniteApplications = () => {
           handleStatusChange={handleStatusChange}
           selectedStatus={selectedStatus}
           handleBatchChange={handleBatchChange}
+          // handleSearchChange={handleSearchChange}
           table={table}
         />
       </div>

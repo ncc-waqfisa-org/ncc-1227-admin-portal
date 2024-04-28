@@ -3,6 +3,7 @@ import { PageComponent } from "../../components/page-component";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "react-i18next";
 import StudentsPageComponent from "../../components/students-page-component";
+import { FC } from "react";
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const { locale } = ctx;

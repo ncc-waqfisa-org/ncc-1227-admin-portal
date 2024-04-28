@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Status } from "../../../src/API";
 import {
   Select,
@@ -9,52 +9,139 @@ import {
   SelectGroup,
   SelectLabel,
 } from "../select";
-import { IoIosClose } from "react-icons/io";
+import { IoIosClose, IoMdClose, IoMdNuclear, IoMdSearch } from "react-icons/io";
 
 import { BatchSelector } from "../../batch/BatchSelector";
 import { Table } from "@tanstack/react-table";
 import { InfiniteApplication } from "./infinite-applications-type";
-import { CSVLink } from "react-csv";
 import { cn } from "../../../src/utils";
 import { Button, buttonVariants } from "../button";
 import { useBatchContext } from "../../../context/BatchContext";
 import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 import { useAuth } from "../../../hooks/use-auth";
-import { DownloadFileFromUrl } from "../../download-file-from-url";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { FiRefreshCw } from "react-icons/fi";
 import { useQueryClient } from "@tanstack/react-query";
+import { Input } from "../input";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../form";
 
 interface ApplicationsStatusFilterProps {
   handleStatusChange: (value: string) => void;
-  selectedStatus: Status | string | undefined;
   handleBatchChange: (value: string) => void;
+  // handleSearchChange: (value: string) => void;
+  selectedStatus: Status | string | undefined;
+  // search: string;
   table: Table<InfiniteApplication>;
 }
 
 export const BatchApplicationsToolbar: React.FC<
   ApplicationsStatusFilterProps
 > = ({
-  handleStatusChange,
   selectedStatus,
+  handleStatusChange,
   handleBatchChange,
+  // handleSearchChange,
   table,
-  //   selectedBatch,
+  // search,
 }) => {
-  const { batch, resetApplicationsFilter, resetApplications } =
-    useBatchContext();
+  const {
+    batch,
+    resetApplicationsFilter,
+    searchCpr,
+    searchedCpr,
+    resetApplications,
+  } = useBatchContext();
   const { t } = useTranslation("applications");
   const { t: tErrors } = useTranslation("errors");
   const { token } = useAuth();
   const queryClient = useQueryClient();
 
+  const submitButton = useRef<HTMLButtonElement>(null);
+
+  const searchFormSchema = z.object({
+    cpr: z.union([
+      z.string().length(0, tErrors("cprShouldBe9") ?? "Invalid"), // Allows an empty string
+      z.string().regex(/^\d{9}$/), // Allows a string of exactly 9 digits
+    ]),
+  });
+
+  const form = useForm<z.infer<typeof searchFormSchema>>({
+    resolver: zodResolver(searchFormSchema),
+    defaultValues: {
+      cpr: searchedCpr ?? "",
+    },
+  });
+
+  // 2. Define a submit handler.
+  function onSubmit(values: z.infer<typeof searchFormSchema>) {
+    searchCpr(values.cpr);
+  }
+
   return (
-    <div className="flex flex-wrap gap-3">
+    <div className="flex flex-wrap items-start gap-3">
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex items-start gap-2"
+        >
+          <FormField
+            control={form.control}
+            name="cpr"
+            render={({ field, formState }) => (
+              <FormItem>
+                <FormControl>
+                  <div className="relative">
+                    <Input
+                      placeholder={t("searchCPR") ?? "Search CPR"}
+                      {...field}
+                    />
+                    {field.value && (
+                      <Button
+                        className={cn("absolute top-0 ltr:right-0 rtl:left-0 ")}
+                        onClick={() => {
+                          field.onChange("");
+                          submitButton.current?.click();
+                        }}
+                        variant={"ghost"}
+                        size={"icon"}
+                      >
+                        <IoMdClose />
+                      </Button>
+                    )}
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button
+            ref={submitButton}
+            variant={"outline"}
+            size={"icon"}
+            type="submit"
+          >
+            <IoMdSearch />
+          </Button>
+        </form>
+      </Form>
+
       <div className="flex items-center gap-2">
         <Select onValueChange={handleStatusChange} value={selectedStatus}>
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-[160px]">
             <SelectValue placeholder="Select status" />
           </SelectTrigger>
           <SelectContent>

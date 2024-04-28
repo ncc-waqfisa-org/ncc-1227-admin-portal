@@ -29,6 +29,7 @@ interface IUseBatchContext {
   setScholarshipsData: Dispatch<SetStateAction<Scholarship[]>>;
 
   nextScholarshipsKey: string | null;
+  searchedCpr: string;
   setNextScholarshipsKey: Dispatch<SetStateAction<string | null>>;
 
   nextApplicationsKey: NextStartKey | undefined;
@@ -36,6 +37,7 @@ interface IUseBatchContext {
   resetScholarships: () => void;
   resetApplications: () => void;
   resetApplicationsFilter: () => void;
+  searchCpr: (cpr: string) => void;
   isInitialFetching: boolean;
   isScholarshipsInitialFetching: boolean;
   batch: number;
@@ -89,6 +91,10 @@ const defaultState: IUseBatchContext = {
     throw new Error("Function not implemented.");
   },
   isScholarshipsInitialFetching: false,
+  searchCpr: function (cpr: string): void {
+    throw new Error("Function not implemented.");
+  },
+  searchedCpr: "",
 };
 
 // creating the app contexts
@@ -129,26 +135,35 @@ function useBatchProviderApp() {
     defaultState.scholarshipsData
   );
 
+  const [cpr, setCpr] = useState("");
+
+  function searchCpr(newCpr: string) {
+    setCpr(newCpr);
+    resetApplications(newCpr);
+  }
+
   function resetScholarships() {
     setNextScholarshipsKey(null);
     setScholarshipsData([]);
     fetchFirstScholarshipsPage();
   }
 
-  function resetApplications() {
+  function resetApplications(newCPR?: string) {
     setNextApplicationsKey(undefined);
     setApplicationsData([]);
-    fetchFirstApplicationsPage();
+    fetchFirstApplicationsPage(newCPR);
   }
 
-  async function fetchFirstApplicationsPage() {
+  async function fetchFirstApplicationsPage(newCPR?: string) {
     const batchQuery = batch ? `batch=${batch}` : "";
     const statusQuery = selectedApplicationsStatus
       ? `&status=${selectedApplicationsStatus}`
       : "";
+    const searchQuery = newCPR && newCPR != "" ? `&cpr=${newCPR}` : "";
     setIsInitialFetching(true);
+
     const fetchedData = (await fetch(
-      `${process.env.NEXT_PUBLIC_APPLICATION_PAGINATION_ENDPOINT}?${batchQuery}${statusQuery}`,
+      `${process.env.NEXT_PUBLIC_APPLICATION_PAGINATION_ENDPOINT}?${batchQuery}${statusQuery}${searchQuery}`,
       {
         headers: {
           Authorization: "Bearer " + token,
@@ -165,8 +180,6 @@ function useBatchProviderApp() {
   }
 
   async function fetchFirstScholarshipsPage() {
-    const batchQuery = batch ? `batch=${batch}` : "";
-
     setIsInitialFetching(true);
     const fetchedData = await listAllScholarshipsOfBatch({
       batch,
@@ -262,5 +275,7 @@ function useBatchProviderApp() {
     nextScholarshipsKey,
     setNextScholarshipsKey,
     resetScholarships,
+    searchCpr,
+    searchedCpr: cpr,
   };
 }

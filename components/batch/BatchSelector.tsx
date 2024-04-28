@@ -24,7 +24,7 @@ export const BatchSelector: FC<TBatchSelector> = ({ handleBatchChange }) => {
       }}
       value={batch.toString()}
     >
-      <SelectTrigger className="w-[180px]">
+      <SelectTrigger className="w-[100px]">
         <SelectValue placeholder="Select year" />
       </SelectTrigger>
       <SelectContent>

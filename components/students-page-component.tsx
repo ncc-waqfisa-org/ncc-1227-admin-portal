@@ -1,5 +1,5 @@
 import { Formik, Form, Field } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import * as yup from "yup";
 import { useStudent } from "../context/StudentContext";
@@ -15,6 +15,10 @@ import {
 } from "../components/ui/accordion";
 import UpdateParentInfo from "./student/UpdateParentInfo";
 
+interface IStudentForm {
+  cpr: string;
+}
+
 export default function StudentsPageComponent() {
   const { t } = useTranslation("applications");
   const { t: tErrors } = useTranslation("errors");
@@ -23,10 +27,6 @@ export default function StudentsPageComponent() {
   const [firstSearchDone, setFirstSearchDone] = useState(false);
   const [loading, setLoading] = useState(false);
   const [student, setStudent] = useState<Student | undefined>(undefined);
-
-  interface IStudentForm {
-    cpr: string;
-  }
 
   const initialValues: IStudentForm = {
     cpr: "",
@@ -130,7 +130,7 @@ export default function StudentsPageComponent() {
         {student && !loading && (
           <div className={"flex flex-col w-full gap-10"}>
             <div>
-              <p className="text-xl font-medium py-3">{t("applications")}</p>
+              <p className="py-3 text-xl font-medium">{t("applications")}</p>
               <div className="flex items-center gap-6 py-2 overflow-hidden overflow-x-scroll">
                 {student.applications &&
                 student.applications.items.filter(
