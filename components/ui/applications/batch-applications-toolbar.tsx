@@ -75,7 +75,7 @@ export const BatchApplicationsToolbar: React.FC<
   const searchFormSchema = z.object({
     cpr: z.union([
       z.string().length(0, tErrors("cprShouldBe9") ?? "Invalid"), // Allows an empty string
-      z.string().regex(/^\d{9}$/), // Allows a string of exactly 9 digits
+      z.string().regex(/^\d{9}$/, tErrors("numbersOnly") ?? "Numbers Only"), // Allows a string of exactly 9 digits
     ]),
   });
 
@@ -101,16 +101,18 @@ export const BatchApplicationsToolbar: React.FC<
           <FormField
             control={form.control}
             name="cpr"
-            render={({ field, formState }) => (
+            render={({ field }) => (
               <FormItem>
                 <FormControl>
                   <div className="relative">
                     <Input
                       placeholder={t("searchCPR") ?? "Search CPR"}
                       {...field}
+                      onChange={(e) => field.onChange(e.target.value)}
                     />
                     {field.value && (
                       <Button
+                        type="button"
                         className={cn("absolute top-0 ltr:right-0 rtl:left-0 ")}
                         onClick={() => {
                           field.onChange("");

@@ -1,6 +1,7 @@
 {
   "somethingWentWrong": "هناك خطأ ما",
   "accessDenied": "غير مصرح بالدخول",
+  "numbersOnly": "أرقام فقط",
   "requiredField": "الحقل مطلوب",
   "passwordMustMatch": "كلمة المرور يجب ان تتطابق",
   "cprShouldBe9": "الرقم الشخصي يجب ان يكون ٩ ارقام",
