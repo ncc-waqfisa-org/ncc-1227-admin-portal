@@ -80,7 +80,7 @@
         },
         "sendSubmissionEmail": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
-          "s3Key": "amplify-builds/sendSubmissionEmail-2f767559766454334775-build.zip"
+          "s3Key": "amplify-builds/sendSubmissionEmail-75327277346f78333558-build.zip"
         }
       }
     }
