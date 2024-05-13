@@ -192,7 +192,9 @@ export default function UniversityFormComponent({ university }: Props) {
                             placeholder={`${t("availability")}`}
                             type="number"
                             {...field}
-                            onChange={(e) => field.onChange(Number(e))}
+                            onChange={(e) =>
+                              field.onChange(Number(e.target.value))
+                            }
                           />
                         </div>
                       </FormControl>
