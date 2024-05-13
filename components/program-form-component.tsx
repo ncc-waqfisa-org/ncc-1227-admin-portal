@@ -145,6 +145,7 @@ export default function ProgramFormComponent({ program }: Props) {
           handleChange,
           handleBlur,
           isSubmitting,
+          setFieldValue,
           isValid,
         }) => (
           <Form className="flex flex-col max-w-3xl gap-3">
@@ -222,6 +223,7 @@ export default function ProgramFormComponent({ program }: Props) {
                 className="flex flex-col items-center justify-between"
               >
                 <label className="label">{t("deactivate")}</label>
+
                 <Field
                   name="isDeactivated"
                   type="checkbox"
@@ -231,7 +233,7 @@ export default function ProgramFormComponent({ program }: Props) {
                   className={` checkbox text-orange-50 checkbox-warning ${
                     errors.isDeactivated && "input-error"
                   }`}
-                  value={values.isDeactivated}
+                  checked={values.isDeactivated}
                 />
                 <label className="label-text-alt text-error">
                   {errors.isDeactivated &&
