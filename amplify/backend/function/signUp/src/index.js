@@ -22,7 +22,7 @@ exports.handler = async (event) => {
         const requestBody = JSON.parse(event.body);
         let studentData = requestBody.student.input;
         let parentData = requestBody.parentInfo?.input;
-        const username = studentData?.cpr ? studentData.cpr : requestBody.username;
+        const username = studentData?.cpr;
         let email = studentData?.email;
         const password = requestBody.password;
         const user =  await getUserFromCognito(username);
@@ -46,12 +46,11 @@ exports.handler = async (event) => {
                     ),
                 };
             } else {
-                studentData = await getUserFromDynamoDB(username);
-                parentData = await getParentFromDynamoDB(studentData.parentInfoID);
                 email = studentData.email;
+                const oldParentID = await getUserFromDynamoDB(username).parentInfoID;
                 await deleteUserFromCognito(username);
                 await deleteUserFromDynamoDB(username);
-                await deleteParentFromDynamoDB(studentData.parentInfoID);
+                await deleteParentFromDynamoDB(oldParentID);
 
                 await signUpUserToCognito(username, email, password);
                 studentData.parentInfoID = await saveParentToDynamoDB(parentData);
