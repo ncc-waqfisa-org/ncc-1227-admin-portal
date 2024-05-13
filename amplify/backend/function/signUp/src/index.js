@@ -47,10 +47,15 @@ exports.handler = async (event) => {
                 };
             } else {
                 email = studentData.email;
-                const oldParentID = await getUserFromDynamoDB(username).parentInfoID;
+                const oldStudent = await getUserFromDynamoDB(username);
+                const oldParentID = oldStudent.parentInfoID;
+                console.log(oldParentID, 'oldParentID');
                 await deleteUserFromCognito(username);
+                console.log('deleted from cognito');
                 await deleteUserFromDynamoDB(username);
+                console.log('deleted from dynamo');
                 await deleteParentFromDynamoDB(oldParentID);
+                console.log('deleted parent from dynamo');
 
                 await signUpUserToCognito(username, email, password);
                 studentData.parentInfoID = await saveParentToDynamoDB(parentData);
@@ -135,6 +140,7 @@ async function getUserFromDynamoDB(username) {
         },
     };
     const { Item } = await dynamoDB.get(params).promise();
+    console.log(Item, 'Item');
     return Item;
 }
 async function getParentFromDynamoDB(parentID) {
