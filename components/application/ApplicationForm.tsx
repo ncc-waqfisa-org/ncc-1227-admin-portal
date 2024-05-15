@@ -233,9 +233,9 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="grid gap-4 sm:grid-cols-2"
         >
-          <div className="grid w-full gap-2">
+          <div className="grid gap-2 w-full">
             <Label>{tL("studentLog")}</Label>
-            <div className="grid gap-4 ">
+            <div className="grid gap-4">
               <Link
                 className={cn(buttonVariants({ variant: "outline" }))}
                 href={`/studentLogs/${application.id}`}
@@ -244,9 +244,9 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
               </Link>
             </div>
           </div>
-          <div className="grid w-full gap-2">
+          <div className="grid gap-2 w-full">
             <Label>{tL("adminLogs")}</Label>
-            <div className="grid gap-4 ">
+            <div className="grid gap-4">
               <Link
                 className={cn(buttonVariants({ variant: "outline" }))}
                 href={`/applications/applicationHistory/${application.id}`}
@@ -278,7 +278,7 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
             name="verifiedGPA"
             render={({ field }) => (
               <FormItem>
-                <div className="flex items-center gap-2 py-1">
+                <div className="flex gap-2 items-center py-1">
                   <FormLabel>{tL("verifiedGPA")}</FormLabel>
                   {application.verifiedGPA ? (
                     <FiCheckCircle className="text-success" />
@@ -304,7 +304,7 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
             name="adminPoints"
             render={({ field }) => (
               <FormItem>
-                <div className="flex items-center gap-2 py-1">
+                <div className="flex gap-2 items-center py-1">
                   <FormLabel>{t("adminPoints")}</FormLabel>
                   {application.adminPoints ? (
                     <FiCheckCircle className="text-success" />
@@ -360,9 +360,9 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
             control={form.control}
             name="isFamilyIncomeVerified"
             render={({ field }) => (
-              <FormItem className="flex flex-row items-center justify-between gap-2 p-4 border rounded-lg">
+              <FormItem className="flex flex-row gap-2 justify-between items-center p-4 rounded-lg border">
                 <div className="space-y-0.5">
-                  <div className="flex items-center gap-2">
+                  <div className="flex gap-2 items-center">
                     <FormLabel className="text-base">
                       {t("isFamilyIncomeVerified")}
                     </FormLabel>
@@ -377,7 +377,7 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
                       `${application.familyIncome}`
                     )}`}
                   </FormDescription>
-                  <div className="flex items-center gap-1 py-1 border rounded-md w-fit ps-3 pe-2">
+                  <div className="flex gap-1 items-center py-1 rounded-md border w-fit ps-3 pe-2">
                     <FileIcon />
                     <GetStorageLinkComponent
                       storageKey={
@@ -416,7 +416,7 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
                   ? application.programs?.items[0]?.program?.university?.nameAr
                   : application.programs?.items[0]?.program?.university?.name}
               </p>
-              <div className="flex flex-wrap items-center gap-2">
+              <div className="flex flex-wrap gap-2 items-center">
                 <p>{t("minimumGPA")}</p>
                 <p>
                   {application.programs?.items[0]?.program?.minimumGPA ??
@@ -431,12 +431,12 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
             name="reason"
             render={({ field }) => (
               <FormItem className="sm:col-span-2">
-                <FormLabel>{tL("reason")}</FormLabel>
+                <FormLabel>{t("studentReasonD")}</FormLabel>
                 <FormControl>
                   <div className="flex flex-col gap-2">
                     <Textarea
                       {...field}
-                      className="min-h-40 max-h-96"
+                      className="max-h-96 min-h-40"
                       onChange={(e) => field.onChange(e.target.value)}
                     />
                     <WordCounter value={field.value} maxWords={100} />
@@ -448,7 +448,7 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
             )}
           />
 
-          <div className="flex items-center gap-4 sm:col-span-2">
+          <div className="flex gap-4 items-center sm:col-span-2">
             <span className="w-full h-[1px] bg-border "></span>{" "}
             <p>{t("documents")}</p>
             <span className="w-full h-[1px] bg-border "></span>

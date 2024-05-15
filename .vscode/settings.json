@@ -28,5 +28,6 @@
     "unparse"
   ],
   "i18n-ally.localesPaths": ["public/locales"],
-  "i18n-ally.keystyle": "nested"
+  "i18n-ally.keystyle": "nested",
+  "react-i18n.i18nPaths": "public/locales"
 }
