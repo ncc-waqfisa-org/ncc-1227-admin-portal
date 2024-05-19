@@ -5,6 +5,7 @@ Amplify Params - DO NOT EDIT */
 
 const AWS = require('aws-sdk');
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
+const cognito = new AWS.CognitoIdentityServiceProvider();
 const s3 = new AWS.S3();
 const pdfKit = require('pdfkit');
 
@@ -31,6 +32,13 @@ const arabicLocal = {
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
+    const isAdmin = await checkIsAdmin(event.headers?.authorization?.slice(7));
+    if (!isAdmin) {
+        return {
+            statusCode: 403,
+            body: JSON.stringify({ message: 'Forbidden. You are not an admin' })
+        };
+    }
     const applicationId = event.queryStringParameters?.applicationId;
     const lang = event.queryStringParameters?.lang || 'en';
     if (!applicationId) {
@@ -148,7 +156,8 @@ async function generatePdf(application, program, university, parent, student) {
     doc.text(application.nationalityCategory);
     doc.text("GPA: ", {continued: true});
     doc.text(application.gpa + "%");
-    doc.text("Verified GPA: " + application.verifiedGPA ? application.verifiedGPA : "Awaiting verification");
+    doc.text("Verified GPA: ",  {continued: true});
+    doc.text(application.verifiedGPA ? application.verifiedGPA : "Awaiting verification");
     doc.text("School Name: ", {continued: true});
     doc.text(application.schoolName, {features: ['rtla']});
     doc.text("School Type: ", {continued: true});
@@ -367,5 +376,25 @@ async function getStudent(studentCPR) {
 async function fetchImage(url) {
     const response = await fetch(url);
     return response.arrayBuffer();
+}
+
+async function checkIsAdmin(token) {
+    // get the username from the token using cognito
+    try {
+        const cognitoUser = await cognito.getUser({AccessToken: token}).promise();
+        const username = cognitoUser.Username;
+
+        const params = {
+            TableName: 'Admin-cw7beg2perdtnl7onnneec4jfa-staging',
+            Key: {
+                cpr: username
+            }
+        };
+        const {Item} = await dynamoDB.get(params).promise();
+        return Item !== undefined;
+    } catch (error) {
+        console.error('Error checking if user is admin', error);
+        return false;
+    }
 }
 
