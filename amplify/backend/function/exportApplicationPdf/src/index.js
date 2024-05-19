@@ -109,11 +109,13 @@ async function getApplication(applicationId) {
 async function generatePdf(application, program, university, parent, student) {
     const logoUrl = 'https://amplify-ncc-staging-65406-deployment.s3.amazonaws.com/waqfisa_logo.png';
     const imageBuffer = await fetchImage(logoUrl);
+    const labelFontSize = 12;
+    const valueFontSize = 10;
 
     // Generate PDF
     const doc = new pdfKit();
     // set the line height
-    doc.lineGap(4);
+    doc.lineGap(2);
     const pdfBuffer = [];
     doc.on('data', chunk => {
         pdfBuffer.push(chunk);
@@ -126,20 +128,19 @@ async function generatePdf(application, program, university, parent, student) {
         doc.on('error', reject);
     });
     // Add logo, top center
-    doc.image(imageBuffer, 215, 20, { width: 170 });
+    doc.image(imageBuffer, 240, 20, { width: 120 });
 
 
     // add a line under the title and logo
-    doc.moveTo(20, 90).lineTo(600, 90).stroke();
+    doc.moveTo(25, 80).lineTo(600, 80).stroke();
     // add today's date under the line in dd/mm/yyyy format
-    doc.font('./fonts/Almarai.ttf').fontSize(10).text(new Date().toLocaleDateString(), 20, 95);
+    doc.font('./fonts/Almarai.ttf').fontSize(8).text(new Date().toLocaleDateString(), 20, 85);
     // take a gap
     doc.text(' ');
-
     // add a "to whom it may concern" text
     // doc.font('./fonts/Almarai.ttf').fontSize(14).text('To Whom It May Concern', {align: 'center', underline: true});
     // doc.text(' ');
-    doc.font('./fonts/Almarai-Bold.ttf').fontSize(12).text('This is to certify that the following student has applied for the Waqf Isa scholarship program. The application details are as follows:');
+    doc.font('./fonts/Almarai-Bold.ttf').fontSize(valueFontSize).text('This is to certify that the following student has applied for the Waqf Isa scholarship program. The application details are as follows:');
     doc.text("Status: ", {continued: true});
     doc.text(application.status);
     doc.text("Batch: ", {continued: true});
@@ -147,8 +148,8 @@ async function generatePdf(application, program, university, parent, student) {
     // take a gap
     doc.text(' ');
 
-    doc.font('./fonts/Almarai-Bold.ttf').fontSize(14).text('Student Details:');
-    doc.font('./fonts/Almarai.ttf').fontSize(12).text("Name: ", {continued: true});
+    doc.font('./fonts/Almarai-Bold.ttf').fontSize(labelFontSize).text('Student Details:');
+    doc.font('./fonts/Almarai.ttf').fontSize(valueFontSize).text("Name: ", {continued: true});
     doc.text(application.studentName, {features: ['rtla']});
     doc.text("CPR: ", {continued: true});
     doc.text(application.studentCPR);
@@ -157,7 +158,7 @@ async function generatePdf(application, program, university, parent, student) {
     doc.text("GPA: ", {continued: true});
     doc.text(application.gpa + "%");
     doc.text("Verified GPA: ",  {continued: true});
-    doc.text(application.verifiedGPA ? application.verifiedGPA : "Awaiting verification");
+    doc.text(application.verifiedGPA ? application.verifiedGPA + "%" : "Awaiting verification");
     doc.text("School Name: ", {continued: true});
     doc.text(application.schoolName, {features: ['rtla']});
     doc.text("School Type: ", {continued: true});
@@ -172,8 +173,8 @@ async function generatePdf(application, program, university, parent, student) {
     doc.text(student.phone);
     // take a gap
     doc.text(' ');
-    doc.font('./fonts/Almarai-Bold.ttf').fontSize(14).text('Parents Details:');
-    doc.font('./fonts/Almarai.ttf').fontSize(12).text("Father Name: ", {continued: true});
+    doc.font('./fonts/Almarai-Bold.ttf').fontSize(labelFontSize).text('Parents Details:');
+    doc.font('./fonts/Almarai.ttf').fontSize(valueFontSize).text("Father Name: ", {continued: true});
     doc.text(parent.fatherFullName, {features: ['rtla']});
     doc.text("Father CPR: ", {continued: true});
     doc.text(parent.fatherCPR);
@@ -191,23 +192,31 @@ async function generatePdf(application, program, university, parent, student) {
     doc.text(application.familyIncome);
     // take a gap
     doc.text(' ');
-
-    doc.font('./fonts/Almarai-Bold.ttf').fontSize(14).text('Desired Program:');
+    doc.font('./fonts/Almarai-Bold.ttf').fontSize(labelFontSize).text('Desired Program:');
     if(program) {
-        doc.font('./fonts/Almarai.ttf').fontSize(12).text(`${program.name} - ${university.name}`);
+        doc.font('./fonts/Almarai.ttf').fontSize(valueFontSize).text(`${program.name} - ${university.name}`);
     }
     else {
-        doc.font('./fonts/Almarai.ttf').fontSize(12).text('N/A');
+        doc.font('./fonts/Almarai.ttf').fontSize(valueFontSize).text('N/A');
     }
     doc.text(' ');
-    doc.font('./fonts/Almarai.ttf').fontSize(12).text(`ID: ${application.id}`);
+    doc.font('./fonts/Almarai.ttf').fontSize(valueFontSize).text(`ID: ${application.id}`);
 
-    // add a footer with a line above it
-    doc.moveTo(20, 690).lineTo(600, 690).stroke();
-    doc.font('./fonts/Almarai.ttf').fontSize(8).text('This document is generated by Waqf Isa system. All rights reserved ' + new Date().getFullYear(), 20, 700);
+    doc.text(' ');
+    doc.text(' ');
+    // horizontal line
+    doc.lineJoin('round').moveTo(20, 590).rect(20, 590, 580, 115).stroke();
+    // vertical line in the middle between the student signature and the parent signature
+    doc.moveTo(400, 590).lineTo(400, 705).stroke();
+    doc.text('Comments', 30, 600);
+    doc.text('Signatures', 420, 600);
+    doc.moveTo(415, 650).lineTo(585, 650).stroke();
+    doc.moveTo(415, 690).lineTo(585, 690).stroke();
+
+    doc.font('./fonts/Almarai.ttf').fontSize(8).text('This document is generated by Waqf Isa system. All rights reserved ' + new Date().getFullYear(), 20, 710);
+
     // Finalize PDF file
     doc.end();
-
     // Wait for the PDF generation to finish and return the result
     return await pdfPromise;
 }
@@ -215,10 +224,12 @@ async function generatePdf(application, program, university, parent, student) {
 async function generateArabicPdf(application, program, university, parent, student) {
     const logoUrl = 'https://amplify-ncc-staging-65406-deployment.s3.amazonaws.com/waqfisa_logo.png';
     const imageBuffer = await fetchImage(logoUrl);
+    const labelFontSize = 12;
+    const valueFontSize = 11;
 
     // Generate PDF
     const doc = new pdfKit();
-    doc.lineGap(5);
+    doc.lineGap(4);
     const pdfBuffer = [];
     doc.on('data', chunk => {
         pdfBuffer.push(chunk);
@@ -229,13 +240,13 @@ async function generateArabicPdf(application, program, university, parent, stude
         });
         doc.on('error', reject);
     });
-    doc.image(imageBuffer, 215, 20, { width: 170 });
-    doc.moveTo(20, 90).lineTo(600, 90).stroke();
+    doc.image(imageBuffer, 240, 20, { width: 120 });
+    doc.moveTo(20, 80).lineTo(600, 80).stroke();
     doc.font('./fonts/Almarai.ttf').fontSize(10).text(new Date().toLocaleDateString(), 20, 95, {features: ['rtla']});
     doc.text(' ');
     // doc.font('./fonts/Almarai.ttf').fontSize(14).text('إلى من يهمه الأمر', {align: 'center', underline: true, features: ['rtla']});
     // doc.text(' ');
-    doc.font('./fonts/Almarai-Bold.ttf').fontSize(12).text('نشهد بأن الطالب التالي قد قدم طلب لبرنامج وقف عيسى. تفاصيل الطلب كما يلي:', {features: ['rtla'], align: 'right'});
+    doc.font('./fonts/Almarai-Bold.ttf').fontSize(valueFontSize).text('نشهد بأن الطالب التالي قد قدم طلب لبرنامج وقف عيسى. تفاصيل الطلب كما يلي:', {features: ['rtla'], align: 'right'});
 
     doc.font('./fonts/Almarai-Bold.ttf').text("الحالة: ", {align: 'right', features: ['rtla'], underline: true})
         .font('./fonts/Almarai.ttf')
@@ -244,8 +255,8 @@ async function generateArabicPdf(application, program, university, parent, stude
         .font('./fonts/Almarai.ttf')
         .text(application.batch, {align: 'right'});
     doc.text(' ');
-    doc.font('./fonts/Almarai-Bold.ttf').fontSize(14).text('تفاصيل الطالب:', {features: ['rtla'], align: 'right'});
-    doc.font('./fonts/Almarai-Bold.ttf').fontSize(12).text("الاسم:" , { align: 'right', features: ['rtla'], underline: true})
+    doc.font('./fonts/Almarai-Bold.ttf').fontSize(labelFontSize).text('تفاصيل الطالب:', {features: ['rtla'], align: 'right'});
+    doc.font('./fonts/Almarai-Bold.ttf').fontSize(valueFontSize).text("الاسم:" , { align: 'right', features: ['rtla'], underline: true})
         .font('./fonts/Almarai.ttf')
         .text(application.studentName, {align: 'right', features: ['rtla']});
 
@@ -278,8 +289,8 @@ async function generateArabicPdf(application, program, university, parent, stude
         .font('./fonts/Almarai.ttf')
         .text(student.phone, {align: 'right', features: ['rtla']});
     doc.text(' ');
-    doc.font('./fonts/Almarai-Bold.ttf').fontSize(14).text('تفاصيل الأهل:', {features: ['rtla'], align: 'right'});
-    doc.font('./fonts/Almarai-Bold.ttf').fontSize(12).text("اسم الأب: ", {align: 'right', features: ['rtla'], underline: true})
+    doc.font('./fonts/Almarai-Bold.ttf').fontSize(labelFontSize).text('تفاصيل الأهل:', {features: ['rtla'], align: 'right'});
+    doc.font('./fonts/Almarai-Bold.ttf').fontSize(valueFontSize).text("اسم الأب: ", {align: 'right', features: ['rtla'], underline: true})
         .font('./fonts/Almarai.ttf')
         .text(parent.fatherFullName, {align: 'right', features: ['rtla']});
     doc.font('./fonts/Almarai-Bold.ttf').font('./fonts/Almarai-Bold.ttf').text("رقم البطاقة الذكية للأب: ", {align: 'right', features: ['rtla'], underline: true})
@@ -301,18 +312,32 @@ async function generateArabicPdf(application, program, university, parent, stude
         .font('./fonts/Almarai.ttf')
         .text(arabicLocal[application.familyIncome], {align: 'right', features: ['rtla']});
     doc.text(' ');
-    doc.font('./fonts/Almarai-Bold.ttf').fontSize(14).text('البرنامج المطلوب:', {features: ['rtla'], align: 'right'});
+    doc.font('./fonts/Almarai-Bold.ttf').fontSize(labelFontSize).text('البرنامج المطلوب:', {features: ['rtla'], align: 'right'});
     if(program) {
-        doc.font('./fonts/Almarai.ttf').fontSize(12).text(`${program.nameAr} - ${university.nameAr}`, {align: 'right', features: ['rtla']});
+        doc.font('./fonts/Almarai.ttf').fontSize(valueFontSize).text(`${program.nameAr} - ${university.nameAr}`, {align: 'right', features: ['rtla']});
 
     }
     else {
-        doc.font('./fonts/Almarai.ttf').fontSize(12).text('غير متوفر', {align: 'right', features: ['rtla']});
+        doc.font('./fonts/Almarai.ttf').fontSize(valueFontSize).text('غير متوفر', {align: 'right', features: ['rtla']});
     }
     doc.text(' ');
-    doc.font('./fonts/Almarai-Bold.ttf').fontSize(12).text("الرقم: ", {align: 'right', features: ['rtla'], underline: true})
+    doc.font('./fonts/Almarai-Bold.ttf').fontSize(valueFontSize).text("الرقم: ", {align: 'right', features: ['rtla'], underline: true})
         .font('./fonts/Almarai.ttf')
         .text(application.id, {align: 'right'});
+    doc.text(' ');
+    doc.text(' ');
+    // horizontal line
+    doc.lineJoin('round').moveTo(20, 590).rect(20, 590, 580, 115).stroke();
+    // vertical line in the middle between the student signature and the parent signature
+    doc.moveTo(400, 590).lineTo(400, 705).stroke();
+    doc.text('التعليقات', 130, 600, {features: ['rtla']});
+    doc.text('التواقيع', 530, 600, {features: ['rtla']});
+    doc.moveTo(415, 630).lineTo(585, 630).stroke();
+    doc.moveTo(415, 670).lineTo(585, 670).stroke();
+
+
+    doc.font('./fonts/Almarai.ttf').fontSize(8).text('هذا المستند تم إنشاؤه بواسطة نظام وقف عيسى. جميع الحقوق محفوظة ', {features: ['rtla']}, 20, 710);
+
 
     doc.end();
     return await pdfPromise;
