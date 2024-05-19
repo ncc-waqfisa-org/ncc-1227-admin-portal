@@ -14,6 +14,12 @@ exports.handler = async (event) => {
         };
     }
     // validate body
+    if(!event.body) {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({ message: 'username is required' })
+        };
+    }
     const body = JSON.parse(event.body);
     if (!body.username) {
         return {
@@ -30,7 +36,7 @@ exports.handler = async (event) => {
         };
     }
     // delete admin
-    const result = await deleteAdmin(body.username);
+    const result = await deleteAdminFromDynamoDB(body.username) && await deleteAdminFromCognito(body.username);
     if (result) {
         return {
             statusCode: 200,
@@ -53,6 +59,8 @@ async function checkIsSuperAdmin(token) {
     try {
         const cognitoUser = await cognito.getUser({AccessToken: token}).promise();
         const username = cognitoUser.Username;
+        console.log('Username', username);
+
 
         const params = {
             TableName: 'Admin-cw7beg2perdtnl7onnneec4jfa-staging',
@@ -61,14 +69,14 @@ async function checkIsSuperAdmin(token) {
             }
         };
         const {Item} = await dynamoDB.get(params).promise();
-        return Item && Item.role == "SUPER_ADMIN";
+        return Item && Item.role === "SUPER_ADMIN";
     } catch (error) {
         console.error('Error checking if user is admin', error);
         return false;
     }
 }
 
-async function deleteAdmin(username) {
+async function deleteAdminFromDynamoDB(username) {
     const params = {
         TableName: 'Admin-cw7beg2perdtnl7onnneec4jfa-staging',
         Key: {
@@ -83,6 +91,22 @@ async function deleteAdmin(username) {
         console.error('Error deleting admin', error);
         return false;
     }
+}
+
+async function deleteAdminFromCognito(username) {
+    const params = {
+        UserPoolId: 'us-east-1_ovqLD9Axf',
+        Username: username
+    };
+    try {
+        await cognito.adminDeleteUser(params).promise();
+        return true;
+    }
+    catch (error) {
+        console.error('Error deleting admin from cognito', error);
+        return false;
+    }
+
 }
 
 async function checkToDeleteAdminIsNotSuperAdmin(username) {
