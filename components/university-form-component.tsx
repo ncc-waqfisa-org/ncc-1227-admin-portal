@@ -44,7 +44,7 @@ export default function UniversityFormComponent({ university }: Props) {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const formSchema = z.object({
+  const formSchema = z.object({ 
     universityName: z.string(),
     universityArName: z.string(),
     universityAvailability: z.number().min(0),

@@ -10,7 +10,12 @@
   "email": "البريد الإلكتروني",
   "role": "الدور",
   "ADMIN": "مشرف",
+  "deactivate": "إلغاء تنشيط",
   "SUPER_ADMIN": "مدير",
+  "deleteAdmin": "حذف المسؤول",
+  "deleteAdminD": "هل أنت متأكد أنك تريد حذف هذا المسؤول؟ لا يمكن التراجع عن هذا.",
+  "cancel": "إلغاء",
+  "delete": "حذف",
   "addAdminButton": "إضافة مسؤول",
   "updateAdminButton": "تحديث المسؤول"
 }

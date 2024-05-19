@@ -10,7 +10,14 @@
   "email": "Email",
   "role": "Role",
   "ADMIN": "Admin",
+  "deactivate": "Deactivate",
   "SUPER_ADMIN": "Super Admin",
+  "deleteAdmin": "Delete Admin",
+  "deleteAdminD": "Are you sure you want to delete this admin? this can't be undone.",
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "deletedSuccessfully": "Deleted successfully",
+  "failedToDeleted": "Failed to deleted",
   "addAdminButton": "Add Admin",
   "updateAdminButton": "Update Admin"
 }

@@ -9,11 +9,8 @@ const Dialog = DialogPrimitive.Root;
 
 const DialogTrigger = DialogPrimitive.Trigger;
 
-const DialogPortal = ({
-  className,
-  ...props
-}: DialogPrimitive.DialogPortalProps) => (
-  <DialogPrimitive.Portal className={cn(className)} {...props} />
+const DialogPortal = ({ ...props }: DialogPrimitive.DialogPortalProps) => (
+  <DialogPrimitive.Portal {...props} />
 );
 DialogPortal.displayName = DialogPrimitive.Portal.displayName;
 
@@ -38,7 +35,7 @@ const DialogContent = React.forwardRef<
 >(({ className, children, ...props }, ref) => {
   const { locale } = useRouter();
   return (
-    <DialogPortal dir={locale === "ar" ? "rtl" : "ltr"}>
+    <DialogPortal>
       <DialogOverlay />
       <DialogPrimitive.Content
         dir={locale === "ar" ? "rtl" : "ltr"}

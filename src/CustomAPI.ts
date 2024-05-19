@@ -528,6 +528,7 @@ export async function getAdminByCPR(id: string): Promise<Admin | undefined> {
       email
       role
       fullName
+      isDeactivated
     }
   }
       `;

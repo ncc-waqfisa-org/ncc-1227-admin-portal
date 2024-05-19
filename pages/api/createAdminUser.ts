@@ -56,7 +56,8 @@ async function addAdminToDB(
   cpr: string,
   fullName: string,
   email: string,
-  role: AdminRole | null | undefined
+  role: AdminRole | null | undefined,
+  isDeactivated: boolean
 ): Promise<CreateAdminMutation | undefined> {
   let queryInput: CreateAdminMutationVariables = {
     input: {
@@ -64,6 +65,7 @@ async function addAdminToDB(
       fullName: fullName,
       email: email,
       role: role,
+      isDeactivated: isDeactivated,
       _version: undefined,
     },
   };
@@ -71,6 +73,7 @@ async function addAdminToDB(
     query: createAdmin,
     variables: queryInput,
   })) as GraphQLResult<CreateAdminMutation>;
+  console.log("res From api", res);
   return res.data;
 }
 /**
@@ -141,19 +144,24 @@ export default async function handler(
     };
 
     const signUpCommand = aws_cognito.adminCreateUser(cognitoParams);
+
     try {
       return await addAdminToDB(
         signUpValues.cpr,
         signUpValues.fullName,
         signUpValues.email,
-        signUpValues.role
+        signUpValues.role,
+        signUpValues.isDeactivated ?? false
       )
         .then(async (createdDbAdmin) => {
+          console.log("🚀 ~ .then ~ createdDbAdmin:", createdDbAdmin);
           return await signUpCommand
             .then(async (createdUser) => {
+              console.log("🚀 ~ .then ~ createdUser:", createdUser);
               return res.status(200).json({ createdUser: createdUser.User });
             })
             .catch(async (err) => {
+              console.log("🚀 ~ .then ~ err:", err);
               await deleteAdminFromDB(
                 signUpValues.cpr,
                 createdDbAdmin?.createAdmin?._version ?? 1
