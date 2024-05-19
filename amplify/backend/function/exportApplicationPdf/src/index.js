@@ -330,14 +330,13 @@ async function generateArabicPdf(application, program, university, parent, stude
     doc.lineJoin('round').moveTo(20, 590).rect(20, 590, 580, 115).stroke();
     // vertical line in the middle between the student signature and the parent signature
     doc.moveTo(400, 590).lineTo(400, 705).stroke();
-    doc.text('التعليقات', 130, 600, {features: ['rtla']});
-    doc.text('التواقيع', 530, 600, {features: ['rtla']});
+    doc.text('التعليقات', 330, 600);
+    doc.text('التواقيع', 480, 600);
     doc.moveTo(415, 630).lineTo(585, 630).stroke();
     doc.moveTo(415, 670).lineTo(585, 670).stroke();
 
 
-    doc.font('./fonts/Almarai.ttf').fontSize(8).text('هذا المستند تم إنشاؤه بواسطة نظام وقف عيسى. جميع الحقوق محفوظة ', {features: ['rtla']}, 20, 710);
-
+    doc.font('./fonts/Almarai.ttf').fontSize(8).text('هذا المستند تم إنشاؤه بواسطة نظام وقف عيسى. جميع الحقوق محفوظة ', 20, 710);
 
     doc.end();
     return await pdfPromise;
