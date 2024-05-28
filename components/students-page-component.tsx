@@ -91,96 +91,96 @@ export default function StudentsPageComponent() {
       </Formik>
 
       {/* Show selected student data */}
-      <div className="flex flex-col items-center p-4 mt-6 border border-gray-200 rounded-lg">
-        {!firstSearchDone && <div>{t("searchForStudentUsingCPR")}</div>}
+      {firstSearchDone && (
+        <div className="flex flex-col items-center p-4 mt-6 border border-gray-200 rounded-lg">
+          {loading && <div>{t("loading")}</div>}
 
-        {loading && <div>{t("loading")}</div>}
+          {!student && !loading && firstSearchDone && <div>{t("noData")}</div>}
 
-        {!student && !loading && firstSearchDone && <div>{t("noData")}</div>}
+          {student && !loading && (
+            <Accordion
+              className="w-full"
+              type="single"
+              defaultValue="studentInformation"
+              collapsible
+            >
+              <AccordionItem value="studentInformation">
+                <AccordionTrigger className="text-xl font-medium">
+                  {" "}
+                  {t("studentInformation")}
+                </AccordionTrigger>
+                <AccordionContent>
+                  <StudentUpdate student={student} />
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="parentsInformation">
+                <AccordionTrigger className="text-xl font-medium">
+                  {t("parentsInformation")}
+                </AccordionTrigger>
+                <AccordionContent>
+                  {student.ParentInfo && (
+                    <UpdateParentInfo parentInfo={student.ParentInfo} />
+                  )}
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          )}
 
-        {student && !loading && (
-          <Accordion
-            className="w-full"
-            type="single"
-            defaultValue="studentInformation"
-            collapsible
-          >
-            <AccordionItem value="studentInformation">
-              <AccordionTrigger className="text-xl font-medium">
-                {" "}
-                {t("studentInformation")}
-              </AccordionTrigger>
-              <AccordionContent>
-                <StudentUpdate student={student} />
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="parentsInformation">
-              <AccordionTrigger className="text-xl font-medium">
-                {t("parentsInformation")}
-              </AccordionTrigger>
-              <AccordionContent>
-                {student.ParentInfo && (
-                  <UpdateParentInfo parentInfo={student.ParentInfo} />
-                )}
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        )}
-
-        {student && !loading && (
-          <div className={"flex flex-col w-full gap-10"}>
-            <div>
-              <p className="py-3 text-xl font-medium">{t("applications")}</p>
-              <div className="flex items-center gap-6 py-2 overflow-hidden overflow-x-scroll">
-                {student.applications &&
-                student.applications.items.filter(
-                  (app) => app?._deleted !== true
-                ).length > 0 ? (
-                  student.applications?.items
-                    .filter((app) => app?._deleted !== true)
-                    .sort((a, b) => {
-                      if (!a || !b) {
-                        return -1;
-                      }
-                      // Assuming dateTime is a property on the application objects
-                      const dateA = new Date(a.dateTime).setHours(0, 0, 0, 0);
-                      const dateB = new Date(b.dateTime).setHours(0, 0, 0, 0);
-
-                      // Compare the date values of dateTime in descending order
-                      if (dateA > dateB) {
-                        return -1;
-                      } else if (dateA < dateB) {
-                        return 1;
-                      } else {
-                        // If date values are equal, compare by updatedAt in descending order
-                        const updatedAtA = a.updatedAt;
-                        const updatedAtB = b.updatedAt;
-
-                        if (updatedAtA > updatedAtB) {
+          {student && !loading && (
+            <div className={"flex flex-col w-full gap-10"}>
+              <div>
+                <p className="py-3 text-xl font-medium">{t("applications")}</p>
+                <div className="flex items-center gap-6 py-2 overflow-hidden overflow-x-scroll">
+                  {student.applications &&
+                  student.applications.items.filter(
+                    (app) => app?._deleted !== true
+                  ).length > 0 ? (
+                    student.applications?.items
+                      .filter((app) => app?._deleted !== true)
+                      .sort((a, b) => {
+                        if (!a || !b) {
                           return -1;
-                        } else if (updatedAtA < updatedAtB) {
+                        }
+                        // Assuming dateTime is a property on the application objects
+                        const dateA = new Date(a.dateTime).setHours(0, 0, 0, 0);
+                        const dateB = new Date(b.dateTime).setHours(0, 0, 0, 0);
+
+                        // Compare the date values of dateTime in descending order
+                        if (dateA > dateB) {
+                          return -1;
+                        } else if (dateA < dateB) {
                           return 1;
                         } else {
-                          return 0;
+                          // If date values are equal, compare by updatedAt in descending order
+                          const updatedAtA = a.updatedAt;
+                          const updatedAtB = b.updatedAt;
+
+                          if (updatedAtA > updatedAtB) {
+                            return -1;
+                          } else if (updatedAtA < updatedAtB) {
+                            return 1;
+                          } else {
+                            return 0;
+                          }
                         }
-                      }
-                    })
-                    .map((item, index) => (
-                      <ApplicationCard
-                        key={index}
-                        application={item}
-                      ></ApplicationCard>
-                    ))
-                ) : (
-                  <div className="p-3 border min-w-[18rem] text-center flex flex-col gap-1 border-gray-200 bg-zinc-50 hover:bg-zinc-100 stat card">
-                    {t("noData")}
-                  </div>
-                )}
+                      })
+                      .map((item, index) => (
+                        <ApplicationCard
+                          key={index}
+                          application={item}
+                        ></ApplicationCard>
+                      ))
+                  ) : (
+                    <div className="p-3 border min-w-[18rem] text-center flex flex-col gap-1 border-gray-200 bg-zinc-50 hover:bg-zinc-100 stat card">
+                      {t("noData")}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

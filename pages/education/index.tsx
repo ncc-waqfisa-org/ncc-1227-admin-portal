@@ -167,9 +167,6 @@ const Education = () => {
       <Toaster />
       <div className="mb-8 ">
         <div className="text-2xl font-semibold ">{t("educationTitle")}</div>
-        <div className="text-base font-medium text-gray-500 ">
-          {t("educationSubtitle")}
-        </div>
       </div>
 
       {/* search bar */}

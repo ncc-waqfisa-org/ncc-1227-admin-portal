@@ -31,14 +31,6 @@ export default function NavbarComponent() {
   return (
     <div className="flex flex-col h-[100svh] w-full max-w-64 justify-between  p-4 py-24 bg-nccGray-50">
       <div className="flex flex-col gap-4">
-        {!isHomePage && (
-          <button className="btn btn-ghost" onClick={goBack}>
-            {t("Back")}
-          </button>
-        )}
-        <div className="max-w-[200px] flex justify-center">
-          <LangSwitcher></LangSwitcher>
-        </div>
         <Link href="/" className=" max-w-[200px] ">
           <Image
             className=""
@@ -48,6 +40,15 @@ export default function NavbarComponent() {
             height={100}
           />
         </Link>
+        {!isHomePage && (
+          <button className="btn btn-ghost" onClick={goBack}>
+            {t("Back")}
+          </button>
+        )}
+        <div className="max-w-[200px] flex justify-center">
+          <LangSwitcher></LangSwitcher>
+        </div>
+
         <div
           className={`flex flex-col items-center justify-center p-3 text-center rounded-lg ${
             isSuperAdmin ? "bg-anzac-100" : "bg-blue-100"
@@ -83,7 +84,7 @@ export default function NavbarComponent() {
           linkTo={"/applications"}
         ></NavBarButton>
         <NavBarButton
-          name={t("Education")}
+          name={t("Universities")}
           icon={
             <FiBook className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
           }

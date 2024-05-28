@@ -37,9 +37,6 @@ const Applications = () => {
             <div className="text-2xl font-semibold ">
               {t("applicationTitle")}
             </div>
-            <div className="text-base font-medium text-gray-500">
-              {t("applicationSubtitle")}
-            </div>
           </div>
           <Link
             href="/applications/archive"

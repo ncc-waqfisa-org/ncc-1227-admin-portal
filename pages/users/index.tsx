@@ -64,7 +64,7 @@ const Users = () => {
     <PageComponent title={"Users"}>
       {!isSuperAdmin && (
         <div>
-          <p className="text-error text-xl font-bold text-center p-8">
+          <p className="p-8 text-xl font-bold text-center text-error">
             {tErrors("accessDenied")}
           </p>
         </div>
@@ -74,13 +74,10 @@ const Users = () => {
           <div className="mb-4 ">
             <div className="mb-6 ">
               <div className="text-2xl font-semibold ">{t("adminTitle")}</div>
-              <div className="text-base font-medium text-gray-500 ">
-                {t("adminSubtitle")}
-              </div>
             </div>
 
             {/* administrators search bar */}
-            <div className="flex justify-between gap-4 p-6 border  rounded-xl border-nccGray-50 bg-nccGray-50">
+            <div className="flex justify-between gap-4 p-6 border rounded-xl border-nccGray-50 bg-nccGray-50">
               <div className="w-full ">
                 <SearchBarComponent
                   searchChange={(value) => {
@@ -113,7 +110,7 @@ const Users = () => {
 
           {/* grid table of users*/}
           {resultList?.length > 0 ? (
-            <div className="grid grid-cols-1  md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5 gap-y-4 gap-x-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5 gap-y-4 gap-x-3">
               {resultList?.map((admin) => (
                 <UsersCardInfo
                   key={admin?.cpr}
@@ -124,8 +121,8 @@ const Users = () => {
               ))}
             </div>
           ) : (
-            <div className=" flex justify-center items-center border border-nccGray-100 rounded-xl bg-nccGray-100 p-8">
-              <div className=" text-base font-medium">
+            <div className="flex items-center justify-center p-8 border border-nccGray-100 rounded-xl bg-nccGray-100">
+              <div className="text-base font-medium ">
                 Sorry! There are no admins at the moment.
               </div>
             </div>

@@ -16,7 +16,7 @@ export const LangSwitcher = () => {
       <button
         type="button"
         onClick={handleSwitch}
-        className="btn btn-ghost hover:bg-secondary-content/20"
+        className="btn btn-outline hover:bg-primary/10 hover:text-black"
       >
         {!isEnglish ? "English" : "عربي"}
       </button>

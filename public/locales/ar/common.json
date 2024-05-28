@@ -1,6 +1,6 @@
 {
   "dashboardTitle": "ملخص الطلبات",
-  "dashboardSubtitle": "نظرة عامة على التسجيل للدفعة الحالية.",
+  "dashboardSubtitle": "نظرة عامة على الالتحاق",
   "allApplicationsButton": "جميع الطلبات",
   "exportCSV": "تصدير CSV",
   "totalApplications": "إجمالي الطلبات",
@@ -8,7 +8,7 @@
   "pendingApplications": "الطلبات المعلقة",
   "approvedApplications": "الطلبات المعتمدة",
   "reportsAndGraphsTitle": "التقارير والرسوم البيانية",
-  "reportsAndGraphsSubtitle": "نظرة عامة على جميع البيانات.",
+  "reportsAndGraphsSubtitle": "نظرة عامة على البيانات",
   "scoresSummary": "ملخص الدرجات",
   "gpaHistogram": "GPA",
   "weeklySummary": "ملخص أسبوعي",
