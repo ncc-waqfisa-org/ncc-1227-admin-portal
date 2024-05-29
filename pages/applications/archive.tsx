@@ -169,7 +169,7 @@ const ArchivePage: FC<Props> = ({ applications: initialApplications }) => {
           </div>
           <CSVLink
             className="text-xs hover:!text-white btn btn-primary btn-sm btn-outline"
-            filename={`${batch}-Applications-${new Date().toISOString()}.csv`}
+            filename={`Approved Applications ${batch}.csv`}
             data={[
               ...(applications ?? []).map((app, index) => {
                 let sortedProgramChoices: (ProgramChoice | null)[] | undefined =
@@ -178,16 +178,17 @@ const ArchivePage: FC<Props> = ({ applications: initialApplications }) => {
                   );
 
                 return {
-                  row: index + 1,
-                  applicationId: app.id,
-                  gpa: app.gpa,
-                  status: app.status,
-                  studentCPR: app.studentCPR,
-                  dateTime: app.dateTime,
-                  primaryProgramID: sortedProgramChoices?.[0]?.program?.id,
-                  primaryProgram: `${sortedProgramChoices?.[0]?.program?.name}-${sortedProgramChoices?.[0]?.program?.university?.name}`,
-                  secondaryProgramID: sortedProgramChoices?.[1]?.program?.id,
-                  secondaryProgram: `${sortedProgramChoices?.[1]?.program?.name}-${sortedProgramChoices?.[1]?.program?.university?.name}`,
+                  Row: index + 1,
+                  "Application Id": app.id,
+                  GAP: app.gpa,
+                  Status: app.status,
+                  "Student CPR": app.studentCPR,
+                  Date: app.dateTime,
+                  "Primary Program Id": sortedProgramChoices?.[0]?.program?.id,
+                  "Primary Program": `${sortedProgramChoices?.[0]?.program?.name}-${sortedProgramChoices?.[0]?.program?.university?.name}`,
+                  "Secondary Program Id":
+                    sortedProgramChoices?.[1]?.program?.id,
+                  "Secondary Program": `${sortedProgramChoices?.[1]?.program?.name}-${sortedProgramChoices?.[1]?.program?.university?.name}`,
                 };
               }),
             ]}

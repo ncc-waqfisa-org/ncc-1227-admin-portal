@@ -176,15 +176,15 @@ const Home = () => {
                 }
               >
                 <CSVLink
-                  filename={`ScoreHistogram-${new Date().toISOString()}.csv`}
+                  filename={`Score Histogram ${batch}.csv`}
                   data={
                     statistics?.scoreHistogram
                       ? [
                           ...Object.keys(statistics.scoreHistogram).map(
                             (sh, i) => {
                               return {
-                                score: sh,
-                                applications: Object.values(
+                                Score: sh,
+                                Applications: Object.values(
                                   statistics.scoreHistogram
                                 )[i],
                               };
@@ -213,15 +213,15 @@ const Home = () => {
                 }
               >
                 <CSVLink
-                  filename={`Top-Universities-${new Date().toISOString()}.csv`}
+                  filename={`Top Universities ${batch}.csv`}
                   data={
                     statistics?.topUniversities
                       ? [
                           ...Object.keys(statistics.topUniversities).map(
                             (sh, i) => {
                               return {
-                                university: sh,
-                                applications: Object.values(
+                                University: sh,
+                                Applications: Object.values(
                                   statistics.topUniversities
                                 )[i],
                               };
@@ -253,15 +253,15 @@ const Home = () => {
                 }
               >
                 <CSVLink
-                  filename={`GPA-Histogram-${new Date().toISOString()}.csv`}
+                  filename={`GPA Histogram ${batch}.csv`}
                   data={
                     statistics?.gpaHistogram
                       ? [
                           ...Object.keys(statistics.gpaHistogram).map(
                             (sh, i) => {
                               return {
-                                gpa: sh,
-                                applications: Object.values(
+                                GPA: sh,
+                                Applications: Object.values(
                                   statistics.gpaHistogram
                                 )[i],
                               };
@@ -292,7 +292,7 @@ const Home = () => {
                 }
               >
                 <CSVLink
-                  filename={`Applications-Status-${new Date().toISOString()}.csv`}
+                  filename={`Applications Status ${batch}.csv`}
                   data={
                     statistics?.totalApplicationsPerStatus
                       ? [
@@ -300,8 +300,8 @@ const Home = () => {
                             statistics.totalApplicationsPerStatus
                           ).map((sh, i) => {
                             return {
-                              gpa: sh,
-                              applications:
+                              GPA: sh,
+                              Applications:
                                 Object.values(
                                   statistics.totalApplicationsPerStatus
                                 )[i] ?? 0,

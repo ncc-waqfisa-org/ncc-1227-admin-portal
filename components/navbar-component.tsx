@@ -7,16 +7,13 @@ import { LangSwitcher } from "./langSwitcher";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
+import { FiStar, FiUsers, FiMessageCircle, FiUser } from "react-icons/fi";
 import {
-  FiStar,
-  FiCalendar,
-  FiBriefcase,
-  FiUsers,
-  FiMessageCircle,
-  FiBook,
-  FiGrid,
-  FiUser,
-} from "react-icons/fi";
+  ApplicationsIcon,
+  BatchesIcon,
+  DashboardIcon,
+  UniversitiesIcon,
+} from "./icons";
 
 export default function NavbarComponent() {
   const { signOut, isSignedIn, user, admin, isSuperAdmin } = useAuth();
@@ -72,21 +69,23 @@ export default function NavbarComponent() {
         <NavBarButton
           name={t("Dashboard")}
           icon={
-            <FiGrid className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
+            // <FiGrid className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
+            // <DashboardIcon className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
+            <DashboardIcon className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
           }
           linkTo={"/"}
         ></NavBarButton>
         <NavBarButton
           name={t("Applications")}
           icon={
-            <FiBriefcase className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
+            <ApplicationsIcon className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
           }
           linkTo={"/applications"}
         ></NavBarButton>
         <NavBarButton
           name={t("Universities")}
           icon={
-            <FiBook className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
+            <UniversitiesIcon className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
           }
           linkTo={"/education"}
         ></NavBarButton>
@@ -110,7 +109,7 @@ export default function NavbarComponent() {
           <NavBarButton
             name={t("Batches")}
             icon={
-              <FiCalendar className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
+              <BatchesIcon className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
             }
             linkTo={"/batches"}
           ></NavBarButton>
