@@ -179,14 +179,14 @@ const ArchivePage: FC<Props> = ({ applications: initialApplications }) => {
 
                 return {
                   Row: index + 1,
-                  "Application Id": app.id,
+                  "Application ID": app.id,
                   GAP: app.gpa,
                   Status: app.status,
                   "Student CPR": app.studentCPR,
                   Date: app.dateTime,
-                  "Primary Program Id": sortedProgramChoices?.[0]?.program?.id,
+                  "Primary Program ID": sortedProgramChoices?.[0]?.program?.id,
                   "Primary Program": `${sortedProgramChoices?.[0]?.program?.name}-${sortedProgramChoices?.[0]?.program?.university?.name}`,
-                  "Secondary Program Id":
+                  "Secondary Program ID":
                     sortedProgramChoices?.[1]?.program?.id,
                   "Secondary Program": `${sortedProgramChoices?.[1]?.program?.name}-${sortedProgramChoices?.[1]?.program?.university?.name}`,
                 };
