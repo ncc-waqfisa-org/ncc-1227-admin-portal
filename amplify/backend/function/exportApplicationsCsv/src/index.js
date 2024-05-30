@@ -104,7 +104,7 @@ async function getApplications(tableName, batchValue, status) {
 
 
 async function convertToCsv(applications, students) {
-    let csv = 'id,Student CPR,Name,Gender,Nationality,Field,Phone,email,Graduation Year,Status,GPA,Score,School Name,School Type,Family Income,Chosen University,Chosen Program,Reason,Total Score\n';
+    let csv = 'id,Student CPR,Name,Gender,Nationality,Field,Phone,email,Graduation Year,Status,GPA,Score,School Name,School Type,Family Income,Chosen University,Chosen Program,Reason,Total Score,Number of Family Members\n';
     for (const application of applications) {
         const student = students.find(student => student.cpr === application.studentCPR);
         const university = application.universityID? await getUniversity(application.universityID): {name: "NA"}
