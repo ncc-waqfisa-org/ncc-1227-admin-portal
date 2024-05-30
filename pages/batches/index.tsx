@@ -47,12 +47,9 @@ const BatchesPage = () => {
     <PageComponent title={"Batches"}>
       {/* header */}
       <div className="flex flex-col gap-6">
-        <div className="flex flex-wrap justify-between gap-4 items-end">
-          <div className=" ">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div className="">
             <div className="text-2xl font-semibold ">{t("batches")}</div>
-            <div className="text-base font-medium text-gray-500 ">
-              {t("batchesSubtitle")}
-            </div>
           </div>
           <Link href={"/batches/new"} className="btn btn-sm">
             <p>{t("createNewBatch")}</p>

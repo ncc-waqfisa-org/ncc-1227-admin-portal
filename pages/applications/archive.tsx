@@ -163,9 +163,6 @@ const ArchivePage: FC<Props> = ({ applications: initialApplications }) => {
             <div className="text-2xl font-semibold ">
               {t("applicationArchiveTitle")}
             </div>
-            <div className="text-base font-medium text-gray-500 ">
-              {t("applicationArchiveSubtitle")}
-            </div>
           </div>
           <CSVLink
             className="text-xs hover:!text-white btn btn-primary btn-sm btn-outline"
