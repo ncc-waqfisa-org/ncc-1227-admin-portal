@@ -13,7 +13,6 @@ exports.handler = async (event) => {
     console.log(`EVENT: ${JSON.stringify(event)}`);
     try {
         const token = event.headers?.authorization?.slice(7);
-
         const isAdmin = await checkIsAdmin(token);
         if (!isAdmin) {
             return {
