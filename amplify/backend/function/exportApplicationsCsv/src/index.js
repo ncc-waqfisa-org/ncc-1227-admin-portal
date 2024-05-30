@@ -111,7 +111,7 @@ async function convertToCsv(applications, students) {
         const program = application.universityID? await getProgram(application.programID): {name: "NA"}
         const reason = processReason(application.reason);
         if (student) {
-            csv += `${application.id},=""${application.studentCPR}"","${student?.fullName}",${student?.gender},${student?.nationalityCategory},"${student?.specialization}",${student?.phone},${student?.email},${application.batch},${application.status},${application.gpa},${application.score},"${application.schoolName}",${application.schoolType},${application.familyIncome},"${university?.name}","${program?.name}","${reason}",${application.score}\n`;
+            csv += `${application.id},=""${application.studentCPR}"","${student?.fullName}",${student?.gender},${student?.nationalityCategory},"${student?.specialization}",${student?.phone},${student?.email},${application.batch},${application.status},${application.gpa},${application.score},"${application.schoolName}",${application.schoolType},${application.familyIncome},"${university?.name}","${program?.name}","${reason}",${application.score},${student.numberOfFamilyMembers}\n`;
         }
     }
     console.log(csv);

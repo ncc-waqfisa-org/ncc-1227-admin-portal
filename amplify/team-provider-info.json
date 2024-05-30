@@ -24,7 +24,7 @@
       "function": {
         "signUp": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
-          "s3Key": "amplify-builds/signUp-357471444741772f6d35-build.zip"
+          "s3Key": "amplify-builds/signUp-7a39476369482b6f4a45-build.zip"
         },
         "updateStudentEmail": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
@@ -44,7 +44,7 @@
         },
         "exportApplicationsCsv": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
-          "s3Key": "amplify-builds/exportApplicationsCsv-62545349474265386872-build.zip"
+          "s3Key": "amplify-builds/exportApplicationsCsv-7675547a43677868752b-build.zip"
         },
         "updateStatistics": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
