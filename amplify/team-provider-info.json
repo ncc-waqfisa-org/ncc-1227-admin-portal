@@ -80,7 +80,7 @@
         },
         "sendSubmissionEmail": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
-          "s3Key": "amplify-builds/sendSubmissionEmail-347a67506a4f6a462f33-build.zip"
+          "s3Key": "amplify-builds/sendSubmissionEmail-36616a61567947344e30-build.zip"
         },
         "deleteAdmin": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
