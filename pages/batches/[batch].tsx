@@ -112,7 +112,7 @@ const SingleBatchPage: FC<PageType> = ({ batchYear }) => {
           <p className="font-medium">{t("toolbar")}</p>
           <div className="flex flex-wrap gap-3 p-3 border rounded-lg">
             <DownloadFileFromUrl
-              fileName={"unverified-CPR's"}
+              fileName={"Unverified-CPR's"}
               url={`https://zcpmds4jptbtkcc6ynxxxsmcee0kjlud.lambda-url.us-east-1.on.aws?batch=${batchYear}`}
             >
               {t("downloadCPRsList")}

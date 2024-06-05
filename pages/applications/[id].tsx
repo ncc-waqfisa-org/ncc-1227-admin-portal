@@ -87,7 +87,7 @@ const ApplicationInfo: FC<Props> = (props) => {
             url={`https://a69a50c47l.execute-api.us-east-1.amazonaws.com/default/applications/pdf?applicationId=${
               props.application.id
             }&lang=${locale ?? "en"}`}
-            fileName={`${props.application.student?.cpr}-application`}
+            fileName={`${props.application.student?.cpr} Application`}
           >
             <div className="flex items-center gap-2">
               <FiPrinter />

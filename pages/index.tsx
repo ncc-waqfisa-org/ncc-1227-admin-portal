@@ -77,7 +77,7 @@ const Home = () => {
               ></PrimaryButton>
 
               <DownloadFileFromUrl
-                fileName={`${batch}-Applications`}
+                fileName={`${batch} Applications`}
                 url={`https://a69a50c47l.execute-api.us-east-1.amazonaws.com/default/applications/export?batch=${batch}}`}
               >
                 {t("exportCSV")}

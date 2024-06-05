@@ -104,7 +104,7 @@ export default function ViewAccount({ student }: Props) {
         address: yup.string().required(`${tErrors("requiredField")}`),
         placeOfBirth: yup.string().required(`${tErrors("requiredField")}`),
         familyIncome: yup.string().required(`${tErrors("requiredField")}`),
-        familyIncomeProofDocs: yup.array(yup.string()),
+        familyIncomeProofDocs: yup.array(yup.string().nullable()),
         familyIncomeProofDocsFile: yup.array(yup.string()),
         nationalityCategory: yup
           .string()

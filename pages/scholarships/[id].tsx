@@ -5,18 +5,15 @@ import { GetServerSideProps } from "next";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   getScholarshipsWithId,
-  getSingleScholarship,
   updateSingleScholarship,
 } from "../../src/CustomAPI";
 
-import { Scholarship } from "../../src/models";
 import { UpdateScholarshipMutationVariables } from "../../src/API";
 import toast from "react-hot-toast";
 
 import { useTranslation } from "react-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { cn } from "../../src/utils";
-import { DownloadFileFromUrl } from "../../components/download-file-from-url";
 import { ScholarshipForm } from "../../components/scholarships/ScholarshipForm";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
