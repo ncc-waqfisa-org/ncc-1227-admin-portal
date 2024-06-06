@@ -18,6 +18,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useBatchContext } from "../context/BatchContext";
 import { getStatistics } from "../src/CustomAPI";
 import { DownloadFileFromUrl } from "../components/download-file-from-url";
+import { MoreStatistics } from "../components/MoreStatistics";
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const { locale } = ctx;
@@ -316,6 +317,11 @@ const Home = () => {
                 </CSVLink>
               </LargeDonutGraphInfo>
             </div>
+          </div>
+
+          {/* more statistics */}
+          <div className="pt-6">
+            {statistics && <MoreStatistics statistics={statistics} />}
           </div>
         </div>
       }
