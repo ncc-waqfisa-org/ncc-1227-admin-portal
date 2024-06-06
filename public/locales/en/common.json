@@ -28,5 +28,17 @@
   "SUPER_ADMIN": "Super Admin",
   "loading": "Loading...",
   "moreStatistics": "General Statistics",
+  "males": "Males",
+  "females": "Females",
+  "schoolType": "School Type",
+  "public": "Public",
+  "private": "Private",
+  "today": "Today",
+  "familyIncome": "Family Income",
+  "above1500": "Above 1500",
+  "bellow1500": "Bellow 1500",
+  "totalRegisteredAccounts": "Total Registered Accounts",
+  "totalApplicationsPerStatus": "Total Applications Per Status",
+  "totalApplicationsPerUniversity": "Total Applications Per University",
   "apply": "Apply"
 }

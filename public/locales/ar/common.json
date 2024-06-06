@@ -27,5 +27,17 @@
   "SUPER_ADMIN": "مدير",
   "loading": "الرجاء الانتظار...",
   "moreStatistics": "إحصاءات عامة",
+  "males": "الذكور",
+  "females": "الإناث",
+  "schoolType": "نوع المدرسة",
+  "public": "حكومية",
+  "private": "خاصة",
+  "today": "اليوم",
+  "familyIncome": "دخل العائلة",
+  "above1500": "اكثر من 1500",
+  "bellow1500": "اقل من 1500",
+  "totalRegisteredAccounts": "إجمالي الحسابات المسجلة",
+  "totalApplicationsPerStatus": "إجمالي الطلبات لكل حالة",
+  "totalApplicationsPerUniversity": "إجمالي الطلبات لكل جامعة",
   "apply": "تطبيق"
 }

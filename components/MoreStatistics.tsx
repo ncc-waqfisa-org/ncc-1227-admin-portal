@@ -38,11 +38,11 @@ export const MoreStatistics: FC<TMoreStatistics> = ({ statistics }) => {
         <div className="flex flex-wrap gap-10 w-fit">
           <div className="flex items-center gap-2">
             <div className="bg-[#D8D4BA] w-5 aspect-square rounded-sm"></div>
-            <p>Males</p>
+            <p>{t("males")}</p>
           </div>
           <div className="flex items-center gap-2">
             <div className="bg-[#D9D9D9] w-5 aspect-square rounded-sm"></div>
-            <p>Females</p>
+            <p>{t("females")}</p>
           </div>
         </div>
       </div>
@@ -51,12 +51,12 @@ export const MoreStatistics: FC<TMoreStatistics> = ({ statistics }) => {
         {/* School type */}
         <Card className="break-inside-avoid-column">
           <CardHeader>
-            <CardTitle>School Type</CardTitle>
+            <CardTitle>{t("schoolType")}</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col items-end gap-4">
             <div className="flex flex-col flex-1 w-full gap-2 p-2 text-center border rounded-xl">
               <div className="grid grid-cols-5 gap-2 ">
-                <p className="text-start">Public</p>
+                <p className="text-start">{t("public")}</p>
                 <div className="flex items-end w-full col-span-4 gap-4">
                   <p className="flex-1 px-2 py-1 bg-[#D8D4BA] rounded-lg">
                     {statistics.schoolType.public.male}
@@ -67,7 +67,7 @@ export const MoreStatistics: FC<TMoreStatistics> = ({ statistics }) => {
                 </div>
               </div>
               <div className="grid grid-cols-5 gap-2 ">
-                <p className="text-destructive text-start">Today</p>
+                <p className="text-destructive text-start">{t("today")}</p>
                 <div className="flex items-end w-full col-span-4 gap-4">
                   <p className="flex-1 px-2 py-1 bg-[#D8D4BA]/50 rounded-lg">
                     {statistics.schoolType.publicToday.male}
@@ -80,7 +80,7 @@ export const MoreStatistics: FC<TMoreStatistics> = ({ statistics }) => {
             </div>
             <div className="flex flex-col flex-1 w-full gap-2 p-2 text-center border rounded-xl">
               <div className="grid grid-cols-5 gap-2 ">
-                <p className="text-start">Private</p>
+                <p className="text-start">{t("private")}</p>
                 <div className="flex items-end w-full col-span-4 gap-4">
                   <p className="flex-1 px-2 py-1 bg-[#D8D4BA] rounded-lg">
                     {statistics.schoolType.private.male}
@@ -91,7 +91,7 @@ export const MoreStatistics: FC<TMoreStatistics> = ({ statistics }) => {
                 </div>
               </div>
               <div className="grid grid-cols-5 gap-2 ">
-                <p className="text-destructive text-start">Today</p>
+                <p className="text-destructive text-start">{t("today")}</p>
                 <div className="flex items-end w-full col-span-4 gap-4">
                   <p className="flex-1 px-2 py-1 bg-[#D8D4BA]/50 rounded-lg">
                     {statistics.schoolType.privateToday.male}
@@ -108,12 +108,12 @@ export const MoreStatistics: FC<TMoreStatistics> = ({ statistics }) => {
         {/* Family Income  */}
         <Card className="break-inside-avoid-column">
           <CardHeader>
-            <CardTitle>Family Income</CardTitle>
+            <CardTitle>{t("familyIncome")}</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col items-end gap-4">
             <div className="flex flex-col flex-1 w-full gap-2 p-2 text-center border rounded-xl">
               <div className="grid grid-cols-5 gap-2 ">
-                <p className="text-start">Above 1500</p>
+                <p className="text-start">{t("above1500")}</p>
                 <div className="flex items-end w-full col-span-4 gap-4">
                   <p className="flex-1 px-2 py-1 bg-[#D8D4BA] rounded-lg">
                     {statistics.familyIncome.above1500.male}
@@ -124,7 +124,7 @@ export const MoreStatistics: FC<TMoreStatistics> = ({ statistics }) => {
                 </div>
               </div>
               <div className="grid grid-cols-5 gap-2 ">
-                <p className="text-destructive text-start">Today</p>
+                <p className="text-destructive text-start">{t("today")}</p>
                 <div className="flex items-end w-full col-span-4 gap-4">
                   <p className="flex-1 px-2 py-1 bg-[#D8D4BA]/50 rounded-lg">
                     {statistics.familyIncome.above1500Today.male}
@@ -137,7 +137,7 @@ export const MoreStatistics: FC<TMoreStatistics> = ({ statistics }) => {
             </div>
             <div className="flex flex-col flex-1 w-full gap-2 p-2 text-center border rounded-xl">
               <div className="grid grid-cols-5 gap-2 ">
-                <p className="text-start">Bellow 1500</p>
+                <p className="text-start">{t("bellow1500")}</p>
                 <div className="flex items-end w-full col-span-4 gap-4">
                   <p className="flex-1 px-2 py-1 bg-[#D8D4BA] rounded-lg">
                     {statistics.familyIncome.below1500.male}
@@ -148,7 +148,7 @@ export const MoreStatistics: FC<TMoreStatistics> = ({ statistics }) => {
                 </div>
               </div>
               <div className="grid grid-cols-5 gap-2 ">
-                <p className="text-destructive text-start">Today</p>
+                <p className="text-destructive text-start">{t("today")}</p>
                 <div className="flex items-end w-full col-span-4 gap-4">
                   <p className="flex-1 px-2 py-1 bg-[#D8D4BA]/50 rounded-lg">
                     {statistics.familyIncome.below1500Today.male}
@@ -165,7 +165,7 @@ export const MoreStatistics: FC<TMoreStatistics> = ({ statistics }) => {
         {/* Total Students */}
         <Card className="break-inside-avoid-column">
           <CardHeader>
-            <CardTitle>Total Registered Accounts</CardTitle>
+            <CardTitle>{t("totalRegisteredAccounts")}</CardTitle>
           </CardHeader>
           <CardContent className="flex items-center justify-between gap-2">
             <div>
@@ -173,7 +173,7 @@ export const MoreStatistics: FC<TMoreStatistics> = ({ statistics }) => {
                 {statistics.students.total}
               </div>
               <p className="text-sm text-gray-500 dark:text-gray-400">
-                +{statistics.today.students.total} today
+                +{statistics.today.students.total} {t("today")}
               </p>
             </div>
             <div className="flex gap-2">
@@ -182,7 +182,7 @@ export const MoreStatistics: FC<TMoreStatistics> = ({ statistics }) => {
                   {statistics.students.male}
                 </div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  +{statistics.today.students.male} today
+                  +{statistics.today.students.male} {t("today")}
                 </p>
               </div>
               <div className="bg-[#D9D9D9] p-2 rounded-lg">
@@ -190,7 +190,7 @@ export const MoreStatistics: FC<TMoreStatistics> = ({ statistics }) => {
                   {statistics.students.female}
                 </div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  +{statistics.today.students.female} today
+                  +{statistics.today.students.female} {t("today")}
                 </p>
               </div>
             </div>
@@ -200,7 +200,7 @@ export const MoreStatistics: FC<TMoreStatistics> = ({ statistics }) => {
         {statistics.today.applications && (
           <Card className="break-inside-avoid-column">
             <CardHeader>
-              <CardTitle>Total Applications</CardTitle>
+              <CardTitle>{t("totalApplications")}</CardTitle>
             </CardHeader>
             <CardContent className="flex items-center justify-between gap-2">
               <div>
@@ -208,7 +208,7 @@ export const MoreStatistics: FC<TMoreStatistics> = ({ statistics }) => {
                   {statistics.applications?.total}
                 </div>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  +{statistics.today.applications?.total} today
+                  +{statistics.today.applications?.total} {t("today")}
                 </p>
               </div>
               <div className="flex gap-2">
@@ -217,7 +217,7 @@ export const MoreStatistics: FC<TMoreStatistics> = ({ statistics }) => {
                     {statistics.applications?.male}
                   </div>
                   <p className="text-sm text-gray-500 dark:text-gray-400">
-                    +{statistics.today.applications?.male} today
+                    +{statistics.today.applications?.male} {t("today")}
                   </p>
                 </div>
                 <div className="bg-[#D9D9D9] p-2 rounded-lg">
@@ -225,7 +225,7 @@ export const MoreStatistics: FC<TMoreStatistics> = ({ statistics }) => {
                     {statistics.applications?.female}
                   </div>
                   <p className="text-sm text-gray-500 dark:text-gray-400">
-                    +{statistics.today.applications?.female} today
+                    +{statistics.today.applications?.female} {t("today")}
                   </p>
                 </div>
               </div>
@@ -236,7 +236,7 @@ export const MoreStatistics: FC<TMoreStatistics> = ({ statistics }) => {
         {/* Total applications per status */}
         <Card className="break-inside-avoid-column">
           <CardHeader>
-            <CardTitle>Total Applications Per Status</CardTitle>
+            <CardTitle>{t("totalApplicationsPerStatus")}</CardTitle>
           </CardHeader>
           {/* totalApplicationsPerStatus */}
           <CardContent className="flex flex-col gap-2">
@@ -252,7 +252,7 @@ export const MoreStatistics: FC<TMoreStatistics> = ({ statistics }) => {
         {/* Total applications per university */}
         <Card className="break-inside-avoid-column">
           <CardHeader>
-            <CardTitle>Total Applications Per University</CardTitle>
+            <CardTitle>{t("totalApplicationsPerUniversity")}</CardTitle>
           </CardHeader>
           {/* totalApplicationsPerStatus */}
           <CardContent className="flex flex-col gap-2">
