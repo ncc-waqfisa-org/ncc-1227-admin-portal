@@ -2,7 +2,7 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-import * as APITypes from "../API";
+import * as APITypes from "../../amplify/backend/function/exportApplicationsCsv/src/src/API";
 type GeneratedSubscription<InputType, OutputType> = string & {
   __generatedSubscriptionInput: InputType;
   __generatedSubscriptionOutput: OutputType;
@@ -1823,6 +1823,10 @@ export const onCreateStatistics = /* GraphQL */ `subscription OnCreateStatistics
     gpaHistogram
     totalApplicationsPerUniversity
     topUniversities
+    topPrograms
+    familyIncome
+    schoolType
+    students
     createdAt
     updatedAt
     _version
@@ -1847,6 +1851,10 @@ export const onUpdateStatistics = /* GraphQL */ `subscription OnUpdateStatistics
     gpaHistogram
     totalApplicationsPerUniversity
     topUniversities
+    topPrograms
+    familyIncome
+    schoolType
+    students
     createdAt
     updatedAt
     _version
@@ -1871,6 +1879,10 @@ export const onDeleteStatistics = /* GraphQL */ `subscription OnDeleteStatistics
     gpaHistogram
     totalApplicationsPerUniversity
     topUniversities
+    topPrograms
+    familyIncome
+    schoolType
+    students
     createdAt
     updatedAt
     _version
