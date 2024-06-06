@@ -230,6 +230,7 @@ type Statistics @model @auth(rules: [{ allow: public }]) {
   familyIncome: AWSJSON
   schoolType: AWSJSON
   students: AWSJSON
+  today: AWSJSON
 }
 
 #type CurrentApplication @model @auth(rules: [{ allow: public }]) {

@@ -2,7 +2,7 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-import * as APITypes from "../../amplify/backend/function/exportApplicationsCsv/src/src/API";
+import * as APITypes from "../API";
 type GeneratedMutation<InputType, OutputType> = string & {
   __generatedMutationInput: InputType;
   __generatedMutationOutput: OutputType;
@@ -1894,6 +1894,7 @@ export const createStatistics = /* GraphQL */ `mutation CreateStatistics(
     familyIncome
     schoolType
     students
+    today
     createdAt
     updatedAt
     _version
@@ -1923,6 +1924,7 @@ export const updateStatistics = /* GraphQL */ `mutation UpdateStatistics(
     familyIncome
     schoolType
     students
+    today
     createdAt
     updatedAt
     _version
@@ -1952,6 +1954,7 @@ export const deleteStatistics = /* GraphQL */ `mutation DeleteStatistics(
     familyIncome
     schoolType
     students
+    today
     createdAt
     updatedAt
     _version

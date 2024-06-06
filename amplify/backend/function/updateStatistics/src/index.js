@@ -199,6 +199,58 @@ async function getTopUniversities(tableName, batchValue) {
 
 }
 
+async function getAllUniversities(tableName, batchValue) {
+    let universityIDsCount = {};
+    let lastEvaluatedKey = null;
+
+    // Get the count of each universityID in the Applications table, filtered by batch
+    do {
+        const params = {
+            TableName: tableName,
+            ProjectionExpression: 'universityID',
+            FilterExpression: '#batch = :batchValue',
+            ExpressionAttributeNames: {
+                '#batch': 'batch'
+            },
+            ExpressionAttributeValues: {
+                ':batchValue': batchValue
+            },
+            ExclusiveStartKey: lastEvaluatedKey
+        };
+
+        const result = await dynamoDB.scan(params).promise();
+
+        result.Items.forEach(item => {
+            const universityID = item.universityID;
+            universityIDsCount[universityID] = (universityIDsCount[universityID] || 0) + 1;
+        });
+
+        lastEvaluatedKey = result.LastEvaluatedKey;
+    } while (lastEvaluatedKey);
+
+    // Get the names of the universities from the University table
+    const universityNames = {};
+    for (const universityID of Object.keys(universityIDsCount)) {
+        const universityParams = {
+            TableName: 'University-cw7beg2perdtnl7onnneec4jfa-staging',
+            Key: {
+                id: universityID
+            }
+        };
+        const universityResult = await dynamoDB.get(universityParams).promise();
+        universityNames[universityID] = universityResult.Item?.name;
+    }
+
+    // Prepare the final JSON object
+    const allUniversitiesJson = {};
+    for (const [universityID, count] of Object.entries(universityIDsCount)) {
+        allUniversitiesJson[universityNames[universityID]] = count;
+    }
+
+    return allUniversitiesJson;
+}
+
+
 async function getAllApplications(tableName, batchValue) {
     const params = {
         TableName: tableName,
@@ -233,17 +285,29 @@ async function getPrivatePublicRatio(applications, students) {
     let publicCountFemale = 0;
     let publicCountMale = 0;
 
-    applications.forEach(application => {
-        const student = students.find(student => student.cpr === application.studentCPR);
+    let privateCountFemaleToday = 0;
+    let privateCountMaleToday = 0;
+    let publicCountFemaleToday = 0;
+    let publicCountMaleToday = 0;
+
+    for (const application of applications) {
+        let student = students.find(student => student.cpr === application.studentCPR);
+            if(!student) {
+                student = await getStudent('Student-cw7beg2perdtnl7onnneec4jfa-staging', application.studentCPR);
+            }
         if (student) {
             if (application.schoolType === 'PRIVATE') {
                 student.gender === "FEMALE" ? privateCountFemale++ : privateCountMale++;
+
+                student.gender === "FEMALE" && new Date(student.createdAt).toDateString() === new Date().toDateString() ? privateCountFemaleToday++ : null;
+                student.gender === "MALE" && new Date(student.createdAt).toDateString() === new Date().toDateString() ? privateCountMaleToday++ : null;
             } else {
                 student.gender === "FEMALE" ? publicCountFemale++ : publicCountMale++;
+                student.gender === "FEMALE" && new Date(student.createdAt).toDateString() === new Date().toDateString() ? publicCountFemaleToday++ : null;
+                student.gender === "MALE" && new Date(student.createdAt).toDateString() === new Date().toDateString() ? publicCountMaleToday++ : null;
             }
         }
     }
-    );
     return {
         private: {
             "male": privateCountMale,
@@ -252,9 +316,50 @@ async function getPrivatePublicRatio(applications, students) {
         public: {
             "male": publicCountMale,
             "female": publicCountFemale
+        },
+        // privateToday: {
+        //     "male": students.filter(student =>
+        //         new Date(student.createdAt).toDateString() === new Date().toDateString() && student.schoolType === 'PRIVATE' &&
+        //         student.gender === "MALE").length,
+        //     "female": students.filter(student =>
+        //         new Date(student.createdAt).toDateString() === new Date().toDateString() && student.schoolType === 'PRIVATE' &&
+        //         student.gender === "FEMALE").length,
+        //
+        // },
+        // publicToday: {
+        //     "male": students.filter(student =>
+        //         new Date(student.createdAt).toDateString() === new Date().toDateString() && student.schoolType === 'PUBLIC' &&
+        //         student.gender === "MALE").length,
+        //     "female": students.filter(student =>
+        //         new Date(student.createdAt).toDateString() === new Date().toDateString() && student.schoolType === 'PUBLIC' &&
+        //         student.gender === "FEMALE").length,
+        //
+        // }
+
+        privateToday: {
+            "male": privateCountMaleToday,
+            "female": privateCountFemaleToday
+        },
+
+        publicToday: {
+            "male": publicCountMaleToday,
+            "female": publicCountFemaleToday
         }
     }
 
+}
+
+
+async function getStudent(tableName, cpr) {
+    const params = {
+        TableName: tableName,
+        Key: {
+            cpr: cpr
+        }
+    };
+    const { Item } = await dynamoDB.get(params).promise();
+    console.log('Student:', Item);
+    return Item;
 }
 
 async function getFamilyIncomeRatio(applications,students) {
@@ -263,18 +368,31 @@ async function getFamilyIncomeRatio(applications,students) {
     let below1500Female = 0;
     let below1500Male = 0;
 
+    let above1500FemaleToday = 0;
+    let above1500MaleToday = 0;
+    let below1500FemaleToday = 0;
+    let below1500MaleToday = 0;
 
-    applications.forEach(application => {
-            const student = students.find(student => student.cpr === application.studentCPR);
+
+    for (const application of applications) {
+            let student = students.find(student => student.cpr === application.studentCPR);
+            if(!student) {
+                student = await getStudent('Student-cw7beg2perdtnl7onnneec4jfa-staging', application.studentCPR);
+            }
+
             if (student) {
                 if (student.familyIncome === "MORE_THAN_1500") {
                     student.gender === "FEMALE" ? above1500Female++ : above1500Male++;
+                    student.gender === "FEMALE" && new Date(student.createdAt).toDateString() === new Date().toDateString() ? above1500FemaleToday++ : null;
+                    student.gender === "MALE" && new Date(student.createdAt).toDateString() === new Date().toDateString() ? above1500MaleToday++ : null;
+
                 } else {
                     student.gender === "FEMALE" ? below1500Female++ : below1500Male++;
+                    student.gender === "FEMALE" && new Date(student.createdAt).toDateString() === new Date().toDateString() ? below1500FemaleToday++ : null;
+                    student.gender === "MALE" && new Date(student.createdAt).toDateString() === new Date().toDateString() ? below1500MaleToday++ : null;
                 }
             }
         }
-    );
     return {
         above1500: {
             "male": above1500Male,
@@ -283,6 +401,31 @@ async function getFamilyIncomeRatio(applications,students) {
         below1500: {
             "male": below1500Male,
             "female": below1500Female
+        },
+        // above1500Today: {
+        //     "male": students.filter(student =>
+        //         new Date(student.createdAt).toDateString() === new Date().toDateString() && student.familyIncome === 'MORE_THAN_1500' &&
+        //         student.gender === "MALE").length,
+        //     "female": students.filter(student =>
+        //         new Date(student.createdAt).toDateString() === new Date().toDateString() && student.familyIncome === 'MORE_THAN_1500' &&
+        //         student.gender === "FEMALE").length,
+        // },
+        // below1500Today: {
+        //     "male": students.filter(student =>
+        //         new Date(student.createdAt).toDateString() === new Date().toDateString() && student.familyIncome === 'LESS_THAN_1500' &&
+        //         student.gender === "MALE").length,
+        //     "female": students.filter(student =>
+        //         new Date(student.createdAt).toDateString() === new Date().toDateString() && student.familyIncome === 'LESS_THAN_1500' &&
+        //         student.gender === "FEMALE").length,
+        // }
+
+        above1500Today: {
+            "male": above1500MaleToday,
+            "female": above1500FemaleToday
+        },
+        below1500Today: {
+            "male": below1500MaleToday,
+            "female": below1500FemaleToday
         }
     }
 }
@@ -470,6 +613,7 @@ async function getStatusPieChart(applications, /* tableName, batchValue */) {
 
 async function updateStatistics(tableName, batchValue) {
     const applications = await getAllApplications(tableName, batchValue);
+    const allUniversities = await getAllUniversities(tableName, batchValue);
     const scoreHistogram = await getScoreHistograms(applications);
     // const applicationsPerYearChart = await getApplicationsPerYearChart(tableName, batchValue);
     const statusPieChart = await getStatusPieChart(applications);
@@ -482,6 +626,17 @@ async function updateStatistics(tableName, batchValue) {
     const totalStudents = students.length;
     const totalMaleStudents = students.filter(student => student.gender === "MALE").length;
     const totalFemaleStudents = students.filter(student => student.gender === "FEMALE").length;
+    const studentsToday = students.filter(student =>
+        new Date(student.createdAt).toDateString() === new Date().toDateString());
+    const totalStudentsToday = studentsToday.length;
+
+    const totalFemaleStudentsToday = studentsToday.filter(student => student.gender === "FEMALE").length;
+    const totalMaleStudentsToday = studentsToday.filter(student => student.gender === "MALE").length;
+    const totalApplicationsToday = applications.filter(application =>
+        new Date(application.createdAt).toDateString() === new Date().toDateString()).length;
+
+
+
 
     // const topPrograms = await getTopPrograms(tableName, batchValue);
 
@@ -498,17 +653,23 @@ async function updateStatistics(tableName, batchValue) {
             totalApplicationsPerStatus: statusPieChart,
             scoreHistogram: scoreHistogram,
             gpaHistogram:  gpaHistogramChart,
-            totalApplicationsPerUniversity: {},
+            totalApplicationsPerUniversity: allUniversities,
             topUniversities: topUniversities,
             schoolType: privatePublicRatio,
             familyIncome: familyIncomeRatio,
-            totalStudents: totalStudents,
             students: {
                 total: totalStudents,
                 male: totalMaleStudents,
                 female: totalFemaleStudents
-
-            }
+            },
+            today: {
+                students: {
+                    total: totalStudentsToday,
+                    male: totalMaleStudentsToday,
+                    female: totalFemaleStudentsToday
+                },
+                totalApplications: totalApplicationsToday
+}
         },
     };
 
