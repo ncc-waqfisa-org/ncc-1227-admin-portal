@@ -40,83 +40,105 @@ exports.handler = async (event) => {
 };
 
 
-async function getScoreHistograms(tableName, batchValue) {
+async function getScoreHistograms(applications/*tableName, batchValue */) {
+
+    // let histogramJson = {};
+    // let lastEvaluatedKey = null;
+    // const scoreParams = {
+    //     TableName: tableName,
+    //     ProjectionExpression: 'score',
+    //     FilterExpression: '#batch = :batchValue AND score BETWEEN :minScore AND :maxScore',
+    //     ExpressionAttributeNames: {
+    //         '#batch': 'batch'
+    //     },
+    //     ExpressionAttributeValues: {
+    //         ':batchValue': batchValue,
+    //         ':minScore': 70,
+    //         ':maxScore': 100,
+    //     }
+    // };
+    // do {
+    //     if (lastEvaluatedKey) {
+    //         scoreParams.ExclusiveStartKey = lastEvaluatedKey;
+    //     }
+    //
+    //     const scoreResult = await dynamoDB.scan(scoreParams).promise();
+    //
+    //     scoreResult.Items.forEach(item => {
+    //         const score = item.score;
+    //         let bucket = Math.floor(score / 5) * 5;
+    //         const key = `${bucket}-${bucket + 5}`;
+    //         histogramJson[key] = (histogramJson[key] || 0) + 1;
+    //     });
+    //
+    //     lastEvaluatedKey = scoreResult.LastEvaluatedKey;
+    // } while (lastEvaluatedKey);
+    //
+    // // // sort the histogram by key
+    // // const sortedHistogram = Object.entries(histogramJson).sort((a, b) => a[0] - b[0]);
+    // // histogramJson = Object.fromEntries(sortedHistogram);
+    //
+    // return histogramJson;
 
     let histogramJson = {};
-    let lastEvaluatedKey = null;
-    const scoreParams = {
-        TableName: tableName,
-        ProjectionExpression: 'score',
-        FilterExpression: '#batch = :batchValue AND score BETWEEN :minScore AND :maxScore',
-        ExpressionAttributeNames: {
-            '#batch': 'batch'
-        },
-        ExpressionAttributeValues: {
-            ':batchValue': batchValue,
-            ':minScore': 70,
-            ':maxScore': 100,
-        }
-    };
-    do {
-        if (lastEvaluatedKey) {
-            scoreParams.ExclusiveStartKey = lastEvaluatedKey;
-        }
-
-        const scoreResult = await dynamoDB.scan(scoreParams).promise();
-
-        scoreResult.Items.forEach(item => {
-            const score = item.score;
-            let bucket = Math.floor(score / 5) * 5;
-            const key = `${bucket}-${bucket + 5}`;
-            histogramJson[key] = (histogramJson[key] || 0) + 1;
-        });
-
-        lastEvaluatedKey = scoreResult.LastEvaluatedKey;
-    } while (lastEvaluatedKey);
-
-    // // sort the histogram by key
-    // const sortedHistogram = Object.entries(histogramJson).sort((a, b) => a[0] - b[0]);
-    // histogramJson = Object.fromEntries(sortedHistogram);
-
+    applications.forEach(item => {
+        const score = item.score;
+        let bucket = Math.floor(score / 5) * 5;
+        const key = `${bucket}-${bucket + 5}`;
+        histogramJson[key] = (histogramJson[key] || 0) + 1;
+    });
     return histogramJson;
 }
 
-async function getGpaHistogram(tableName, batchValue) {
+async function getGpaHistogram(applications, /*tableName, batchValue */) {
+    // let histogramJson = {};
+    // let lastEvaluatedKey = null;
+    //
+    // do {
+    //     const params = {
+    //         TableName: tableName,
+    //         ProjectionExpression: 'gpa',
+    //         FilterExpression: '#batch = :batchValue AND gpa BETWEEN :minGpa AND :maxGpa',
+    //         ExpressionAttributeNames: {
+    //             '#batch': 'batch'
+    //         },
+    //         ExpressionAttributeValues: {
+    //             ':batchValue': batchValue,
+    //             ':minGpa': 80,
+    //             ':maxGpa': 100
+    //         },
+    //         ExclusiveStartKey: lastEvaluatedKey
+    //     };
+    //
+    //     const result = await dynamoDB.scan(params).promise();
+    //
+    //     result.Items.forEach(item => {
+    //         const gpa = item.gpa;
+    //         let bucket = Math.floor(gpa / 5) * 5;
+    //
+    //         if (bucket === 100) {
+    //             bucket = 95;
+    //         }
+    //         const key = `${bucket}-${bucket + 5}`;
+    //         histogramJson[key] = (histogramJson[key] || 0) + 1;
+    //     });
+    //
+    //     lastEvaluatedKey = result.LastEvaluatedKey;
+    // } while (lastEvaluatedKey);
+    //
+    // return histogramJson;
+
     let histogramJson = {};
-    let lastEvaluatedKey = null;
+    applications.forEach(item => {
+        const gpa = item.gpa;
+        let bucket = Math.floor(gpa / 5) * 5;
 
-    do {
-        const params = {
-            TableName: tableName,
-            ProjectionExpression: 'gpa',
-            FilterExpression: '#batch = :batchValue AND gpa BETWEEN :minGpa AND :maxGpa',
-            ExpressionAttributeNames: {
-                '#batch': 'batch'
-            },
-            ExpressionAttributeValues: {
-                ':batchValue': batchValue,
-                ':minGpa': 80,
-                ':maxGpa': 100
-            },
-            ExclusiveStartKey: lastEvaluatedKey
-        };
-
-        const result = await dynamoDB.scan(params).promise();
-
-        result.Items.forEach(item => {
-            const gpa = item.gpa;
-            let bucket = Math.floor(gpa / 5) * 5;
-
-            if (bucket === 100) {
-                bucket = 95;
-            }
-            const key = `${bucket}-${bucket + 5}`;
-            histogramJson[key] = (histogramJson[key] || 0) + 1;
-        });
-
-        lastEvaluatedKey = result.LastEvaluatedKey;
-    } while (lastEvaluatedKey);
-
+        if (bucket === 100) {
+            bucket = 95;
+        }
+        const key = `${bucket}-${bucket + 5}`;
+        histogramJson[key] = (histogramJson[key] || 0) + 1;
+    });
     return histogramJson;
 }
 
@@ -176,6 +198,120 @@ async function getTopUniversities(tableName, batchValue) {
     return topUniversitiesJson;
 
 }
+
+async function getAllApplications(tableName, batchValue) {
+    const params = {
+        TableName: tableName,
+        IndexName: 'byBatch',
+        KeyConditionExpression: '#batch = :batchValue',
+        ExpressionAttributeNames: {
+            '#batch': 'batch'
+        },
+        ExpressionAttributeValues: {
+            ':batchValue': batchValue,
+        },
+    };
+
+    let allApplications = [];
+
+    do {
+        const applications = await dynamoDB.query(params).promise();
+        allApplications = allApplications.concat(applications.Items);
+
+        // Check if there are more items to fetch
+        params.ExclusiveStartKey = applications.LastEvaluatedKey;
+    } while (params.ExclusiveStartKey);
+
+    console.log('All applications:', allApplications);
+
+    return allApplications;
+}
+
+async function getPrivatePublicRatio(applications, students) {
+    let privateCountFemale = 0;
+    let privateCountMale = 0;
+    let publicCountFemale = 0;
+    let publicCountMale = 0;
+
+    applications.forEach(application => {
+        const student = students.find(student => student.cpr === application.studentCPR);
+        if (student) {
+            if (application.schoolType === 'PRIVATE') {
+                student.gender === "FEMALE" ? privateCountFemale++ : privateCountMale++;
+            } else {
+                student.gender === "FEMALE" ? publicCountFemale++ : publicCountMale++;
+            }
+        }
+    }
+    );
+    return {
+        private: {
+            "male": privateCountMale,
+            "female": privateCountFemale
+        },
+        public: {
+            "male": publicCountMale,
+            "female": publicCountFemale
+        }
+    }
+
+}
+
+async function getFamilyIncomeRatio(applications,students) {
+    let above1500Female = 0;
+    let above1500Male = 0;
+    let below1500Female = 0;
+    let below1500Male = 0;
+
+
+    applications.forEach(application => {
+            const student = students.find(student => student.cpr === application.studentCPR);
+            if (student) {
+                if (student.familyIncome === "MORE_THAN_1500") {
+                    student.gender === "FEMALE" ? above1500Female++ : above1500Male++;
+                } else {
+                    student.gender === "FEMALE" ? below1500Female++ : below1500Male++;
+                }
+            }
+        }
+    );
+    return {
+        above1500: {
+            "male": above1500Male,
+            "female": above1500Female
+        },
+        below1500: {
+            "male": below1500Male,
+            "female": below1500Female
+        }
+    }
+}
+
+async function getStudents(batchValue) {
+    const params = {
+        TableName: 'Student-cw7beg2perdtnl7onnneec4jfa-staging',
+        // graduationDate is contained in the batch attribute
+        FilterExpression: '#batch = :batchValue',
+        ExpressionAttributeValues: {
+            ':batchValue': batchValue
+        },
+        ExpressionAttributeNames: {
+            '#batch': 'batch'
+        }
+    };
+    let allStudents = [];
+
+    do {
+        const students = await dynamoDB.scan(params).promise();
+        allStudents = allStudents.concat(students.Items);
+
+        // Check if there are more items to fetch
+        params.ExclusiveStartKey = students.LastEvaluatedKey;
+    } while (params.ExclusiveStartKey);
+
+    return allStudents;
+}
+
 
 // async function getTopPrograms(tableName, batchValue) {
 //     let programIDsCount = {};
@@ -292,46 +428,61 @@ async function getTotalApplications(tableName, batchValue) {
 
 
 
-async function getStatusPieChart(tableName, batchValue) {
+async function getStatusPieChart(applications, /* tableName, batchValue */) {
+    // let statusCounts = {};
+    //
+    // let lastEvaluatedKey = null;
+    // do {
+    //     const statusParams = {
+    //         TableName: tableName,
+    //         ProjectionExpression: '#status',
+    //         ExpressionAttributeNames: {
+    //             '#status': 'status',
+    //             '#batch': 'batch'
+    //         },
+    //         FilterExpression: '#batch = :batchValue',
+    //         ExpressionAttributeValues: {
+    //             ':batchValue': batchValue
+    //         },
+    //         ExclusiveStartKey: lastEvaluatedKey
+    //     };
+    //
+    //     const statusResult = await dynamoDB.scan(statusParams).promise();
+    //
+    //     statusResult.Items.forEach(item => {
+    //         const status = item.status;
+    //         statusCounts[status] = (statusCounts[status] || 0) + 1;
+    //     });
+    //
+    //     lastEvaluatedKey = statusResult.LastEvaluatedKey;
+    // } while (lastEvaluatedKey);
+    //
+    // return statusCounts;
+
     let statusCounts = {};
-
-    let lastEvaluatedKey = null;
-    do {
-        const statusParams = {
-            TableName: tableName,
-            ProjectionExpression: '#status',
-            ExpressionAttributeNames: {
-                '#status': 'status',
-                '#batch': 'batch'
-            },
-            FilterExpression: '#batch = :batchValue',
-            ExpressionAttributeValues: {
-                ':batchValue': batchValue
-            },
-            ExclusiveStartKey: lastEvaluatedKey
-        };
-
-        const statusResult = await dynamoDB.scan(statusParams).promise();
-
-        statusResult.Items.forEach(item => {
-            const status = item.status;
-            statusCounts[status] = (statusCounts[status] || 0) + 1;
-        });
-
-        lastEvaluatedKey = statusResult.LastEvaluatedKey;
-    } while (lastEvaluatedKey);
-
+    applications.forEach(item => {
+        const status = item.status;
+        statusCounts[status] = (statusCounts[status] || 0) + 1;
+    });
     return statusCounts;
 }
 
 
 async function updateStatistics(tableName, batchValue) {
-    const scoreHistogram = await getScoreHistograms(tableName, batchValue);
+    const applications = await getAllApplications(tableName, batchValue);
+    const scoreHistogram = await getScoreHistograms(applications);
     // const applicationsPerYearChart = await getApplicationsPerYearChart(tableName, batchValue);
-    const statusPieChart = await getStatusPieChart(tableName, batchValue);
-    const gpaHistogramChart = await getGpaHistogram(tableName, batchValue);
-    const applicationsCount = await getTotalApplications(tableName, batchValue);
+    const statusPieChart = await getStatusPieChart(applications);
+    const gpaHistogramChart = await getGpaHistogram(applications);
+    const applicationsCount = applications.length;
     const topUniversities = await getTopUniversities(tableName, batchValue);
+    const students = await getStudents(batchValue);
+    const privatePublicRatio = await getPrivatePublicRatio(applications, students);
+    const familyIncomeRatio = await getFamilyIncomeRatio(applications,students);
+    const totalStudents = students.length;
+    const totalMaleStudents = students.filter(student => student.gender === "MALE").length;
+    const totalFemaleStudents = students.filter(student => student.gender === "FEMALE").length;
+
     // const topPrograms = await getTopPrograms(tableName, batchValue);
 
     // console.log('Top Programs:', topPrograms);
@@ -349,7 +500,15 @@ async function updateStatistics(tableName, batchValue) {
             gpaHistogram:  gpaHistogramChart,
             totalApplicationsPerUniversity: {},
             topUniversities: topUniversities,
-            // topPrograms: topPrograms
+            schoolType: privatePublicRatio,
+            familyIncome: familyIncomeRatio,
+            totalStudents: totalStudents,
+            students: {
+                total: totalStudents,
+                male: totalMaleStudents,
+                female: totalFemaleStudents
+
+            }
         },
     };
 

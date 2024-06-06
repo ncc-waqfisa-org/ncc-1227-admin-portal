@@ -226,6 +226,10 @@ type Statistics @model @auth(rules: [{ allow: public }]) {
   totalApplicationsPerUniversity: AWSJSON
 #  topPrograms: AWSJSON
   topUniversities: AWSJSON
+  topPrograms: AWSJSON
+  familyIncome: AWSJSON
+  schoolType: AWSJSON
+  students: AWSJSON
 }
 
 #type CurrentApplication @model @auth(rules: [{ allow: public }]) {

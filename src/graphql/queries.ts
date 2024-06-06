@@ -2,7 +2,7 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-import * as APITypes from "../API";
+import * as APITypes from "../../amplify/backend/function/exportApplicationsCsv/src/src/API";
 type GeneratedQuery<InputType, OutputType> = string & {
   __generatedQueryInput: InputType;
   __generatedQueryOutput: OutputType;
@@ -1505,6 +1505,10 @@ export const getStatistics = /* GraphQL */ `query GetStatistics($id: Int!) {
     gpaHistogram
     totalApplicationsPerUniversity
     topUniversities
+    topPrograms
+    familyIncome
+    schoolType
+    students
     createdAt
     updatedAt
     _version
@@ -1540,6 +1544,10 @@ export const listStatistics = /* GraphQL */ `query ListStatistics(
       gpaHistogram
       totalApplicationsPerUniversity
       topUniversities
+      topPrograms
+      familyIncome
+      schoolType
+      students
       createdAt
       updatedAt
       _version
@@ -1577,6 +1585,10 @@ export const syncStatistics = /* GraphQL */ `query SyncStatistics(
       gpaHistogram
       totalApplicationsPerUniversity
       topUniversities
+      topPrograms
+      familyIncome
+      schoolType
+      students
       createdAt
       updatedAt
       _version
@@ -2232,6 +2244,10 @@ export const statisticsByBatchAndTotalApplications = /* GraphQL */ `query Statis
       gpaHistogram
       totalApplicationsPerUniversity
       topUniversities
+      topPrograms
+      familyIncome
+      schoolType
+      students
       createdAt
       updatedAt
       _version
