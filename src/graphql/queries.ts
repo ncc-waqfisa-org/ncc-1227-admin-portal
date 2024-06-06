@@ -2,7 +2,7 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-import * as APITypes from "../../amplify/backend/function/exportApplicationsCsv/src/src/API";
+import * as APITypes from "../API";
 type GeneratedQuery<InputType, OutputType> = string & {
   __generatedQueryInput: InputType;
   __generatedQueryOutput: OutputType;
@@ -1509,6 +1509,7 @@ export const getStatistics = /* GraphQL */ `query GetStatistics($id: Int!) {
     familyIncome
     schoolType
     students
+    today
     createdAt
     updatedAt
     _version
@@ -1548,6 +1549,7 @@ export const listStatistics = /* GraphQL */ `query ListStatistics(
       familyIncome
       schoolType
       students
+      today
       createdAt
       updatedAt
       _version
@@ -1589,6 +1591,7 @@ export const syncStatistics = /* GraphQL */ `query SyncStatistics(
       familyIncome
       schoolType
       students
+      today
       createdAt
       updatedAt
       _version
@@ -2248,6 +2251,7 @@ export const statisticsByBatchAndTotalApplications = /* GraphQL */ `query Statis
       familyIncome
       schoolType
       students
+      today
       createdAt
       updatedAt
       _version

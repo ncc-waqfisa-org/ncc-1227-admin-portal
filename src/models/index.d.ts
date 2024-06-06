@@ -659,6 +659,7 @@ type EagerStatistics = {
   readonly familyIncome?: string | null;
   readonly schoolType?: string | null;
   readonly students?: string | null;
+  readonly today?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -680,6 +681,7 @@ type LazyStatistics = {
   readonly familyIncome?: string | null;
   readonly schoolType?: string | null;
   readonly students?: string | null;
+  readonly today?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

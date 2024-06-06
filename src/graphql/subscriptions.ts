@@ -2,7 +2,7 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-import * as APITypes from "../../amplify/backend/function/exportApplicationsCsv/src/src/API";
+import * as APITypes from "../API";
 type GeneratedSubscription<InputType, OutputType> = string & {
   __generatedSubscriptionInput: InputType;
   __generatedSubscriptionOutput: OutputType;
@@ -1827,6 +1827,7 @@ export const onCreateStatistics = /* GraphQL */ `subscription OnCreateStatistics
     familyIncome
     schoolType
     students
+    today
     createdAt
     updatedAt
     _version
@@ -1855,6 +1856,7 @@ export const onUpdateStatistics = /* GraphQL */ `subscription OnUpdateStatistics
     familyIncome
     schoolType
     students
+    today
     createdAt
     updatedAt
     _version
@@ -1883,6 +1885,7 @@ export const onDeleteStatistics = /* GraphQL */ `subscription OnDeleteStatistics
     familyIncome
     schoolType
     students
+    today
     createdAt
     updatedAt
     _version
