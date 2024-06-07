@@ -381,15 +381,19 @@ async function getFamilyIncomeRatio(applications,students) {
             }
 
             if (student) {
+                if(student.familyIncome === "BETWEEN_500_AND_700" || student.familyIncome === "BETWEEN_700_AND_1000" || student.familyIncome === "LESS_THAN_500") {
+                    student.familyIncome = "LESS_THAN_1500";
+                }
+
                 if (student.familyIncome === "MORE_THAN_1500") {
                     student.gender === "FEMALE" ? above1500Female++ : above1500Male++;
-                    student.gender === "FEMALE" && new Date(student.createdAt).toDateString() === new Date().toDateString() ? above1500FemaleToday++ : null;
-                    student.gender === "MALE" && new Date(student.createdAt).toDateString() === new Date().toDateString() ? above1500MaleToday++ : null;
+                    student.gender === "FEMALE" && new Date(application.createdAt).toDateString() === new Date().toDateString() ? above1500FemaleToday++ : null;
+                    student.gender === "MALE" && new Date(application.createdAt).toDateString() === new Date().toDateString() ? above1500MaleToday++ : null;
 
                 } else {
                     student.gender === "FEMALE" ? below1500Female++ : below1500Male++;
-                    student.gender === "FEMALE" && new Date(student.createdAt).toDateString() === new Date().toDateString() ? below1500FemaleToday++ : null;
-                    student.gender === "MALE" && new Date(student.createdAt).toDateString() === new Date().toDateString() ? below1500MaleToday++ : null;
+                    student.gender === "FEMALE" && new Date(application.createdAt).toDateString() === new Date().toDateString() ? below1500FemaleToday++ : null;
+                    student.gender === "MALE" && new Date(application.createdAt).toDateString() === new Date().toDateString() ? below1500MaleToday++ : null;
                 }
             }
         }
