@@ -296,15 +296,15 @@ async function getPrivatePublicRatio(applications, students) {
                 student = await getStudent('Student-cw7beg2perdtnl7onnneec4jfa-staging', application.studentCPR);
             }
         if (student) {
-            if (application.schoolType === 'PRIVATE') {
+            if (student.schoolType === 'PRIVATE') {
                 student.gender === "FEMALE" ? privateCountFemale++ : privateCountMale++;
 
-                student.gender === "FEMALE" && new Date(student.createdAt).toDateString() === new Date().toDateString() ? privateCountFemaleToday++ : null;
-                student.gender === "MALE" && new Date(student.createdAt).toDateString() === new Date().toDateString() ? privateCountMaleToday++ : null;
+                student.gender === "FEMALE" && new Date(application.createdAt).toDateString() === new Date().toDateString() ? privateCountFemaleToday++ : null;
+                student.gender === "MALE" && new Date(application.createdAt).toDateString() === new Date().toDateString() ? privateCountMaleToday++ : null;
             } else {
                 student.gender === "FEMALE" ? publicCountFemale++ : publicCountMale++;
-                student.gender === "FEMALE" && new Date(student.createdAt).toDateString() === new Date().toDateString() ? publicCountFemaleToday++ : null;
-                student.gender === "MALE" && new Date(student.createdAt).toDateString() === new Date().toDateString() ? publicCountMaleToday++ : null;
+                student.gender === "FEMALE" && new Date(application.createdAt).toDateString() === new Date().toDateString() ? publicCountFemaleToday++ : null;
+                student.gender === "MALE" && new Date(application.createdAt).toDateString() === new Date().toDateString() ? publicCountMaleToday++ : null;
             }
         }
     }
