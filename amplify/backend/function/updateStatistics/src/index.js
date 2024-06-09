@@ -614,11 +614,11 @@ async function getStatusPieChart(applications, /* tableName, batchValue */) {
     return statusCounts;
 }
 
-async function getApplicationsTodayPerGender(applicationsToday, students) {
+async function getApplicationsPerGender(applications, students) {
     let maleCount = 0;
     let femaleCount = 0;
 
-    for (const application of applicationsToday) {
+    for (const application of applications) {
         let student = students.find(student => student.cpr === application.studentCPR);
         if (!student) {
             student = await getStudent('Student-cw7beg2perdtnl7onnneec4jfa-staging', application.studentCPR);
@@ -631,7 +631,7 @@ async function getApplicationsTodayPerGender(applicationsToday, students) {
     return {
         male: maleCount,
         female: femaleCount,
-        total: applicationsToday.length
+        total: applications.length
     }
 }
 
@@ -650,15 +650,26 @@ async function updateStatistics(tableName, batchValue) {
     const totalStudents = students.length;
     const totalMaleStudents = students.filter(student => student.gender === "MALE").length;
     const totalFemaleStudents = students.filter(student => student.gender === "FEMALE").length;
-    const studentsToday = students.filter(student =>
-        new Date(student.createdAt).toDateString() === new Date().toDateString());
+    const studentsToday = batchValue === new Date().getFullYear() ? students.filter(student =>
+        new Date(student.createdAt).toDateString() === new Date().toDateString()) : [];
     const totalStudentsToday = studentsToday.length;
 
-    const totalFemaleStudentsToday = studentsToday.filter(student => student.gender === "FEMALE").length;
-    const totalMaleStudentsToday = studentsToday.filter(student => student.gender === "MALE").length;
-    const applicationsToday = applications.filter(application =>
-        new Date(application.createdAt).toDateString() === new Date().toDateString());
-    const applicationsTodayPerGender = await getApplicationsTodayPerGender(applicationsToday, students);
+    const totalFemaleStudentsToday = batchValue === new Date().getFullYear() ?
+        studentsToday.filter(student => student.gender === "FEMALE").length : 0;
+    const totalMaleStudentsToday = batchValue === new Date().getFullYear() ?
+        studentsToday.filter(student => student.gender === "MALE").length : 0;
+
+    const applicationsToday = batchValue === new Date().getFullYear() ?
+        applications.filter(application => new Date(application.createdAt).toDateString() === new Date().toDateString()) : [];
+    const applicationsPerGender = await getApplicationsPerGender(applications, students);
+    const applicationsTodayPerGender = batchValue === new Date().getFullYear() ?
+        await getApplicationsPerGender(applicationsToday, students):
+        {
+            male: 0,
+            female: 0,
+            total: 0
+        }
+
 
 
 
@@ -687,14 +698,16 @@ async function updateStatistics(tableName, batchValue) {
                 male: totalMaleStudents,
                 female: totalFemaleStudents
             },
+            applications: applicationsPerGender,
             today: {
                 students: {
                     total: totalStudentsToday,
                     male: totalMaleStudentsToday,
                     female: totalFemaleStudentsToday
                 },
+                totalApplications: applicationsToday.length,
                 applications: applicationsTodayPerGender
-}
+            }
         },
     };
 

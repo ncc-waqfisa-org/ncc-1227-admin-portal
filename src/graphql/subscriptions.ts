@@ -1827,6 +1827,7 @@ export const onCreateStatistics = /* GraphQL */ `subscription OnCreateStatistics
     familyIncome
     schoolType
     students
+    applications
     today
     createdAt
     updatedAt
@@ -1856,6 +1857,7 @@ export const onUpdateStatistics = /* GraphQL */ `subscription OnUpdateStatistics
     familyIncome
     schoolType
     students
+    applications
     today
     createdAt
     updatedAt
@@ -1885,6 +1887,7 @@ export const onDeleteStatistics = /* GraphQL */ `subscription OnDeleteStatistics
     familyIncome
     schoolType
     students
+    applications
     today
     createdAt
     updatedAt
