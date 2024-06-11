@@ -274,7 +274,6 @@ async function getAllApplications(tableName, batchValue) {
         params.ExclusiveStartKey = applications.LastEvaluatedKey;
     } while (params.ExclusiveStartKey);
 
-    console.log('All applications:', allApplications);
 
     return allApplications;
 }
@@ -358,7 +357,6 @@ async function getStudent(tableName, cpr) {
         }
     };
     const { Item } = await dynamoDB.get(params).promise();
-    console.log('Student:', Item);
     return Item;
 }
 
@@ -383,6 +381,9 @@ async function getFamilyIncomeRatio(applications,students) {
             if (student) {
                 if(student.familyIncome === "BETWEEN_500_AND_700" || student.familyIncome === "BETWEEN_700_AND_1000" || student.familyIncome === "LESS_THAN_500") {
                     student.familyIncome = "LESS_THAN_1500";
+                }
+                if(student.familyIncome === "OVER_1000") {
+                    console.log('Over 1000:', student);
                 }
 
                 if (student.familyIncome === "MORE_THAN_1500") {
