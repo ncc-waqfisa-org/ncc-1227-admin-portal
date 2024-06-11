@@ -120,3 +120,4 @@ function calculateScore(familyIncome, verifiedGPA, gpa, adminPoints) {
     score += adminPoints ? parseInt(adminPoints) : 0;
     return Math.round(score * 100) / 100;
 }
+

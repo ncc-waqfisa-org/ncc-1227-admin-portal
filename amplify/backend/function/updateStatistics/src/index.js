@@ -669,7 +669,9 @@ async function updateStatistics(tableName, batchValue) {
             male: 0,
             female: 0,
             total: 0
-        }
+        };
+
+    // await updateApplications(applications);
 
 
 
@@ -716,3 +718,38 @@ async function updateStatistics(tableName, batchValue) {
 
 
 }
+
+// async function updateApplications(applications){
+//     // SET familyIncome to be LESS_THAN_1500 if it is BETWEEN_500_AND_700, BETWEEN_700_AND_1000, or LESS_THAN_500
+//     console.log('Applications:', applications);
+//
+//     for (const application of applications) {
+//         const params = {
+//             TableName: 'Application-cw7beg2perdtnl7onnneec4jfa-staging',
+//             Key: {
+//                 id: application.id
+//             },
+//             UpdateExpression: 'SET ',
+//             ExpressionAttributeValues: {}
+//         };
+//         if (application.familyIncome === "BETWEEN_500_AND_700" || application.familyIncome === "BETWEEN_700_AND_1000" || application.familyIncome=== "LESS_THAN_500") {
+//             console.log('Family Income:', application.familyIncome);
+//             params.UpdateExpression += 'familyIncome = :familyIncome, ';
+//             params.ExpressionAttributeValues[':familyIncome'] = "LESS_THAN_1500";
+//             // add 20 to the score
+//             const score = application.score + 20;
+//             params.UpdateExpression += 'score = :score, ';
+//             params.ExpressionAttributeValues[':score'] = score;
+//
+//         }
+//         if (params.UpdateExpression === 'SET ') {
+//             return;
+//         }
+//
+//         params.UpdateExpression = params.UpdateExpression.slice(0, -2); // Remove the last comma
+//         await dynamoDB.update(params).promise();
+//
+//     }
+// }
+
+
