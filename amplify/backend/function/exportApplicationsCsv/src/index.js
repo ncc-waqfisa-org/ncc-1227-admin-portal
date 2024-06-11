@@ -73,15 +73,29 @@ function jsonToXlsx(jsonArray) {
     return workbookBuffer;
 }
 
+async function getStudent(tableName, cpr) {
+    const params = {
+        TableName: tableName,
+        Key: {
+            cpr: cpr
+        }
+    };
+    const { Item } = await dynamoDB.get(params).promise();
+    return Item;
+}
 
 
 async function convertToJson(applications, students) {
     const jsonArray = [];
     for (const application of applications) {
-        const student = students.find(student => student.cpr === application.studentCPR);
+        let student = students.find(student => student.cpr === application.studentCPR);
         const university = application.universityID ? await getUniversity(application.universityID) : { name: "NA" };
         const program = application.universityID ? await getProgram(application.programID) : { name: "NA" };
         const reason = processReason(application.reason);
+        if(!student) {
+            student = await getStudent('Student-cw7beg2perdtnl7onnneec4jfa-staging', application.studentCPR);
+        }
+
         if (student) {
             jsonArray.push({
                 id: application.id,
