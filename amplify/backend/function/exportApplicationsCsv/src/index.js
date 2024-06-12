@@ -22,7 +22,15 @@ exports.handler = async (event) => {
             };
         }
         const batchValue = parseInt(event.queryStringParameters?.batch) || new Date().getFullYear();
-        const selectedApplications = JSON.parse(event.body)?.ids || null;
+        let body;
+
+        if (typeof event.body === 'string') {
+            body = JSON.parse(event.body);
+        } else {
+            body = event;
+        }
+
+        const selectedApplications = body.selectedApplications;
         if(selectedApplications && !Array.isArray(selectedApplications)) {
             return {
                 statusCode: 400,
