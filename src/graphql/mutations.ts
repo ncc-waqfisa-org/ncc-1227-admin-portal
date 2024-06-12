@@ -1894,6 +1894,7 @@ export const createStatistics = /* GraphQL */ `mutation CreateStatistics(
     familyIncome
     schoolType
     students
+    applications
     today
     createdAt
     updatedAt
@@ -1924,6 +1925,7 @@ export const updateStatistics = /* GraphQL */ `mutation UpdateStatistics(
     familyIncome
     schoolType
     students
+    applications
     today
     createdAt
     updatedAt
@@ -1954,6 +1956,7 @@ export const deleteStatistics = /* GraphQL */ `mutation DeleteStatistics(
     familyIncome
     schoolType
     students
+    applications
     today
     createdAt
     updatedAt

@@ -1509,6 +1509,7 @@ export const getStatistics = /* GraphQL */ `query GetStatistics($id: Int!) {
     familyIncome
     schoolType
     students
+    applications
     today
     createdAt
     updatedAt
@@ -1549,6 +1550,7 @@ export const listStatistics = /* GraphQL */ `query ListStatistics(
       familyIncome
       schoolType
       students
+      applications
       today
       createdAt
       updatedAt
@@ -1591,6 +1593,7 @@ export const syncStatistics = /* GraphQL */ `query SyncStatistics(
       familyIncome
       schoolType
       students
+      applications
       today
       createdAt
       updatedAt
@@ -2251,6 +2254,7 @@ export const statisticsByBatchAndTotalApplications = /* GraphQL */ `query Statis
       familyIncome
       schoolType
       students
+      applications
       today
       createdAt
       updatedAt

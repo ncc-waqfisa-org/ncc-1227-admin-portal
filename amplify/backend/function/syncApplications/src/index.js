@@ -10,6 +10,12 @@ exports.handler = async (event) => {
         // const requestBody = JSON.parse(event.body);
         const requestBody = event;
         console.log(requestBody);
+        if(requestBody.eventName !== 'MODIFY') {
+            return {
+                statusCode: 200,
+                body: JSON.stringify({ message: 'No changes detected. Skipping update' })
+            };
+        }
 
         const student = requestBody.Records[0].dynamodb.NewImage;
         const oldStudent = requestBody.Records[0].dynamodb.OldImage;
@@ -104,7 +110,7 @@ async function getApplication(studentCPR) {
 
 function calculateScore(familyIncome, verifiedGPA, gpa, adminPoints) {
     let score = verifiedGPA? verifiedGPA * 0.7 : gpa * 0.7;
-    if (familyIncome === "LESS_THAN_1500") {
+    if (familyIncome === "LESS_THAN_1500" || familyIncome === "BETWEEN_500_AND_700" || familyIncome === "BETWEEN_700_AND_1000" || familyIncome === "LESS_THAN_500") {
         score += 20;
     }
     else if (familyIncome === "MORE_THAN_1500") {
@@ -114,3 +120,4 @@ function calculateScore(familyIncome, verifiedGPA, gpa, adminPoints) {
     score += adminPoints ? parseInt(adminPoints) : 0;
     return Math.round(score * 100) / 100;
 }
+

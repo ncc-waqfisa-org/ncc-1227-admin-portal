@@ -274,7 +274,6 @@ async function getAllApplications(tableName, batchValue) {
         params.ExclusiveStartKey = applications.LastEvaluatedKey;
     } while (params.ExclusiveStartKey);
 
-    console.log('All applications:', allApplications);
 
     return allApplications;
 }
@@ -296,15 +295,15 @@ async function getPrivatePublicRatio(applications, students) {
                 student = await getStudent('Student-cw7beg2perdtnl7onnneec4jfa-staging', application.studentCPR);
             }
         if (student) {
-            if (application.schoolType === 'PRIVATE') {
+            if (student.schoolType === 'PRIVATE') {
                 student.gender === "FEMALE" ? privateCountFemale++ : privateCountMale++;
 
-                student.gender === "FEMALE" && new Date(student.createdAt).toDateString() === new Date().toDateString() ? privateCountFemaleToday++ : null;
-                student.gender === "MALE" && new Date(student.createdAt).toDateString() === new Date().toDateString() ? privateCountMaleToday++ : null;
+                student.gender === "FEMALE" && new Date(application.createdAt).toDateString() === new Date().toDateString() ? privateCountFemaleToday++ : null;
+                student.gender === "MALE" && new Date(application.createdAt).toDateString() === new Date().toDateString() ? privateCountMaleToday++ : null;
             } else {
                 student.gender === "FEMALE" ? publicCountFemale++ : publicCountMale++;
-                student.gender === "FEMALE" && new Date(student.createdAt).toDateString() === new Date().toDateString() ? publicCountFemaleToday++ : null;
-                student.gender === "MALE" && new Date(student.createdAt).toDateString() === new Date().toDateString() ? publicCountMaleToday++ : null;
+                student.gender === "FEMALE" && new Date(application.createdAt).toDateString() === new Date().toDateString() ? publicCountFemaleToday++ : null;
+                student.gender === "MALE" && new Date(application.createdAt).toDateString() === new Date().toDateString() ? publicCountMaleToday++ : null;
             }
         }
     }
@@ -358,7 +357,6 @@ async function getStudent(tableName, cpr) {
         }
     };
     const { Item } = await dynamoDB.get(params).promise();
-    console.log('Student:', Item);
     return Item;
 }
 
@@ -381,15 +379,22 @@ async function getFamilyIncomeRatio(applications,students) {
             }
 
             if (student) {
+                if(student.familyIncome === "BETWEEN_500_AND_700" || student.familyIncome === "BETWEEN_700_AND_1000" || student.familyIncome === "LESS_THAN_500") {
+                    student.familyIncome = "LESS_THAN_1500";
+                }
+                if(student.familyIncome === "OVER_1000") {
+                    console.log('Over 1000:', student);
+                }
+
                 if (student.familyIncome === "MORE_THAN_1500") {
                     student.gender === "FEMALE" ? above1500Female++ : above1500Male++;
-                    student.gender === "FEMALE" && new Date(student.createdAt).toDateString() === new Date().toDateString() ? above1500FemaleToday++ : null;
-                    student.gender === "MALE" && new Date(student.createdAt).toDateString() === new Date().toDateString() ? above1500MaleToday++ : null;
+                    student.gender === "FEMALE" && new Date(application.createdAt).toDateString() === new Date().toDateString() ? above1500FemaleToday++ : null;
+                    student.gender === "MALE" && new Date(application.createdAt).toDateString() === new Date().toDateString() ? above1500MaleToday++ : null;
 
                 } else {
                     student.gender === "FEMALE" ? below1500Female++ : below1500Male++;
-                    student.gender === "FEMALE" && new Date(student.createdAt).toDateString() === new Date().toDateString() ? below1500FemaleToday++ : null;
-                    student.gender === "MALE" && new Date(student.createdAt).toDateString() === new Date().toDateString() ? below1500MaleToday++ : null;
+                    student.gender === "FEMALE" && new Date(application.createdAt).toDateString() === new Date().toDateString() ? below1500FemaleToday++ : null;
+                    student.gender === "MALE" && new Date(application.createdAt).toDateString() === new Date().toDateString() ? below1500MaleToday++ : null;
                 }
             }
         }
@@ -610,6 +615,26 @@ async function getStatusPieChart(applications, /* tableName, batchValue */) {
     return statusCounts;
 }
 
+async function getApplicationsPerGender(applications, students) {
+    let maleCount = 0;
+    let femaleCount = 0;
+
+    for (const application of applications) {
+        let student = students.find(student => student.cpr === application.studentCPR);
+        if (!student) {
+            student = await getStudent('Student-cw7beg2perdtnl7onnneec4jfa-staging', application.studentCPR);
+        }
+        if (student) {
+            student.gender === "FEMALE" ? femaleCount++ : maleCount++;
+        }
+    }
+
+    return {
+        male: maleCount,
+        female: femaleCount,
+        total: applications.length
+    }
+}
 
 async function updateStatistics(tableName, batchValue) {
     const applications = await getAllApplications(tableName, batchValue);
@@ -626,14 +651,28 @@ async function updateStatistics(tableName, batchValue) {
     const totalStudents = students.length;
     const totalMaleStudents = students.filter(student => student.gender === "MALE").length;
     const totalFemaleStudents = students.filter(student => student.gender === "FEMALE").length;
-    const studentsToday = students.filter(student =>
-        new Date(student.createdAt).toDateString() === new Date().toDateString());
+    const studentsToday = batchValue === new Date().getFullYear() ? students.filter(student =>
+        new Date(student.createdAt).toDateString() === new Date().toDateString()) : [];
     const totalStudentsToday = studentsToday.length;
 
-    const totalFemaleStudentsToday = studentsToday.filter(student => student.gender === "FEMALE").length;
-    const totalMaleStudentsToday = studentsToday.filter(student => student.gender === "MALE").length;
-    const totalApplicationsToday = applications.filter(application =>
-        new Date(application.createdAt).toDateString() === new Date().toDateString()).length;
+    const totalFemaleStudentsToday = batchValue === new Date().getFullYear() ?
+        studentsToday.filter(student => student.gender === "FEMALE").length : 0;
+    const totalMaleStudentsToday = batchValue === new Date().getFullYear() ?
+        studentsToday.filter(student => student.gender === "MALE").length : 0;
+
+    const applicationsToday = batchValue === new Date().getFullYear() ?
+        applications.filter(application => new Date(application.createdAt).toDateString() === new Date().toDateString()) : [];
+    const applicationsPerGender = await getApplicationsPerGender(applications, students);
+    const applicationsTodayPerGender = batchValue === new Date().getFullYear() ?
+        await getApplicationsPerGender(applicationsToday, students):
+        {
+            male: 0,
+            female: 0,
+            total: 0
+        };
+
+    // await updateApplications(applications);
+
 
 
 
@@ -662,14 +701,16 @@ async function updateStatistics(tableName, batchValue) {
                 male: totalMaleStudents,
                 female: totalFemaleStudents
             },
+            applications: applicationsPerGender,
             today: {
                 students: {
                     total: totalStudentsToday,
                     male: totalMaleStudentsToday,
                     female: totalFemaleStudentsToday
                 },
-                totalApplications: totalApplicationsToday
-}
+                totalApplications: applicationsToday.length,
+                applications: applicationsTodayPerGender
+            }
         },
     };
 
@@ -677,3 +718,38 @@ async function updateStatistics(tableName, batchValue) {
 
 
 }
+
+// async function updateApplications(applications){
+//     // SET familyIncome to be LESS_THAN_1500 if it is BETWEEN_500_AND_700, BETWEEN_700_AND_1000, or LESS_THAN_500
+//     console.log('Applications:', applications);
+//
+//     for (const application of applications) {
+//         const params = {
+//             TableName: 'Application-cw7beg2perdtnl7onnneec4jfa-staging',
+//             Key: {
+//                 id: application.id
+//             },
+//             UpdateExpression: 'SET ',
+//             ExpressionAttributeValues: {}
+//         };
+//         if (application.familyIncome === "BETWEEN_500_AND_700" || application.familyIncome === "BETWEEN_700_AND_1000" || application.familyIncome=== "LESS_THAN_500") {
+//             console.log('Family Income:', application.familyIncome);
+//             params.UpdateExpression += 'familyIncome = :familyIncome, ';
+//             params.ExpressionAttributeValues[':familyIncome'] = "LESS_THAN_1500";
+//             // add 20 to the score
+//             const score = application.score + 20;
+//             params.UpdateExpression += 'score = :score, ';
+//             params.ExpressionAttributeValues[':score'] = score;
+//
+//         }
+//         if (params.UpdateExpression === 'SET ') {
+//             return;
+//         }
+//
+//         params.UpdateExpression = params.UpdateExpression.slice(0, -2); // Remove the last comma
+//         await dynamoDB.update(params).promise();
+//
+//     }
+// }
+
+

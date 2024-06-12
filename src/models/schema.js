@@ -2047,6 +2047,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "applications": {
+                    "name": "applications",
+                    "isArray": false,
+                    "type": "AWSJSON",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "today": {
                     "name": "today",
                     "isArray": false,
@@ -2185,5 +2192,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "ef363eb76c0aef4420c37b6f0000282c"
+    "version": "397b85466ff78b779cffaf46213245d2"
 };
