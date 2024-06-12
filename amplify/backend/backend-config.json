@@ -90,8 +90,19 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "revertAutoReject": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "sendSubmissionEmail": {
       "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "sendWarningEmail": {
+      "build": true,
+      "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
@@ -273,6 +284,22 @@
         }
       ]
     },
+    "AMPLIFY_function_revertAutoReject_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "revertAutoReject"
+        }
+      ]
+    },
+    "AMPLIFY_function_revertAutoReject_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "revertAutoReject"
+        }
+      ]
+    },
     "AMPLIFY_function_sendSubmissionEmail_deploymentBucketName": {
       "usedBy": [
         {
@@ -286,6 +313,22 @@
         {
           "category": "function",
           "resourceName": "sendSubmissionEmail"
+        }
+      ]
+    },
+    "AMPLIFY_function_sendWarningEmail_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sendWarningEmail"
+        }
+      ]
+    },
+    "AMPLIFY_function_sendWarningEmail_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sendWarningEmail"
         }
       ]
     },

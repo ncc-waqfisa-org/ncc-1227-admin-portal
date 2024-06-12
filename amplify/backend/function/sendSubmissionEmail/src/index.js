@@ -138,8 +138,8 @@ async function getAttachment(attachmentId) {
 
     const attachment = await dynamoDB.get(params).promise();
     return attachment.Item;
-
 }
+
 async function getProgramChoice(applicationId) {
     const indexName = 'applicationID-index';
     const params = {
