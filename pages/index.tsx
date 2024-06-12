@@ -81,6 +81,7 @@ const Home = () => {
                 fileName={`${batch} Applications`}
                 url={`https://z7pe3akpcz6bazr3djdk4yo7e40yqevt.lambda-url.us-east-1.on.aws/?batch=${batch}`}
               >
+                {/* */}
                 {t("exportCSV")}
               </DownloadFileFromUrl>
             </div>
