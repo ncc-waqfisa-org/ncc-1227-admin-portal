@@ -102,7 +102,6 @@
     },
     "sendWarningEmail": {
       "build": true,
-      "dependsOn": [],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
