@@ -7,7 +7,10 @@ const dynamoDB = new AWS.DynamoDB.DocumentClient();
 exports.handler = async (event) => {
     console.log(`EVENT: ${JSON.stringify(event)}`);
     const rejectedApplications = await getRejectedApplications();
-    await processRejectedApplications(rejectedApplications);
+    const universities = await getUniversities();
+    const exceptionUniversities = universities.filter(university => university.isException);
+
+    await processRejectedApplications(rejectedApplications, exceptionUniversities);
     return {
         statusCode: 200,
         body: JSON.stringify('Hello from Lambda!'),
@@ -40,7 +43,7 @@ async function revertAutoReject(applicationId, status) {
         Key: {
             id: applicationId
         },
-        UpdateExpression: 'set #status = :status and #processed = :isProcessed',
+        UpdateExpression: 'set #status = :status, #processed = :isProcessed',
         ExpressionAttributeNames: {
             '#status': 'status',
             '#processed': 'processed'
@@ -53,17 +56,23 @@ async function revertAutoReject(applicationId, status) {
     await dynamoDB.update(params).promise();
 }
 
-async function processRejectedApplications(rejectedApplications) {
+async function processRejectedApplications(rejectedApplications,extendedUniversities) {
     for (const application of rejectedApplications) {
         const { id, attachmentID } = application;
         const attachment = await getAttachment(attachmentID);
         const programChoice = await getProgramChoice(id);
+        const universityID = application.universityID;
+        const university = extendedUniversities.find(u => u.id === universityID);
+
         let status = "NOT_COMPLETED";
         const schoolCertificate = attachment?.schoolCertificate;
         const transcript = attachment?.transcriptDoc;
-        const acceptanceLetter = programChoice.acceptanceLetterDoc;
+        const acceptanceLetter = programChoice?.acceptanceLetterDoc;
 
         if (schoolCertificate && transcript && acceptanceLetter) {
+            status = "REVIEW";
+        }
+        if (university) {
             status = "REVIEW";
         }
 
@@ -98,3 +107,18 @@ async function getProgramChoice(applicationId) {
     return programChoice.Items[0];
 }
 
+async function getUniversities() {
+    const params = {
+        TableName: 'University-cw7beg2perdtnl7onnneec4jfa-staging'
+    };
+
+    let allUniversities = [];
+
+    do {
+        const universities = await dynamoDB.scan(params).promise();
+        allUniversities = allUniversities.concat(universities.Items);
+        params.ExclusiveStartKey = universities.LastEvaluatedKey;
+    } while (params.ExclusiveStartKey);
+
+    return allUniversities;
+}

@@ -47,7 +47,7 @@ exports.handler = async (event) => {
 
 async function getApplications(batch) {
     const params = {
-        TableName: 'Application-cw7beg2perdtnl7onnneec4jfa-staging',
+        TableName: 'Application-cw7beg2perdtnl7onn neec4jfa-staging',
         IndexName: 'byProcessed',
         KeyConditionExpression: '#batch = :batchValue AND #processed = :processedValue',
         ScanIndexForward: false,
