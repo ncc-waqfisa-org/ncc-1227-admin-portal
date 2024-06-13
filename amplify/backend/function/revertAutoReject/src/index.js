@@ -38,18 +38,21 @@ async function getRejectedApplications() {
     return Items;
 }
 
+
 async function revertAutoReject(applicationId, status) {
     const params = {
         TableName: 'Application-cw7beg2perdtnl7onnneec4jfa-staging',
         Key: {
             id: applicationId
         },
-        UpdateExpression: 'set #status = :status',
+        UpdateExpression: 'set #status = :status and #processed = :isProcessed',
         ExpressionAttributeNames: {
-            '#status': 'status'
+            '#status': 'status',
+            '#processed': 'processed'
         },
         ExpressionAttributeValues: {
-            ':status': status
+            ':status': status,
+            ':isProcessed': 0
         }
     };
     await dynamoDB.update(params).promise();
