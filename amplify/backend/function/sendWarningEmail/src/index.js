@@ -40,14 +40,14 @@ exports.handler = async (event) => {
     console.log(`EVENT: ${JSON.stringify(event)}`);
     try {
         const notCompletedApplications = await getNotCompletedApplications();
-        const emails = await getStudentEmailsList(notCompletedApplications);
-        const emailsCsv = emails.join('\n');
-        // upload to S3
-        const csv = Buffer.from(emailsCsv);
-        const url = await uploadToS3(csv, 2024);
+        const urlNotCompleted = await getStudentNotCompletedEmailsList(notCompletedApplications);
+        const urlNoApp = await getSignedUpButNoApplicationStudents();
         return {
             statusCode: 200,
-            body: JSON.stringify({url})
+            body: JSON.stringify({
+                notCompletedApplications: urlNotCompleted,
+                noApplicationStudents: urlNoApp
+            }),
         };
 
 
@@ -131,6 +131,62 @@ async function getNotCompletedApplications() {
         throw error;
     }
 }
+
+async function getApplications() {
+    const params = {
+        TableName: 'Application-cw7beg2perdtnl7onnneec4jfa-staging',
+        IndexName: 'byScore',
+        KeyConditionExpression: '#batch = :batchValue AND score > :score',
+        ExpressionAttributeNames: {
+            '#batch': 'batch'
+        },
+        ExpressionAttributeValues: {
+            ':batchValue': new Date().getFullYear(),
+            ':score': 0.0
+        },
+        ScanIndexForward: false,
+    };
+
+    let allApplications = [];
+
+    do {
+        const applications = await dynamoDB.query(params).promise();
+        allApplications = allApplications.concat(applications.Items);
+
+        // Check if there are more items to fetch
+        params.ExclusiveStartKey = applications.LastEvaluatedKey;
+    } while (params.ExclusiveStartKey);
+
+    return allApplications;
+}
+
+async function getStudents() {
+    const params = {
+        TableName: 'Student-cw7beg2perdtnl7onnneec4jfa-staging',
+        // graduationDate is contained in the batch attribute
+        FilterExpression: '#batch = :batchValue',
+        ExpressionAttributeValues: {
+            // ':startDate': startDate.toISOString(),
+            // ':endDate': endDate.toISOString()
+            ':batchValue': new Date().getFullYear()
+        },
+        ExpressionAttributeNames: {
+            '#batch': 'batch'
+        }
+    };
+    let allStudents = [];
+
+    do {
+        const students = await dynamoDB.scan(params).promise();
+        allStudents = allStudents.concat(students.Items);
+
+        // Check if there are more items to fetch
+        params.ExclusiveStartKey = students.LastEvaluatedKey;
+    } while (params.ExclusiveStartKey);
+
+    return allStudents;
+}
+
 
 async function getProgramChoice(applicationId) {
     const params = {
@@ -281,11 +337,33 @@ function emailTemplateArabic(logo, missingDoc) {
     `;
 }
 
-async function getStudentEmailsList(notCompletedApplications) {
+async function getStudentNotCompletedEmailsList(notCompletedApplications) {
     const emails = [];
     for (const application of notCompletedApplications) {
         const student = await getStudent(application.studentCPR);
         emails.push(student.email);
     }
-    return emails;
+    const emailsCsv = emails.join('\n');
+    const url = await uploadToS3(emailsCsv, 2024);
+    return url;
+}
+
+async function getSignedUpButNoApplicationStudents() {
+   const applications = await getApplications();
+    const students = await getStudents();
+    const noApplicationStudentsEmails = [];
+    for (const student of students) {
+        const application = applications.find(app => app.studentCPR === student.cpr);
+        if (!application) {
+            noApplicationStudentsEmails.push(student.email);
+        }
+    }
+    // convert the list of emails to a CSV string
+    const emailsCsv = noApplicationStudentsEmails.join('\n');
+    // upload the CSV file to S3
+    const url = await uploadToS3(emailsCsv, 2024);
+    return url;
+
+
+
 }
