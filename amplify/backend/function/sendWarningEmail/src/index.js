@@ -1,63 +1,291 @@
-const AWS = require('aws-sdk');
-const dynamoDB = new AWS.DynamoDB.DocumentClient();
+/* Amplify Params - DO NOT EDIT
+	ENV
+	REGION
+Amplify Params - DO NOT EDIT
+ */
 
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
-exports.handler = async (event) => {
-    console.log(`EVENT: ${JSON.stringify(event)}`);
-    return {
-        statusCode: 200,
-    //  Uncomment below to enable CORS requests
-    //  headers: {
-    //      "Access-Control-Allow-Origin": "*",
-    //      "Access-Control-Allow-Headers": "*"
-    //  },
-        body: JSON.stringify('Hello from Lambda!'),
-    };
+
+const AWS = require('aws-sdk');
+const dynamoDB = new AWS.DynamoDB.DocumentClient();
+const s3 = new AWS.S3();
+const { ConfidentialClientApplication } = require("@azure/msal-node");
+
+
+const clientSecret = process.env.AZURE_APP_SECRET;
+const clientId = process.env.AZURE_APP_ID;
+const tenantId = process.env.AZURE_TENANT_ID;
+const aadEndpoint = process.env.AAD_ENDPOINT || "https://login.microsoftonline.com";
+const graphEndpoint = process.env.GRAPH_ENDPOINT || "https://graph.microsoft.com";
+
+const nodeAuth = {
+    clientId: clientId,
+    clientSecret: clientSecret,
+    authority: `${aadEndpoint}/${tenantId}`,
+};
+
+const msalConfig = {
+    auth: nodeAuth,
+};
+
+const tokenRequest = {
+    scopes: ["https://graph.microsoft.com/.default"],
 };
 
 
+
+exports.handler = async (event) => {
+    console.log(`EVENT: ${JSON.stringify(event)}`);
+    try {
+        const notCompletedApplications = await getNotCompletedApplications();
+        const emails = await getStudentEmailsList(notCompletedApplications);
+        const emailsCsv = emails.join('\n');
+        // upload to S3
+        const csv = Buffer.from(emailsCsv);
+        const url = await uploadToS3(csv, 2024);
+        return {
+            statusCode: 200,
+            body: JSON.stringify({url})
+        };
+
+
+
+
+        await sendWarningEmails(notCompletedApplications, msalConfig, tokenRequest, graphEndpoint);
+        return {
+            statusCode: 200,
+            body: JSON.stringify('Process completed successfully'),
+        };
+    } catch (error) {
+        console.error(`Error: ${error}`);
+        return {
+            statusCode: 500,
+            body: JSON.stringify('An error occurred'),
+        };
+    }
+};
+async function uploadToS3(csv, batchValue) {
+    const params = {
+        Bucket: 'amplify-ncc-staging-65406-deployment',
+        Key: 'Not completed Students ' + batchValue + '.csv',
+        Body: csv
+    };
+    await s3.upload(params).promise();
+    // return the URL of the uploaded file
+    return s3.getSignedUrl('getObject', {Bucket: params.Bucket, Key: params.Key});
+}
 async function getStudent(cpr) {
     const params = {
         TableName: 'Student-cw7beg2perdtnl7onnneec4jfa-staging',
-        Key: {
-            cpr: cpr
-        }
+        Key: { cpr: cpr },
     };
-
-    const student = await dynamoDB.get(params).promise();
-    const result = {
-        email: student.Item.email,
-        name: student.Item.name,
-        language: student.Item.preferredLanguage
+    try {
+        const student = await dynamoDB.get(params).promise();
+        return {
+            email: student.Item.email,
+            name: student.Item.name,
+            language: student.Item.preferredLanguage,
+        };
+    } catch (error) {
+        console.error(`Error getting student: ${error}`);
+        throw error;
     }
-    return result;
 }
 
 async function getAttachment(attachmentId) {
     const params = {
         TableName: 'Attachment-cw7beg2perdtnl7onnneec4jfa-staging',
-        Key: {
-            id: attachmentId
-        }
+        Key: { id: attachmentId },
     };
+    try {
+        const attachment = await dynamoDB.get(params).promise();
+        return attachment.Item;
+    } catch (error) {
+        console.error(`Error getting attachment: ${error}`);
+        throw error;
+    }
+}
 
-    const attachment = await dynamoDB.get(params).promise();
-    return attachment.Item;
+async function getNotCompletedApplications() {
+    const batchValue = 2024;
+    const params = {
+        TableName: 'Application-cw7beg2perdtnl7onnneec4jfa-staging',
+        IndexName: 'byStatus',
+        KeyConditionExpression: '#status = :statusValue and #batch = :batchValue',
+        ExpressionAttributeNames: {
+            '#status': 'status',
+            '#batch': 'batch',
+        },
+        ExpressionAttributeValues: {
+            ':statusValue': 'NOT_COMPLETED',
+            ':batchValue': batchValue,
+        },
+    };
+    try {
+        const { Items } = await dynamoDB.query(params).promise();
+        return Items;
+    } catch (error) {
+        console.error(`Error getting applications: ${error}`);
+        throw error;
+    }
 }
 
 async function getProgramChoice(applicationId) {
-    const indexName = 'applicationID-index';
     const params = {
         TableName: 'ProgramChoice-cw7beg2perdtnl7onnneec4jfa-staging',
-        IndexName: indexName,
+        IndexName: 'applicationID-index',
         KeyConditionExpression: 'applicationID = :applicationID',
         ExpressionAttributeValues: {
-            ':applicationID': applicationId
-        }
+            ':applicationID': applicationId,
+        },
     };
+    try {
+        const programChoice = await dynamoDB.query(params).promise();
+        return programChoice.Items[0];
+    } catch (error) {
+        console.error(`Error getting program choice: ${error}`);
+        throw error;
+    }
+}
 
-    const programChoice = await dynamoDB.query(params).promise();
-    return programChoice.Items[0];
+async function sendWarningEmails(notCompletedApplications, msalConfig, tokenRequest, graphEndpoint) {
+    for (const application of notCompletedApplications) {
+        try {
+            const { id, attachmentID, studentCPR } = application;
+            const student = await getStudent(studentCPR);
+            const attachment = await getAttachment(attachmentID);
+            const programChoice = await getProgramChoice(id);
+            const email = student.email;
+            const name = student.name;
+            const language = student.language;
+            const missingDoc = [];
+
+            if (!attachment?.schoolCertificate) missingDoc.push('School Certificate');
+            if (!attachment?.transcriptDoc) missingDoc.push('Transcript');
+            if (!programChoice?.acceptanceLetterDoc) missingDoc.push('Acceptance Letter');
+
+            if (missingDoc.length > 0) {
+                await sendWarningEmail(email, name, language, missingDoc, msalConfig, tokenRequest, graphEndpoint);
+            }
+        } catch (error) {
+            console.error(`Error processing application ${application.id}: ${error}`);
+        }
+    }
+}
+
+async function sendWarningEmail(email, name, language, missingDoc, msalConfig, tokenRequest, graphEndpoint) {
+    const subject = 'Reminder to upload remaining documents';
+    const logo = "https://res.cloudinary.com/dedap3cb9/image/upload/v1688627927/logos/nccEmailLogo_mjrwyk.png";
+    const message = language === 'en' ? emailTemplate(logo, name, missingDoc) : emailTemplateArabic(logo, missingDoc);
+    console.log(`Sending email to ${email}`);
+    console.log(msalConfig, tokenRequest, graphEndpoint, subject, message, email);
+
+    const cca = new ConfidentialClientApplication(msalConfig);
+    try {
+        const tokenInfo = await cca.acquireTokenByClientCredential(tokenRequest);
+        const headers = {
+            "Authorization": `Bearer ${tokenInfo?.accessToken}`,
+            "Content-Type": "application/json",
+        };
+
+        const body = JSON.stringify({
+            message: {
+                subject: subject,
+                body: { contentType: "HTML", content: message },
+                toRecipients: [{ emailAddress: { address: email } }],
+            },
+        });
+
+        const response = await fetch(`${graphEndpoint}/v1.0/users/${process.env.OUTLOOK_USERNAME}/sendMail`, {
+            method: "POST",
+            headers,
+            body,
+        });
+
+        console.log(`Email sent to ${email}: ${response.status}`);
+    } catch (error) {
+        console.error(`Error sending email: ${error}`);
+        throw error;
+    }
+}
+
+function emailTemplate(logo, studentName, missingDoc) {
+    const currentYear = new Date().getFullYear();
+    const nextYear = currentYear + 1;
+    return `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+        </head>
+        <body>
+            <div style="padding: 20px; font-family: Arial, sans-serif;">
+                <img src="${logo}" alt="NCC Logo" style="display: block; margin: 0 auto;">
+                <h2 style="text-align: center;">Reminder to upload remaining documents</h2>
+                <p>Dear ${studentName},</p>
+                <p>We are pleased to receive your application for the Isa bin Salman Education Charitable Trust scholarship for the academic year ${currentYear} - ${nextYear}.</p>
+                ${missingDoc.length > 0 ? `
+                    <p>Please note that your application is <strong>incomplete</strong>. You can visit the website to review and update your application before the end of the registration period.</p>
+                    <p>Missing documents:</p>
+                    <ul>${missingDoc.map(doc => `<li>${doc}</li>`).join('')}</ul>
+                ` : ''}
+                <p>Please ensure all required documents are submitted before the registration deadline at midnight on June 12, 2024.</p>
+                <p>Thank you for your cooperation and best of luck!</p>
+                <a href="mailto:info@waqfisa.bh" style="display: block; margin: 0 auto; padding: 10px; background: #C98D4B; color: #FFF; text-align: center; width: 200px; text-decoration: none; border-radius: 5px;">Contact Support</a>
+            </div>
+        </body>
+        </html>
+    `;
+}
+
+function emailTemplateArabic(logo, missingDoc) {
+    const currentYear = new Date().getFullYear();
+    const nextYear = currentYear + 1;
+    const missingDocArabic = missingDoc.map(doc => {
+        switch (doc) {
+            case 'School Certificate':
+                return 'شهادة المدرسة';
+            case 'Transcript':
+                return 'السجل الأكاديمي';
+            case 'Acceptance Letter':
+                return 'رسالة القبول';
+            default:
+                return doc;
+        }
+    });
+    return `
+        <!DOCTYPE html>
+        <html lang="ar" dir="rtl">
+        <head>
+            <meta charset="UTF-8">
+        </head>
+        <body>
+            <div style="padding: 20px; font-family: Arial, sans-serif;">
+                <img src="${logo}" alt="NCC Logo" style="display: block; margin: 0 auto;">
+                <h2 style="text-align: center;">تذكير برفع المستندات المتبقية</h2>
+                <p>عزيزي الطالب،</p>
+                <p>يسرنا أن نستلم طلبكم للحصول على منحة مؤسسة عيسى بن سلمان للتعليم الخيري للسنة الأكاديمية ${currentYear} - ${nextYear}.</p>
+                ${missingDocArabic.length > 0 ? `
+                    <p>يرجى ملاحظة أن طلبك <strong>غير مكتمل</strong>. يمكنك زيارة الموقع لمراجعة وتحديث طلبك قبل انتهاء فترة التسجيل.</p>
+                    <p>المستندات المفقودة:</p>
+                    <ul>${missingDocArabic.map(doc => `<li>${doc}</li>`).join('')}</ul>
+                ` : ''}
+                <p>يرجى التأكد من تقديم جميع المستندات المطلوبة قبل الموعد النهائي للتسجيل في منتصف الليل في 12 يونيو 2024.</p>
+                <p>شكرا لتعاونكم وأطيب التمنيات!</p>
+                <a href="mailto:info@waqfisa.bh" style="display: block; margin: 0 auto; padding: 10px; background: #C98D4B; color: #FFF; text-align: center; width: 200px; text-decoration: none; border-radius: 5px;">تواصل مع الدعم</a>
+            </div>
+        </body>
+        </html>
+    `;
+}
+
+async function getStudentEmailsList(notCompletedApplications) {
+    const emails = [];
+    for (const application of notCompletedApplications) {
+        const student = await getStudent(application.studentCPR);
+        emails.push(student.email);
+    }
+    return emails;
 }
