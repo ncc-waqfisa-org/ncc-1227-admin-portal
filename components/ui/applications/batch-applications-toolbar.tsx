@@ -215,6 +215,7 @@ export const BatchApplicationsToolbar: React.FC<
           {t("exportSelectedCSV")}
         </Button>
       )}
+
       <Button
         variant={"outline"}
         onClick={() => {
