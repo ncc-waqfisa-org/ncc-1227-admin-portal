@@ -178,7 +178,7 @@ export const BatchApplicationsToolbar: React.FC<
             const selectedApplicationsIds = selectedApplications.map(
               (a) => a.id
             );
-            const url = `https://z7pe3akpcz6bazr3djdk4yo7e40yqevt.lambda-url.us-east-1.on.aws/?batch=${batch}`;
+            const url = `https://a69a50c47l.execute-api.us-east-1.amazonaws.com/default/applications/export?batch=${batch}`;
             const test = JSON.stringify({ ids: selectedApplicationsIds });
 
             toast.promise(
