@@ -8,6 +8,7 @@
     "@types/aws-lambda": "^8.10.92"
   },
   "dependencies": {
+    "@azure/msal-node": "^2.9.2",
     "aws-sdk": "^2.1644.0"
   }
 }

@@ -66,10 +66,10 @@ exports.handler = async (event) => {
         };
     }
 };
-async function uploadToS3(csv, batchValue) {
+async function uploadToS3(csv, batchValue, name) {
     const params = {
         Bucket: 'amplify-ncc-staging-65406-deployment',
-        Key: 'Not completed Students ' + batchValue + '.csv',
+        Key: name + batchValue + '.csv',
         Body: csv
     };
     await s3.upload(params).promise();
@@ -344,7 +344,7 @@ async function getStudentNotCompletedEmailsList(notCompletedApplications) {
         emails.push(student.email);
     }
     const emailsCsv = emails.join('\n');
-    const url = await uploadToS3(emailsCsv, 2024);
+    const url = await uploadToS3(emailsCsv, 2024, 'notCompletedApplications');
     return url;
 }
 
@@ -361,7 +361,7 @@ async function getSignedUpButNoApplicationStudents() {
     // convert the list of emails to a CSV string
     const emailsCsv = noApplicationStudentsEmails.join('\n');
     // upload the CSV file to S3
-    const url = await uploadToS3(emailsCsv, 2024);
+    const url = await uploadToS3(emailsCsv, 2024, 'noApplicationStudents');
     return url;
 
 

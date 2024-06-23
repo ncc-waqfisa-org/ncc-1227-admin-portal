@@ -30,7 +30,7 @@ exports.handler = async (event) => {
             body = event;
         }
 
-        const selectedApplications = body.selectedApplications;
+        const selectedApplications = body.ids;
         if(selectedApplications && !Array.isArray(selectedApplications)) {
             return {
                 statusCode: 400,
@@ -119,6 +119,7 @@ async function convertToJson(applications, students) {
                 "Graduation Year": graduationYear,
                 "Status": application.status,
                 "GPA": application.gpa,
+                "Verified GPA": application.verifiedGPA,
                 "Score": application.score,
                 "School Name": application.schoolName,
                 "School Type": application.schoolType,
@@ -168,6 +169,7 @@ async function getApplications(tableName, batchValue, status) {
     }
 
     let allApplications = [];
+
 
     do {
         const applications = await dynamoDB.query(params).promise();
