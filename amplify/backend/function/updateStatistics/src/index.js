@@ -395,6 +395,9 @@ async function getFamilyIncomeRatio(applications,students) {
                     student.gender === "FEMALE" ? below1500Female++ : below1500Male++;
                     student.gender === "FEMALE" && new Date(application.createdAt).toDateString() === new Date().toDateString() ? below1500FemaleToday++ : null;
                     student.gender === "MALE" && new Date(application.createdAt).toDateString() === new Date().toDateString() ? below1500MaleToday++ : null;
+                    if(new Date(application.createdAt).toDateString() === new Date().toDateString()){
+                        console.log('Today:', student);
+                    }
                 }
             }
         }

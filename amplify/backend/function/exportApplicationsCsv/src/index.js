@@ -103,29 +103,31 @@ async function convertToJson(applications, students) {
         if(!student) {
             student = await getStudent('Student-cw7beg2perdtnl7onnneec4jfa-staging', application.studentCPR);
         }
+        const graduationYear = student?.graduationDate? new Date(student?.graduationDate).getFullYear(): application.batch;
+
 
         if (student) {
             jsonArray.push({
-                id: application.id,
-                studentCPR: application.studentCPR,
-                name: student.fullName,
-                gender: student.gender,
-                nationality: student.nationalityCategory,
-                field: student.specialization,
-                phone: student.phone,
-                email: student.email,
-                graduationYear: application.batch,
-                status: application.status,
-                gpa: application.gpa,
-                score: application.score,
-                schoolName: application.schoolName,
-                schoolType: application.schoolType,
-                familyIncome: application.familyIncome,
-                chosenUniversity: university.name,
-                chosenProgram: program.name,
-                reason: reason,
-                totalScore: application.score,
-                numberOfFamilyMembers: student.numberOfFamilyMembers
+                "Id": application.id,
+                "Student CPR": application.studentCPR,
+                "Name": student.fullName,
+                "Gender": student.gender,
+                "Nationality": student.nationalityCategory,
+                "Field": student.specialization,
+                "Phone": student.phone,
+                "Email": student.email,
+                "Graduation Year": graduationYear,
+                "Status": application.status,
+                "GPA": application.gpa,
+                "Score": application.score,
+                "School Name": application.schoolName,
+                "School Type": application.schoolType,
+                "Family Income": application.familyIncome,
+                "Chosen University": university.name,
+                "Chosen Program": program.name,
+                "Reason": reason,
+                "Total Score": application.score,
+                "Number Of Family Members": student.numberOfFamilyMembers
             });
         }
     }

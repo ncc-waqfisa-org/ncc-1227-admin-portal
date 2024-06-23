@@ -44,11 +44,11 @@
         },
         "exportApplicationsCsv": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
-          "s3Key": "amplify-builds/exportApplicationsCsv-544d58677968576a3953-build.zip"
+          "s3Key": "amplify-builds/exportApplicationsCsv-5a766832593448486e6b-build.zip"
         },
         "updateStatistics": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
-          "s3Key": "amplify-builds/updateStatistics-306b44706444644f5938-build.zip"
+          "s3Key": "amplify-builds/updateStatistics-68547761767944693666-build.zip"
         },
         "signScholarship": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
@@ -56,7 +56,7 @@
         },
         "bulkAutoReject": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
-          "s3Key": "amplify-builds/bulkAutoReject-7771334b34386f732b2b-build.zip"
+          "s3Key": "amplify-builds/bulkAutoReject-795030354c524f556853-build.zip"
         },
         "exportEligibleCsv": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
@@ -80,11 +80,19 @@
         },
         "sendSubmissionEmail": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
-          "s3Key": "amplify-builds/sendSubmissionEmail-36616a61567947344e30-build.zip"
+          "s3Key": "amplify-builds/sendSubmissionEmail-795233527546362f2f6e-build.zip"
         },
         "deleteAdmin": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
           "s3Key": "amplify-builds/deleteAdmin-5032346a64654d4e4652-build.zip"
+        },
+        "revertAutoReject": {
+          "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
+          "s3Key": "amplify-builds/revertAutoReject-5674636e4b734253464b-build.zip"
+        },
+        "sendWarningEmail": {
+          "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
+          "s3Key": "amplify-builds/sendWarningEmail-555645324f7073422b48-build.zip"
         }
       }
     }
