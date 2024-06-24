@@ -45,11 +45,7 @@ const Home = () => {
   const { data: statistics, isPending } = useQuery({
     queryKey: ["statistics", batch, token, locale],
     queryFn: () =>
-      getStatistics({ batch: batch, token: token, locale: locale }).finally(
-        () => {
-          console.log(token);
-        }
-      ),
+      getStatistics({ batch: batch, token: token, locale: locale }),
   });
 
   return (

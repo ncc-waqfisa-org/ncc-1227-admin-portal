@@ -86,9 +86,10 @@ function useProvideAuth() {
           await checkAuthUser(authUser).then((isAdmin) => {
             if (isAdmin) {
               setUser(authUser);
-              console.log(
-                authUser.getSignInUserSession()?.getAccessToken().getJwtToken()
-              );
+              // * Print user auth token
+              // console.log(
+              //   authUser.getSignInUserSession()?.getAccessToken().getJwtToken()
+              // );
               setToken(
                 authUser.getSignInUserSession()?.getAccessToken().getJwtToken()
               );
