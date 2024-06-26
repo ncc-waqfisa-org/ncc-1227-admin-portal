@@ -75,6 +75,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "exportUniversityEmails": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "getApplications": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -232,6 +237,22 @@
         {
           "category": "function",
           "resourceName": "exportEligibleCsv"
+        }
+      ]
+    },
+    "AMPLIFY_function_exportUniversityEmails_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "exportUniversityEmails"
+        }
+      ]
+    },
+    "AMPLIFY_function_exportUniversityEmails_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "exportUniversityEmails"
         }
       ]
     },
