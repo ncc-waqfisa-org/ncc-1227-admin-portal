@@ -8,8 +8,9 @@ exports.handler = async (event) => {
     console.log(`EVENT: ${JSON.stringify(event)}`);
     try {
         // const requestBody = JSON.parse(event.body);
-        const requestBody = event;
+        const requestBody = event.Records[0];
         console.log(requestBody);
+        console.log(requestBody.eventName);
         if(requestBody.eventName !== 'MODIFY') {
             return {
                 statusCode: 200,
@@ -17,10 +18,13 @@ exports.handler = async (event) => {
             };
         }
 
-        const student = requestBody.Records[0].dynamodb.NewImage;
-        const oldStudent = requestBody.Records[0].dynamodb.OldImage;
+        const student = requestBody.dynamodb.NewImage;
+        const oldStudent = requestBody.dynamodb.OldImage;
+        console.log(student, oldStudent);
         const application = await getApplication(student.cpr.S);
+        console.log(application);
         if(!application) {
+            console.log('Application not found. Skipping update');
             return {
                 statusCode: 200,
                 body: JSON.stringify({ message: 'Application not found. Skipping update' })
@@ -36,11 +40,6 @@ exports.handler = async (event) => {
 
         return {
             statusCode: 200,
-            //  Uncomment below to enable CORS requests
-            //  headers: {
-            //      "Access-Control-Allow-Origin": "*",
-            //      "Access-Control-Allow-Headers": "*"
-            //  },
             body: JSON.stringify({
                 message: 'Application updated successfully'
             }),
