@@ -287,9 +287,14 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
                 <FormLabel>{tL("gpa")}</FormLabel>
                 <FormControl>
                   <Input
-                    type="number"
+                    type="text"
                     {...field}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
+                    value={field.value ?? ""}
+                    onWheel={() => false}
+                    onChange={(e) => {
+                      const value = e.target.value.replace(/[^0-9]/g, "");
+                      field.onChange(Number(value));
+                    }}
                   />
                 </FormControl>
                 <FormDescription>{tL("gpaD")}</FormDescription>
@@ -325,11 +330,17 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
                 </div>
                 <FormControl>
                   <Input
-                    type="number"
+                    type="text"
                     placeholder={t("notVerifiedYet") ?? "Not Verified yet"}
                     {...field}
                     value={field.value ?? ""}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
+                    onWheel={() => false}
+                    onChange={(e) => {
+                      const value = e.target.value.replace(/[^0-9]/g, "");
+                      field.onChange(
+                        value === "" || value === "0" ? null : Number(value)
+                      );
+                    }}
                   />
                 </FormControl>
                 <FormDescription>{tL("verifiedGPAD")}</FormDescription>
