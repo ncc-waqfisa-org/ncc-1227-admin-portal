@@ -331,7 +331,7 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
                     type="number"
                     max={10}
                     min={0}
-                    placeholder="Not Added yet"
+                    placeholder={t("notAddedYet") ?? "Not added yet"}
                     {...field}
                     onChange={(e) => field.onChange(Number(e.target.value))}
                   />

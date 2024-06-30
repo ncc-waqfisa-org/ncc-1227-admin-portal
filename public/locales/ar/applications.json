@@ -25,6 +25,7 @@
   "success": "نجاح",
   "clear": "إزالة",
   "notVerifiedYet": "لم يتم التحقق منها بعد",
+  "notAddedYet": "لم يتم إضافتها بعد",
   "dropTheFilesHere": "...قم بوضع الملفات هناقم بوضع الملفات هنا",
   "dragDropSomeFilesHereOr": "اسحب وضع بعض الملفات هنا ، أو اضغط لتحديد الملفات",
   "dropTheFileHere": "ضع الملف هنا ...",
