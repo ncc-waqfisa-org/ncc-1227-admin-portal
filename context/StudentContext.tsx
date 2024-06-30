@@ -301,6 +301,22 @@ export async function getApplicationByIdAPI(
           }
         }
       }
+    program {
+      id
+      _version 
+            name
+            nameAr
+            minimumGPA
+            university {
+              name
+              nameAr
+              isException
+              isExtended
+              extensionDuration
+              isTrashed
+              isDeactivated
+            }
+          }
       status
       studentCPR
       studentLogs {

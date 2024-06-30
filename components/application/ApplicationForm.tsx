@@ -60,7 +60,6 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
   const { t } = useTranslation("applications");
   const { t: tL } = useTranslation("applicationLog");
   const { resetApplications } = useBatchContext();
-
   const { locale, push } = useRouter();
   const { cpr } = useAuth();
 
@@ -224,6 +223,31 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
             throw err;
           });
       });
+  }
+
+  function getUniversityName() {
+    let havePrograms = (application.programs?.items.length ?? 0) > 0;
+    if (havePrograms) {
+      return locale === "ar"
+        ? application.programs?.items[0]?.program?.university?.nameAr
+        : application.programs?.items[0]?.program?.university?.name;
+    } else {
+      return locale === "ar"
+        ? application.program?.university?.nameAr
+        : application.program?.university?.name;
+    }
+  }
+  function getProgramName() {
+    let havePrograms = (application.programs?.items.length ?? 0) > 0;
+    if (havePrograms) {
+      return locale === "ar"
+        ? application.programs?.items[0]?.program?.nameAr
+        : application.programs?.items[0]?.program?.name;
+    } else {
+      return locale === "ar"
+        ? application.program?.nameAr
+        : application.program?.name;
+    }
   }
 
   return (
@@ -416,20 +440,11 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
               <Input
                 disabled
                 type="text"
-                value={
-                  (locale === "ar"
-                    ? application.programs?.items[0]?.program?.nameAr
-                    : application.programs?.items[0]?.program?.name) ??
-                  "undefined"
-                }
+                value={getProgramName() ?? "undefined"}
               />
             </FormControl>
             <FormDescription>
-              <p>
-                {locale === "ar"
-                  ? application.programs?.items[0]?.program?.university?.nameAr
-                  : application.programs?.items[0]?.program?.university?.name}
-              </p>
+              <p>{getUniversityName() ?? t("programNameNotFound")}</p>
               <div className="flex flex-wrap items-center gap-2">
                 <p>{t("minimumGPA")}</p>
                 <p>

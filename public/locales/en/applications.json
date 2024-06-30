@@ -27,6 +27,8 @@
   "tableTitleEmailSent": "Email Sent",
   "notVerifiedYet": "Not verified yet",
   "notAddedYet": "Not added yet",
+  "universityNameNotFound": "University name not found.",
+  "programNameNotFound": "Program name not found.",
   "yes": "Yes",
   "no": "No",
   "viewApplications": "View Applications",

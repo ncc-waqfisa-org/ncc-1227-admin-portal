@@ -26,6 +26,8 @@
   "clear": "إزالة",
   "notVerifiedYet": "لم يتم التحقق منها بعد",
   "notAddedYet": "لم يتم إضافتها بعد",
+  "universityNameNotFound": "اسم الجامعة لم يتم العثور عليه.",
+  "programNameNotFound": "اسم البرنامج لم يتم العثور عليه.",
   "dropTheFilesHere": "...قم بوضع الملفات هناقم بوضع الملفات هنا",
   "dragDropSomeFilesHereOr": "اسحب وضع بعض الملفات هنا ، أو اضغط لتحديد الملفات",
   "dropTheFileHere": "ضع الملف هنا ...",
