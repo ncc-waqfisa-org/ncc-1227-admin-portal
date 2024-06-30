@@ -67,7 +67,7 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
   const formSchema = z.object({
     adminPoints: z.number().min(0).max(10).optional(),
     gpa: z.number().min(0).max(100),
-    verifiedGPA: z.number().min(0).max(100).optional(),
+    verifiedGPA: z.number().min(0).max(100).optional().nullable(),
     isFamilyIncomeVerified: z.boolean().default(false),
     status: z.enum(Object.values(Status) as [Status]),
     acceptanceLetter: z.string().optional(),
@@ -278,19 +278,33 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
             name="verifiedGPA"
             render={({ field }) => (
               <FormItem>
-                <div className="flex items-center gap-2 py-1">
-                  <FormLabel>{tL("verifiedGPA")}</FormLabel>
-                  {application.verifiedGPA ? (
-                    <FiCheckCircle className="text-success" />
-                  ) : (
-                    <FiAlertCircle className="text-warning" />
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2 py-1">
+                    <FormLabel>{tL("verifiedGPA")}</FormLabel>
+                    {application.verifiedGPA ? (
+                      <FiCheckCircle className="text-success" />
+                    ) : (
+                      <FiAlertCircle className="text-warning" />
+                    )}
+                  </div>
+                  {field.value != null && (
+                    <Button
+                      size={"sm"}
+                      variant={"ghost"}
+                      className="h-5"
+                      type="button"
+                      onClick={() => field.onChange(null)}
+                    >
+                      {t("clear")}
+                    </Button>
                   )}
                 </div>
                 <FormControl>
                   <Input
                     type="number"
-                    placeholder="Not Verified yet"
+                    placeholder={t("notVerifiedYet") ?? "Not Verified yet"}
                     {...field}
+                    value={field.value ?? ""}
                     onChange={(e) => field.onChange(Number(e.target.value))}
                   />
                 </FormControl>
