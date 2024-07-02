@@ -293,7 +293,9 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
                     max={100}
                     step={"0.01"}
                     value={field.value ?? ""}
-                    onWheel={() => false}
+                    onWheel={(event) => {
+                      event.currentTarget.blur();
+                    }}
                     onChange={(e) => {
                       const value = e.target.value;
                       field.onChange(Number(value));
@@ -340,7 +342,9 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
                     min={0}
                     max={100}
                     value={field.value ?? ""}
-                    onWheel={() => false}
+                    onWheel={(event) => {
+                      event.currentTarget.blur();
+                    }}
                     onChange={(e) => {
                       const value = e.target.value;
                       field.onChange(
@@ -374,6 +378,9 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
                     min={0}
                     placeholder={t("notAddedYet") ?? "Not added yet"}
                     {...field}
+                    onWheel={(event) => {
+                      event.currentTarget.blur();
+                    }}
                     onChange={(e) => field.onChange(Number(e.target.value))}
                   />
                 </FormControl>
