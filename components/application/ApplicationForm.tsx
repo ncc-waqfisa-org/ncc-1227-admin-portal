@@ -287,12 +287,15 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
                 <FormLabel>{tL("gpa")}</FormLabel>
                 <FormControl>
                   <Input
-                    type="text"
+                    type="number"
                     {...field}
+                    min={0}
+                    max={100}
+                    step={"0.01"}
                     value={field.value ?? ""}
                     onWheel={() => false}
                     onChange={(e) => {
-                      const value = e.target.value.replace(/[^0-9]/g, "");
+                      const value = e.target.value;
                       field.onChange(Number(value));
                     }}
                   />
@@ -330,13 +333,16 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
                 </div>
                 <FormControl>
                   <Input
-                    type="text"
+                    type="number"
                     placeholder={t("notVerifiedYet") ?? "Not Verified yet"}
                     {...field}
+                    step={"0.01"}
+                    min={0}
+                    max={100}
                     value={field.value ?? ""}
                     onWheel={() => false}
                     onChange={(e) => {
-                      const value = e.target.value.replace(/[^0-9]/g, "");
+                      const value = e.target.value;
                       field.onChange(
                         value === "" || value === "0" ? null : Number(value)
                       );
