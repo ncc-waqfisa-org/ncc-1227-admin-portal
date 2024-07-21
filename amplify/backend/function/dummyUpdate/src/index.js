@@ -68,7 +68,7 @@ async function updateApplications(applications){
 
         if (programChoice) {
             const program= await getProgram(programChoice?.programID);
-            programChoice.universityID = program.universityID;
+            programChoice.universityID = program.universityID;a
             await updateApplication(application, programChoice);
         }
     }

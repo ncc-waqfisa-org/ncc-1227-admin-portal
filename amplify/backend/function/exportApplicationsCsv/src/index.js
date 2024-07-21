@@ -128,7 +128,8 @@ async function convertToJson(applications, students) {
                 "Chosen Program": program.name,
                 "Reason": reason,
                 "Total Score": application.score,
-                "Number Of Family Members": student.numberOfFamilyMembers
+                "Number Of Family Members": student.numberOfFamilyMembers,
+                "Is Family Income Verified": application.isFamilyIncomeVerified ? "Yes" : ""
             });
         }
     }
