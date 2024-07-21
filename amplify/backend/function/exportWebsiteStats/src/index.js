@@ -27,8 +27,8 @@ exports.handler = async (event) => {
             {
                 'Total applications': applications.length,
                 'Incomplete applications': notCompletedApplications.length,
-                'Registered students without application': signedUpButNoApplicationStudents.length,
-                'Registered students': students.length
+                'Total Registered students': students.length,
+                'Registered students without an application': signedUpButNoApplicationStudents.length,
             }
         ]);
         const s3Url = await uploadToS3(xlsxBuffer, batchValue);
@@ -81,7 +81,7 @@ async function getSignedUpButNoApplicationStudents(applications, students) {
      
  }
 
- async function getApplications() {
+ async function getApplications(batchValue)     {
     const params = {
         TableName: 'Application-cw7beg2perdtnl7onnneec4jfa-staging',
         IndexName: 'byScore',
@@ -90,7 +90,7 @@ async function getSignedUpButNoApplicationStudents(applications, students) {
             '#batch': 'batch'
         },
         ExpressionAttributeValues: {
-            ':batchValue': new Date().getFullYear(),
+            ':batchValue': batchValue,
             ':score': 0.0
         },
         ScanIndexForward: false,
@@ -144,7 +144,7 @@ async function uploadToS3(xlsxBuffer, batchValue) {
 
     const params = {
         Bucket: 'amplify-ncc-staging-65406-deployment',
-        Key: `Applications ${batchValue}.xlsx`,
+        Key: `WebsiteStats ${batchValue}.xlsx`,
         Body: xlsxBuffer,
         ContentType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     };
