@@ -92,11 +92,15 @@
         },
         "sendWarningEmail": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
-          "s3Key": "amplify-builds/sendWarningEmail-396c61494e46414d4851-build.zip"
+          "s3Key": "amplify-builds/sendWarningEmail-73496742593133514f37-build.zip"
         },
         "exportUniversityEmails": {
           "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
           "s3Key": "amplify-builds/exportUniversityEmails-67584337633347692f53-build.zip"
+        },
+        "exportWebsiteStats": {
+          "deploymentBucketName": "amplify-ncc-staging-65406-deployment",
+          "s3Key": "amplify-builds/exportWebsiteStats-337378656f6b4946772b-build.zip"
         }
       }
     }
