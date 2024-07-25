@@ -24,6 +24,8 @@
   "updatedSuccessfully": "تم التحديث بنجاح",
   "success": "نجاح",
   "clear": "إزالة",
+  "adminReason": "سبب التحديث",
+  "adminReasonD": "أدخل سبب التحديث.",
   "notVerifiedYet": "لم يتم التحقق منها بعد",
   "notAddedYet": "لم يتم إضافتها بعد",
   "universityNameNotFound": "اسم الجامعة لم يتم العثور عليه.",

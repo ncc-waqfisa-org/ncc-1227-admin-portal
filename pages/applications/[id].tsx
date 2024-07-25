@@ -235,7 +235,10 @@ const ApplicationInfo: FC<Props> = (props) => {
                 {t("studentInformation")}
               </AccordionTrigger>
               <AccordionContent>
-                <StudentUpdate student={props.application.student} />
+                <StudentUpdate
+                  applicationId={props.application.id}
+                  student={props.application.student}
+                />
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="parentsInformation">

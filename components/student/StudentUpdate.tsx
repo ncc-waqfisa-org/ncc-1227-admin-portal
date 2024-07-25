@@ -1,4 +1,5 @@
 import {
+  CreateAdminLogMutationVariables,
   FamilyIncome,
   Gender,
   Language,
@@ -10,7 +11,12 @@ import {
 import { Field, Form, Formik } from "formik";
 import * as yup from "yup";
 import "yup-phone";
-import { updateStudentInDB, uploadFile, DocType } from "../../src/CustomAPI";
+import {
+  updateStudentInDB,
+  uploadFile,
+  DocType,
+  createAdminLogInDB,
+} from "../../src/CustomAPI";
 import { toast } from "react-hot-toast";
 
 import { useTranslation } from "react-i18next";
@@ -19,9 +25,12 @@ import MultiUpload from "../MultiUpload";
 import { checkIfFilesAreTooBig } from "../../src/Helpers";
 import GetStorageLinkComponent from "../get-storage-link-component";
 import { PhoneNumberInput } from "../phone";
+import { createStudentInfoChangeSnapshot } from "./studentAdminLog";
+import { useAuth } from "../../hooks/use-auth";
 
 interface Props {
   student: Student;
+  applicationId?: string;
 }
 
 interface FormValues {
@@ -44,11 +53,13 @@ interface FormValues {
   preferredLanguage: Language | null | undefined;
   graduationDate: string | null | undefined;
   address: string | null | undefined;
+  adminReason: string | null | undefined;
 }
 
-export default function ViewAccount({ student }: Props) {
+export default function ViewAccount({ student, applicationId }: Props) {
   const { t } = useTranslation("applications");
   const { t: tErrors } = useTranslation("errors");
+  const { cpr: adminCpr } = useAuth();
 
   const [familyIncomeProofDocsFile, setFamilyIncomeProofDocsFile] = useState<
     File[]
@@ -58,6 +69,7 @@ export default function ViewAccount({ student }: Props) {
   const [cprDoc, setCprDoc] = useState<File | undefined>(undefined);
 
   let initialValues: FormValues = {
+    adminReason: undefined,
     cprDocFile: undefined,
     fullName: student.fullName,
     phone: student.phone,
@@ -84,6 +96,37 @@ export default function ViewAccount({ student }: Props) {
       }
       return value;
     });
+  }
+
+  async function newAdminLog(
+    applicationId: string,
+    oldData: any,
+    newData: any,
+    adminReason: string | null | undefined
+  ) {
+    const snapshot = createStudentInfoChangeSnapshot(oldData, newData);
+
+    let createAdminLogVariables: CreateAdminLogMutationVariables = {
+      input: {
+        applicationID: applicationId,
+        adminCPR: adminCpr ?? "",
+        dateTime: new Date().toISOString(),
+        snapshot: snapshot,
+        reason: adminReason ?? "No reason provided.",
+        applicationAdminLogsId: applicationId,
+        adminAdminLogsCpr: adminCpr ?? "",
+      },
+    };
+
+    await createAdminLogInDB(createAdminLogVariables)
+      .then(async (logValue) => {
+        // TODO: refresh()?
+        return logValue;
+      })
+      .catch((err) => {
+        console.log(err);
+        throw err;
+      });
   }
 
   return (
@@ -114,6 +157,7 @@ export default function ViewAccount({ student }: Props) {
           .required(`${tErrors("requiredField")}`),
         preferredLanguage: yup.string().required(`${tErrors("requiredField")}`),
         graduationDate: yup.date().required(`${tErrors("requiredField")}`),
+        adminReason: yup.string().required(`${tErrors("requiredField")}`),
       })}
       onSubmit={async (values, actions) => {
         const cprDocStorage = cprDoc
@@ -172,7 +216,6 @@ export default function ViewAccount({ student }: Props) {
             _version: student._version,
           },
         };
-        console.log("🚀 ~ onSubmit={ ~ updateVars:", updateVars);
 
         await toast.promise(updateProcess(updateVars), {
           loading: "Updating...",
@@ -181,6 +224,14 @@ export default function ViewAccount({ student }: Props) {
             return `${err.message}`;
           },
         });
+
+        applicationId &&
+          (await newAdminLog(
+            applicationId,
+            { ...initialValues, cprDocFile: student.cprDoc },
+            updateVars.input,
+            values.adminReason
+          ));
 
         actions.setSubmitting(false);
       }}
@@ -664,6 +715,28 @@ export default function ViewAccount({ student }: Props) {
               {errors.graduationDate &&
                 touched.graduationDate &&
                 errors.graduationDate}
+            </label>
+          </div>
+
+          {/* adminReason */}
+          <div className="flex flex-col md:col-span-2 justify-start w-full">
+            <label className="label">{t("adminReason")}</label>
+            <Field
+              dir="ltr"
+              type="text"
+              name="adminReason"
+              title="adminReason"
+              placeholder={
+                t("adminReasonD") ??
+                "Enter your reason for updating the student."
+              }
+              className={`input input-bordered input-primary`}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.adminReason}
+            />
+            <label className="label-text-alt text-error">
+              {errors.adminReason && touched.adminReason && errors.adminReason}
             </label>
           </div>
 

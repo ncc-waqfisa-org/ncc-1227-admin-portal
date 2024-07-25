@@ -29,6 +29,8 @@
   "notAddedYet": "Not added yet",
   "universityNameNotFound": "University name not found.",
   "programNameNotFound": "Program name not found.",
+  "adminReason": "Update reason",
+  "adminReasonD": "Enter your reason for updating.",
   "yes": "Yes",
   "no": "No",
   "viewApplications": "View Applications",
