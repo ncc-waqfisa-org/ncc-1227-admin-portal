@@ -20,6 +20,17 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   let application = await getApplicationData(`${id}`);
   let applicationHistory = application?.adminLogs?.items;
 
+  // sort Application History by dateTime
+  if (applicationHistory) {
+    applicationHistory.sort((a, b) => {
+      if (!a) return 1;
+      if (!b) return -1;
+      if (!a.dateTime) return 1;
+      if (!b.dateTime) return -1;
+      return new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime();
+    });
+  }
+
   return {
     props: {
       applicationHistory: applicationHistory,
