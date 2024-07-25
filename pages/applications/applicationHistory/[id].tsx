@@ -58,7 +58,7 @@ Props) {
   // const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
   // Table Data Pagination
-  const elementPerPage = 10;
+  const elementPerPage = 20;
   const [numberOfPages, setNumberOfPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [disableForward, setDisableForward] = useState(false);
@@ -115,9 +115,9 @@ Props) {
   // }
 
   return (
-    <div>
+    <div className="">
       <PageComponent title={"ApplicationLog"}>
-        <div>
+        <div className="">
           <div className="mb-8 ">
             <div className="text-2xl font-semibold ">
               {t("applicationLogTitle")}
@@ -165,7 +165,7 @@ Props) {
           {/* application table */}
           {shownData.length > 0 ? (
             <div>
-              <div dir="ltr" className="w-full h-screen overflow-x-auto">
+              <div dir="ltr" className="w-full grow overflow-x-auto">
                 <table className="table w-full ">
                   <thead className="border  rounded-xl border-nccGray-100">
                     <tr>
