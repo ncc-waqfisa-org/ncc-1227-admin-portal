@@ -2,6 +2,8 @@
   "applicationTitle": "Application Summary",
   "applicationSubtitle": "View all student applications.",
   "search": "Search for applicants",
+  "downloadContractTemplate": "Download Contract Template",
+  "downloadContractTemplateD": "Download the template to fill the contract with the student's information, then upload it here.",
   "searchForStudent": "Search for student",
   "searchForStudentUsingCPR": "Search for student using CPR",
   "searchCPR": "Search using CPR",

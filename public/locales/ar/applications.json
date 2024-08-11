@@ -1,6 +1,8 @@
 {
   "applicationTitle": "ملخص الطلب",
   "applicationSubtitle": "عرض جميع طلبات الطلاب",
+  "downloadContractTemplate": "تنزيل قالب العقد",
+  "downloadContractTemplateD": "تنزيل القالب لملء العقد بمعلومات الطالب ، ثم تحميله هنا.",
   "search": "ابحث عن المتقدمين",
   "searchForStudent": "ابحث عن طالب",
   "searchForStudentUsingCPR": "ابحث عن الطالب باستخدام الرقم الشخصي",

@@ -20,6 +20,8 @@ export type ModelAttachmentConditionInput = {
   or?: Array< ModelAttachmentConditionInput | null > | null,
   not?: ModelAttachmentConditionInput | null,
   _deleted?: ModelBooleanInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
 };
 
 export type ModelStringInput = {
@@ -182,6 +184,8 @@ export type ModelApplicationConditionInput = {
   or?: Array< ModelApplicationConditionInput | null > | null,
   not?: ModelApplicationConditionInput | null,
   _deleted?: ModelBooleanInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
   programApplicationId?: ModelIDInput | null,
   universityApplicationsId?: ModelIDInput | null,
   applicationAttachmentId?: ModelIDInput | null,
@@ -559,6 +563,8 @@ export type ModelProgramChoiceConditionInput = {
   or?: Array< ModelProgramChoiceConditionInput | null > | null,
   not?: ModelProgramChoiceConditionInput | null,
   _deleted?: ModelBooleanInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
   applicationProgramsId?: ModelIDInput | null,
   programApplicationsId?: ModelIDInput | null,
 };
@@ -608,6 +614,8 @@ export type ModelProgramConditionInput = {
   or?: Array< ModelProgramConditionInput | null > | null,
   not?: ModelProgramConditionInput | null,
   _deleted?: ModelBooleanInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
   universityProgramsId?: ModelIDInput | null,
 };
 
@@ -657,6 +665,8 @@ export type ModelUniversityConditionInput = {
   or?: Array< ModelUniversityConditionInput | null > | null,
   not?: ModelUniversityConditionInput | null,
   _deleted?: ModelBooleanInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
 };
 
 export type UpdateUniversityInput = {
@@ -699,6 +709,8 @@ export type ModelAdminLogConditionInput = {
   or?: Array< ModelAdminLogConditionInput | null > | null,
   not?: ModelAdminLogConditionInput | null,
   _deleted?: ModelBooleanInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
   applicationAdminLogsId?: ModelIDInput | null,
   adminAdminLogsCpr?: ModelStringInput | null,
 };
@@ -742,6 +754,8 @@ export type ModelStudentLogConditionInput = {
   or?: Array< ModelStudentLogConditionInput | null > | null,
   not?: ModelStudentLogConditionInput | null,
   _deleted?: ModelBooleanInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
   applicationStudentLogsId?: ModelIDInput | null,
   studentStudentLogsCpr?: ModelStringInput | null,
 };
@@ -781,6 +795,8 @@ export type ModelAdminConditionInput = {
   or?: Array< ModelAdminConditionInput | null > | null,
   not?: ModelAdminConditionInput | null,
   _deleted?: ModelBooleanInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
 };
 
 export type ModelAdminRoleInput = {
@@ -834,6 +850,8 @@ export type ModelParentInfoConditionInput = {
   or?: Array< ModelParentInfoConditionInput | null > | null,
   not?: ModelParentInfoConditionInput | null,
   _deleted?: ModelBooleanInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
 };
 
 export type UpdateParentInfoInput = {
@@ -907,6 +925,8 @@ export type ModelStudentConditionInput = {
   or?: Array< ModelStudentConditionInput | null > | null,
   not?: ModelStudentConditionInput | null,
   _deleted?: ModelBooleanInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
 };
 
 export type ModelGenderInput = {
@@ -969,6 +989,8 @@ export type ModelBatchConditionInput = {
   or?: Array< ModelBatchConditionInput | null > | null,
   not?: ModelBatchConditionInput | null,
   _deleted?: ModelBooleanInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
 };
 
 export type Batch = {
@@ -1043,6 +1065,8 @@ export type ModelScholarshipConditionInput = {
   or?: Array< ModelScholarshipConditionInput | null > | null,
   not?: ModelScholarshipConditionInput | null,
   _deleted?: ModelBooleanInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
 };
 
 export type ModelScholarshipStatusInput = {
@@ -1131,6 +1155,8 @@ export type ModelStatisticsConditionInput = {
   or?: Array< ModelStatisticsConditionInput | null > | null,
   not?: ModelStatisticsConditionInput | null,
   _deleted?: ModelBooleanInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
 };
 
 export type Statistics = {
@@ -1185,6 +1211,8 @@ export type ModelAttachmentFilterInput = {
   signedContractDoc?: ModelStringInput | null,
   transcriptDoc?: ModelStringInput | null,
   schoolCertificate?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
   and?: Array< ModelAttachmentFilterInput | null > | null,
   or?: Array< ModelAttachmentFilterInput | null > | null,
   not?: ModelAttachmentFilterInput | null,
@@ -1220,6 +1248,8 @@ export type ModelApplicationFilterInput = {
   processed?: ModelIntInput | null,
   isFamilyIncomeVerified?: ModelBooleanInput | null,
   reason?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
   and?: Array< ModelApplicationFilterInput | null > | null,
   or?: Array< ModelApplicationFilterInput | null > | null,
   not?: ModelApplicationFilterInput | null,
@@ -1235,6 +1265,8 @@ export type ModelProgramChoiceFilterInput = {
   applicationID?: ModelIDInput | null,
   choiceOrder?: ModelIntInput | null,
   acceptanceLetterDoc?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
   and?: Array< ModelProgramChoiceFilterInput | null > | null,
   or?: Array< ModelProgramChoiceFilterInput | null > | null,
   not?: ModelProgramChoiceFilterInput | null,
@@ -1254,6 +1286,8 @@ export type ModelProgramFilterInput = {
   universityID?: ModelIDInput | null,
   isDeactivated?: ModelBooleanInput | null,
   isTrashed?: ModelBooleanInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
   and?: Array< ModelProgramFilterInput | null > | null,
   or?: Array< ModelProgramFilterInput | null > | null,
   not?: ModelProgramFilterInput | null,
@@ -1271,6 +1305,8 @@ export type ModelUniversityFilterInput = {
   extensionDuration?: ModelIntInput | null,
   isException?: ModelIntInput | null,
   isTrashed?: ModelBooleanInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
   and?: Array< ModelUniversityFilterInput | null > | null,
   or?: Array< ModelUniversityFilterInput | null > | null,
   not?: ModelUniversityFilterInput | null,
@@ -1291,6 +1327,8 @@ export type ModelAdminLogFilterInput = {
   dateTime?: ModelStringInput | null,
   snapshot?: ModelStringInput | null,
   reason?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
   and?: Array< ModelAdminLogFilterInput | null > | null,
   or?: Array< ModelAdminLogFilterInput | null > | null,
   not?: ModelAdminLogFilterInput | null,
@@ -1306,6 +1344,8 @@ export type ModelStudentLogFilterInput = {
   dateTime?: ModelStringInput | null,
   snapshot?: ModelStringInput | null,
   reason?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
   and?: Array< ModelStudentLogFilterInput | null > | null,
   or?: Array< ModelStudentLogFilterInput | null > | null,
   not?: ModelStudentLogFilterInput | null,
@@ -1320,6 +1360,9 @@ export type ModelAdminFilterInput = {
   email?: ModelStringInput | null,
   role?: ModelAdminRoleInput | null,
   isDeactivated?: ModelBooleanInput | null,
+  id?: ModelIDInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
   and?: Array< ModelAdminFilterInput | null > | null,
   or?: Array< ModelAdminFilterInput | null > | null,
   not?: ModelAdminFilterInput | null,
@@ -1352,6 +1395,8 @@ export type ModelParentInfoFilterInput = {
   motherCPR?: ModelStringInput | null,
   numberOfFamilyMembers?: ModelIntInput | null,
   address?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
   and?: Array< ModelParentInfoFilterInput | null > | null,
   or?: Array< ModelParentInfoFilterInput | null > | null,
   not?: ModelParentInfoFilterInput | null,
@@ -1387,6 +1432,9 @@ export type ModelStudentFilterInput = {
   graduationDate?: ModelStringInput | null,
   address?: ModelStringInput | null,
   parentInfoID?: ModelIDInput | null,
+  id?: ModelIDInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
   and?: Array< ModelStudentFilterInput | null > | null,
   or?: Array< ModelStudentFilterInput | null > | null,
   not?: ModelStudentFilterInput | null,
@@ -1407,6 +1455,9 @@ export type ModelBatchFilterInput = {
   updateApplicationEndDate?: ModelStringInput | null,
   signUpStartDate?: ModelStringInput | null,
   signUpEndDate?: ModelStringInput | null,
+  id?: ModelIDInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
   and?: Array< ModelBatchFilterInput | null > | null,
   or?: Array< ModelBatchFilterInput | null > | null,
   not?: ModelBatchFilterInput | null,
@@ -1434,6 +1485,8 @@ export type ModelScholarshipFilterInput = {
   bankName?: ModelStringInput | null,
   IBAN?: ModelStringInput | null,
   IBANLetterDoc?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
   and?: Array< ModelScholarshipFilterInput | null > | null,
   or?: Array< ModelScholarshipFilterInput | null > | null,
   not?: ModelScholarshipFilterInput | null,
@@ -1462,6 +1515,8 @@ export type ModelStatisticsFilterInput = {
   students?: ModelStringInput | null,
   applications?: ModelStringInput | null,
   today?: ModelStringInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
   and?: Array< ModelStatisticsFilterInput | null > | null,
   or?: Array< ModelStatisticsFilterInput | null > | null,
   not?: ModelStatisticsFilterInput | null,
@@ -1509,6 +1564,8 @@ export type ModelSubscriptionAttachmentFilterInput = {
   signedContractDoc?: ModelSubscriptionStringInput | null,
   transcriptDoc?: ModelSubscriptionStringInput | null,
   schoolCertificate?: ModelSubscriptionStringInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
+  updatedAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionAttachmentFilterInput | null > | null,
   or?: Array< ModelSubscriptionAttachmentFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,
@@ -1566,9 +1623,15 @@ export type ModelSubscriptionApplicationFilterInput = {
   processed?: ModelSubscriptionIntInput | null,
   isFamilyIncomeVerified?: ModelSubscriptionBooleanInput | null,
   reason?: ModelSubscriptionStringInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
+  updatedAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionApplicationFilterInput | null > | null,
   or?: Array< ModelSubscriptionApplicationFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,
+  applicationAdminLogsId?: ModelSubscriptionIDInput | null,
+  applicationStudentLogsId?: ModelSubscriptionIDInput | null,
+  applicationProgramsId?: ModelSubscriptionIDInput | null,
+  applicationAttachmentId?: ModelSubscriptionIDInput | null,
 };
 
 export type ModelSubscriptionFloatInput = {
@@ -1606,6 +1669,8 @@ export type ModelSubscriptionProgramChoiceFilterInput = {
   applicationID?: ModelSubscriptionIDInput | null,
   choiceOrder?: ModelSubscriptionIntInput | null,
   acceptanceLetterDoc?: ModelSubscriptionStringInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
+  updatedAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionProgramChoiceFilterInput | null > | null,
   or?: Array< ModelSubscriptionProgramChoiceFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,
@@ -1622,9 +1687,13 @@ export type ModelSubscriptionProgramFilterInput = {
   universityID?: ModelSubscriptionIDInput | null,
   isDeactivated?: ModelSubscriptionBooleanInput | null,
   isTrashed?: ModelSubscriptionBooleanInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
+  updatedAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionProgramFilterInput | null > | null,
   or?: Array< ModelSubscriptionProgramFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,
+  programApplicationsId?: ModelSubscriptionIDInput | null,
+  programApplicationId?: ModelSubscriptionIDInput | null,
 };
 
 export type ModelSubscriptionUniversityFilterInput = {
@@ -1637,9 +1706,13 @@ export type ModelSubscriptionUniversityFilterInput = {
   extensionDuration?: ModelSubscriptionIntInput | null,
   isException?: ModelSubscriptionIntInput | null,
   isTrashed?: ModelSubscriptionBooleanInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
+  updatedAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionUniversityFilterInput | null > | null,
   or?: Array< ModelSubscriptionUniversityFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,
+  universityProgramsId?: ModelSubscriptionIDInput | null,
+  universityApplicationsId?: ModelSubscriptionIDInput | null,
 };
 
 export type ModelSubscriptionAdminLogFilterInput = {
@@ -1649,6 +1722,8 @@ export type ModelSubscriptionAdminLogFilterInput = {
   dateTime?: ModelSubscriptionStringInput | null,
   snapshot?: ModelSubscriptionStringInput | null,
   reason?: ModelSubscriptionStringInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
+  updatedAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionAdminLogFilterInput | null > | null,
   or?: Array< ModelSubscriptionAdminLogFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,
@@ -1661,6 +1736,8 @@ export type ModelSubscriptionStudentLogFilterInput = {
   dateTime?: ModelSubscriptionStringInput | null,
   snapshot?: ModelSubscriptionStringInput | null,
   reason?: ModelSubscriptionStringInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
+  updatedAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionStudentLogFilterInput | null > | null,
   or?: Array< ModelSubscriptionStudentLogFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,
@@ -1672,9 +1749,13 @@ export type ModelSubscriptionAdminFilterInput = {
   email?: ModelSubscriptionStringInput | null,
   role?: ModelSubscriptionStringInput | null,
   isDeactivated?: ModelSubscriptionBooleanInput | null,
+  id?: ModelSubscriptionIDInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
+  updatedAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionAdminFilterInput | null > | null,
   or?: Array< ModelSubscriptionAdminFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,
+  adminAdminLogsCpr?: ModelSubscriptionStringInput | null,
 };
 
 export type ModelSubscriptionParentInfoFilterInput = {
@@ -1690,6 +1771,8 @@ export type ModelSubscriptionParentInfoFilterInput = {
   motherCPR?: ModelSubscriptionStringInput | null,
   numberOfFamilyMembers?: ModelSubscriptionIntInput | null,
   address?: ModelSubscriptionStringInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
+  updatedAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionParentInfoFilterInput | null > | null,
   or?: Array< ModelSubscriptionParentInfoFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,
@@ -1717,9 +1800,13 @@ export type ModelSubscriptionStudentFilterInput = {
   graduationDate?: ModelSubscriptionStringInput | null,
   address?: ModelSubscriptionStringInput | null,
   parentInfoID?: ModelSubscriptionIDInput | null,
+  id?: ModelSubscriptionIDInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
+  updatedAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionStudentFilterInput | null > | null,
   or?: Array< ModelSubscriptionStudentFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,
+  studentStudentLogsCpr?: ModelSubscriptionStringInput | null,
 };
 
 export type ModelSubscriptionBatchFilterInput = {
@@ -1729,6 +1816,9 @@ export type ModelSubscriptionBatchFilterInput = {
   updateApplicationEndDate?: ModelSubscriptionStringInput | null,
   signUpStartDate?: ModelSubscriptionStringInput | null,
   signUpEndDate?: ModelSubscriptionStringInput | null,
+  id?: ModelSubscriptionIDInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
+  updatedAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionBatchFilterInput | null > | null,
   or?: Array< ModelSubscriptionBatchFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,
@@ -1748,6 +1838,8 @@ export type ModelSubscriptionScholarshipFilterInput = {
   bankName?: ModelSubscriptionStringInput | null,
   IBAN?: ModelSubscriptionStringInput | null,
   IBANLetterDoc?: ModelSubscriptionStringInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
+  updatedAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionScholarshipFilterInput | null > | null,
   or?: Array< ModelSubscriptionScholarshipFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,
@@ -1768,6 +1860,8 @@ export type ModelSubscriptionStatisticsFilterInput = {
   students?: ModelSubscriptionStringInput | null,
   applications?: ModelSubscriptionStringInput | null,
   today?: ModelSubscriptionStringInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
+  updatedAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionStatisticsFilterInput | null > | null,
   or?: Array< ModelSubscriptionStatisticsFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,

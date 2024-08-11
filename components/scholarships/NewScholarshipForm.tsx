@@ -118,6 +118,7 @@ export const CreateScholarshipForm: FC<TCreateScholarshipForm> = ({
                 <FormControl>
                   <MultiUpload
                     single
+                    maxSize={3}
                     required={false}
                     notClearable
                     onFiles={(files) => {

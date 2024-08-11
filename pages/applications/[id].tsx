@@ -206,8 +206,22 @@ const ApplicationInfo: FC<Props> = (props) => {
                       props.application.studentCPR
                     }`}
                   </DialogDescription>
+                  {/* Download Condtract template */}
                 </DialogHeader>
-                <div className="">
+                <div className="flex flex-col gap-3">
+                  <div className="flex flex-col gap-1">
+                    <DownloadFileFromUrl
+                      isFromLocal
+                      url={`/Waqfisa-scholarship.pdf`}
+                      fileName={`Scholarship-Contract-${props.application.studentCPR}`}
+                    >
+                      {t("downloadContractTemplate")}
+                    </DownloadFileFromUrl>
+                    <DialogDescription>
+                      {`${t("downloadContractTemplateD")}`}
+                    </DialogDescription>
+                  </div>
+
                   <CreateScholarshipForm application={props.application} />
                 </div>
               </DialogContent>

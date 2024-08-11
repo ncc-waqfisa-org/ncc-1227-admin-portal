@@ -8,7 +8,7 @@ import dayjs from "dayjs";
 type TDownloadFileFromUrl = {
   fileName?: string;
   url: string;
-
+  isFromLocal?: boolean;
   variant?:
     | "link"
     | "default"
@@ -21,43 +21,52 @@ type TDownloadFileFromUrl = {
 };
 export const DownloadFileFromUrl: FC<
   PropsWithChildren<TDownloadFileFromUrl>
-> = ({ fileName, url, children, variant = "outline" }) => {
+> = ({ fileName, url, isFromLocal = false, children, variant = "outline" }) => {
   const { token } = useAuth();
   const { t: tApplications } = useTranslation("applications");
   const { t: tErrors } = useTranslation("errors");
+
+  const handleDownload = async () => {
+    if (isFromLocal) {
+      // Download from public directory
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = fileName ?? "File";
+      a.click();
+    } else {
+      // Existing remote download logic
+      const res = await fetch(url, {
+        headers: {
+          ...(token && { Authorization: `Bearer ${token}` }),
+        },
+      });
+
+      if (res.ok) {
+        const { url: fileUrl } = await res.json();
+        if (fileUrl) {
+          const a = document.createElement("a");
+          a.href = fileUrl;
+          a.download = fileName ?? "File";
+          a.click();
+          window.URL.revokeObjectURL(fileUrl);
+        }
+      } else {
+        const { message } = await res.json();
+        throw new Error(message);
+      }
+    }
+  };
+
   return (
     <Button
       className="rounded-xl"
       variant={variant}
       onClick={() => {
-        toast.promise(
-          fetch(url, {
-            headers: {
-              ...(token && { Authorization: `Bearer ${token}` }),
-            },
-          }).then(async (res) => {
-            if (res.ok) {
-              const { url } = await res.json();
-              if (url) {
-                const a = document.createElement("a");
-                a.href = url;
-                a.download = `${fileName ?? "File"}`;
-                a.click();
-                window.URL.revokeObjectURL(url);
-
-                // window.open(url, "_blank");
-              }
-            } else {
-              const { message } = await res.json();
-              throw new Error(message);
-            }
-          }),
-          {
-            loading: tApplications("loading"),
-            success: tApplications("success"),
-            error: (err) => (err ? err.message : tErrors("somethingWentWrong")),
-          }
-        );
+        toast.promise(handleDownload(), {
+          loading: tApplications("loading"),
+          success: tApplications("success"),
+          error: (err) => (err ? err.message : tErrors("somethingWentWrong")),
+        });
       }}
     >
       {children}
