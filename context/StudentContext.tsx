@@ -7,24 +7,48 @@ import {
   useEffect,
   useState,
 } from "react";
-import { Application, Student } from "../src/API";
+import {
+  ApplicantType,
+  Application,
+  MasterApplication,
+  Student,
+} from "../src/API";
 import { GraphQLResult } from "@aws-amplify/api-graphql";
 
-import { getAllApplicationsLambda } from "../src/CustomAPI";
+import {
+  getAllApplicationsLambda,
+  getAllMasterApplicationsLambda,
+} from "../src/CustomAPI";
 import { useAuth } from "../hooks/use-auth";
 import { useBatchContext } from "./BatchContext";
 
 // interface for all the values & functions
 interface IUseStudentContext {
+  // Bachelor
   applications: Application[] | undefined;
   applicationById: Application | undefined;
   getApplicationByID: (id: string) => void;
-  getStudentInfo: (cpr: string) => Promise<Student | undefined>;
-  batch: number;
-  updateBatch: (batch: number) => void;
   syncApplications: () => Promise<void>;
   syncUpdatedApplication: (updatedApplication: Application) => Promise<void>;
   applicationsBeingFetched: boolean;
+  // Master
+  masterApplications: MasterApplication[] | undefined;
+  masterApplicationById: MasterApplication | undefined;
+  getMasterApplicationByID: (id: string) => void;
+  syncMasterApplications: () => Promise<void>;
+  syncUpdatedMasterApplication: (
+    updatedMasterApplication: MasterApplication
+  ) => Promise<void>;
+  masterApplicationsBeingFetched: boolean;
+  // Shared
+  getStudentInfo: (cpr: string) => Promise<Student | undefined>;
+  batch: number;
+  updateBatch: (batch: number) => void;
+  applicantType: {
+    isMaster: boolean;
+    isBachelor: boolean;
+    isBoth: boolean;
+  };
 }
 
 // the default state for all the values & functions
@@ -47,6 +71,25 @@ const defaultState: IUseStudentContext = {
     updatedApplication: Application
   ): Promise<void> {
     throw new Error("Function not implemented.");
+  },
+  masterApplications: undefined,
+  masterApplicationById: undefined,
+  getMasterApplicationByID: function (id: string): void {
+    throw new Error("Function not implemented.");
+  },
+  syncMasterApplications: function (): Promise<void> {
+    throw new Error("Function not implemented.");
+  },
+  syncUpdatedMasterApplication: function (
+    updatedMasterApplication: MasterApplication
+  ): Promise<void> {
+    throw new Error("Function not implemented.");
+  },
+  masterApplicationsBeingFetched: false,
+  applicantType: {
+    isMaster: false,
+    isBachelor: false,
+    isBoth: false,
   },
 };
 
@@ -74,17 +117,31 @@ function useProviderStudent() {
     defaultState.applications
   );
 
+  const [masterApplications, setMasterApplications] = useState<
+    MasterApplication[] | undefined
+  >(defaultState.masterApplications);
+
   // const [batch, setBatch] = useState<number>(defaultState.batch);
 
   const [applicationById, setApplicationById] = useState<
     Application | undefined
-  >(undefined);
+  >(defaultState.applicationById);
+
+  const [masterApplicationById, setMasterApplicationById] = useState<
+    MasterApplication | undefined
+  >(defaultState.masterApplicationById);
 
   const [applicationsBeingFetched, setApplicationsBeingFetched] = useState(
     defaultState.applicationsBeingFetched
   );
+  const [masterApplicationsBeingFetched, setMasterApplicationsBeingFetched] =
+    useState(defaultState.masterApplicationsBeingFetched);
 
   const { isSignedIn } = useAuth();
+
+  const [applicantType, setApplicantType] = useState(
+    defaultState.applicantType
+  );
 
   useEffect(
     () => {
@@ -117,6 +174,21 @@ function useProviderStudent() {
     return tempApplicationList;
   }
 
+  async function getAllMasterApplications(
+    batch: number
+  ): Promise<MasterApplication[]> {
+    // let tempApplicationList = await getAllApplicationsAPI(batch);
+    setMasterApplicationsBeingFetched(true);
+
+    let tempMasterApplicationList = await getAllMasterApplicationsLambda(
+      batch
+    ).finally(() => {
+      setMasterApplicationsBeingFetched(false);
+    });
+    setMasterApplications(tempMasterApplicationList);
+    return tempMasterApplicationList;
+  }
+
   // get application by id
   async function getApplicationByID(
     id: string
@@ -126,9 +198,20 @@ function useProviderStudent() {
 
     return tempApplication;
   }
+  async function getMasterApplicationByID(
+    id: string
+  ): Promise<MasterApplication | undefined> {
+    let tempMasterApplication = await getMasterApplicationByIdAPI(id);
+    setMasterApplicationById(tempMasterApplication);
+
+    return tempMasterApplication;
+  }
 
   async function syncApplications() {
     await getAllApplications(batch);
+  }
+  async function syncMasterApplications() {
+    await getAllMasterApplications(batch);
   }
 
   /**
@@ -154,59 +237,113 @@ function useProviderStudent() {
     setApplications(tempApplications);
   }
 
+  async function syncUpdatedMasterApplication(
+    updatedMasterApplication: MasterApplication
+  ) {
+    const tempMasterApplications: MasterApplication[] = [
+      ...(masterApplications ?? []),
+    ];
+
+    const appIndex = tempMasterApplications.findIndex(
+      (app) => app.id === updatedMasterApplication.id
+    );
+
+    const tempApp: MasterApplication = {
+      ...tempMasterApplications[appIndex],
+      status: updatedMasterApplication.status,
+    };
+
+    tempMasterApplications.splice(appIndex, 1, tempApp);
+
+    setMasterApplications(tempMasterApplications);
+  }
+
   async function getStudentInfo(cpr: string): Promise<Student | undefined> {
     let query = `
     query GetStudent {
-      getStudent(cpr: "${cpr}") {
-        cpr
-        cprDoc
+  getStudent(cpr: "${cpr}") {
+    cpr
+    cprDoc
+    _deleted
+    _version
+    email
+    familyIncome
+    familyIncomeProofDocs
+    fullName
+    gender
+    graduationDate
+    nationality
+    nationalityCategory
+    phone
+    placeOfBirth
+    preferredLanguage
+    schoolName
+    schoolType
+    specialization
+    studentOrderAmongSiblings
+    address
+    ParentInfo {
+      id
+      _version
+      _deleted
+      address
+      fatherCPR
+      fatherFullName
+      guardianCPR
+      guardianFullName
+      motherCPR
+      motherFullName
+      numberOfFamilyMembers
+      primaryMobile
+      relation
+      secondaryMobile
+    }
+    applications {
+      items {
+        id
         _deleted
-        _version
-        email
-        familyIncome
-        familyIncomeProofDocs
-        fullName
-        gender
-        graduationDate
-        nationality
-        nationalityCategory
-        phone
-        placeOfBirth
-        preferredLanguage
-        schoolName
-        schoolType
-        specialization
-        studentOrderAmongSiblings
-        address
-        ParentInfo {
-          id
-          _version
-          _deleted
-          address
-          fatherCPR
-          fatherFullName
-          guardianCPR
-          guardianFullName
-          motherCPR
-          motherFullName
-          numberOfFamilyMembers
-          primaryMobile
-          relation
-          secondaryMobile
-        }
-        applications {
-          items {
-            id
-            _deleted
-            status
-            gpa
-            dateTime
-            updatedAt
-            isEmailSent
-          }
-        }
+        status
+        gpa
+        dateTime
+        updatedAt
+        isEmailSent
       }
-    }  
+    }
+    m_firstName
+    m_secondName
+    m_lastName
+    m_numberOfFamilyMembers
+    m_graduationYear
+    m_university {
+      isDeactivated
+      universityName
+      universityNameAr
+      id
+      _version
+    }
+    m_universityID
+    m_oldProgram
+    m_applicantType
+    m_isEmployed
+    m_placeOfEmployment
+    m_income
+    m_incomeDoc
+    m_guardianCPR
+    m_guardianFullName
+    m_guardianCPRDoc
+    m_masterApplications {
+       items {
+        id
+        _deleted
+        status
+        gpa
+        dateTime
+        updatedAt
+        isEmailSent
+      }
+    }
+  }
+}
     `;
 
     let res = (await API.graphql(
@@ -219,9 +356,23 @@ function useProviderStudent() {
       throw new Error("Failed to get student");
     }
 
-    return tempStudent.getStudent
+    const student = tempStudent.getStudent
       ? (tempStudent.getStudent as Student)
       : undefined;
+
+    if (student) {
+      const isMaster = student.m_applicantType.includes(ApplicantType.MASTER);
+      const isBachelor = student.m_applicantType.includes(
+        ApplicantType.STUDENT
+      );
+      const isBoth = isMaster && isBachelor;
+
+      setApplicantType({ isMaster, isBachelor, isBoth });
+    } else {
+      setApplicantType(defaultState.applicantType);
+    }
+
+    return student;
   }
 
   // NOTE: return all the values & functions you want to export
@@ -229,12 +380,19 @@ function useProviderStudent() {
     applications,
     applicationById,
     getApplicationByID,
-    batch: batch,
-    updateBatch: updateBatch,
+    batch,
+    updateBatch,
     syncApplications,
     getStudentInfo,
     applicationsBeingFetched,
     syncUpdatedApplication,
+    masterApplications,
+    masterApplicationById,
+    getMasterApplicationByID,
+    syncMasterApplications,
+    syncUpdatedMasterApplication,
+    applicantType,
+    masterApplicationsBeingFetched,
   };
 }
 
@@ -389,4 +547,112 @@ export async function getApplicationByIdAPI(
   }
 
   return tempApplication.getApplication as Application;
+}
+
+export async function getMasterApplicationByIdAPI(
+  id: string
+): Promise<MasterApplication | undefined> {
+  let query = `
+  query GetMasterApplicationForAdmin {
+  getMasterApplication(id: "${id}") {
+    _version
+    _deleted
+    id
+    gpa
+    dateTime
+    batch
+    createdAt
+    adminPoints
+    income
+    incomeDoc
+    isEmailSent
+    isIncomeVerified
+    major
+    masterApplicationAttachmentId
+    nationalityCategory
+    processed
+    program
+    reason
+    score
+    status
+    student {
+      cpr
+    cprDoc
+gender
+nationalityCategory
+phone
+preferredLanguage
+address
+      m_firstName
+    m_secondName
+    m_lastName
+    m_numberOfFamilyMembers
+    m_graduationYear
+    m_university {
+      isDeactivated
+      universityName
+      universityNameAr
+      id
+      _version
+    }
+    m_universityID
+    m_oldProgram
+    m_applicantType
+    m_isEmployed
+    m_placeOfEmployment
+    m_income
+    m_incomeDoc
+    m_guardianCPR
+    m_guardianFullName
+    m_guardianCPRDoc
+    }
+    studentCPR
+    studentName
+    universityID
+    verifiedGPA
+    attachment {
+      _version
+      id
+      acceptanceLetterDoc
+      cprDoc
+      signedContractDoc
+      toeflIELTSCertificate
+      transcriptDoc
+      universityCertificate
+    }
+    masterLogs {
+      items {
+        id
+        _version
+        _deleted
+        applicationID
+        createdAt
+        dateTime
+        masterApplicationMasterLogsId
+        reason
+        snapshot
+        studentCPR
+        studentM_MasterLogsCpr
+      }
+    }
+    university {
+      _version
+      id
+      universityName
+      universityNameAr
+      isDeactivated
+    }
+  }
+}
+  `;
+
+  let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;
+
+  let tempMasterApplication = res.data;
+
+  if (res.data === null) {
+    throw new Error("Failed to get all applications");
+  }
+
+  return tempMasterApplication.getMasterApplication as MasterApplication;
 }

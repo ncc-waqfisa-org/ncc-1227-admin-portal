@@ -32,6 +32,7 @@ import {
   ListBatchesQueryVariables,
   ListMasterBatchesQuery,
   ListMasterBatchesQueryVariables,
+  MasterApplication,
   Program,
   Scholarship,
   StudentLog,
@@ -976,6 +977,19 @@ async function getAllApplications(batch: number) {
   return applicationList;
 }
 
+async function getAllMasterApplications(batch: number) {
+  var nextToken: string | null = null;
+  const masterApplicationList: MasterApplication[] = [];
+
+  do {
+    const result: IMasterApplicationsWithNextToken =
+      await getAllMasterApplicationsWithPaginationAPI(batch, nextToken);
+    masterApplicationList.push(...result.masterApplications);
+    nextToken = result.nextToken;
+  } while (nextToken);
+  return masterApplicationList;
+}
+
 export async function getAllApplicationsLambda(
   batch: number
 ): Promise<Application[]> {
@@ -989,8 +1003,27 @@ export async function getAllApplicationsLambda(
   }
 }
 
+export async function getAllMasterApplicationsLambda(
+  batch: number
+): Promise<MasterApplication[]> {
+  try {
+    const _applications: MasterApplication[] = await getAllMasterApplications(
+      batch
+    );
+
+    return _applications;
+  } catch (error) {
+    console.log("error retrieving all applications", error);
+    return [];
+  }
+}
+
 export interface IApplicationsWithNextToken {
   applications: Application[];
+  nextToken: string | null;
+}
+export interface IMasterApplicationsWithNextToken {
+  masterApplications: MasterApplication[];
   nextToken: string | null;
 }
 
@@ -1105,6 +1138,86 @@ export async function getAllApplicationsWithPaginationAPI(
   const functionResult: IApplicationsWithNextToken = {
     applications: temp,
     nextToken: tempApplicationList?.applicationsByBatchAndStatus.nextToken,
+  };
+
+  return functionResult;
+}
+
+export async function getAllMasterApplicationsWithPaginationAPI(
+  batch: number,
+  nextToken?: string | null
+): Promise<IMasterApplicationsWithNextToken> {
+  let query = `
+  query ListAllApplications {
+    applicationsByBatchAndStatus(batch: ${batch}, limit: 1000, nextToken: ${
+    nextToken ? `"${nextToken}"` : null
+  }) {
+    items {
+      _version
+      _deleted
+      schoolType
+      batch
+      dateTime
+      applicationAttachmentId
+      attachmentID
+      gpa
+      id
+      isEmailSent
+      status
+      studentCPR
+      programs {
+        items {
+          _deleted
+          id
+          programID
+          choiceOrder
+          program {
+            id
+            name
+            nameAr
+            minimumGPA
+            university {
+              name
+              nameAr
+              id
+            }
+          }
+        }
+      }
+      createdAt
+      updatedAt
+      student {
+        fullName
+        email
+        phone
+        familyIncome
+        gender
+        nationality
+        graduationDate 
+        ParentInfo {
+          numberOfFamilyMembers
+        }
+      }
+    }
+        nextToken
+    }
+  }  
+`;
+
+  let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;
+
+  if (res.data === null) {
+    throw new Error("Failed to get all applications");
+  }
+
+  let tempMasterApplicationList = res.data;
+  let temp: MasterApplication[] = (tempMasterApplicationList
+    ?.masterApplicationsByBatchAndStatus?.items ?? []) as MasterApplication[];
+
+  const functionResult: IMasterApplicationsWithNextToken = {
+    masterApplications: temp,
+    nextToken:
+      tempMasterApplicationList?.masterApplicationsByBatchAndStatus.nextToken,
   };
 
   return functionResult;
