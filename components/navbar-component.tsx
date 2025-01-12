@@ -14,6 +14,8 @@ import {
   DashboardIcon,
   UniversitiesIcon,
 } from "./icons";
+import { useAppContext } from "../context/AppContext";
+import { ScholarshipTypeSwitcher } from "./scholarship_type/ScholarshipTypeSwitcher";
 
 export default function NavbarComponent() {
   const { signOut, isSignedIn, user, admin, isSuperAdmin } = useAuth();
@@ -26,7 +28,7 @@ export default function NavbarComponent() {
   }
 
   return (
-    <div className="flex flex-col h-[100svh] w-full max-w-64 justify-between  p-4 py-24 bg-nccGray-50">
+    <div className="flex flex-col h-[100svh] w-full max-w-64 justify-between  p-4 py-24 bg-nccGray-50 overflow-y-auto">
       <div className="flex flex-col gap-4">
         <Link href="/" className=" max-w-[200px] ">
           <Image
@@ -37,14 +39,17 @@ export default function NavbarComponent() {
             height={100}
           />
         </Link>
-        {!isHomePage && (
-          <button className="btn btn-ghost" onClick={goBack}>
-            {t("Back")}
-          </button>
-        )}
-        <div className="max-w-[200px] flex justify-center">
-          <LangSwitcher></LangSwitcher>
+        <div className="flex items-center gap-3">
+          {!isHomePage && (
+            <button className="flex-1 btn btn-ghost" onClick={goBack}>
+              {t("Back")}
+            </button>
+          )}
+          <div className="max-w-[200px] flex justify-center flex-1">
+            <LangSwitcher></LangSwitcher>
+          </div>
         </div>
+        <ScholarshipTypeSwitcher />
 
         <div
           className={`flex flex-col items-center justify-center p-3 text-center rounded-lg ${

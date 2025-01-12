@@ -39,5 +39,9 @@
   "totalRegisteredAccounts": "إجمالي الحسابات المسجلة",
   "totalApplicationsPerStatus": "إجمالي الطلبات لكل حالة",
   "totalApplicationsPerUniversity": "إجمالي الطلبات لكل جامعة",
-  "apply": "تطبيق"
+  "apply": "تطبيق",
+  "type": "النوع",
+  "scholarshipType": "نوع المنحة الدراسية",
+  "masters": "الماجستير",
+  "bachelor": "البكالوريوس"
 }

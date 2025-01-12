@@ -49,7 +49,6 @@ export const PageComponent: FC<PropsWithChildren<Props>> = (props) => {
           <p className="text-zinc-500">{user?.getUsername()}</p>
         </div>
       </div>
-      {/* <div className="drawer drawer-mobile min-w-[277px]"> */}
       <div className="drawer lg:drawer-open">
         <input
           id="my-drawer-2"
@@ -84,7 +83,7 @@ export const PageComponent: FC<PropsWithChildren<Props>> = (props) => {
         </div>
 
         {isSignedIn && (
-          <div className="drawer-side z-10">
+          <div className="z-10 drawer-side">
             <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
             <NavbarComponent></NavbarComponent>
           </div>

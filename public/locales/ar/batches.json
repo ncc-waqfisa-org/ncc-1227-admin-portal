@@ -1,6 +1,8 @@
 {
   "batch": "دفعة",
   "batches": "الدفعات",
+  "MBatches": "دفعات الماجستير",
+  "BBatches": "دفعات البكالوريوس",
   "batchesSubtitle": "قائمة بجميع الدُفعات",
   "tableBatchYear": "دفعة",
   "tableBatchSignUpStartDate": "بدء التسجيلات",
@@ -13,6 +15,7 @@
   "failedToUpdate": "فشل في التحديث",
   "failedToCreate": "فشل في انشاء الدفعة",
   "createNewBatch": "إنشاء دفعة جديدة",
+  "createNewMBatch": "إنشاء دفعة جديدة للماجستير",
   "batchYearExample": "سنة الدفعة (على سبيل المثال 2024)",
   "editBatch": "تحرير دفعة",
   "notFound": "غير معثور عليه",

@@ -51,7 +51,7 @@ export declare type BatchUpdateFormOverridesProps = {
 export declare type BatchUpdateFormProps = React.PropsWithChildren<{
     overrides?: BatchUpdateFormOverridesProps | undefined | null;
 } & {
-    id?: string;
+    batch?: string;
     batch?: Batch;
     onSubmit?: (fields: BatchUpdateFormInputValues) => BatchUpdateFormInputValues;
     onSuccess?: (fields: BatchUpdateFormInputValues) => void;

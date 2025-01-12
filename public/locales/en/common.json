@@ -40,5 +40,9 @@
   "totalRegisteredAccounts": "Total Registered Accounts",
   "totalApplicationsPerStatus": "Total Applications Per Status",
   "totalApplicationsPerUniversity": "Total Applications Per University",
-  "apply": "Apply"
+  "apply": "Apply",
+  "type": "Type",
+  "scholarshipType": "Scholarship Type",
+  "masters": "Masters",
+  "bachelor": "Bachelor"
 }

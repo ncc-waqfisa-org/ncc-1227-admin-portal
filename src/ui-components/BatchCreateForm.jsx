@@ -53,7 +53,7 @@ export default function BatchCreateForm(props) {
     setErrors({});
   };
   const validations = {
-    batch: [],
+    batch: [{ type: "Required" }],
     createApplicationStartDate: [],
     createApplicationEndDate: [],
     updateApplicationEndDate: [],
@@ -139,7 +139,7 @@ export default function BatchCreateForm(props) {
     >
       <TextField
         label="Batch"
-        isRequired={false}
+        isRequired={true}
         isReadOnly={false}
         type="number"
         step="any"

@@ -26,8 +26,9 @@ export declare type UniversityCreateFormInputValues = {
     nameAr?: string;
     availability?: number;
     isDeactivated?: boolean;
-    isExtended?: boolean;
-    extendedTo?: string;
+    isExtended?: number;
+    extensionDuration?: number;
+    isException?: number;
     isTrashed?: boolean;
 };
 export declare type UniversityCreateFormValidationValues = {
@@ -35,8 +36,9 @@ export declare type UniversityCreateFormValidationValues = {
     nameAr?: ValidationFunction<string>;
     availability?: ValidationFunction<number>;
     isDeactivated?: ValidationFunction<boolean>;
-    isExtended?: ValidationFunction<boolean>;
-    extendedTo?: ValidationFunction<string>;
+    isExtended?: ValidationFunction<number>;
+    extensionDuration?: ValidationFunction<number>;
+    isException?: ValidationFunction<number>;
     isTrashed?: ValidationFunction<boolean>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
@@ -46,8 +48,9 @@ export declare type UniversityCreateFormOverridesProps = {
     nameAr?: PrimitiveOverrideProps<TextFieldProps>;
     availability?: PrimitiveOverrideProps<TextFieldProps>;
     isDeactivated?: PrimitiveOverrideProps<SwitchFieldProps>;
-    isExtended?: PrimitiveOverrideProps<SwitchFieldProps>;
-    extendedTo?: PrimitiveOverrideProps<TextFieldProps>;
+    isExtended?: PrimitiveOverrideProps<TextFieldProps>;
+    extensionDuration?: PrimitiveOverrideProps<TextFieldProps>;
+    isException?: PrimitiveOverrideProps<TextFieldProps>;
     isTrashed?: PrimitiveOverrideProps<SwitchFieldProps>;
 } & EscapeHatchProps;
 export declare type UniversityCreateFormProps = React.PropsWithChildren<{

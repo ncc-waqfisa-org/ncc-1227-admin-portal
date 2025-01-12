@@ -15,6 +15,7 @@ import {
   Icon,
   ScrollView,
   SelectField,
+  SwitchField,
   Text,
   TextField,
   useTheme,
@@ -193,6 +194,7 @@ export default function StudentUpdateForm(props) {
     cpr: "",
     cprDoc: "",
     fullName: "",
+    batch: "",
     email: "",
     phone: "",
     gender: "",
@@ -203,17 +205,31 @@ export default function StudentUpdateForm(props) {
     specialization: "",
     placeOfBirth: "",
     studentOrderAmongSiblings: "",
-    householdIncome: "",
     familyIncome: "",
     familyIncomeProofDoc: "",
     familyIncomeProofDocs: [],
     preferredLanguage: "",
     graduationDate: "",
     address: "",
+    m_firstName: "",
+    m_secondName: "",
+    m_lastName: "",
+    m_numberOfFamilyMembers: "",
+    m_graduationYear: "",
+    m_oldProgram: "",
+    m_applicantType: [],
+    m_isEmployed: false,
+    m_placeOfEmployment: "",
+    m_income: "",
+    m_incomeDoc: "",
+    m_guardianCPR: "",
+    m_guardianFullName: "",
+    m_guardianCPRDoc: "",
   };
   const [cpr, setCpr] = React.useState(initialValues.cpr);
   const [cprDoc, setCprDoc] = React.useState(initialValues.cprDoc);
   const [fullName, setFullName] = React.useState(initialValues.fullName);
+  const [batch, setBatch] = React.useState(initialValues.batch);
   const [email, setEmail] = React.useState(initialValues.email);
   const [phone, setPhone] = React.useState(initialValues.phone);
   const [gender, setGender] = React.useState(initialValues.gender);
@@ -233,9 +249,6 @@ export default function StudentUpdateForm(props) {
   );
   const [studentOrderAmongSiblings, setStudentOrderAmongSiblings] =
     React.useState(initialValues.studentOrderAmongSiblings);
-  const [householdIncome, setHouseholdIncome] = React.useState(
-    initialValues.householdIncome
-  );
   const [familyIncome, setFamilyIncome] = React.useState(
     initialValues.familyIncome
   );
@@ -252,6 +265,44 @@ export default function StudentUpdateForm(props) {
     initialValues.graduationDate
   );
   const [address, setAddress] = React.useState(initialValues.address);
+  const [m_firstName, setM_firstName] = React.useState(
+    initialValues.m_firstName
+  );
+  const [m_secondName, setM_secondName] = React.useState(
+    initialValues.m_secondName
+  );
+  const [m_lastName, setM_lastName] = React.useState(initialValues.m_lastName);
+  const [m_numberOfFamilyMembers, setM_numberOfFamilyMembers] = React.useState(
+    initialValues.m_numberOfFamilyMembers
+  );
+  const [m_graduationYear, setM_graduationYear] = React.useState(
+    initialValues.m_graduationYear
+  );
+  const [m_oldProgram, setM_oldProgram] = React.useState(
+    initialValues.m_oldProgram
+  );
+  const [m_applicantType, setM_applicantType] = React.useState(
+    initialValues.m_applicantType
+  );
+  const [m_isEmployed, setM_isEmployed] = React.useState(
+    initialValues.m_isEmployed
+  );
+  const [m_placeOfEmployment, setM_placeOfEmployment] = React.useState(
+    initialValues.m_placeOfEmployment
+  );
+  const [m_income, setM_income] = React.useState(initialValues.m_income);
+  const [m_incomeDoc, setM_incomeDoc] = React.useState(
+    initialValues.m_incomeDoc
+  );
+  const [m_guardianCPR, setM_guardianCPR] = React.useState(
+    initialValues.m_guardianCPR
+  );
+  const [m_guardianFullName, setM_guardianFullName] = React.useState(
+    initialValues.m_guardianFullName
+  );
+  const [m_guardianCPRDoc, setM_guardianCPRDoc] = React.useState(
+    initialValues.m_guardianCPRDoc
+  );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = studentRecord
@@ -260,6 +311,7 @@ export default function StudentUpdateForm(props) {
     setCpr(cleanValues.cpr);
     setCprDoc(cleanValues.cprDoc);
     setFullName(cleanValues.fullName);
+    setBatch(cleanValues.batch);
     setEmail(cleanValues.email);
     setPhone(cleanValues.phone);
     setGender(cleanValues.gender);
@@ -270,7 +322,6 @@ export default function StudentUpdateForm(props) {
     setSpecialization(cleanValues.specialization);
     setPlaceOfBirth(cleanValues.placeOfBirth);
     setStudentOrderAmongSiblings(cleanValues.studentOrderAmongSiblings);
-    setHouseholdIncome(cleanValues.householdIncome);
     setFamilyIncome(cleanValues.familyIncome);
     setFamilyIncomeProofDoc(cleanValues.familyIncomeProofDoc);
     setFamilyIncomeProofDocs(cleanValues.familyIncomeProofDocs ?? []);
@@ -278,6 +329,21 @@ export default function StudentUpdateForm(props) {
     setPreferredLanguage(cleanValues.preferredLanguage);
     setGraduationDate(cleanValues.graduationDate);
     setAddress(cleanValues.address);
+    setM_firstName(cleanValues.m_firstName);
+    setM_secondName(cleanValues.m_secondName);
+    setM_lastName(cleanValues.m_lastName);
+    setM_numberOfFamilyMembers(cleanValues.m_numberOfFamilyMembers);
+    setM_graduationYear(cleanValues.m_graduationYear);
+    setM_oldProgram(cleanValues.m_oldProgram);
+    setM_applicantType(cleanValues.m_applicantType ?? []);
+    setCurrentM_applicantTypeValue("");
+    setM_isEmployed(cleanValues.m_isEmployed);
+    setM_placeOfEmployment(cleanValues.m_placeOfEmployment);
+    setM_income(cleanValues.m_income);
+    setM_incomeDoc(cleanValues.m_incomeDoc);
+    setM_guardianCPR(cleanValues.m_guardianCPR);
+    setM_guardianFullName(cleanValues.m_guardianFullName);
+    setM_guardianCPRDoc(cleanValues.m_guardianCPRDoc);
     setErrors({});
   };
   const [studentRecord, setStudentRecord] = React.useState(studentModelProp);
@@ -296,10 +362,23 @@ export default function StudentUpdateForm(props) {
     setCurrentFamilyIncomeProofDocsValue,
   ] = React.useState("");
   const familyIncomeProofDocsRef = React.createRef();
+  const [currentM_applicantTypeValue, setCurrentM_applicantTypeValue] =
+    React.useState("");
+  const m_applicantTypeRef = React.createRef();
+  const getDisplayValue = {
+    m_applicantType: (r) => {
+      const enumDisplayValueMap = {
+        STUDENT: "Student",
+        MASTER: "Master",
+      };
+      return enumDisplayValueMap[r];
+    },
+  };
   const validations = {
     cpr: [{ type: "Required" }],
     cprDoc: [],
     fullName: [],
+    batch: [],
     email: [],
     phone: [],
     gender: [],
@@ -310,13 +389,26 @@ export default function StudentUpdateForm(props) {
     specialization: [],
     placeOfBirth: [],
     studentOrderAmongSiblings: [],
-    householdIncome: [],
     familyIncome: [],
     familyIncomeProofDoc: [],
     familyIncomeProofDocs: [],
     preferredLanguage: [],
     graduationDate: [],
     address: [],
+    m_firstName: [],
+    m_secondName: [],
+    m_lastName: [],
+    m_numberOfFamilyMembers: [],
+    m_graduationYear: [],
+    m_oldProgram: [],
+    m_applicantType: [{ type: "Required" }],
+    m_isEmployed: [],
+    m_placeOfEmployment: [],
+    m_income: [],
+    m_incomeDoc: [],
+    m_guardianCPR: [],
+    m_guardianFullName: [],
+    m_guardianCPRDoc: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -347,6 +439,7 @@ export default function StudentUpdateForm(props) {
           cpr,
           cprDoc,
           fullName,
+          batch,
           email,
           phone,
           gender,
@@ -357,13 +450,26 @@ export default function StudentUpdateForm(props) {
           specialization,
           placeOfBirth,
           studentOrderAmongSiblings,
-          householdIncome,
           familyIncome,
           familyIncomeProofDoc,
           familyIncomeProofDocs,
           preferredLanguage,
           graduationDate,
           address,
+          m_firstName,
+          m_secondName,
+          m_lastName,
+          m_numberOfFamilyMembers,
+          m_graduationYear,
+          m_oldProgram,
+          m_applicantType,
+          m_isEmployed,
+          m_placeOfEmployment,
+          m_income,
+          m_incomeDoc,
+          m_guardianCPR,
+          m_guardianFullName,
+          m_guardianCPRDoc,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -422,6 +528,7 @@ export default function StudentUpdateForm(props) {
               cpr: value,
               cprDoc,
               fullName,
+              batch,
               email,
               phone,
               gender,
@@ -432,13 +539,26 @@ export default function StudentUpdateForm(props) {
               specialization,
               placeOfBirth,
               studentOrderAmongSiblings,
-              householdIncome,
               familyIncome,
               familyIncomeProofDoc,
               familyIncomeProofDocs,
               preferredLanguage,
               graduationDate,
               address,
+              m_firstName,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
             };
             const result = onChange(modelFields);
             value = result?.cpr ?? value;
@@ -465,6 +585,7 @@ export default function StudentUpdateForm(props) {
               cpr,
               cprDoc: value,
               fullName,
+              batch,
               email,
               phone,
               gender,
@@ -475,13 +596,26 @@ export default function StudentUpdateForm(props) {
               specialization,
               placeOfBirth,
               studentOrderAmongSiblings,
-              householdIncome,
               familyIncome,
               familyIncomeProofDoc,
               familyIncomeProofDocs,
               preferredLanguage,
               graduationDate,
               address,
+              m_firstName,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
             };
             const result = onChange(modelFields);
             value = result?.cprDoc ?? value;
@@ -508,6 +642,7 @@ export default function StudentUpdateForm(props) {
               cpr,
               cprDoc,
               fullName: value,
+              batch,
               email,
               phone,
               gender,
@@ -518,13 +653,26 @@ export default function StudentUpdateForm(props) {
               specialization,
               placeOfBirth,
               studentOrderAmongSiblings,
-              householdIncome,
               familyIncome,
               familyIncomeProofDoc,
               familyIncomeProofDocs,
               preferredLanguage,
               graduationDate,
               address,
+              m_firstName,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
             };
             const result = onChange(modelFields);
             value = result?.fullName ?? value;
@@ -540,6 +688,67 @@ export default function StudentUpdateForm(props) {
         {...getOverrideProps(overrides, "fullName")}
       ></TextField>
       <TextField
+        label="Batch"
+        isRequired={false}
+        isReadOnly={false}
+        type="number"
+        step="any"
+        value={batch}
+        onChange={(e) => {
+          let value = isNaN(parseInt(e.target.value))
+            ? e.target.value
+            : parseInt(e.target.value);
+          if (onChange) {
+            const modelFields = {
+              cpr,
+              cprDoc,
+              fullName,
+              batch: value,
+              email,
+              phone,
+              gender,
+              nationalityCategory,
+              nationality,
+              schoolName,
+              schoolType,
+              specialization,
+              placeOfBirth,
+              studentOrderAmongSiblings,
+              familyIncome,
+              familyIncomeProofDoc,
+              familyIncomeProofDocs,
+              preferredLanguage,
+              graduationDate,
+              address,
+              m_firstName,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
+            };
+            const result = onChange(modelFields);
+            value = result?.batch ?? value;
+          }
+          if (errors.batch?.hasError) {
+            runValidationTasks("batch", value);
+          }
+          setBatch(value);
+        }}
+        onBlur={() => runValidationTasks("batch", batch)}
+        errorMessage={errors.batch?.errorMessage}
+        hasError={errors.batch?.hasError}
+        {...getOverrideProps(overrides, "batch")}
+      ></TextField>
+      <TextField
         label="Email"
         isRequired={false}
         isReadOnly={false}
@@ -551,6 +760,7 @@ export default function StudentUpdateForm(props) {
               cpr,
               cprDoc,
               fullName,
+              batch,
               email: value,
               phone,
               gender,
@@ -561,13 +771,26 @@ export default function StudentUpdateForm(props) {
               specialization,
               placeOfBirth,
               studentOrderAmongSiblings,
-              householdIncome,
               familyIncome,
               familyIncomeProofDoc,
               familyIncomeProofDocs,
               preferredLanguage,
               graduationDate,
               address,
+              m_firstName,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
             };
             const result = onChange(modelFields);
             value = result?.email ?? value;
@@ -594,6 +817,7 @@ export default function StudentUpdateForm(props) {
               cpr,
               cprDoc,
               fullName,
+              batch,
               email,
               phone: value,
               gender,
@@ -604,13 +828,26 @@ export default function StudentUpdateForm(props) {
               specialization,
               placeOfBirth,
               studentOrderAmongSiblings,
-              householdIncome,
               familyIncome,
               familyIncomeProofDoc,
               familyIncomeProofDocs,
               preferredLanguage,
               graduationDate,
               address,
+              m_firstName,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
             };
             const result = onChange(modelFields);
             value = result?.phone ?? value;
@@ -637,6 +874,7 @@ export default function StudentUpdateForm(props) {
               cpr,
               cprDoc,
               fullName,
+              batch,
               email,
               phone,
               gender: value,
@@ -647,13 +885,26 @@ export default function StudentUpdateForm(props) {
               specialization,
               placeOfBirth,
               studentOrderAmongSiblings,
-              householdIncome,
               familyIncome,
               familyIncomeProofDoc,
               familyIncomeProofDocs,
               preferredLanguage,
               graduationDate,
               address,
+              m_firstName,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
             };
             const result = onChange(modelFields);
             value = result?.gender ?? value;
@@ -691,6 +942,7 @@ export default function StudentUpdateForm(props) {
               cpr,
               cprDoc,
               fullName,
+              batch,
               email,
               phone,
               gender,
@@ -701,13 +953,26 @@ export default function StudentUpdateForm(props) {
               specialization,
               placeOfBirth,
               studentOrderAmongSiblings,
-              householdIncome,
               familyIncome,
               familyIncomeProofDoc,
               familyIncomeProofDocs,
               preferredLanguage,
               graduationDate,
               address,
+              m_firstName,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
             };
             const result = onChange(modelFields);
             value = result?.nationalityCategory ?? value;
@@ -747,6 +1012,7 @@ export default function StudentUpdateForm(props) {
               cpr,
               cprDoc,
               fullName,
+              batch,
               email,
               phone,
               gender,
@@ -757,13 +1023,26 @@ export default function StudentUpdateForm(props) {
               specialization,
               placeOfBirth,
               studentOrderAmongSiblings,
-              householdIncome,
               familyIncome,
               familyIncomeProofDoc,
               familyIncomeProofDocs,
               preferredLanguage,
               graduationDate,
               address,
+              m_firstName,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
             };
             const result = onChange(modelFields);
             value = result?.nationality ?? value;
@@ -790,6 +1069,7 @@ export default function StudentUpdateForm(props) {
               cpr,
               cprDoc,
               fullName,
+              batch,
               email,
               phone,
               gender,
@@ -800,13 +1080,26 @@ export default function StudentUpdateForm(props) {
               specialization,
               placeOfBirth,
               studentOrderAmongSiblings,
-              householdIncome,
               familyIncome,
               familyIncomeProofDoc,
               familyIncomeProofDocs,
               preferredLanguage,
               graduationDate,
               address,
+              m_firstName,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
             };
             const result = onChange(modelFields);
             value = result?.schoolName ?? value;
@@ -833,6 +1126,7 @@ export default function StudentUpdateForm(props) {
               cpr,
               cprDoc,
               fullName,
+              batch,
               email,
               phone,
               gender,
@@ -843,13 +1137,26 @@ export default function StudentUpdateForm(props) {
               specialization,
               placeOfBirth,
               studentOrderAmongSiblings,
-              householdIncome,
               familyIncome,
               familyIncomeProofDoc,
               familyIncomeProofDocs,
               preferredLanguage,
               graduationDate,
               address,
+              m_firstName,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
             };
             const result = onChange(modelFields);
             value = result?.schoolType ?? value;
@@ -887,6 +1194,7 @@ export default function StudentUpdateForm(props) {
               cpr,
               cprDoc,
               fullName,
+              batch,
               email,
               phone,
               gender,
@@ -897,13 +1205,26 @@ export default function StudentUpdateForm(props) {
               specialization: value,
               placeOfBirth,
               studentOrderAmongSiblings,
-              householdIncome,
               familyIncome,
               familyIncomeProofDoc,
               familyIncomeProofDocs,
               preferredLanguage,
               graduationDate,
               address,
+              m_firstName,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
             };
             const result = onChange(modelFields);
             value = result?.specialization ?? value;
@@ -930,6 +1251,7 @@ export default function StudentUpdateForm(props) {
               cpr,
               cprDoc,
               fullName,
+              batch,
               email,
               phone,
               gender,
@@ -940,13 +1262,26 @@ export default function StudentUpdateForm(props) {
               specialization,
               placeOfBirth: value,
               studentOrderAmongSiblings,
-              householdIncome,
               familyIncome,
               familyIncomeProofDoc,
               familyIncomeProofDocs,
               preferredLanguage,
               graduationDate,
               address,
+              m_firstName,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
             };
             const result = onChange(modelFields);
             value = result?.placeOfBirth ?? value;
@@ -977,6 +1312,7 @@ export default function StudentUpdateForm(props) {
               cpr,
               cprDoc,
               fullName,
+              batch,
               email,
               phone,
               gender,
@@ -987,13 +1323,26 @@ export default function StudentUpdateForm(props) {
               specialization,
               placeOfBirth,
               studentOrderAmongSiblings: value,
-              householdIncome,
               familyIncome,
               familyIncomeProofDoc,
               familyIncomeProofDocs,
               preferredLanguage,
               graduationDate,
               address,
+              m_firstName,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
             };
             const result = onChange(modelFields);
             value = result?.studentOrderAmongSiblings ?? value;
@@ -1013,53 +1362,6 @@ export default function StudentUpdateForm(props) {
         hasError={errors.studentOrderAmongSiblings?.hasError}
         {...getOverrideProps(overrides, "studentOrderAmongSiblings")}
       ></TextField>
-      <TextField
-        label="Household income"
-        isRequired={false}
-        isReadOnly={false}
-        type="number"
-        step="any"
-        value={householdIncome}
-        onChange={(e) => {
-          let value = isNaN(parseFloat(e.target.value))
-            ? e.target.value
-            : parseFloat(e.target.value);
-          if (onChange) {
-            const modelFields = {
-              cpr,
-              cprDoc,
-              fullName,
-              email,
-              phone,
-              gender,
-              nationalityCategory,
-              nationality,
-              schoolName,
-              schoolType,
-              specialization,
-              placeOfBirth,
-              studentOrderAmongSiblings,
-              householdIncome: value,
-              familyIncome,
-              familyIncomeProofDoc,
-              familyIncomeProofDocs,
-              preferredLanguage,
-              graduationDate,
-              address,
-            };
-            const result = onChange(modelFields);
-            value = result?.householdIncome ?? value;
-          }
-          if (errors.householdIncome?.hasError) {
-            runValidationTasks("householdIncome", value);
-          }
-          setHouseholdIncome(value);
-        }}
-        onBlur={() => runValidationTasks("householdIncome", householdIncome)}
-        errorMessage={errors.householdIncome?.errorMessage}
-        hasError={errors.householdIncome?.hasError}
-        {...getOverrideProps(overrides, "householdIncome")}
-      ></TextField>
       <SelectField
         label="Family income"
         placeholder="Please select an option"
@@ -1072,6 +1374,7 @@ export default function StudentUpdateForm(props) {
               cpr,
               cprDoc,
               fullName,
+              batch,
               email,
               phone,
               gender,
@@ -1082,13 +1385,26 @@ export default function StudentUpdateForm(props) {
               specialization,
               placeOfBirth,
               studentOrderAmongSiblings,
-              householdIncome,
               familyIncome: value,
               familyIncomeProofDoc,
               familyIncomeProofDocs,
               preferredLanguage,
               graduationDate,
               address,
+              m_firstName,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
             };
             const result = onChange(modelFields);
             value = result?.familyIncome ?? value;
@@ -1146,6 +1462,7 @@ export default function StudentUpdateForm(props) {
               cpr,
               cprDoc,
               fullName,
+              batch,
               email,
               phone,
               gender,
@@ -1156,13 +1473,26 @@ export default function StudentUpdateForm(props) {
               specialization,
               placeOfBirth,
               studentOrderAmongSiblings,
-              householdIncome,
               familyIncome,
               familyIncomeProofDoc: value,
               familyIncomeProofDocs,
               preferredLanguage,
               graduationDate,
               address,
+              m_firstName,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
             };
             const result = onChange(modelFields);
             value = result?.familyIncomeProofDoc ?? value;
@@ -1187,6 +1517,7 @@ export default function StudentUpdateForm(props) {
               cpr,
               cprDoc,
               fullName,
+              batch,
               email,
               phone,
               gender,
@@ -1197,13 +1528,26 @@ export default function StudentUpdateForm(props) {
               specialization,
               placeOfBirth,
               studentOrderAmongSiblings,
-              householdIncome,
               familyIncome,
               familyIncomeProofDoc,
               familyIncomeProofDocs: values,
               preferredLanguage,
               graduationDate,
               address,
+              m_firstName,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
             };
             const result = onChange(modelFields);
             values = result?.familyIncomeProofDocs ?? values;
@@ -1263,6 +1607,7 @@ export default function StudentUpdateForm(props) {
               cpr,
               cprDoc,
               fullName,
+              batch,
               email,
               phone,
               gender,
@@ -1273,13 +1618,26 @@ export default function StudentUpdateForm(props) {
               specialization,
               placeOfBirth,
               studentOrderAmongSiblings,
-              householdIncome,
               familyIncome,
               familyIncomeProofDoc,
               familyIncomeProofDocs,
               preferredLanguage: value,
               graduationDate,
               address,
+              m_firstName,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
             };
             const result = onChange(modelFields);
             value = result?.preferredLanguage ?? value;
@@ -1320,6 +1678,7 @@ export default function StudentUpdateForm(props) {
               cpr,
               cprDoc,
               fullName,
+              batch,
               email,
               phone,
               gender,
@@ -1330,13 +1689,26 @@ export default function StudentUpdateForm(props) {
               specialization,
               placeOfBirth,
               studentOrderAmongSiblings,
-              householdIncome,
               familyIncome,
               familyIncomeProofDoc,
               familyIncomeProofDocs,
               preferredLanguage,
               graduationDate: value,
               address,
+              m_firstName,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
             };
             const result = onChange(modelFields);
             value = result?.graduationDate ?? value;
@@ -1363,6 +1735,7 @@ export default function StudentUpdateForm(props) {
               cpr,
               cprDoc,
               fullName,
+              batch,
               email,
               phone,
               gender,
@@ -1373,13 +1746,26 @@ export default function StudentUpdateForm(props) {
               specialization,
               placeOfBirth,
               studentOrderAmongSiblings,
-              householdIncome,
               familyIncome,
               familyIncomeProofDoc,
               familyIncomeProofDocs,
               preferredLanguage,
               graduationDate,
               address: value,
+              m_firstName,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
             };
             const result = onChange(modelFields);
             value = result?.address ?? value;
@@ -1393,6 +1779,863 @@ export default function StudentUpdateForm(props) {
         errorMessage={errors.address?.errorMessage}
         hasError={errors.address?.hasError}
         {...getOverrideProps(overrides, "address")}
+      ></TextField>
+      <TextField
+        label="M first name"
+        isRequired={false}
+        isReadOnly={false}
+        value={m_firstName}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              cpr,
+              cprDoc,
+              fullName,
+              batch,
+              email,
+              phone,
+              gender,
+              nationalityCategory,
+              nationality,
+              schoolName,
+              schoolType,
+              specialization,
+              placeOfBirth,
+              studentOrderAmongSiblings,
+              familyIncome,
+              familyIncomeProofDoc,
+              familyIncomeProofDocs,
+              preferredLanguage,
+              graduationDate,
+              address,
+              m_firstName: value,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
+            };
+            const result = onChange(modelFields);
+            value = result?.m_firstName ?? value;
+          }
+          if (errors.m_firstName?.hasError) {
+            runValidationTasks("m_firstName", value);
+          }
+          setM_firstName(value);
+        }}
+        onBlur={() => runValidationTasks("m_firstName", m_firstName)}
+        errorMessage={errors.m_firstName?.errorMessage}
+        hasError={errors.m_firstName?.hasError}
+        {...getOverrideProps(overrides, "m_firstName")}
+      ></TextField>
+      <TextField
+        label="M second name"
+        isRequired={false}
+        isReadOnly={false}
+        value={m_secondName}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              cpr,
+              cprDoc,
+              fullName,
+              batch,
+              email,
+              phone,
+              gender,
+              nationalityCategory,
+              nationality,
+              schoolName,
+              schoolType,
+              specialization,
+              placeOfBirth,
+              studentOrderAmongSiblings,
+              familyIncome,
+              familyIncomeProofDoc,
+              familyIncomeProofDocs,
+              preferredLanguage,
+              graduationDate,
+              address,
+              m_firstName,
+              m_secondName: value,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
+            };
+            const result = onChange(modelFields);
+            value = result?.m_secondName ?? value;
+          }
+          if (errors.m_secondName?.hasError) {
+            runValidationTasks("m_secondName", value);
+          }
+          setM_secondName(value);
+        }}
+        onBlur={() => runValidationTasks("m_secondName", m_secondName)}
+        errorMessage={errors.m_secondName?.errorMessage}
+        hasError={errors.m_secondName?.hasError}
+        {...getOverrideProps(overrides, "m_secondName")}
+      ></TextField>
+      <TextField
+        label="M last name"
+        isRequired={false}
+        isReadOnly={false}
+        value={m_lastName}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              cpr,
+              cprDoc,
+              fullName,
+              batch,
+              email,
+              phone,
+              gender,
+              nationalityCategory,
+              nationality,
+              schoolName,
+              schoolType,
+              specialization,
+              placeOfBirth,
+              studentOrderAmongSiblings,
+              familyIncome,
+              familyIncomeProofDoc,
+              familyIncomeProofDocs,
+              preferredLanguage,
+              graduationDate,
+              address,
+              m_firstName,
+              m_secondName,
+              m_lastName: value,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
+            };
+            const result = onChange(modelFields);
+            value = result?.m_lastName ?? value;
+          }
+          if (errors.m_lastName?.hasError) {
+            runValidationTasks("m_lastName", value);
+          }
+          setM_lastName(value);
+        }}
+        onBlur={() => runValidationTasks("m_lastName", m_lastName)}
+        errorMessage={errors.m_lastName?.errorMessage}
+        hasError={errors.m_lastName?.hasError}
+        {...getOverrideProps(overrides, "m_lastName")}
+      ></TextField>
+      <TextField
+        label="M number of family members"
+        isRequired={false}
+        isReadOnly={false}
+        type="number"
+        step="any"
+        value={m_numberOfFamilyMembers}
+        onChange={(e) => {
+          let value = isNaN(parseInt(e.target.value))
+            ? e.target.value
+            : parseInt(e.target.value);
+          if (onChange) {
+            const modelFields = {
+              cpr,
+              cprDoc,
+              fullName,
+              batch,
+              email,
+              phone,
+              gender,
+              nationalityCategory,
+              nationality,
+              schoolName,
+              schoolType,
+              specialization,
+              placeOfBirth,
+              studentOrderAmongSiblings,
+              familyIncome,
+              familyIncomeProofDoc,
+              familyIncomeProofDocs,
+              preferredLanguage,
+              graduationDate,
+              address,
+              m_firstName,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers: value,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
+            };
+            const result = onChange(modelFields);
+            value = result?.m_numberOfFamilyMembers ?? value;
+          }
+          if (errors.m_numberOfFamilyMembers?.hasError) {
+            runValidationTasks("m_numberOfFamilyMembers", value);
+          }
+          setM_numberOfFamilyMembers(value);
+        }}
+        onBlur={() =>
+          runValidationTasks("m_numberOfFamilyMembers", m_numberOfFamilyMembers)
+        }
+        errorMessage={errors.m_numberOfFamilyMembers?.errorMessage}
+        hasError={errors.m_numberOfFamilyMembers?.hasError}
+        {...getOverrideProps(overrides, "m_numberOfFamilyMembers")}
+      ></TextField>
+      <TextField
+        label="M graduation year"
+        isRequired={false}
+        isReadOnly={false}
+        value={m_graduationYear}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              cpr,
+              cprDoc,
+              fullName,
+              batch,
+              email,
+              phone,
+              gender,
+              nationalityCategory,
+              nationality,
+              schoolName,
+              schoolType,
+              specialization,
+              placeOfBirth,
+              studentOrderAmongSiblings,
+              familyIncome,
+              familyIncomeProofDoc,
+              familyIncomeProofDocs,
+              preferredLanguage,
+              graduationDate,
+              address,
+              m_firstName,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear: value,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
+            };
+            const result = onChange(modelFields);
+            value = result?.m_graduationYear ?? value;
+          }
+          if (errors.m_graduationYear?.hasError) {
+            runValidationTasks("m_graduationYear", value);
+          }
+          setM_graduationYear(value);
+        }}
+        onBlur={() => runValidationTasks("m_graduationYear", m_graduationYear)}
+        errorMessage={errors.m_graduationYear?.errorMessage}
+        hasError={errors.m_graduationYear?.hasError}
+        {...getOverrideProps(overrides, "m_graduationYear")}
+      ></TextField>
+      <TextField
+        label="M old program"
+        isRequired={false}
+        isReadOnly={false}
+        value={m_oldProgram}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              cpr,
+              cprDoc,
+              fullName,
+              batch,
+              email,
+              phone,
+              gender,
+              nationalityCategory,
+              nationality,
+              schoolName,
+              schoolType,
+              specialization,
+              placeOfBirth,
+              studentOrderAmongSiblings,
+              familyIncome,
+              familyIncomeProofDoc,
+              familyIncomeProofDocs,
+              preferredLanguage,
+              graduationDate,
+              address,
+              m_firstName,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram: value,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
+            };
+            const result = onChange(modelFields);
+            value = result?.m_oldProgram ?? value;
+          }
+          if (errors.m_oldProgram?.hasError) {
+            runValidationTasks("m_oldProgram", value);
+          }
+          setM_oldProgram(value);
+        }}
+        onBlur={() => runValidationTasks("m_oldProgram", m_oldProgram)}
+        errorMessage={errors.m_oldProgram?.errorMessage}
+        hasError={errors.m_oldProgram?.hasError}
+        {...getOverrideProps(overrides, "m_oldProgram")}
+      ></TextField>
+      <ArrayField
+        onChange={async (items) => {
+          let values = items;
+          if (onChange) {
+            const modelFields = {
+              cpr,
+              cprDoc,
+              fullName,
+              batch,
+              email,
+              phone,
+              gender,
+              nationalityCategory,
+              nationality,
+              schoolName,
+              schoolType,
+              specialization,
+              placeOfBirth,
+              studentOrderAmongSiblings,
+              familyIncome,
+              familyIncomeProofDoc,
+              familyIncomeProofDocs,
+              preferredLanguage,
+              graduationDate,
+              address,
+              m_firstName,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType: values,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
+            };
+            const result = onChange(modelFields);
+            values = result?.m_applicantType ?? values;
+          }
+          setM_applicantType(values);
+          setCurrentM_applicantTypeValue("");
+        }}
+        currentFieldValue={currentM_applicantTypeValue}
+        label={"M applicant type"}
+        items={m_applicantType}
+        hasError={errors?.m_applicantType?.hasError}
+        runValidationTasks={async () =>
+          await runValidationTasks(
+            "m_applicantType",
+            currentM_applicantTypeValue
+          )
+        }
+        errorMessage={errors?.m_applicantType?.errorMessage}
+        getBadgeText={getDisplayValue.m_applicantType}
+        setFieldValue={setCurrentM_applicantTypeValue}
+        inputFieldRef={m_applicantTypeRef}
+        defaultFieldValue={""}
+      >
+        <SelectField
+          label="M applicant type"
+          placeholder="Please select an option"
+          isDisabled={false}
+          value={currentM_applicantTypeValue}
+          onChange={(e) => {
+            let { value } = e.target;
+            if (errors.m_applicantType?.hasError) {
+              runValidationTasks("m_applicantType", value);
+            }
+            setCurrentM_applicantTypeValue(value);
+          }}
+          onBlur={() =>
+            runValidationTasks("m_applicantType", currentM_applicantTypeValue)
+          }
+          errorMessage={errors.m_applicantType?.errorMessage}
+          hasError={errors.m_applicantType?.hasError}
+          ref={m_applicantTypeRef}
+          labelHidden={true}
+          {...getOverrideProps(overrides, "m_applicantType")}
+        >
+          <option
+            children="Student"
+            value="STUDENT"
+            {...getOverrideProps(overrides, "m_applicantTypeoption0")}
+          ></option>
+          <option
+            children="Master"
+            value="MASTER"
+            {...getOverrideProps(overrides, "m_applicantTypeoption1")}
+          ></option>
+        </SelectField>
+      </ArrayField>
+      <SwitchField
+        label="M is employed"
+        defaultChecked={false}
+        isDisabled={false}
+        isChecked={m_isEmployed}
+        onChange={(e) => {
+          let value = e.target.checked;
+          if (onChange) {
+            const modelFields = {
+              cpr,
+              cprDoc,
+              fullName,
+              batch,
+              email,
+              phone,
+              gender,
+              nationalityCategory,
+              nationality,
+              schoolName,
+              schoolType,
+              specialization,
+              placeOfBirth,
+              studentOrderAmongSiblings,
+              familyIncome,
+              familyIncomeProofDoc,
+              familyIncomeProofDocs,
+              preferredLanguage,
+              graduationDate,
+              address,
+              m_firstName,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed: value,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
+            };
+            const result = onChange(modelFields);
+            value = result?.m_isEmployed ?? value;
+          }
+          if (errors.m_isEmployed?.hasError) {
+            runValidationTasks("m_isEmployed", value);
+          }
+          setM_isEmployed(value);
+        }}
+        onBlur={() => runValidationTasks("m_isEmployed", m_isEmployed)}
+        errorMessage={errors.m_isEmployed?.errorMessage}
+        hasError={errors.m_isEmployed?.hasError}
+        {...getOverrideProps(overrides, "m_isEmployed")}
+      ></SwitchField>
+      <TextField
+        label="M place of employment"
+        isRequired={false}
+        isReadOnly={false}
+        value={m_placeOfEmployment}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              cpr,
+              cprDoc,
+              fullName,
+              batch,
+              email,
+              phone,
+              gender,
+              nationalityCategory,
+              nationality,
+              schoolName,
+              schoolType,
+              specialization,
+              placeOfBirth,
+              studentOrderAmongSiblings,
+              familyIncome,
+              familyIncomeProofDoc,
+              familyIncomeProofDocs,
+              preferredLanguage,
+              graduationDate,
+              address,
+              m_firstName,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment: value,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
+            };
+            const result = onChange(modelFields);
+            value = result?.m_placeOfEmployment ?? value;
+          }
+          if (errors.m_placeOfEmployment?.hasError) {
+            runValidationTasks("m_placeOfEmployment", value);
+          }
+          setM_placeOfEmployment(value);
+        }}
+        onBlur={() =>
+          runValidationTasks("m_placeOfEmployment", m_placeOfEmployment)
+        }
+        errorMessage={errors.m_placeOfEmployment?.errorMessage}
+        hasError={errors.m_placeOfEmployment?.hasError}
+        {...getOverrideProps(overrides, "m_placeOfEmployment")}
+      ></TextField>
+      <SelectField
+        label="M income"
+        placeholder="Please select an option"
+        isDisabled={false}
+        value={m_income}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              cpr,
+              cprDoc,
+              fullName,
+              batch,
+              email,
+              phone,
+              gender,
+              nationalityCategory,
+              nationality,
+              schoolName,
+              schoolType,
+              specialization,
+              placeOfBirth,
+              studentOrderAmongSiblings,
+              familyIncome,
+              familyIncomeProofDoc,
+              familyIncomeProofDocs,
+              preferredLanguage,
+              graduationDate,
+              address,
+              m_firstName,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income: value,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
+            };
+            const result = onChange(modelFields);
+            value = result?.m_income ?? value;
+          }
+          if (errors.m_income?.hasError) {
+            runValidationTasks("m_income", value);
+          }
+          setM_income(value);
+        }}
+        onBlur={() => runValidationTasks("m_income", m_income)}
+        errorMessage={errors.m_income?.errorMessage}
+        hasError={errors.m_income?.hasError}
+        {...getOverrideProps(overrides, "m_income")}
+      >
+        <option
+          children="Less than 1500"
+          value="LESS_THAN_1500"
+          {...getOverrideProps(overrides, "m_incomeoption0")}
+        ></option>
+        <option
+          children="More than 1500"
+          value="MORE_THAN_1500"
+          {...getOverrideProps(overrides, "m_incomeoption1")}
+        ></option>
+      </SelectField>
+      <TextField
+        label="M income doc"
+        isRequired={false}
+        isReadOnly={false}
+        value={m_incomeDoc}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              cpr,
+              cprDoc,
+              fullName,
+              batch,
+              email,
+              phone,
+              gender,
+              nationalityCategory,
+              nationality,
+              schoolName,
+              schoolType,
+              specialization,
+              placeOfBirth,
+              studentOrderAmongSiblings,
+              familyIncome,
+              familyIncomeProofDoc,
+              familyIncomeProofDocs,
+              preferredLanguage,
+              graduationDate,
+              address,
+              m_firstName,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc: value,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
+            };
+            const result = onChange(modelFields);
+            value = result?.m_incomeDoc ?? value;
+          }
+          if (errors.m_incomeDoc?.hasError) {
+            runValidationTasks("m_incomeDoc", value);
+          }
+          setM_incomeDoc(value);
+        }}
+        onBlur={() => runValidationTasks("m_incomeDoc", m_incomeDoc)}
+        errorMessage={errors.m_incomeDoc?.errorMessage}
+        hasError={errors.m_incomeDoc?.hasError}
+        {...getOverrideProps(overrides, "m_incomeDoc")}
+      ></TextField>
+      <TextField
+        label="M guardian cpr"
+        isRequired={false}
+        isReadOnly={false}
+        value={m_guardianCPR}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              cpr,
+              cprDoc,
+              fullName,
+              batch,
+              email,
+              phone,
+              gender,
+              nationalityCategory,
+              nationality,
+              schoolName,
+              schoolType,
+              specialization,
+              placeOfBirth,
+              studentOrderAmongSiblings,
+              familyIncome,
+              familyIncomeProofDoc,
+              familyIncomeProofDocs,
+              preferredLanguage,
+              graduationDate,
+              address,
+              m_firstName,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR: value,
+              m_guardianFullName,
+              m_guardianCPRDoc,
+            };
+            const result = onChange(modelFields);
+            value = result?.m_guardianCPR ?? value;
+          }
+          if (errors.m_guardianCPR?.hasError) {
+            runValidationTasks("m_guardianCPR", value);
+          }
+          setM_guardianCPR(value);
+        }}
+        onBlur={() => runValidationTasks("m_guardianCPR", m_guardianCPR)}
+        errorMessage={errors.m_guardianCPR?.errorMessage}
+        hasError={errors.m_guardianCPR?.hasError}
+        {...getOverrideProps(overrides, "m_guardianCPR")}
+      ></TextField>
+      <TextField
+        label="M guardian full name"
+        isRequired={false}
+        isReadOnly={false}
+        value={m_guardianFullName}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              cpr,
+              cprDoc,
+              fullName,
+              batch,
+              email,
+              phone,
+              gender,
+              nationalityCategory,
+              nationality,
+              schoolName,
+              schoolType,
+              specialization,
+              placeOfBirth,
+              studentOrderAmongSiblings,
+              familyIncome,
+              familyIncomeProofDoc,
+              familyIncomeProofDocs,
+              preferredLanguage,
+              graduationDate,
+              address,
+              m_firstName,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName: value,
+              m_guardianCPRDoc,
+            };
+            const result = onChange(modelFields);
+            value = result?.m_guardianFullName ?? value;
+          }
+          if (errors.m_guardianFullName?.hasError) {
+            runValidationTasks("m_guardianFullName", value);
+          }
+          setM_guardianFullName(value);
+        }}
+        onBlur={() =>
+          runValidationTasks("m_guardianFullName", m_guardianFullName)
+        }
+        errorMessage={errors.m_guardianFullName?.errorMessage}
+        hasError={errors.m_guardianFullName?.hasError}
+        {...getOverrideProps(overrides, "m_guardianFullName")}
+      ></TextField>
+      <TextField
+        label="M guardian cpr doc"
+        isRequired={false}
+        isReadOnly={false}
+        value={m_guardianCPRDoc}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              cpr,
+              cprDoc,
+              fullName,
+              batch,
+              email,
+              phone,
+              gender,
+              nationalityCategory,
+              nationality,
+              schoolName,
+              schoolType,
+              specialization,
+              placeOfBirth,
+              studentOrderAmongSiblings,
+              familyIncome,
+              familyIncomeProofDoc,
+              familyIncomeProofDocs,
+              preferredLanguage,
+              graduationDate,
+              address,
+              m_firstName,
+              m_secondName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.m_guardianCPRDoc ?? value;
+          }
+          if (errors.m_guardianCPRDoc?.hasError) {
+            runValidationTasks("m_guardianCPRDoc", value);
+          }
+          setM_guardianCPRDoc(value);
+        }}
+        onBlur={() => runValidationTasks("m_guardianCPRDoc", m_guardianCPRDoc)}
+        errorMessage={errors.m_guardianCPRDoc?.errorMessage}
+        hasError={errors.m_guardianCPRDoc?.hasError}
+        {...getOverrideProps(overrides, "m_guardianCPRDoc")}
       ></TextField>
       <Flex
         justifyContent="space-between"

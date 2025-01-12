@@ -2,8 +2,10 @@ import { GraphQLResult } from "@aws-amplify/api-graphql";
 import { API } from "aws-amplify";
 import {
   createContext,
+  Dispatch,
   FC,
   PropsWithChildren,
+  SetStateAction,
   useContext,
   useEffect,
   useState,
@@ -15,14 +17,20 @@ import { useAuth } from "../hooks/use-auth";
 
 // interface for all the values & functions
 interface IUseAppContext {
+  type: "masters" | "bachelor";
+  setType: Dispatch<SetStateAction<"masters" | "bachelor">>;
   admins: Admin[];
   syncAdmins: () => Promise<void>;
 }
 
 // the default state for all the values & functions
 const defaultState: IUseAppContext = {
+  type: "bachelor",
   admins: [],
   syncAdmins: function (): Promise<void> {
+    throw new Error("Function not implemented.");
+  },
+  setType: function (value: SetStateAction<"masters" | "bachelor">): void {
     throw new Error("Function not implemented.");
   },
 };
@@ -42,6 +50,8 @@ export const AppProvider: FC<PropsWithChildren> = ({ children }) => {
 //NOTE: declare vars and functions here
 function useProviderApp() {
   const [admins, setAdmins] = useState<Admin[]>([]);
+  const [type, setType] = useState<"masters" | "bachelor">(defaultState.type);
+
   const { isSignedIn } = useAuth();
   useEffect(() => {
     if (isSignedIn) {
@@ -71,5 +81,5 @@ function useProviderApp() {
   }
 
   // NOTE: return all the values & functions you want to export
-  return { admins, syncAdmins };
+  return { admins, syncAdmins, type, setType };
 }

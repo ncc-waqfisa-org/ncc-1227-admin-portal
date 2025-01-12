@@ -11,6 +11,7 @@ import {
   Flex,
   Grid,
   SelectField,
+  SwitchField,
   TextField,
 } from "@aws-amplify/ui-react";
 import { Admin } from "../models";
@@ -32,17 +33,22 @@ export default function AdminCreateForm(props) {
     fullName: "",
     email: "",
     role: "",
+    isDeactivated: false,
   };
   const [cpr, setCpr] = React.useState(initialValues.cpr);
   const [fullName, setFullName] = React.useState(initialValues.fullName);
   const [email, setEmail] = React.useState(initialValues.email);
   const [role, setRole] = React.useState(initialValues.role);
+  const [isDeactivated, setIsDeactivated] = React.useState(
+    initialValues.isDeactivated
+  );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setCpr(initialValues.cpr);
     setFullName(initialValues.fullName);
     setEmail(initialValues.email);
     setRole(initialValues.role);
+    setIsDeactivated(initialValues.isDeactivated);
     setErrors({});
   };
   const validations = {
@@ -50,6 +56,7 @@ export default function AdminCreateForm(props) {
     fullName: [],
     email: [],
     role: [],
+    isDeactivated: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -81,6 +88,7 @@ export default function AdminCreateForm(props) {
           fullName,
           email,
           role,
+          isDeactivated,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -139,6 +147,7 @@ export default function AdminCreateForm(props) {
               fullName,
               email,
               role,
+              isDeactivated,
             };
             const result = onChange(modelFields);
             value = result?.cpr ?? value;
@@ -166,6 +175,7 @@ export default function AdminCreateForm(props) {
               fullName: value,
               email,
               role,
+              isDeactivated,
             };
             const result = onChange(modelFields);
             value = result?.fullName ?? value;
@@ -193,6 +203,7 @@ export default function AdminCreateForm(props) {
               fullName,
               email: value,
               role,
+              isDeactivated,
             };
             const result = onChange(modelFields);
             value = result?.email ?? value;
@@ -220,6 +231,7 @@ export default function AdminCreateForm(props) {
               fullName,
               email,
               role: value,
+              isDeactivated,
             };
             const result = onChange(modelFields);
             value = result?.role ?? value;
@@ -245,6 +257,34 @@ export default function AdminCreateForm(props) {
           {...getOverrideProps(overrides, "roleoption1")}
         ></option>
       </SelectField>
+      <SwitchField
+        label="Is deactivated"
+        defaultChecked={false}
+        isDisabled={false}
+        isChecked={isDeactivated}
+        onChange={(e) => {
+          let value = e.target.checked;
+          if (onChange) {
+            const modelFields = {
+              cpr,
+              fullName,
+              email,
+              role,
+              isDeactivated: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.isDeactivated ?? value;
+          }
+          if (errors.isDeactivated?.hasError) {
+            runValidationTasks("isDeactivated", value);
+          }
+          setIsDeactivated(value);
+        }}
+        onBlur={() => runValidationTasks("isDeactivated", isDeactivated)}
+        errorMessage={errors.isDeactivated?.errorMessage}
+        hasError={errors.isDeactivated?.hasError}
+        {...getOverrideProps(overrides, "isDeactivated")}
+      ></SwitchField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}

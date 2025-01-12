@@ -14,6 +14,8 @@ import {
   CreateAttachmentMutationVariables,
   CreateBatchMutation,
   CreateBatchMutationVariables,
+  CreateMasterBatchMutation,
+  CreateMasterBatchMutationVariables,
   CreateProgramChoiceMutation,
   CreateProgramChoiceMutationVariables,
   CreateScholarshipMutation,
@@ -22,12 +24,14 @@ import {
   CreateStudentLogMutationVariables,
   GetBatchQuery,
   GetBatchQueryVariables,
+  GetMasterBatchQuery,
+  GetMasterBatchQueryVariables,
   GetScholarshipQuery,
   GetScholarshipQueryVariables,
-  GetUniversityQuery,
-  GetUniversityQueryVariables,
   ListBatchesQuery,
   ListBatchesQueryVariables,
+  ListMasterBatchesQuery,
+  ListMasterBatchesQueryVariables,
   Program,
   Scholarship,
   StudentLog,
@@ -40,6 +44,8 @@ import {
   UpdateAttachmentMutationVariables,
   UpdateBatchMutation,
   UpdateBatchMutationVariables,
+  UpdateMasterBatchMutation,
+  UpdateMasterBatchMutationVariables,
   UpdateParentInfoMutation,
   UpdateParentInfoMutationVariables,
   UpdateProgramChoiceMutation,
@@ -70,16 +76,19 @@ import {
   createBatch,
   updateParentInfo,
   updateStudent,
+  updateMasterBatch,
+  createMasterBatch,
   updateScholarship,
   createScholarship,
 } from "./graphql/mutations";
 import {
   getBatch,
-  getScholarship,
-  getUniversity,
   listBatches,
+  getMasterBatch,
+  listMasterBatches,
+  getScholarship,
 } from "./graphql/queries";
-import { Statistics } from "./models";
+
 import { TStatistics } from "./custom-types";
 
 /* -------------------------------------------------------------------------- */
@@ -1178,6 +1187,17 @@ export async function listAllBatches(
   return res.data;
 }
 
+export async function listAllMasterBatches(
+  variables: ListMasterBatchesQueryVariables
+): Promise<ListMasterBatchesQuery | undefined> {
+  let res = (await API.graphql({
+    query: listMasterBatches,
+    variables: variables,
+  })) as GraphQLResult<ListMasterBatchesQuery>;
+
+  return res.data;
+}
+
 export async function getSingleBatch(
   variables: GetBatchQueryVariables
 ): Promise<GetBatchQuery | undefined> {
@@ -1185,6 +1205,17 @@ export async function getSingleBatch(
     query: getBatch,
     variables: variables,
   })) as GraphQLResult<GetBatchQuery>;
+
+  return res.data;
+}
+
+export async function getSingleMasterBatch(
+  variables: GetMasterBatchQueryVariables
+): Promise<GetMasterBatchQuery | undefined> {
+  let res = (await API.graphql({
+    query: getMasterBatch,
+    variables: variables,
+  })) as GraphQLResult<GetMasterBatchQuery>;
 
   return res.data;
 }
@@ -1379,6 +1410,17 @@ export async function createSingleBatch(
 
   return res.data;
 }
+
+export async function createSingleMasterBatch(
+  variables: CreateMasterBatchMutationVariables
+): Promise<CreateMasterBatchMutation | undefined> {
+  let res = (await API.graphql({
+    query: createMasterBatch,
+    variables: variables,
+  })) as GraphQLResult<CreateMasterBatchMutation>;
+
+  return res.data;
+}
 export async function updateSingleBatch(
   variables: UpdateBatchMutationVariables
 ): Promise<UpdateBatchMutation | undefined> {
@@ -1386,6 +1428,16 @@ export async function updateSingleBatch(
     query: updateBatch,
     variables: variables,
   })) as GraphQLResult<UpdateBatchMutation>;
+
+  return res.data;
+}
+export async function updateSingleMasterBatch(
+  variables: UpdateMasterBatchMutationVariables
+): Promise<UpdateMasterBatchMutation | undefined> {
+  let res = (await API.graphql({
+    query: updateMasterBatch,
+    variables: variables,
+  })) as GraphQLResult<UpdateMasterBatchMutation>;
 
   return res.data;
 }
@@ -1426,7 +1478,8 @@ export async function getStatistics({ token, batch, locale }: TGetStatistics) {
   }
 
   return fetch(
-    `https://a69a50c47l.execute-api.us-east-1.amazonaws.com/default/applications/statistics?batch=${batch}`,
+    `${process.env.NEXT_PUBLIC_BACHELOR_STATISTICS_ENDPOINT}?batch=${batch}`,
+    // `https://a69a50c47l.execute-api.us-east-1.amazonaws.com/default/applications/statistics?batch=${batch}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,

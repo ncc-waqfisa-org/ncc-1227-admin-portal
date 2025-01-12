@@ -12,7 +12,7 @@ import { fetchByPath, getOverrideProps, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
 export default function BatchUpdateForm(props) {
   const {
-    id: idProp,
+    batch: batchProp,
     batch: batchModelProp,
     onSuccess,
     onError,
@@ -59,16 +59,16 @@ export default function BatchUpdateForm(props) {
   const [batchRecord, setBatchRecord] = React.useState(batchModelProp);
   React.useEffect(() => {
     const queryData = async () => {
-      const record = idProp
-        ? await DataStore.query(Batch, idProp)
+      const record = batchProp
+        ? await DataStore.query(Batch, batchProp)
         : batchModelProp;
       setBatchRecord(record);
     };
     queryData();
-  }, [idProp, batchModelProp]);
+  }, [batchProp, batchModelProp]);
   React.useEffect(resetStateValues, [batchRecord]);
   const validations = {
-    batch: [],
+    batch: [{ type: "Required" }],
     createApplicationStartDate: [],
     createApplicationEndDate: [],
     updateApplicationEndDate: [],
@@ -155,8 +155,8 @@ export default function BatchUpdateForm(props) {
     >
       <TextField
         label="Batch"
-        isRequired={false}
-        isReadOnly={false}
+        isRequired={true}
+        isReadOnly={true}
         type="number"
         step="any"
         value={batch}
@@ -362,7 +362,7 @@ export default function BatchUpdateForm(props) {
             event.preventDefault();
             resetStateValues();
           }}
-          isDisabled={!(idProp || batchModelProp)}
+          isDisabled={!(batchProp || batchModelProp)}
           {...getOverrideProps(overrides, "ResetButton")}
         ></Button>
         <Flex
@@ -374,7 +374,7 @@ export default function BatchUpdateForm(props) {
             type="submit"
             variation="primary"
             isDisabled={
-              !(idProp || batchModelProp) ||
+              !(batchProp || batchModelProp) ||
               Object.values(errors).some((e) => e?.hasError)
             }
             {...getOverrideProps(overrides, "SubmitButton")}

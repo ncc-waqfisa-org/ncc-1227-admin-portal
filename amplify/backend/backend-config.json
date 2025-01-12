@@ -120,6 +120,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "signScholarshipMaster": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "signUp": {
       "build": true,
       "dependsOn": [],
@@ -373,6 +378,22 @@
         }
       ]
     },
+    "AMPLIFY_function_signScholarshipMaster_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "signScholarshipMaster"
+        }
+      ]
+    },
+    "AMPLIFY_function_signScholarshipMaster_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "signScholarshipMaster"
+        }
+      ]
+    },
     "AMPLIFY_function_signScholarship_deploymentBucketName": {
       "usedBy": [
         {
@@ -386,6 +407,22 @@
         {
           "category": "function",
           "resourceName": "signScholarship"
+        }
+      ]
+    },
+    "AMPLIFY_function_signUpMaster_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "signUpMaster"
+        }
+      ]
+    },
+    "AMPLIFY_function_signUpMaster_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "signUpMaster"
         }
       ]
     },

@@ -32,8 +32,9 @@ export default function UniversityCreateForm(props) {
     nameAr: "",
     availability: "",
     isDeactivated: false,
-    isExtended: false,
-    extendedTo: "",
+    isExtended: "",
+    extensionDuration: "",
+    isException: "",
     isTrashed: false,
   };
   const [name, setName] = React.useState(initialValues.name);
@@ -45,7 +46,12 @@ export default function UniversityCreateForm(props) {
     initialValues.isDeactivated
   );
   const [isExtended, setIsExtended] = React.useState(initialValues.isExtended);
-  const [extendedTo, setExtendedTo] = React.useState(initialValues.extendedTo);
+  const [extensionDuration, setExtensionDuration] = React.useState(
+    initialValues.extensionDuration
+  );
+  const [isException, setIsException] = React.useState(
+    initialValues.isException
+  );
   const [isTrashed, setIsTrashed] = React.useState(initialValues.isTrashed);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
@@ -54,7 +60,8 @@ export default function UniversityCreateForm(props) {
     setAvailability(initialValues.availability);
     setIsDeactivated(initialValues.isDeactivated);
     setIsExtended(initialValues.isExtended);
-    setExtendedTo(initialValues.extendedTo);
+    setExtensionDuration(initialValues.extensionDuration);
+    setIsException(initialValues.isException);
     setIsTrashed(initialValues.isTrashed);
     setErrors({});
   };
@@ -64,7 +71,8 @@ export default function UniversityCreateForm(props) {
     availability: [],
     isDeactivated: [],
     isExtended: [],
-    extendedTo: [],
+    extensionDuration: [],
+    isException: [],
     isTrashed: [],
   };
   const runValidationTasks = async (
@@ -98,7 +106,8 @@ export default function UniversityCreateForm(props) {
           availability,
           isDeactivated,
           isExtended,
-          extendedTo,
+          extensionDuration,
+          isException,
           isTrashed,
         };
         const validationResponses = await Promise.all(
@@ -159,7 +168,8 @@ export default function UniversityCreateForm(props) {
               availability,
               isDeactivated,
               isExtended,
-              extendedTo,
+              extensionDuration,
+              isException,
               isTrashed,
             };
             const result = onChange(modelFields);
@@ -189,7 +199,8 @@ export default function UniversityCreateForm(props) {
               availability,
               isDeactivated,
               isExtended,
-              extendedTo,
+              extensionDuration,
+              isException,
               isTrashed,
             };
             const result = onChange(modelFields);
@@ -223,7 +234,8 @@ export default function UniversityCreateForm(props) {
               availability: value,
               isDeactivated,
               isExtended,
-              extendedTo,
+              extensionDuration,
+              isException,
               isTrashed,
             };
             const result = onChange(modelFields);
@@ -253,7 +265,8 @@ export default function UniversityCreateForm(props) {
               availability,
               isDeactivated: value,
               isExtended,
-              extendedTo,
+              extensionDuration,
+              isException,
               isTrashed,
             };
             const result = onChange(modelFields);
@@ -269,13 +282,17 @@ export default function UniversityCreateForm(props) {
         hasError={errors.isDeactivated?.hasError}
         {...getOverrideProps(overrides, "isDeactivated")}
       ></SwitchField>
-      <SwitchField
+      <TextField
         label="Is extended"
-        defaultChecked={false}
-        isDisabled={false}
-        isChecked={isExtended}
+        isRequired={false}
+        isReadOnly={false}
+        type="number"
+        step="any"
+        value={isExtended}
         onChange={(e) => {
-          let value = e.target.checked;
+          let value = isNaN(parseInt(e.target.value))
+            ? e.target.value
+            : parseInt(e.target.value);
           if (onChange) {
             const modelFields = {
               name,
@@ -283,7 +300,8 @@ export default function UniversityCreateForm(props) {
               availability,
               isDeactivated,
               isExtended: value,
-              extendedTo,
+              extensionDuration,
+              isException,
               isTrashed,
             };
             const result = onChange(modelFields);
@@ -298,15 +316,18 @@ export default function UniversityCreateForm(props) {
         errorMessage={errors.isExtended?.errorMessage}
         hasError={errors.isExtended?.hasError}
         {...getOverrideProps(overrides, "isExtended")}
-      ></SwitchField>
+      ></TextField>
       <TextField
-        label="Extended to"
+        label="Extension duration"
         isRequired={false}
         isReadOnly={false}
-        type="date"
-        value={extendedTo}
+        type="number"
+        step="any"
+        value={extensionDuration}
         onChange={(e) => {
-          let { value } = e.target;
+          let value = isNaN(parseInt(e.target.value))
+            ? e.target.value
+            : parseInt(e.target.value);
           if (onChange) {
             const modelFields = {
               name,
@@ -314,21 +335,59 @@ export default function UniversityCreateForm(props) {
               availability,
               isDeactivated,
               isExtended,
-              extendedTo: value,
+              extensionDuration: value,
+              isException,
               isTrashed,
             };
             const result = onChange(modelFields);
-            value = result?.extendedTo ?? value;
+            value = result?.extensionDuration ?? value;
           }
-          if (errors.extendedTo?.hasError) {
-            runValidationTasks("extendedTo", value);
+          if (errors.extensionDuration?.hasError) {
+            runValidationTasks("extensionDuration", value);
           }
-          setExtendedTo(value);
+          setExtensionDuration(value);
         }}
-        onBlur={() => runValidationTasks("extendedTo", extendedTo)}
-        errorMessage={errors.extendedTo?.errorMessage}
-        hasError={errors.extendedTo?.hasError}
-        {...getOverrideProps(overrides, "extendedTo")}
+        onBlur={() =>
+          runValidationTasks("extensionDuration", extensionDuration)
+        }
+        errorMessage={errors.extensionDuration?.errorMessage}
+        hasError={errors.extensionDuration?.hasError}
+        {...getOverrideProps(overrides, "extensionDuration")}
+      ></TextField>
+      <TextField
+        label="Is exception"
+        isRequired={false}
+        isReadOnly={false}
+        type="number"
+        step="any"
+        value={isException}
+        onChange={(e) => {
+          let value = isNaN(parseInt(e.target.value))
+            ? e.target.value
+            : parseInt(e.target.value);
+          if (onChange) {
+            const modelFields = {
+              name,
+              nameAr,
+              availability,
+              isDeactivated,
+              isExtended,
+              extensionDuration,
+              isException: value,
+              isTrashed,
+            };
+            const result = onChange(modelFields);
+            value = result?.isException ?? value;
+          }
+          if (errors.isException?.hasError) {
+            runValidationTasks("isException", value);
+          }
+          setIsException(value);
+        }}
+        onBlur={() => runValidationTasks("isException", isException)}
+        errorMessage={errors.isException?.errorMessage}
+        hasError={errors.isException?.hasError}
+        {...getOverrideProps(overrides, "isException")}
       ></TextField>
       <SwitchField
         label="Is trashed"
@@ -344,7 +403,8 @@ export default function UniversityCreateForm(props) {
               availability,
               isDeactivated,
               isExtended,
-              extendedTo,
+              extensionDuration,
+              isException,
               isTrashed: value,
             };
             const result = onChange(modelFields);

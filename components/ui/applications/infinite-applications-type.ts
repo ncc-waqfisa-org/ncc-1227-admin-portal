@@ -1,5 +1,15 @@
-import { FamilyIncome, Nationality, SchoolType } from "../../../src/API";
+import {
+  FamilyIncome,
+  Income,
+  Major,
+  Nationality,
+  SchoolType,
+} from "../../../src/API";
 
+export interface TInfiniteMasterApplications {
+  data: InfiniteMasterApplication[];
+  nextStartKey: NextStartKey;
+}
 export interface TInfiniteApplications {
   data: InfiniteApplication[];
   nextStartKey: NextStartKey;
@@ -33,6 +43,35 @@ export type InfiniteApplication = {
   attachmentID: string;
   isEmailSent: boolean;
 };
+export type InfiniteMasterApplication = {
+  major: Major;
+  nationalityCategory: Nationality;
+  income: Income;
+  dateTime: Date;
+  studentName: string;
+  status: string;
+  // TODO: check if we need universityNameAr
+  universityName: string;
+  score: number;
+  universityID: string;
+  _version: number;
+  id: string;
+  batch: number;
+  verifiedGPA: number;
+  __typename: string;
+  isIncomeVerified: boolean;
+  _lastChangedAt: number;
+  applicationAttachmentId: string;
+  processed: number;
+  createdAt: Date;
+  studentCPR: string;
+  gpa: number;
+  program: string;
+  updatedAt: Date;
+  adminPoints: number;
+  attachmentID: string;
+  isEmailSent: boolean;
+};
 
 export interface NextStartKey {
   id: string;
@@ -46,8 +85,19 @@ export class Convert {
     return JSON.parse(json);
   }
 
+  public static toTInfiniteMasterApplications(
+    json: string
+  ): TInfiniteMasterApplications {
+    return JSON.parse(json);
+  }
+
   public static tInfiniteApplicationsToJson(
     value: TInfiniteApplications
+  ): string {
+    return JSON.stringify(value);
+  }
+  public static tInfiniteMasterApplicationsToJson(
+    value: TInfiniteMasterApplications
   ): string {
     return JSON.stringify(value);
   }

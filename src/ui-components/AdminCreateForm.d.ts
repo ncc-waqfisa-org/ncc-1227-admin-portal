@@ -5,7 +5,7 @@
  **************************************************************************/
 
 import * as React from "react";
-import { GridProps, SelectFieldProps, TextFieldProps } from "@aws-amplify/ui-react";
+import { GridProps, SelectFieldProps, SwitchFieldProps, TextFieldProps } from "@aws-amplify/ui-react";
 export declare type EscapeHatchProps = {
     [elementHierarchy: string]: Record<string, unknown>;
 } | null;
@@ -26,12 +26,14 @@ export declare type AdminCreateFormInputValues = {
     fullName?: string;
     email?: string;
     role?: string;
+    isDeactivated?: boolean;
 };
 export declare type AdminCreateFormValidationValues = {
     cpr?: ValidationFunction<string>;
     fullName?: ValidationFunction<string>;
     email?: ValidationFunction<string>;
     role?: ValidationFunction<string>;
+    isDeactivated?: ValidationFunction<boolean>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type AdminCreateFormOverridesProps = {
@@ -40,6 +42,7 @@ export declare type AdminCreateFormOverridesProps = {
     fullName?: PrimitiveOverrideProps<TextFieldProps>;
     email?: PrimitiveOverrideProps<TextFieldProps>;
     role?: PrimitiveOverrideProps<SelectFieldProps>;
+    isDeactivated?: PrimitiveOverrideProps<SwitchFieldProps>;
 } & EscapeHatchProps;
 export declare type AdminCreateFormProps = React.PropsWithChildren<{
     overrides?: AdminCreateFormOverridesProps | undefined | null;

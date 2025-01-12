@@ -60,7 +60,8 @@ export const BulkUploadGpa: FC<TBulkUploadGpa> = ({ batch }) => {
       formData.append("csv", file);
 
       return fetch(
-        `https://ob7e09fm1m.execute-api.us-east-1.amazonaws.com/default/gpas?batch=${batch}`,
+        `${process.env.NEXT_PUBLIC_LAMBDA_POST_UPDATE_GPA_CSV}?batch=${batch}`,
+        // `https://ob7e09fm1m.execute-api.us-east-1.amazonaws.com/default/gpas?batch=${batch}`,
         {
           method: "POST",
           headers: {

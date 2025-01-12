@@ -6,7 +6,6 @@ import {
   Row,
   useReactTable,
 } from "@tanstack/react-table";
-import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
 import { useVirtualizer } from "@tanstack/react-virtual";
 
 import React, { useCallback, useState } from "react";
@@ -444,7 +443,7 @@ export const InfiniteApplications = () => {
   //   }
   // };
 
-  const { rows } = table.getRowModel();
+  const { rows } = table?.getRowModel();
 
   const rowVirtualizer = useVirtualizer({
     count: rows.length,

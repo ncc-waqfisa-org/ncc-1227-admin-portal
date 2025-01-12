@@ -14,6 +14,8 @@ import {
   InfiniteApplication,
   TInfiniteApplications,
   NextStartKey,
+  InfiniteMasterApplication,
+  TInfiniteMasterApplications,
 } from "../components/ui/applications/infinite-applications-type";
 
 import { useAuth } from "../hooks/use-auth";
@@ -44,6 +46,22 @@ interface IUseBatchContext {
   setBatch: Dispatch<SetStateAction<number>>;
   selectedApplicationsStatus: string | undefined;
   setSelectedApplicationsStatus: Dispatch<SetStateAction<string | undefined>>;
+
+  // ? Masters fields
+  isMasterInitialFetching: boolean;
+  setIsMasterInitialFetching: Dispatch<SetStateAction<boolean>>;
+  mastersBatch: number;
+  setMastersBatch: Dispatch<SetStateAction<number>>;
+  masterApplicationsData: InfiniteMasterApplication[];
+  setMasterApplicationsData: Dispatch<
+    SetStateAction<InfiniteMasterApplication[]>
+  >;
+  nextMasterApplicationsKey: NextStartKey | undefined;
+  setNextMasterApplicationsKey: Dispatch<
+    SetStateAction<NextStartKey | undefined>
+  >;
+  resetMasterApplications: () => void;
+  searchMasterCpr: (cpr: string) => void;
 }
 
 // the default state for all the values & functions
@@ -95,6 +113,33 @@ const defaultState: IUseBatchContext = {
     throw new Error("Function not implemented.");
   },
   searchedCpr: "",
+
+  isMasterInitialFetching: false,
+  mastersBatch: dayjs().year(),
+  masterApplicationsData: [],
+  setMasterApplicationsData: function (
+    value: SetStateAction<InfiniteMasterApplication[]>
+  ): void {
+    throw new Error("Function not implemented.");
+  },
+  nextMasterApplicationsKey: undefined,
+  setNextMasterApplicationsKey: function (
+    value: SetStateAction<NextStartKey | undefined>
+  ): void {
+    throw new Error("Function not implemented.");
+  },
+  resetMasterApplications: function (): void {
+    throw new Error("Function not implemented.");
+  },
+  searchMasterCpr: function (cpr: string): void {
+    throw new Error("Function not implemented.");
+  },
+  setIsMasterInitialFetching: function (value: SetStateAction<boolean>): void {
+    throw new Error("Function not implemented.");
+  },
+  setMastersBatch: function (value: SetStateAction<number>): void {
+    throw new Error("Function not implemented.");
+  },
 };
 
 // creating the app contexts
@@ -112,18 +157,24 @@ export const BatchProvider: FC<PropsWithChildren> = ({ children }) => {
 //NOTE: declare vars and functions here
 function useBatchProviderApp() {
   const { token } = useAuth();
+
   const [isInitialFetching, setIsInitialFetching] = useState(
     defaultState.isInitialFetching
   );
+
   const [isScholarshipsInitialFetching, setIsScholarshipsInitialFetching] =
     useState(defaultState.isScholarshipsInitialFetching);
+
   const [batch, setBatch] = useState<number>(defaultState.batch);
+
   const [nextApplicationsKey, setNextApplicationsKey] = useState<
     NextStartKey | undefined
   >(defaultState.nextApplicationsKey);
+
   const [nextScholarshipsKey, setNextScholarshipsKey] = useState<string | null>(
     defaultState.nextScholarshipsKey
   );
+
   const [selectedApplicationsStatus, setSelectedApplicationsStatus] = useState<
     string | undefined
   >(defaultState.selectedApplicationsStatus);
@@ -136,6 +187,22 @@ function useBatchProviderApp() {
   );
 
   const [cpr, setCpr] = useState("");
+
+  const [isMasterInitialFetching, setIsMasterInitialFetching] = useState(
+    defaultState.isMasterInitialFetching
+  );
+
+  const [mastersBatch, setMastersBatch] = useState<number>(
+    defaultState.mastersBatch
+  );
+
+  const [nextMasterApplicationsKey, setNextMasterApplicationsKey] = useState<
+    NextStartKey | undefined
+  >(defaultState.nextMasterApplicationsKey);
+
+  const [masterApplicationsData, setMasterApplicationsData] = useState(
+    defaultState.masterApplicationsData
+  );
 
   function searchCpr(newCpr: string) {
     setCpr(newCpr);
@@ -256,6 +323,45 @@ function useBatchProviderApp() {
     return () => {};
   }, [batch, selectedApplicationsStatus, token]);
 
+  /* -------------------------------------------------------------------------- */
+  /*                                   MASTERS                                  */
+  /* -------------------------------------------------------------------------- */
+
+  function resetMasterApplications() {
+    setNextMasterApplicationsKey(undefined);
+    setMasterApplicationsData([]);
+    fetchFirstMasterApplicationsPage();
+  }
+
+  function searchMasterCpr(newCpr: string) {
+    setCpr(newCpr);
+    resetMasterApplications();
+  }
+
+  async function fetchFirstMasterApplicationsPage() {
+    const batchQuery = mastersBatch ? `batch=${mastersBatch}` : "";
+    const statusQuery = selectedApplicationsStatus
+      ? `&status=${selectedApplicationsStatus}`
+      : "";
+    setIsMasterInitialFetching(true);
+
+    const fetchedData = (await fetch(
+      `${process.env.NEXT_PUBLIC_MASTER_APPLICATION_PAGINATION_ENDPOINT}?${batchQuery}${statusQuery}`,
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    )
+      .then((d) => d.json())
+      .finally(() => {
+        setIsMasterInitialFetching(false);
+      })) as TInfiniteMasterApplications;
+    setMasterApplicationsData(fetchedData.data);
+    setNextMasterApplicationsKey(fetchedData.nextStartKey);
+    return fetchedData;
+  }
+
   // NOTE: return all the values & functions you want to export
   return {
     batch,
@@ -277,5 +383,16 @@ function useBatchProviderApp() {
     resetScholarships,
     searchCpr,
     searchedCpr: cpr,
+
+    isMasterInitialFetching,
+    setIsMasterInitialFetching,
+    mastersBatch,
+    setMastersBatch,
+    masterApplicationsData,
+    setMasterApplicationsData,
+    nextMasterApplicationsKey,
+    setNextMasterApplicationsKey,
+    resetMasterApplications,
+    searchMasterCpr,
   };
 }
