@@ -43,6 +43,7 @@
   "apply": "Apply",
   "type": "Type",
   "scholarshipType": "Scholarship Type",
+  "programType": "Program Type",
   "masters": "Masters",
   "bachelor": "Bachelor"
 }

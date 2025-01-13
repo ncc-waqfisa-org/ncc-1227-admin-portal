@@ -15,7 +15,7 @@ import {
   UniversitiesIcon,
 } from "./icons";
 import { useAppContext } from "../context/AppContext";
-import { ScholarshipTypeSwitcher } from "./scholarship_type/ScholarshipTypeSwitcher";
+import { ProgramTypeSwitcher } from "./program_type/ProgramTypeSwitcher";
 
 export default function NavbarComponent() {
   const { signOut, isSignedIn, user, admin, isSuperAdmin } = useAuth();
@@ -49,7 +49,7 @@ export default function NavbarComponent() {
             <LangSwitcher></LangSwitcher>
           </div>
         </div>
-        <ScholarshipTypeSwitcher />
+        <ProgramTypeSwitcher />
 
         <div
           className={`flex flex-col items-center justify-center p-3 text-center rounded-lg ${

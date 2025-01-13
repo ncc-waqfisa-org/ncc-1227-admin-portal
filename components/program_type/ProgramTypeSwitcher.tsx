@@ -12,11 +12,7 @@ import {
 
 const types = ["bachelor", "masters"];
 
-export const ScholarshipTypeSwitcher = ({
-  isBox = true,
-}: {
-  isBox?: boolean;
-}) => {
+export const ProgramTypeSwitcher = ({ isBox = true }: { isBox?: boolean }) => {
   const { type, setType } = useAppContext();
   const { t } = useTranslation("common");
   const router = useRouter();
@@ -34,7 +30,7 @@ export const ScholarshipTypeSwitcher = ({
   if (isBox) {
     return (
       <div className="flex flex-col gap-2 p-4 border rounded-lg bg-zinc-50 border-zinc-200">
-        <h4 className="text-lg font-semibold">{t("scholarshipType")}</h4>
+        <h4 className="text-lg font-semibold">{t("programType")}</h4>
         <Select
           value={type}
           onValueChange={(st) => {
@@ -47,7 +43,7 @@ export const ScholarshipTypeSwitcher = ({
             dir={router.locale == "ar" ? "rtl" : "ltr"}
             className="w-full bg-white text-start"
           >
-            <SelectValue placeholder={t("scholarshipType")} />
+            <SelectValue placeholder={t("programType")} />
           </SelectTrigger>
           <SelectContent dir={router.locale == "ar" ? "rtl" : "ltr"}>
             {types.map((st) => (
@@ -71,7 +67,7 @@ export const ScholarshipTypeSwitcher = ({
       }}
     >
       <SelectTrigger className="w-full">
-        <SelectValue placeholder={t("scholarshipType")} />
+        <SelectValue placeholder={t("programType")} />
       </SelectTrigger>
       <SelectContent>
         {types.map((st) => (

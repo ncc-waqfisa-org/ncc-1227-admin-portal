@@ -42,6 +42,7 @@
   "apply": "تطبيق",
   "type": "النوع",
   "scholarshipType": "نوع المنحة الدراسية",
+  "programType": "نوع البرنامج",
   "masters": "الماجستير",
   "bachelor": "البكالوريوس"
 }

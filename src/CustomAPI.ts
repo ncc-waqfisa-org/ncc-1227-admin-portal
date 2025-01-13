@@ -4,6 +4,7 @@ import {
   Admin,
   AdminLog,
   Application,
+  BahrainUniversities,
   CreateAdminLogMutation,
   CreateAdminLogMutationVariables,
   CreateAdminMutation,
@@ -124,6 +125,11 @@ export enum DocType {
   PRIMARY_PROGRAM_ACCEPTANCE,
   SECONDARY_PROGRAM_ACCEPTANCE,
   BANK_LETTER,
+  // Masters
+  INCOME,
+  GUARDIAN,
+  UNIVERSITY_CERTIFICATE,
+  TOEFL_IELTS,
 }
 
 /* -------------------------------------------------------------------------- */
@@ -1574,6 +1580,29 @@ export async function updateStudentInDB(
   })) as GraphQLResult<UpdateStudentMutation>;
 
   return res.data;
+}
+
+export async function listAllBahrainUniversities() {
+  let q = `
+  query ListAllBahrainUniversities {
+    listBahrainUniversities(limit: 9999999) {
+      items {
+        id
+        universityName
+        universityNameAr
+        isDeactivated
+        _version
+        _deleted
+      }
+    }
+  }
+`;
+
+  let res = (await API.graphql(graphqlOperation(q))) as GraphQLResult<any>; // your fetch function here
+
+  let universities = res.data?.listBahrainUniversities
+    .items as BahrainUniversities[];
+  return universities;
 }
 
 /* -------------------------------------------------------------------------- */

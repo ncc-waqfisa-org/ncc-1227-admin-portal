@@ -230,7 +230,7 @@ function useBatchProviderApp() {
     setIsInitialFetching(true);
 
     const fetchedData = (await fetch(
-      `${process.env.NEXT_PUBLIC_APPLICATION_PAGINATION_ENDPOINT}?${batchQuery}${statusQuery}${searchQuery}`,
+      `${process.env.NEXT_PUBLIC_LAMBDA_GET_BACHELOR_APPLICATION}?${batchQuery}${statusQuery}${searchQuery}`,
       {
         headers: {
           Authorization: "Bearer " + token,
@@ -304,7 +304,7 @@ function useBatchProviderApp() {
         : "";
       setIsInitialFetching(true);
       const fetchedData = (await fetch(
-        `${process.env.NEXT_PUBLIC_APPLICATION_PAGINATION_ENDPOINT}?${batchQuery}${statusQuery}`,
+        `${process.env.NEXT_PUBLIC_LAMBDA_GET_BACHELOR_APPLICATION}?${batchQuery}${statusQuery}`,
         {
           headers: {
             Authorization: "Bearer " + token,
@@ -346,7 +346,7 @@ function useBatchProviderApp() {
     setIsMasterInitialFetching(true);
 
     const fetchedData = (await fetch(
-      `${process.env.NEXT_PUBLIC_MASTER_APPLICATION_PAGINATION_ENDPOINT}?${batchQuery}${statusQuery}`,
+      `${process.env.NEXT_PUBLIC_LAMBDA_GET_MASTERS_APPLICATION}?${batchQuery}${statusQuery}`,
       {
         headers: {
           Authorization: "Bearer " + token,

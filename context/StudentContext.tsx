@@ -259,6 +259,7 @@ function useProviderStudent() {
   }
 
   async function getStudentInfo(cpr: string): Promise<Student | undefined> {
+    setApplicantType(defaultState.applicantType);
     let query = `
     query GetStudent {
   getStudent(cpr: "${cpr}") {

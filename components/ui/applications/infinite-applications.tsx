@@ -358,7 +358,7 @@ export const InfiniteApplications = () => {
       setIsFetching(true);
 
       const fetchedData = (await fetch(
-        `${process.env.NEXT_PUBLIC_APPLICATION_PAGINATION_ENDPOINT}?${batchQuery}${statusQuery}${next}`,
+        `${process.env.NEXT_PUBLIC_LAMBDA_GET_BACHELOR_APPLICATION}?${batchQuery}${statusQuery}${next}`,
         {
           headers: {
             Authorization: "Bearer " + token,
