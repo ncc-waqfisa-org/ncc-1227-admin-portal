@@ -2,6 +2,7 @@ import { Formik, Form, Field } from "formik";
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import * as yup from "yup";
+
 import { useStudent } from "../context/StudentContext";
 import {
   Application,
@@ -21,7 +22,8 @@ import {
 import UpdateParentInfo from "./student/UpdateParentInfo";
 import { BMTabs } from "./BMTabs";
 import MasterInfoForm from "./student/MasterInfoForm";
-import { ApplicationsIcon } from "./icons";
+import { ApplicationsIcon, SearchIcon } from "./icons";
+import { cn } from "../src/utils";
 
 interface IStudentForm {
   cpr: string;
@@ -41,6 +43,14 @@ export default function StudentsPageComponent({
   const [student, setStudent] = useState<Student | undefined>(undefined);
   const [type, setType] = useState<"masters" | "bachelor">("bachelor");
 
+  const formRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (firstSearchDone && formRef.current) {
+      formRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [firstSearchDone]);
+
   useEffect(() => {
     if (!applicantType.isBoth) {
       if (applicantType.isBachelor) {
@@ -58,271 +68,341 @@ export default function StudentsPageComponent({
   };
 
   return (
-    <div>
-      {/* Form to select a data */}
-      <Formik
-        initialValues={initialValues}
-        validationSchema={yup.object({
-          cpr: yup
-            .string()
-            .min(9, `${tErrors("cprShouldBe9")}`)
-            .max(9, `${tErrors("cprShouldBe9")}`)
-            .required(`${tErrors("requiredField")}`),
-        })}
-        onSubmit={async (values, actions) => {
-          setLoading(true);
-          setFirstSearchDone(true);
-          const _student = await getStudentInfo(values.cpr);
-          setStudent(_student);
-          setLoading(false);
-          actions.setSubmitting(false);
-        }}
+    <div className="relative grow">
+      <div
+        ref={formRef}
+        className={`transition-all duration-500 ease-in-out ${
+          firstSearchDone
+            ? "   bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-2xl pt-4 z-50 pb-6 px-4 shadow-xl shadow-black/10"
+            : "flex min-h-[80svh] items-center justify-center"
+        }`}
       >
-        {({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          isSubmitting,
-          isValid,
-        }) => (
-          <Form className="container flex flex-col w-full max-w-md gap-6 mx-auto">
-            <div className="flex flex-col">
-              <label className="label">{t("cpr")}</label>
-              <Field
-                name="cpr"
-                type="text"
-                handleChange={handleChange}
-                handleBlur={handleBlur}
-                className={`input input-bordered input-primary ${
-                  errors.cpr && "input-error"
-                }`}
-              />
-              <label className="label-text-alt text-error">
-                {errors.cpr && errors.cpr}
-              </label>
+        <div className={`max-w-md mx-auto ${firstSearchDone ? "w-full" : ""}`}>
+          <header
+            className={`text-center mb-6 ${
+              firstSearchDone ? "animate-cpr-fade-down" : ""
+            }`}
+          >
+            <div className="inline-block p-2 mb-4 bg-yellow-100 rounded-full">
+              <ApplicationsIcon size={40} className="text-[#e1ba3d]" />
             </div>
-            <button
-              type="submit"
-              className={`btn btn-primary`}
-              disabled={isSubmitting || !isValid}
-            >
-              {isSubmitting && <span className="loading"></span>}
-              {t("searchForStudent")}
-            </button>
-          </Form>
-        )}
-      </Formik>
+            <h1 className="text-3xl font-bold text-gray-800">
+              {t("applicantSearch")}
+            </h1>
+          </header>
+          <Formik
+            initialValues={initialValues}
+            validationSchema={yup.object({
+              cpr: yup
+                .string()
+                .min(9, `${tErrors("cprShouldBe9")}`)
+                .max(9, `${tErrors("cprShouldBe9")}`)
+                .required(`${tErrors("requiredField")}`),
+            })}
+            onSubmit={async (values, actions) => {
+              setLoading(true);
+              setFirstSearchDone(true);
+              const _student = await getStudentInfo(values.cpr);
+              setStudent(_student);
+              setLoading(false);
+              actions.setSubmitting(false);
+            }}
+          >
+            {({
+              values,
+              errors,
+              touched,
+              handleChange,
+              handleBlur,
+              isSubmitting,
+              isValid,
+            }) => (
+              <Form className="container flex flex-col w-full max-w-md gap-6 mx-auto">
+                <div className="mb-4">
+                  <label
+                    htmlFor="cpr"
+                    className="block mb-2 text-sm font-medium text-gray-700"
+                  >
+                    {t("applicantCPR")}
+                  </label>
+                  <Field
+                    name="cpr"
+                    type="text"
+                    handleChange={handleChange}
+                    handleBlur={handleBlur}
+                    className={cn(
+                      "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#e1ba3d]",
+                      errors.cpr && "border-error"
+                    )}
+                    placeholder="Enter CPR number"
+                  />
+                  {errors.cpr && (
+                    <label className="label-text-alt text-error">
+                      {errors.cpr}
+                    </label>
+                  )}
+                </div>
 
-      {/* Show selected student data */}
-      {firstSearchDone && (
-        <div className="flex flex-col items-center p-4 mt-6 border border-gray-200 rounded-lg">
-          {loading && <div>{t("loading")}</div>}
-
-          {!student && !loading && firstSearchDone && <div>{t("noData")}</div>}
-
-          {applicantType.isBoth && !loading && (
-            <div className="w-full max-w-2xl py-4">
-              <BMTabs
-                type={type}
-                onChange={setType}
-                isBachelorDisabled={!applicantType.isBachelor}
-                isMasterDisabled={!applicantType.isMaster}
-              />
-            </div>
-          )}
-          {student && !applicantType.isBoth && !loading && (
-            <div className="flex items-center max-w-xl p-4 my-6 space-x-4 border rounded-md pe-10">
-              <ApplicationsIcon className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
-              <div className="flex-1 space-y-1">
-                <p className="text-sm font-medium leading-none">
-                  {t("applicantType")}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {applicantType.isBachelor && t("bachelor")}
-                  {applicantType.isMaster && t("masters")}
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* TODO: have update master student info */}
-
-          {/* Bachelor */}
-          {student &&
-            !loading &&
-            applicantType.isBachelor &&
-            type === "bachelor" && (
-              <div className="flex flex-col w-full max-w-3xl">
-                <Accordion
-                  className="w-full"
-                  type="single"
-                  defaultValue="studentInformation"
-                  collapsible
+                <button
+                  type="submit"
+                  className={`w-full bg-[#e1ba3d] gap-4 text-white py-2 px-4 disabled:bg-gray-400 rounded-md hover:bg-[#c9a636] focus:outline-none focus:ring-2 focus:ring-[#e1ba3d] focus:ring-offset-2 flex items-center justify-center transition-all duration-300 ${
+                    loading ? "" : ""
+                  }`}
+                  disabled={isSubmitting || !isValid}
                 >
-                  <AccordionItem value="studentInformation">
-                    <AccordionTrigger className="text-xl font-medium">
-                      {" "}
-                      {t("studentInformation")}
-                    </AccordionTrigger>
-                    <AccordionContent>
-                      <StudentUpdate student={student} />
-                    </AccordionContent>
-                  </AccordionItem>
-                  <AccordionItem value="parentsInformation">
-                    <AccordionTrigger className="text-xl font-medium">
-                      {t("parentsInformation")}
-                    </AccordionTrigger>
-                    <AccordionContent>
-                      {student.ParentInfo && (
-                        <UpdateParentInfo parentInfo={student.ParentInfo} />
-                      )}
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
+                  {isSubmitting && (
+                    <span className="loading animate-pulse"></span>
+                  )}
+                  {!isSubmitting && <SearchIcon size={20} />}
+                  {loading ? t("searching") : t("applicantSearch")}
+                </button>
+              </Form>
+            )}
+          </Formik>
+        </div>
+      </div>
 
-                <div className={"flex flex-col w-full gap-10"}>
-                  <div>
-                    <p className="py-3 text-xl font-medium">
-                      {t("applications")}
-                    </p>
-                    <div className="flex items-center gap-6 py-2 overflow-hidden overflow-x-scroll">
-                      {student.applications &&
-                      student.applications.items.filter(
-                        (app) => app?._deleted !== true
-                      ).length > 0 ? (
-                        student.applications?.items
-                          .filter((app) => app?._deleted !== true)
-                          .sort((a, b) => {
-                            if (!a || !b) {
-                              return -1;
-                            }
-                            // Assuming dateTime is a property on the application objects
-                            const dateA = new Date(a.dateTime).setHours(
-                              0,
-                              0,
-                              0,
-                              0
-                            );
-                            const dateB = new Date(b.dateTime).setHours(
-                              0,
-                              0,
-                              0,
-                              0
-                            );
+      {firstSearchDone && student && (
+        <div className="z-20 max-w-4xl px-4 py-8 mx-auto isolate">
+          <div>
+            {/* Show selected student data */}
+            {firstSearchDone && (
+              <div className="z-10 flex flex-col items-center p-4 mt-6 bg-white border border-gray-200 rounded-lg animate-cpr-fade-in-up">
+                {loading && <div>{t("loading")}</div>}
 
-                            // Compare the date values of dateTime in descending order
-                            if (dateA > dateB) {
-                              return -1;
-                            } else if (dateA < dateB) {
-                              return 1;
-                            } else {
-                              // If date values are equal, compare by updatedAt in descending order
-                              const updatedAtA = a.updatedAt;
-                              const updatedAtB = b.updatedAt;
+                {!student && !loading && firstSearchDone && (
+                  <div>{t("noData")}</div>
+                )}
 
-                              if (updatedAtA > updatedAtB) {
-                                return -1;
-                              } else if (updatedAtA < updatedAtB) {
-                                return 1;
-                              } else {
-                                return 0;
-                              }
-                            }
-                          })
-                          .map((item, index) => (
-                            <ApplicationCard
-                              key={index}
-                              application={item}
-                            ></ApplicationCard>
-                          ))
-                      ) : (
-                        <div className="p-3 border min-w-[18rem] text-center flex flex-col gap-1 border-gray-200 bg-zinc-50 hover:bg-zinc-100 stat card">
-                          {t("noData")}
-                        </div>
-                      )}
+                {applicantType.isBoth && !loading && (
+                  <div className="w-full max-w-2xl py-4">
+                    <BMTabs
+                      type={type}
+                      onChange={setType}
+                      isBachelorDisabled={!applicantType.isBachelor}
+                      isMasterDisabled={!applicantType.isMaster}
+                    />
+                  </div>
+                )}
+                {student && !applicantType.isBoth && !loading && (
+                  <div className="flex items-center max-w-xl p-4 my-6 space-x-4 border rounded-md pe-10">
+                    <ApplicationsIcon className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
+                    <div className="flex-1 space-y-1">
+                      <p className="text-sm font-medium leading-none">
+                        {t("applicantType")}
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        {applicantType.isBachelor && t("bachelor")}
+                        {applicantType.isMaster && t("masters")}
+                      </p>
                     </div>
                   </div>
-                </div>
-              </div>
-            )}
+                )}
 
-          {/* Masters */}
-          {student &&
-            !loading &&
-            applicantType.isMaster &&
-            type == "masters" && (
-              <div className="flex flex-col w-full max-w-3xl">
-                <MasterInfoForm student={student} universities={universities} />
+                {/* TODO: have update master student info */}
 
-                <div className={"flex flex-col w-full gap-10"}>
-                  <div>
-                    <p className="py-3 text-xl font-medium">
-                      {t("MApplications")}
-                    </p>
-                    <div className="flex items-center gap-6 py-2 overflow-hidden overflow-x-scroll">
-                      {student.m_masterApplications &&
-                      student.m_masterApplications.items.filter(
-                        (app) => app?._deleted !== true
-                      ).length > 0 ? (
-                        student.m_masterApplications?.items
-                          .filter((app) => app?._deleted !== true)
-                          .sort((a, b) => {
-                            if (!a || !b) {
-                              return -1;
-                            }
-                            // Assuming dateTime is a property on the application objects
-                            const dateA = new Date(a.dateTime).setHours(
-                              0,
-                              0,
-                              0,
-                              0
-                            );
-                            const dateB = new Date(b.dateTime).setHours(
-                              0,
-                              0,
-                              0,
-                              0
-                            );
+                {/* Bachelor */}
+                {student &&
+                  !loading &&
+                  applicantType.isBachelor &&
+                  type === "bachelor" && (
+                    <div className="flex flex-col w-full max-w-3xl">
+                      <Accordion
+                        className="w-full"
+                        type="single"
+                        defaultValue="studentInformation"
+                        collapsible
+                      >
+                        <AccordionItem value="studentInformation">
+                          <AccordionTrigger className="text-xl font-medium">
+                            {" "}
+                            {t("studentInformation")}
+                          </AccordionTrigger>
+                          <AccordionContent>
+                            <StudentUpdate student={student} />
+                          </AccordionContent>
+                        </AccordionItem>
+                        <AccordionItem value="parentsInformation">
+                          <AccordionTrigger className="text-xl font-medium">
+                            {t("parentsInformation")}
+                          </AccordionTrigger>
+                          <AccordionContent>
+                            {student.ParentInfo && (
+                              <UpdateParentInfo
+                                parentInfo={student.ParentInfo}
+                              />
+                            )}
+                          </AccordionContent>
+                        </AccordionItem>
+                      </Accordion>
 
-                            // Compare the date values of dateTime in descending order
-                            if (dateA > dateB) {
-                              return -1;
-                            } else if (dateA < dateB) {
-                              return 1;
-                            } else {
-                              // If date values are equal, compare by updatedAt in descending order
-                              const updatedAtA = a.updatedAt;
-                              const updatedAtB = b.updatedAt;
+                      <div className={"flex flex-col w-full gap-10"}>
+                        <div>
+                          <p className="py-3 text-xl font-medium">
+                            {t("applications")}
+                          </p>
+                          <div className="flex items-center gap-6 py-2 overflow-hidden overflow-x-scroll">
+                            {student.applications &&
+                            student.applications.items.filter(
+                              (app) => app?._deleted !== true
+                            ).length > 0 ? (
+                              student.applications?.items
+                                .filter((app) => app?._deleted !== true)
+                                .sort((a, b) => {
+                                  if (!a || !b) {
+                                    return -1;
+                                  }
+                                  // Assuming dateTime is a property on the application objects
+                                  const dateA = new Date(a.dateTime).setHours(
+                                    0,
+                                    0,
+                                    0,
+                                    0
+                                  );
+                                  const dateB = new Date(b.dateTime).setHours(
+                                    0,
+                                    0,
+                                    0,
+                                    0
+                                  );
 
-                              if (updatedAtA > updatedAtB) {
-                                return -1;
-                              } else if (updatedAtA < updatedAtB) {
-                                return 1;
-                              } else {
-                                return 0;
-                              }
-                            }
-                          })
-                          .map((item, index) => (
-                            <MasterApplicationCard
-                              key={index}
-                              application={item}
-                            ></MasterApplicationCard>
-                          ))
-                      ) : (
-                        <div className="p-3 border min-w-[18rem] text-center flex flex-col gap-1 border-gray-200 bg-zinc-50 hover:bg-zinc-100 stat card">
-                          {t("noData")}
+                                  // Compare the date values of dateTime in descending order
+                                  if (dateA > dateB) {
+                                    return -1;
+                                  } else if (dateA < dateB) {
+                                    return 1;
+                                  } else {
+                                    // If date values are equal, compare by updatedAt in descending order
+                                    const updatedAtA = a.updatedAt;
+                                    const updatedAtB = b.updatedAt;
+
+                                    if (updatedAtA > updatedAtB) {
+                                      return -1;
+                                    } else if (updatedAtA < updatedAtB) {
+                                      return 1;
+                                    } else {
+                                      return 0;
+                                    }
+                                  }
+                                })
+                                .map((item, index) => (
+                                  <ApplicationCard
+                                    key={index}
+                                    application={item}
+                                  ></ApplicationCard>
+                                ))
+                            ) : (
+                              <div className="p-3 border min-w-[18rem] text-center flex flex-col gap-1 border-gray-200 bg-zinc-50 hover:bg-zinc-100 stat card">
+                                {t("noData")}
+                              </div>
+                            )}
+                          </div>
                         </div>
-                      )}
+                      </div>
                     </div>
-                  </div>
-                </div>
+                  )}
+
+                {/* Masters */}
+                {student &&
+                  !loading &&
+                  applicantType.isMaster &&
+                  type == "masters" && (
+                    <div className="flex flex-col w-full max-w-3xl">
+                      <MasterInfoForm
+                        student={student}
+                        universities={universities}
+                      />
+
+                      <div className={"flex flex-col w-full gap-10"}>
+                        <div>
+                          <p className="py-3 text-xl font-medium">
+                            {t("MApplications")}
+                          </p>
+                          <div className="flex items-center gap-6 py-2 overflow-hidden overflow-x-scroll">
+                            {student.m_masterApplications &&
+                            student.m_masterApplications.items.filter(
+                              (app) => app?._deleted !== true
+                            ).length > 0 ? (
+                              student.m_masterApplications?.items
+                                .filter((app) => app?._deleted !== true)
+                                .sort((a, b) => {
+                                  if (!a || !b) {
+                                    return -1;
+                                  }
+                                  // Assuming dateTime is a property on the application objects
+                                  const dateA = new Date(a.dateTime).setHours(
+                                    0,
+                                    0,
+                                    0,
+                                    0
+                                  );
+                                  const dateB = new Date(b.dateTime).setHours(
+                                    0,
+                                    0,
+                                    0,
+                                    0
+                                  );
+
+                                  // Compare the date values of dateTime in descending order
+                                  if (dateA > dateB) {
+                                    return -1;
+                                  } else if (dateA < dateB) {
+                                    return 1;
+                                  } else {
+                                    // If date values are equal, compare by updatedAt in descending order
+                                    const updatedAtA = a.updatedAt;
+                                    const updatedAtB = b.updatedAt;
+
+                                    if (updatedAtA > updatedAtB) {
+                                      return -1;
+                                    } else if (updatedAtA < updatedAtB) {
+                                      return 1;
+                                    } else {
+                                      return 0;
+                                    }
+                                  }
+                                })
+                                .map((item, index) => (
+                                  <MasterApplicationCard
+                                    key={index}
+                                    application={item}
+                                  ></MasterApplicationCard>
+                                ))
+                            ) : (
+                              <div className="p-3 border min-w-[18rem] text-center flex flex-col gap-1 border-gray-200 bg-zinc-50 hover:bg-zinc-100 stat card">
+                                {t("noData")}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
               </div>
             )}
+          </div>
         </div>
       )}
+
+      {firstSearchDone && !student && (
+        <div className="z-10 flex flex-col items-center max-w-4xl p-4 mx-auto mt-6 bg-white border border-gray-200 rounded-lg animate-cpr-fade-in-up">
+          <p>{t("noApplicantWithThisCPR")}</p>
+        </div>
+      )}
+
+      {/* Background SVG */}
+      <svg
+        className="fixed bottom-0 left-0 z-10 w-full h-auto pointer-events-none isolate"
+        viewBox="0 0 1440 320"
+        xmlns="http://www.w3.org/2000/svg"
+        preserveAspectRatio="none"
+      >
+        <path
+          fill="#e1ba3d"
+          fillOpacity="0.05"
+          d="M0,64L48,80C96,96,192,128,288,128C384,128,480,96,576,90.7C672,85,768,107,864,128C960,149,1056,171,1152,165.3C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+        ></path>
+      </svg>
     </div>
   );
 }

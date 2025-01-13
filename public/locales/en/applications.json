@@ -148,5 +148,10 @@
   "masters": "Masters",
   "bachelor": "Bachelor",
   "MApplications": "Masters Applications",
+  "noApplicantWithThisCPR": "No Applicant With This CPR",
+  "applicantSearch": "Applicant Search",
+  "applicantCPR": "Applicant CPR",
+  "searchForApplicant": "Search for Applicant",
+  "searching": "Searching...",
   "exportAllAsCSV": "Export all as CSV"
 }

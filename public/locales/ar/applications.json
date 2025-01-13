@@ -148,5 +148,9 @@
   "masters": "الماجستير",
   "bachelor": "بكالوريوس",
   "MApplications": "تطبيقات الماجستير",
+  "noApplicantWithThisCPR": "لا يوجد متقدم بهذا الرقم الشخصي",
+  "applicantSearch": "البحث عن المتقدم",
+  "applicantCPR": "الرقم الشخصي للمتقدم",
+  "searching": "جاري البحث...",
   "exportAllAsCSV": "تصدير الكل CSV"
 }
