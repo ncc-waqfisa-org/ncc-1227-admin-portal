@@ -144,5 +144,9 @@
   "goToScholarship": "Go to scholarship",
   "createScholarship": "Create Scholarship",
   "thisWillCreateScholarship": "This will create a scholarship to the student",
+  "applicantType": "Applicant Program Type",
+  "masters": "Masters",
+  "bachelor": "Bachelor",
+  "MApplications": "Masters Applications",
   "exportAllAsCSV": "Export all as CSV"
 }

@@ -1,5 +1,5 @@
 import { Formik, Form, Field } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import * as yup from "yup";
 import { useStudent } from "../context/StudentContext";
@@ -21,6 +21,7 @@ import {
 import UpdateParentInfo from "./student/UpdateParentInfo";
 import { BMTabs } from "./BMTabs";
 import MasterInfoForm from "./student/MasterInfoForm";
+import { ApplicationsIcon } from "./icons";
 
 interface IStudentForm {
   cpr: string;
@@ -38,7 +39,6 @@ export default function StudentsPageComponent({
   const [firstSearchDone, setFirstSearchDone] = useState(false);
   const [loading, setLoading] = useState(false);
   const [student, setStudent] = useState<Student | undefined>(undefined);
-
   const [type, setType] = useState<"masters" | "bachelor">("bachelor");
 
   useEffect(() => {
@@ -123,7 +123,7 @@ export default function StudentsPageComponent({
           {!student && !loading && firstSearchDone && <div>{t("noData")}</div>}
 
           {applicantType.isBoth && !loading && (
-            <div className="w-full max-w-2xl">
+            <div className="w-full max-w-2xl py-4">
               <BMTabs
                 type={type}
                 onChange={setType}
@@ -133,7 +133,8 @@ export default function StudentsPageComponent({
             </div>
           )}
           {student && !applicantType.isBoth && !loading && (
-            <div className="flex items-center w-full max-w-xl p-4 my-6 space-x-4 border rounded-md">
+            <div className="flex items-center max-w-xl p-4 my-6 space-x-4 border rounded-md pe-10">
+              <ApplicationsIcon className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
               <div className="flex-1 space-y-1">
                 <p className="text-sm font-medium leading-none">
                   {t("applicantType")}
@@ -153,7 +154,7 @@ export default function StudentsPageComponent({
             !loading &&
             applicantType.isBachelor &&
             type === "bachelor" && (
-              <div className="flex flex-col w-full">
+              <div className="flex flex-col w-full max-w-3xl">
                 <Accordion
                   className="w-full"
                   type="single"
@@ -252,15 +253,13 @@ export default function StudentsPageComponent({
             !loading &&
             applicantType.isMaster &&
             type == "masters" && (
-              <div className="flex flex-col w-full">
+              <div className="flex flex-col w-full max-w-3xl">
                 <MasterInfoForm student={student} universities={universities} />
-
-                {/* TODO: have master applications  */}
 
                 <div className={"flex flex-col w-full gap-10"}>
                   <div>
                     <p className="py-3 text-xl font-medium">
-                      {t("applications")}
+                      {t("MApplications")}
                     </p>
                     <div className="flex items-center gap-6 py-2 overflow-hidden overflow-x-scroll">
                       {student.m_masterApplications &&

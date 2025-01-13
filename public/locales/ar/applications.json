@@ -144,5 +144,9 @@
   "goToScholarship": "اذهب إلى المنحة",
   "createScholarship": "أنشاء منحة",
   "thisWillCreateScholarship": "هذا سينشئ منحة دراسية للطالب",
+  "applicantType": "نوع برنامج مقدم الطلب",
+  "masters": "الماجستير",
+  "bachelor": "بكالوريوس",
+  "MApplications": "تطبيقات الماجستير",
   "exportAllAsCSV": "تصدير الكل CSV"
 }
