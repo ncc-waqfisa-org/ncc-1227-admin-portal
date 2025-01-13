@@ -21,6 +21,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         "signIn",
         "common",
         "errors",
+        "account",
       ])),
     },
   };
