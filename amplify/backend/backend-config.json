@@ -90,12 +90,22 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "getApplicationsMaster": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "getCprFromToken": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
     "getStatistics": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "getStatisticsMaster": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
@@ -144,6 +154,11 @@
     "updateStatistics": {
       "build": true,
       "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "updateStatisticsMaster": {
+      "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
@@ -282,6 +297,22 @@
         }
       ]
     },
+    "AMPLIFY_function_getApplicationsMaster_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getApplicationsMaster"
+        }
+      ]
+    },
+    "AMPLIFY_function_getApplicationsMaster_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getApplicationsMaster"
+        }
+      ]
+    },
     "AMPLIFY_function_getApplications_deploymentBucketName": {
       "usedBy": [
         {
@@ -311,6 +342,22 @@
         {
           "category": "function",
           "resourceName": "getCprFromToken"
+        }
+      ]
+    },
+    "AMPLIFY_function_getStatisticsMaster_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getStatisticsMaster"
+        }
+      ]
+    },
+    "AMPLIFY_function_getStatisticsMaster_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "getStatisticsMaster"
         }
       ]
     },
@@ -410,6 +457,22 @@
         }
       ]
     },
+    "AMPLIFY_function_signUpMaster_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "signUpMaster"
+        }
+      ]
+    },
+    "AMPLIFY_function_signUpMaster_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "signUpMaster"
+        }
+      ]
+    },
     "AMPLIFY_function_signUp_deploymentBucketName": {
       "usedBy": [
         {
@@ -455,6 +518,22 @@
         {
           "category": "function",
           "resourceName": "updateGpaCsv"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateStatisticsMaster_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateStatisticsMaster"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateStatisticsMaster_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateStatisticsMaster"
         }
       ]
     },

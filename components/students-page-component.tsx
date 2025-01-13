@@ -73,8 +73,8 @@ export default function StudentsPageComponent({
         ref={formRef}
         className={`transition-all duration-500 ease-in-out ${
           firstSearchDone
-            ? "   bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-2xl pt-4 z-50 pb-6 px-4 shadow-xl shadow-black/10"
-            : "flex min-h-[80svh] items-center justify-center"
+            ? "z-50 px-4 pt-4 pb-6 bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-2xl shadow-xl shadow-black/10"
+            : "flex justify-center items-center min-h-[80svh]"
         }`}
       >
         <div className={`max-w-md mx-auto ${firstSearchDone ? "w-full" : ""}`}>
@@ -117,8 +117,8 @@ export default function StudentsPageComponent({
               isSubmitting,
               isValid,
             }) => (
-              <Form className="container flex flex-col w-full max-w-md gap-6 mx-auto">
-                <div className="mb-4">
+              <Form className="container flex flex-col gap-6 w-full max-w-md">
+                <div className="mb-4 w-full">
                   <label
                     htmlFor="cpr"
                     className="block mb-2 text-sm font-medium text-gray-700"
@@ -134,7 +134,7 @@ export default function StudentsPageComponent({
                       "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#e1ba3d]",
                       errors.cpr && "border-error"
                     )}
-                    placeholder="Enter CPR number"
+                    placeholder={t("applicantCPR")}
                   />
                   {errors.cpr && (
                     <label className="label-text-alt text-error">
@@ -151,7 +151,7 @@ export default function StudentsPageComponent({
                   disabled={isSubmitting || !isValid}
                 >
                   {isSubmitting && (
-                    <span className="loading animate-pulse"></span>
+                    <span className="animate-pulse loading"></span>
                   )}
                   {!isSubmitting && <SearchIcon size={20} />}
                   {loading ? t("searching") : t("applicantSearch")}
@@ -163,11 +163,11 @@ export default function StudentsPageComponent({
       </div>
 
       {firstSearchDone && student && (
-        <div className="z-20 max-w-4xl px-4 py-8 mx-auto isolate">
+        <div className="isolate z-20 px-4 py-8 mx-auto max-w-4xl">
           <div>
             {/* Show selected student data */}
             {firstSearchDone && (
-              <div className="z-10 flex flex-col items-center p-4 mt-6 bg-white border border-gray-200 rounded-lg animate-cpr-fade-in-up">
+              <div className="flex z-10 flex-col items-center p-4 mt-6 bg-white rounded-lg border border-gray-200 animate-cpr-fade-in-up">
                 {loading && <div>{t("loading")}</div>}
 
                 {!student && !loading && firstSearchDone && (
@@ -175,7 +175,7 @@ export default function StudentsPageComponent({
                 )}
 
                 {applicantType.isBoth && !loading && (
-                  <div className="w-full max-w-2xl py-4">
+                  <div className="py-4 w-full max-w-2xl">
                     <BMTabs
                       type={type}
                       onChange={setType}
@@ -185,7 +185,7 @@ export default function StudentsPageComponent({
                   </div>
                 )}
                 {student && !applicantType.isBoth && !loading && (
-                  <div className="flex items-center max-w-xl p-4 my-6 space-x-4 border rounded-md pe-10">
+                  <div className="flex items-center p-4 my-6 space-x-4 max-w-xl rounded-md border pe-10">
                     <ApplicationsIcon className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
                     <div className="flex-1 space-y-1">
                       <p className="text-sm font-medium leading-none">
@@ -236,12 +236,12 @@ export default function StudentsPageComponent({
                         </AccordionItem>
                       </Accordion>
 
-                      <div className={"flex flex-col w-full gap-10"}>
+                      <div className={"flex flex-col gap-10 w-full"}>
                         <div>
                           <p className="py-3 text-xl font-medium">
                             {t("applications")}
                           </p>
-                          <div className="flex items-center gap-6 py-2 overflow-hidden overflow-x-scroll">
+                          <div className="flex overflow-hidden overflow-x-scroll gap-6 items-center py-2">
                             {student.applications &&
                             student.applications.items.filter(
                               (app) => app?._deleted !== true
@@ -313,12 +313,12 @@ export default function StudentsPageComponent({
                         universities={universities}
                       />
 
-                      <div className={"flex flex-col w-full gap-10"}>
+                      <div className={"flex flex-col gap-10 w-full"}>
                         <div>
                           <p className="py-3 text-xl font-medium">
                             {t("MApplications")}
                           </p>
-                          <div className="flex items-center gap-6 py-2 overflow-hidden overflow-x-scroll">
+                          <div className="flex overflow-hidden overflow-x-scroll gap-6 items-center py-2">
                             {student.m_masterApplications &&
                             student.m_masterApplications.items.filter(
                               (app) => app?._deleted !== true
@@ -385,14 +385,14 @@ export default function StudentsPageComponent({
       )}
 
       {firstSearchDone && !student && (
-        <div className="z-10 flex flex-col items-center max-w-4xl p-4 mx-auto mt-6 bg-white border border-gray-200 rounded-lg animate-cpr-fade-in-up">
+        <div className="flex z-10 flex-col items-center p-4 mx-auto mt-6 max-w-4xl bg-white rounded-lg border border-gray-200 animate-cpr-fade-in-up">
           <p>{t("noApplicantWithThisCPR")}</p>
         </div>
       )}
 
       {/* Background SVG */}
       <svg
-        className="fixed bottom-0 left-0 z-10 w-full h-auto pointer-events-none isolate"
+        className="isolate fixed bottom-0 left-0 z-10 w-full h-auto pointer-events-none"
         viewBox="0 0 1440 320"
         xmlns="http://www.w3.org/2000/svg"
         preserveAspectRatio="none"
@@ -420,7 +420,7 @@ function ApplicationCard({ application }: IApplicationCard) {
       {application && (
         <Link href={`/applications/masters/${application.id}`}>
           <div className="p-3 border min-w-[18rem] flex flex-col gap-1 border-gray-200 bg-zinc-50 hover:bg-zinc-100 stat card">
-            <div className="flex items-center justify-between">
+            <div className="flex justify-between items-center">
               <p className="stat-desc"> {t("tableTitleApplicationDate")} </p>
               <div className="stat-desc">
                 {formatDate(new Date(application.dateTime))}
@@ -457,7 +457,7 @@ function MasterApplicationCard({ application }: IMasterApplicationCard) {
       {application && (
         <Link href={`/applications/${application.id}`}>
           <div className="p-3 border min-w-[18rem] flex flex-col gap-1 border-gray-200 bg-zinc-50 hover:bg-zinc-100 stat card">
-            <div className="flex items-center justify-between">
+            <div className="flex justify-between items-center">
               <p className="stat-desc"> {t("tableTitleApplicationDate")} </p>
               <div className="stat-desc">
                 {formatDate(new Date(application.dateTime))}

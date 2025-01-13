@@ -2,20 +2,22 @@
 	ENV
 	REGION
 Amplify Params - DO NOT EDIT */
-
 const AWS = require("aws-sdk");
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
 const {
-  ApplicationTable: APPLICATION_TABLE,
-  UniversityTable: UNIVERSITY_TABLE,
+  MasterApplicationTable: APPLICATION_TABLE,
+  BahrainUniversities: UNIVERSITY_Bahrain_TABLE,
+  MasterUniversities: UNIVERSITY_MASTER_TABLE,
   StudentTable: STUDENT_TABLE,
-  StatisticsTable: STATISTICS_TABLE,
+  MasterStatisticsTable: STATISTICS_TABLE,
 } = {
-  ApplicationTable: "Application-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
-  UniversityTable: "University-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
+  MasterApplicationTable:
+    "MasterApplication-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
+  BahrainUniversities: "",
+  MasterUniversities: "",
   StudentTable: "Student-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
-  StatisticsTable: "Statistics-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
+  MasterStatisticsTable: "Statistics-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
 };
 
 const tableName = APPLICATION_TABLE;
@@ -31,6 +33,11 @@ exports.handler = async (event) => {
 
     return {
       statusCode: 200,
+      //  Uncomment below to enable CORS requests
+      //  headers: {
+      //      "Access-Control-Allow-Origin": "*",
+      //      "Access-Control-Allow-Headers": "*"
+      //  },
       body: JSON.stringify({
         message: "Statistics updated",
       }),
@@ -222,7 +229,10 @@ async function getPrivatePublicRatio(applications, students) {
       (student) => student.cpr === application.studentCPR
     );
     if (!student) {
-      student = await getStudent(STUDENT_TABLE, application.studentCPR);
+      student = await getStudent(
+        "Student-cw7beg2perdtnl7onnneec4jfa-staging",
+        application.studentCPR
+      );
     }
     if (student) {
       if (student.schoolType === "PRIVATE") {
@@ -262,6 +272,25 @@ async function getPrivatePublicRatio(applications, students) {
       male: publicCountMale,
       female: publicCountFemale,
     },
+    // privateToday: {
+    //     "male": students.filter(student =>
+    //         new Date(student.createdAt).toDateString() === new Date().toDateString() && student.schoolType === 'PRIVATE' &&
+    //         student.gender === "MALE").length,
+    //     "female": students.filter(student =>
+    //         new Date(student.createdAt).toDateString() === new Date().toDateString() && student.schoolType === 'PRIVATE' &&
+    //         student.gender === "FEMALE").length,
+    //
+    // },
+    // publicToday: {
+    //     "male": students.filter(student =>
+    //         new Date(student.createdAt).toDateString() === new Date().toDateString() && student.schoolType === 'PUBLIC' &&
+    //         student.gender === "MALE").length,
+    //     "female": students.filter(student =>
+    //         new Date(student.createdAt).toDateString() === new Date().toDateString() && student.schoolType === 'PUBLIC' &&
+    //         student.gender === "FEMALE").length,
+    //
+    // }
+
     privateToday: {
       male: privateCountMaleToday,
       female: privateCountFemaleToday,
@@ -361,6 +390,22 @@ async function getFamilyIncomeRatio(applications, students) {
       male: below1500Male,
       female: below1500Female,
     },
+    // above1500Today: {
+    //     "male": students.filter(student =>
+    //         new Date(student.createdAt).toDateString() === new Date().toDateString() && student.familyIncome === 'MORE_THAN_1500' &&
+    //         student.gender === "MALE").length,
+    //     "female": students.filter(student =>
+    //         new Date(student.createdAt).toDateString() === new Date().toDateString() && student.familyIncome === 'MORE_THAN_1500' &&
+    //         student.gender === "FEMALE").length,
+    // },
+    // below1500Today: {
+    //     "male": students.filter(student =>
+    //         new Date(student.createdAt).toDateString() === new Date().toDateString() && student.familyIncome === 'LESS_THAN_1500' &&
+    //         student.gender === "MALE").length,
+    //     "female": students.filter(student =>
+    //         new Date(student.createdAt).toDateString() === new Date().toDateString() && student.familyIncome === 'LESS_THAN_1500' &&
+    //         student.gender === "FEMALE").length,
+    // }
 
     above1500Today: {
       male: above1500MaleToday,
@@ -375,7 +420,7 @@ async function getFamilyIncomeRatio(applications, students) {
 
 async function getStudents(batchValue) {
   const params = {
-    TableName: STUDENT_TABLE,
+    TableName: "Student-cw7beg2perdtnl7onnneec4jfa-staging",
     // graduationDate is contained in the batch attribute
     FilterExpression: "#batch = :batchValue",
     ExpressionAttributeValues: {
@@ -398,66 +443,153 @@ async function getStudents(batchValue) {
   return allStudents;
 }
 
-// async function getApplicationsPerYearChart(tableName, batchValue) {
-//   let applicationsPerYear = {};
-//   let lastEvaluatedKey = null;
-
-//   do {
-//     const applicationsPerYearParams = {
-//       TableName: tableName,
-//       ProjectionExpression: "#batch",
-//       ExpressionAttributeNames: {
-//         "#batch": "batch",
-//       },
-//       ExclusiveStartKey: lastEvaluatedKey,
-//     };
-
-//     const applicationsPerYearResult = await dynamoDB
-//       .scan(applicationsPerYearParams)
-//       .promise();
-
-//     applicationsPerYearResult.Items.forEach((item) => {
-//       const batch = item.batch;
-//       applicationsPerYear[batch] = (applicationsPerYear[batch] || 0) + 1;
-//     });
-
-//     lastEvaluatedKey = applicationsPerYearResult.LastEvaluatedKey;
-//   } while (lastEvaluatedKey);
-
-//   return applicationsPerYear;
+// async function getTopPrograms(tableName, batchValue) {
+//     let programIDsCount = {};
+//     let lastEvaluatedKey = null;
+//
+//     // get the highest 5 programIDs repeated in Applications table, with their count
+//
+//     do {
+//         const params = {
+//             TableName: tableName,
+//             ProjectionExpression: 'programID',
+//             FilterExpression: '#batch = :batchValue',
+//             ExpressionAttributeNames: {
+//                 '#batch': 'batch'
+//             },
+//             ExpressionAttributeValues: {
+//                 ':batchValue': batchValue
+//             },
+//             ExclusiveStartKey: lastEvaluatedKey
+//         };
+//
+//         const result = await dynamoDB.scan(params).promise();
+//
+//         result.Items.forEach(item => {
+//             const programID = item.programID;
+//             programIDsCount[programID] = (programIDsCount[programID] || 0) + 1;
+//         });
+//
+//         lastEvaluatedKey = result.LastEvaluatedKey;
+//     }
+//     while (lastEvaluatedKey);
+//
+//     // sort the programs by count
+//     const sortedPrograms = Object.entries(programIDsCount).sort((a, b) => b[1] - a[1]);
+//     const topPrograms = sortedPrograms.slice(0, 5);
+//     // get the names of the programs from the program table
+//
+//     const programNames = {};
+//     for (const [programID] of topPrograms) {
+//         const programParams = {
+//             TableName: 'Program-cw7beg2perdtnl7onnneec4jfa-staging',
+//             Key: {
+//                 id: programID
+//             }
+//         };
+//         const programResult = await dynamoDB.get(programParams).promise();
+//         programNames[programID] = programResult.Item?.name;
+//     }
+//
+//     const topProgramsJson = {};
+//     for (const [programID, count] of topPrograms) {
+//         topProgramsJson[programNames[programID]] = count;
+//     }
+//
+//     return topProgramsJson;
+//
 // }
 
-// async function getTotalApplications(tableName, batchValue) {
-//   let applicationsCount = 0;
-//   let lastEvaluatedKey = null;
+async function getApplicationsPerYearChart(tableName, batchValue) {
+  let applicationsPerYear = {};
+  let lastEvaluatedKey = null;
 
-//   do {
-//     const applicationsParams = {
-//       TableName: tableName,
-//       ProjectionExpression: "#batch",
-//       FilterExpression: "#batch = :batchValue",
-//       ExpressionAttributeNames: {
-//         "#batch": "batch",
-//       },
-//       ExpressionAttributeValues: {
-//         ":batchValue": batchValue,
-//       },
-//       ExclusiveStartKey: lastEvaluatedKey,
-//     };
+  do {
+    const applicationsPerYearParams = {
+      TableName: tableName,
+      ProjectionExpression: "#batch",
+      ExpressionAttributeNames: {
+        "#batch": "batch",
+      },
+      ExclusiveStartKey: lastEvaluatedKey,
+    };
 
-//     const applicationsResult = await dynamoDB
-//       .scan(applicationsParams)
-//       .promise();
+    const applicationsPerYearResult = await dynamoDB
+      .scan(applicationsPerYearParams)
+      .promise();
 
-//     applicationsCount += applicationsResult.Count || 0;
+    applicationsPerYearResult.Items.forEach((item) => {
+      const batch = item.batch;
+      applicationsPerYear[batch] = (applicationsPerYear[batch] || 0) + 1;
+    });
 
-//     lastEvaluatedKey = applicationsResult.LastEvaluatedKey;
-//   } while (lastEvaluatedKey);
+    lastEvaluatedKey = applicationsPerYearResult.LastEvaluatedKey;
+  } while (lastEvaluatedKey);
 
-//   return applicationsCount;
-// }
+  return applicationsPerYear;
+}
+
+async function getTotalApplications(tableName, batchValue) {
+  let applicationsCount = 0;
+  let lastEvaluatedKey = null;
+
+  do {
+    const applicationsParams = {
+      TableName: tableName,
+      ProjectionExpression: "#batch",
+      FilterExpression: "#batch = :batchValue",
+      ExpressionAttributeNames: {
+        "#batch": "batch",
+      },
+      ExpressionAttributeValues: {
+        ":batchValue": batchValue,
+      },
+      ExclusiveStartKey: lastEvaluatedKey,
+    };
+
+    const applicationsResult = await dynamoDB
+      .scan(applicationsParams)
+      .promise();
+
+    applicationsCount += applicationsResult.Count || 0;
+
+    lastEvaluatedKey = applicationsResult.LastEvaluatedKey;
+  } while (lastEvaluatedKey);
+
+  return applicationsCount;
+}
 
 async function getStatusPieChart(applications /* tableName, batchValue */) {
+  // let statusCounts = {};
+  //
+  // let lastEvaluatedKey = null;
+  // do {
+  //     const statusParams = {
+  //         TableName: tableName,
+  //         ProjectionExpression: '#status',
+  //         ExpressionAttributeNames: {
+  //             '#status': 'status',
+  //             '#batch': 'batch'
+  //         },
+  //         FilterExpression: '#batch = :batchValue',
+  //         ExpressionAttributeValues: {
+  //             ':batchValue': batchValue
+  //         },
+  //         ExclusiveStartKey: lastEvaluatedKey
+  //     };
+  //
+  //     const statusResult = await dynamoDB.scan(statusParams).promise();
+  //
+  //     statusResult.Items.forEach(item => {
+  //         const status = item.status;
+  //         statusCounts[status] = (statusCounts[status] || 0) + 1;
+  //     });
+  //
+  //     lastEvaluatedKey = statusResult.LastEvaluatedKey;
+  // } while (lastEvaluatedKey);
+  //
+  // return statusCounts;
+
   let statusCounts = {};
   applications.forEach((item) => {
     const status = item.status;
@@ -595,3 +727,36 @@ async function updateStatistics(tableName, batchValue) {
 
   await dynamoDB.put(params).promise();
 }
+
+// async function updateApplications(applications){
+//     // SET familyIncome to be LESS_THAN_1500 if it is BETWEEN_500_AND_700, BETWEEN_700_AND_1000, or LESS_THAN_500
+//     console.log('Applications:', applications);
+//
+//     for (const application of applications) {
+//         const params = {
+//             TableName: 'Application-cw7beg2perdtnl7onnneec4jfa-staging',
+//             Key: {
+//                 id: application.id
+//             },
+//             UpdateExpression: 'SET ',
+//             ExpressionAttributeValues: {}
+//         };
+//         if (application.familyIncome === "BETWEEN_500_AND_700" || application.familyIncome === "BETWEEN_700_AND_1000" || application.familyIncome=== "LESS_THAN_500") {
+//             console.log('Family Income:', application.familyIncome);
+//             params.UpdateExpression += 'familyIncome = :familyIncome, ';
+//             params.ExpressionAttributeValues[':familyIncome'] = "LESS_THAN_1500";
+//             // add 20 to the score
+//             const score = application.score + 20;
+//             params.UpdateExpression += 'score = :score, ';
+//             params.ExpressionAttributeValues[':score'] = score;
+//
+//         }
+//         if (params.UpdateExpression === 'SET ') {
+//             return;
+//         }
+//
+//         params.UpdateExpression = params.UpdateExpression.slice(0, -2); // Remove the last comma
+//         await dynamoDB.update(params).promise();
+//
+//     }
+// }

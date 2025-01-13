@@ -3,8 +3,9 @@ const dynamoDB = new AWS.DynamoDB.DocumentClient();
 const cognito = new AWS.CognitoIdentityServiceProvider();
 
 // Environment variables
-const { ApplicationTable: APPLICATION_TABLE, AdminTable: ADMIN_TABLE } = {
-  ApplicationTable: "Application-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
+const { MasterApplicationTable: APPLICATION_TABLE, AdminTable: ADMIN_TABLE } = {
+  MasterApplicationTable:
+    "MasterApplication-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
   AdminTable: "Admin-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
 };
 
@@ -61,6 +62,7 @@ exports.handler = async (event) => {
   };
 };
 
+//we migth change this
 async function getApplications(pageSize, startKey, batch, status = null) {
   const params = {
     TableName: APPLICATION_TABLE,
@@ -107,21 +109,24 @@ async function getApplications(pageSize, startKey, batch, status = null) {
   }
 }
 
+//We might change this
 async function getApplicationsByCPR(cpr, batch) {
   const params = {
     TableName: APPLICATION_TABLE,
-    IndexName: "byCPR",
+    IndexName: "byMasterStudentCPR",
     KeyConditionExpression: "studentCPR = :cpr",
+    FilterExpression: "#batch = :batchValue",
+    ExpressionAttributeNames: {
+      "#batch": "batch",
+    },
     ExpressionAttributeValues: {
       ":cpr": cpr,
+      ":batchValue": batch,
     },
   };
 
   try {
     const result = await dynamoDB.query(params).promise();
-    result.Items = result.Items.filter(
-      (application) => application.batch === batch
-    );
     return result;
   } catch (error) {
     console.error("Error getting application by CPR", error);
@@ -133,6 +138,7 @@ async function checkIsAdmin(token) {
   try {
     const cognitoUser = await cognito.getUser({ AccessToken: token }).promise();
     const username = cognitoUser.Username;
+    console.log(`The user name from cognito: ${username}`);
 
     const params = {
       TableName: ADMIN_TABLE,
@@ -141,6 +147,7 @@ async function checkIsAdmin(token) {
       },
     };
     const { Item } = await dynamoDB.get(params).promise();
+    console.log(`Item get from the admin table ${Item}`);
     return Item !== undefined;
   } catch (error) {
     console.error("Error checking if user is admin", error);
