@@ -241,7 +241,7 @@ function useBatchProviderApp() {
       .finally(() => {
         setIsInitialFetching(false);
       })) as TInfiniteApplications;
-    setApplicationsData(fetchedData.data);
+    setApplicationsData(fetchedData.data ?? []);
     setNextApplicationsKey(fetchedData.nextStartKey);
     return fetchedData;
   }
@@ -315,7 +315,7 @@ function useBatchProviderApp() {
         .finally(() => {
           setIsInitialFetching(false);
         })) as TInfiniteApplications;
-      setApplicationsData(fetchedData.data);
+      setApplicationsData(fetchedData.data ?? []);
       setNextApplicationsKey(fetchedData.nextStartKey);
       return fetchedData;
     }

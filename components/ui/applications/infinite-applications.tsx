@@ -366,6 +366,7 @@ export const InfiniteApplications = () => {
         }
       )
         .then((d) => d.json())
+        .catch((err) => console.log(err))
         .finally(() => {
           setIsFetching(false);
         })) as TInfiniteApplications;

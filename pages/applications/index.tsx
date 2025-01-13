@@ -7,6 +7,7 @@ import { Toaster } from "react-hot-toast";
 import { PageComponent } from "../../components/page-component";
 
 import { InfiniteApplications } from "../../components/ui/applications/infinite-applications";
+import { useAppContext } from "../../context/AppContext";
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const { locale } = ctx;
@@ -27,7 +28,7 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 
 const Applications = () => {
   const { t } = useTranslation("applications");
-
+  const { type } = useAppContext();
   return (
     <PageComponent title={"Applications"}>
       <Toaster />
@@ -47,7 +48,14 @@ const Applications = () => {
         </div>
       </div>
 
-      <InfiniteApplications></InfiniteApplications>
+      {type === "bachelor" && <InfiniteApplications></InfiniteApplications>}
+      {type === "masters" && (
+        <div>
+          {/* TODO: Create a InfiniteMastersApplications version of InfiniteApplications */}
+          MASTER APPLICATIONS TABLE
+        </div>
+      )}
+      {/* {type === "masters" && <InfiniteApplications></InfiniteApplications>} */}
     </PageComponent>
   );
 };
