@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { PageComponent } from "../../components/page-component";
-import { EducationTableHeaders } from "../../constants/table-headers";
+import {
+  EducationTableHeaders,
+  MasterEducationTableHeaders,
+} from "../../constants/table-headers";
 import { useEducation } from "../../context/EducationContext";
-import { Program, University } from "../../src/API";
+import {
+  BahrainUniversities,
+  MasterUniversities,
+  Program,
+  University,
+} from "../../src/API";
 import { useRouter } from "next/router";
 import SecondaryButton from "../../components/secondary-button";
 import { Formik, Form, Field } from "formik";
@@ -15,6 +23,9 @@ import { useAuth } from "../../hooks/use-auth";
 import { Badge } from "../../components/ui/badge";
 import { cn } from "../../src/utils";
 import { Checkbox } from "../../components/ui/checkbox";
+import { useAppContext } from "../../context/AppContext";
+import { useQuery } from "@tanstack/react-query";
+import { listAllBahrainUniversities } from "../../src/CustomAPI";
 
 interface InitialFilterValues {
   search: string;
@@ -41,6 +52,7 @@ const Education = () => {
   const { universityList, addNewUniversity, syncUniList } = useEducation();
   const { push, locale } = useRouter();
   const { isSuperAdmin } = useAuth();
+  const { type } = useAppContext();
   const { t } = useTranslation("education");
   const { t: common } = useTranslation("common");
   const { t: tErrors } = useTranslation("errors");
@@ -68,6 +80,11 @@ const Education = () => {
     universityArName: "",
     universityAvailability: 0,
   };
+
+  const { data: bahrainiUniversities } = useQuery({
+    queryKey: ["bahrainiUniversities"],
+    queryFn: () => listAllBahrainUniversities(),
+  });
 
   useEffect(() => {
     setNumberOfPages(Math.ceil((resultList?.length ?? 0) / elementPerPage));
@@ -161,12 +178,16 @@ const Education = () => {
     }
   }
 
+  console.log(`bahrainiUniversities ${bahrainiUniversities?.toString() ?? ""}`);
+
   // allow admins to add, edit university and related program info here
   return (
     <PageComponent title={"Education"}>
       <Toaster />
       <div className="mb-8 ">
-        <div className="text-2xl font-semibold ">{t("educationTitle")}</div>
+        <div className="text-2xl font-semibold ">
+          {t(type === "masters" ? "m_educationTitle" : "educationTitle")}
+        </div>
       </div>
 
       {/* search bar */}
@@ -222,19 +243,17 @@ const Education = () => {
                 {t("applyButton")}
               </button>
               {isSuperAdmin && (
-                <div className="flex gap-4 ">
+                <div className="flex">
                   <div className="h-full w-[1px] bg-gray-300"></div>
-                  <button
+                  {/* <button
                     className="min-w-[8rem] px-4 py-2 border-2 border-anzac-400 rounded-xl bg-anzac-400 text-white text-xs font-bold hover:cursor-pointer"
                     onClick={() => setIsSubmitted(!isSubmitted)}
                   >
                     {t("addUniversityButton")}
-                  </button>
+                  </button> */}
                   <SecondaryButton
-                    name={t("addProgramsButton")}
-                    buttonClick={() => {
-                      push("/education/programs/addProgram");
-                    }}
+                    name={t("addUniversityButton")}
+                    buttonClick={() => {}}
                   ></SecondaryButton>
                 </div>
               )}
@@ -397,146 +416,227 @@ const Education = () => {
       </div>
 
       {/* Education Table */}
-      <div>
-        <div className="w-full overflow-x-auto border rounded-xl">
-          <table className="table w-full border-b table-auto">
-            <thead className="">
-              <tr>
-                {EducationTableHeaders.map((title, index) => (
-                  <th className=" bg-nccGray-100" key={index}>
-                    {t(title)}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {shownData
-                ?.sort((a, b) => {
-                  let bD = b.isDeactivated === true ? -1 : 1;
-                  return bD;
-                })
-                .map((datum: any, index: number) => (
-                  <tr
-                    key={index}
-                    className={cn(
-                      `hover:bg-anzac-50 hover:text-anzac-500`,
-                      index % 2 !== 0 && "bg-anzac-50",
-                      datum.isDeactivated && " bg-gray-200"
-                    )}
-                  >
-                    <td
-                      key={`${datum.id}-isDeactivated`}
-                      className="bg-transparent"
-                    >
-                      <div
-                        className={`flex justify-between hover:cursor-pointer ${
-                          datum.isDeactivated && "text-gray-400"
-                        }`}
-                        onClick={() =>
-                          push(`education/universities/${datum.id}`)
-                        }
-                      >{`${
-                        locale == "ar" ? datum.nameAr ?? "-" : datum.name
-                      }`}</div>
-                    </td>
-                    <td
-                      key={`${datum.id}-availability`}
-                      className="bg-transparent"
-                    >
-                      <div
-                        className={`flex justify-between hover:cursor-pointer ${
-                          datum.isDeactivated && "text-gray-400"
-                        }`}
-                      >{`${datum.availability}`}</div>
-                    </td>
-                    <td
-                      key={`${datum.id}-isException`}
-                      className="bg-transparent"
-                    >
-                      <Checkbox
-                        className="pointer-events-none"
-                        checked={datum.isException === 1}
-                      />
-                    </td>
-                    <td
-                      key={`${datum.id}-isExtended`}
-                      className="bg-transparent"
-                    >
-                      <Checkbox
-                        className="pointer-events-none"
-                        checked={datum.isExtended === 1}
-                      />
-                    </td>
-                    <td
-                      key={`${datum.id}-extensionDuration`}
-                      className="bg-transparent"
-                    >
-                      {`${datum.extensionDuration ?? 0} ${t("days")}`}
-                    </td>
-                    <td className="flex flex-wrap gap-3 overflow-x-scroll bg-transparent ">
-                      {datum.Programs?.items
-                        ?.sort((a: any, b: any) => {
-                          let bD = b.isDeactivated === true ? -1 : 1;
-                          return bD;
-                        })
-                        .map((program: Program) => (
-                          <Badge
-                            variant={
-                              program.isDeactivated ? "destructive" : "default"
-                            }
-                            className={cn(
-                              "hover:cursor-pointer",
-                              !program.isDeactivated &&
-                                "bg-anzac-200 text-black hover:bg-anzac-400"
-                            )}
-                            onClick={() =>
-                              push(`/education/programs/${program.id}`)
-                            }
-                            key={program.id}
-                          >
-                            {locale == "ar"
-                              ? program?.nameAr ?? "-"
-                              : program?.name}
-                          </Badge>
-                        ))}
-
-                      {datum.Programs?.items.length === 0 && (
-                        <div className="badge badge-error text-error-content">
-                          {t("noPrograms")}
-                        </div>
+      {type === "bachelor" && (
+        <div>
+          <div className="w-full overflow-x-auto border rounded-xl">
+            <table className="table w-full border-b table-auto">
+              <thead className="">
+                <tr>
+                  {EducationTableHeaders.map((title, index) => (
+                    <th className=" bg-nccGray-100" key={index}>
+                      {t(title)}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {shownData
+                  ?.sort((a, b) => {
+                    let bD = b.isDeactivated === true ? -1 : 1;
+                    return bD;
+                  })
+                  .map((datum: any, index: number) => (
+                    <tr
+                      key={index}
+                      className={cn(
+                        `hover:bg-anzac-50 hover:text-anzac-500`,
+                        index % 2 !== 0 && "bg-anzac-50",
+                        datum.isDeactivated && " bg-gray-200"
                       )}
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
-          {/* fake pagination */}
-          <div className="flex justify-center my-4 ">
-            <div className="join">
-              <button
-                className="btn btn-accent join-item text-anzac-500"
-                onClick={goPrevPage}
-                disabled={disableBackward}
-              >
-                «
-              </button>
-              <button
-                disabled
-                className="btn hover:cursor-auto join-item disabled:btn-accent"
-              >
-                {currentPage}
-              </button>
-              <button
-                className="btn btn-accent join-item text-anzac-500"
-                onClick={goNextPage}
-                disabled={disableForward}
-              >
-                »
-              </button>
+                    >
+                      <td
+                        key={`${datum.id}-isDeactivated`}
+                        className="bg-transparent"
+                      >
+                        <div
+                          className={`flex justify-between hover:cursor-pointer ${
+                            datum.isDeactivated && "text-gray-400"
+                          }`}
+                          onClick={() =>
+                            push(`education/universities/${datum.id}`)
+                          }
+                        >{`${
+                          locale == "ar" ? datum.nameAr ?? "-" : datum.name
+                        }`}</div>
+                      </td>
+                      <td
+                        key={`${datum.id}-availability`}
+                        className="bg-transparent"
+                      >
+                        <div
+                          className={`flex justify-between hover:cursor-pointer ${
+                            datum.isDeactivated && "text-gray-400"
+                          }`}
+                        >{`${datum.availability}`}</div>
+                      </td>
+                      <td
+                        key={`${datum.id}-isException`}
+                        className="bg-transparent"
+                      >
+                        <Checkbox
+                          className="pointer-events-none"
+                          checked={datum.isException === 1}
+                        />
+                      </td>
+                      <td
+                        key={`${datum.id}-isExtended`}
+                        className="bg-transparent"
+                      >
+                        <Checkbox
+                          className="pointer-events-none"
+                          checked={datum.isExtended === 1}
+                        />
+                      </td>
+                      <td
+                        key={`${datum.id}-extensionDuration`}
+                        className="bg-transparent"
+                      >
+                        {`${datum.extensionDuration ?? 0} ${t("days")}`}
+                      </td>
+                      <td className="flex flex-wrap gap-3 overflow-x-scroll bg-transparent ">
+                        {datum.Programs?.items
+                          ?.sort((a: any, b: any) => {
+                            let bD = b.isDeactivated === true ? -1 : 1;
+                            return bD;
+                          })
+                          .map((program: Program) => (
+                            <Badge
+                              variant={
+                                program.isDeactivated
+                                  ? "destructive"
+                                  : "default"
+                              }
+                              className={cn(
+                                "hover:cursor-pointer",
+                                !program.isDeactivated &&
+                                  "bg-anzac-200 text-black hover:bg-anzac-400"
+                              )}
+                              onClick={() =>
+                                push(`/education/programs/${program.id}`)
+                              }
+                              key={program.id}
+                            >
+                              {locale == "ar"
+                                ? program?.nameAr ?? "-"
+                                : program?.name}
+                            </Badge>
+                          ))}
+
+                        {datum.Programs?.items.length === 0 && (
+                          <div className="badge badge-error text-error-content">
+                            {t("noPrograms")}
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+            {/* fake pagination */}
+            <div className="flex justify-center my-4 ">
+              <div className="join">
+                <button
+                  className="btn btn-accent join-item text-anzac-500"
+                  onClick={goPrevPage}
+                  disabled={disableBackward}
+                >
+                  «
+                </button>
+                <button
+                  disabled
+                  className="btn hover:cursor-auto join-item disabled:btn-accent"
+                >
+                  {currentPage}
+                </button>
+                <button
+                  className="btn btn-accent join-item text-anzac-500"
+                  onClick={goNextPage}
+                  disabled={disableForward}
+                >
+                  »
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
+
+      {type === "masters" && (
+        //TODO make sure the keys for master type universities are correct
+        <div>
+          <div className="w-full overflow-x-auto border rounded-xl">
+            <table className="table w-full border-b table-auto">
+              <thead className="">
+                <tr>
+                  {MasterEducationTableHeaders.map((title, index) => (
+                    <th className=" bg-nccGray-100" key={index}>
+                      {t(title)}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {bahrainiUniversities
+                  ?.sort((a, b) => {
+                    let bD = b.isDeactivated === true ? -1 : 1;
+                    return bD;
+                  })
+                  .map((datum: any, index: number) => (
+                    <tr
+                      key={index}
+                      className={cn(
+                        `hover:bg-anzac-50 hover:text-anzac-500`,
+                        index % 2 !== 0 && "bg-anzac-50",
+                        datum.isDeactivated && " bg-gray-200"
+                      )}
+                    >
+                      <td
+                        key={`${datum.id}-isDeactivated`}
+                        className="bg-transparent"
+                      >
+                        <div
+                          className={`flex justify-between hover:cursor-pointer ${
+                            datum.isDeactivated && "text-gray-400"
+                          }`}
+                          onClick={() =>
+                            push(`education/universities/${datum.id}`)
+                          }
+                        >{`${
+                          locale == "ar" ? datum.nameAr ?? "-" : datum.name
+                        }`}</div>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+            {/* fake pagination */}
+            <div className="flex justify-center my-4 ">
+              <div className="join">
+                <button
+                  className="btn btn-accent join-item text-anzac-500"
+                  onClick={goPrevPage}
+                  disabled={disableBackward}
+                >
+                  «
+                </button>
+                <button
+                  disabled
+                  className="btn hover:cursor-auto join-item disabled:btn-accent"
+                >
+                  {currentPage}
+                </button>
+                <button
+                  className="btn btn-accent join-item text-anzac-500"
+                  onClick={goNextPage}
+                  disabled={disableForward}
+                >
+                  »
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </PageComponent>
   );
 };

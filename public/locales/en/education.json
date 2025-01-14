@@ -43,5 +43,6 @@
   "deactivateD": "This university will no longer accept any new applications once deactivated.",
   "exception": "Acceptance letter not required",
   "exceptionD": "This will make applications to this university does not required acceptance letter.",
-  "search": "Search"
+  "search": "Search",
+  "m_educationTitle": "Master Universities"
 }
