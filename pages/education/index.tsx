@@ -178,8 +178,6 @@ const Education = () => {
     }
   }
 
-  console.log(`bahrainiUniversities ${bahrainiUniversities?.toString() ?? ""}`);
-
   // allow admins to add, edit university and related program info here
   return (
     <PageComponent title={"Education"}>
@@ -245,16 +243,29 @@ const Education = () => {
               {isSuperAdmin && (
                 <div className="flex">
                   <div className="h-full w-[1px] bg-gray-300"></div>
-                  {/* <button
-                    className="min-w-[8rem] px-4 py-2 border-2 border-anzac-400 rounded-xl bg-anzac-400 text-white text-xs font-bold hover:cursor-pointer"
-                    onClick={() => setIsSubmitted(!isSubmitted)}
-                  >
-                    {t("addUniversityButton")}
-                  </button> */}
-                  <SecondaryButton
-                    name={t("addUniversityButton")}
-                    buttonClick={() => {}}
-                  ></SecondaryButton>
+
+                  {type === "masters" && (
+                    <SecondaryButton
+                      name={t("addUniversityButton")}
+                      buttonClick={() => setIsSubmitted(!isSubmitted)}
+                    ></SecondaryButton>
+                  )}
+                  {type === "bachelor" && (
+                    <div className="flex gap-4">
+                      <button
+                        className="min-w-[8rem] px-4 py-2 border-2 border-anzac-400 rounded-xl bg-anzac-400 text-white text-xs font-bold hover:cursor-pointer"
+                        onClick={() => setIsSubmitted(!isSubmitted)}
+                      >
+                        {t("addUniversityButton")}
+                      </button>
+                      <SecondaryButton
+                        name={t("addProgramsButton")}
+                        buttonClick={() => {
+                          push("/education/programs/addProgram");
+                        }}
+                      ></SecondaryButton>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -602,7 +613,9 @@ const Education = () => {
                             push(`education/universities/${datum.id}`)
                           }
                         >{`${
-                          locale == "ar" ? datum.nameAr ?? "-" : datum.name
+                          locale == "ar"
+                            ? datum.universityNameAr ?? "-"
+                            : datum.universityName
                         }`}</div>
                       </td>
                     </tr>
