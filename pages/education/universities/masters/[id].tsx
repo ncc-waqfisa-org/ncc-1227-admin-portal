@@ -5,25 +5,34 @@ import { Toaster } from "react-hot-toast";
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "react-i18next";
-import { University } from "../../../../src/API";
-import { getMasterUniversityByID } from "../../../../src/CustomAPI";
+import { BahrainUniversities, MasterUniversities } from "../../../../src/API";
+import {
+  getBahrainiUniversityById,
+  getMasterUniversityByID,
+} from "../../../../src/CustomAPI";
 import { PageComponent } from "../../../../components/page-component";
 import UniversityFormComponent from "../../../../components/university-form-component";
+import MasterUniversityFormComponent from "../../../../components/universities/master-university-form-component";
 
 interface Props {
-  university: University | null;
+  universityType: "bahrainiUni" | "masterUni";
+  university: MasterUniversities | BahrainUniversities | null;
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const { id } = ctx.query;
+  const { id, type } = ctx.query;
   const { locale } = ctx;
 
-  const university = id ? await getMasterUniversityByID(`${id}`) : null;
+  const university = id
+    ? type === "masterUni"
+      ? await getMasterUniversityByID(`${id}`)
+      : await getBahrainiUniversityById(`${id}`)
+    : null;
 
-  console.log(university);
   return {
     props: {
       university: university,
+      universityType: type,
       ...(await serverSideTranslations(locale ?? "en", [
         "education",
         "pageTitles",
@@ -35,7 +44,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   };
 };
 
-export default function UniversityInfo({ university }: Props) {
+export default function UniversityInfo({ universityType, university }: Props) {
   const { locale } = useRouter();
   const { t } = useTranslation("education");
 
@@ -46,14 +55,16 @@ export default function UniversityInfo({ university }: Props) {
 
         <div className="mb-8 ">
           <div className="text-2xl font-semibold ">{`${t("universityTitle")}: ${
-            locale == "ar" ? university?.nameAr ?? "-" : university?.name
+            locale == "ar"
+              ? university?.universityNameAr ?? "-"
+              : university?.universityName
           }`}</div>
-          {university?.name}
         </div>
 
-        {/* <UniversityFormComponent
+        <MasterUniversityFormComponent
+          type={universityType}
           university={university}
-        ></UniversityFormComponent> */}
+        />
       </PageComponent>
     </div>
   );

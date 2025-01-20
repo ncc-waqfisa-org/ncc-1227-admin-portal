@@ -45,10 +45,14 @@ import {
   UpdateApplicationMutationVariables,
   UpdateAttachmentMutation,
   UpdateAttachmentMutationVariables,
+  UpdateBahrainUniversitiesMutation,
+  UpdateBahrainUniversitiesMutationVariables,
   UpdateBatchMutation,
   UpdateBatchMutationVariables,
   UpdateMasterBatchMutation,
   UpdateMasterBatchMutationVariables,
+  UpdateMasterUniversitiesMutation,
+  UpdateMasterUniversitiesMutationVariables,
   UpdateParentInfoMutation,
   UpdateParentInfoMutationVariables,
   UpdateProgramChoiceMutation,
@@ -83,6 +87,8 @@ import {
   createMasterBatch,
   updateScholarship,
   createScholarship,
+  updateMasterAppliedUniversities,
+  updateBahrainUniversities,
 } from "./graphql/mutations";
 import {
   getBatch,
@@ -849,7 +855,9 @@ export async function getUniversityByID(
   return tempProgramList;
 }
 
-export async function getMasterUniversityByID(id?: string): Promise<any> {
+export async function getMasterUniversityByID(
+  id?: string
+): Promise<MasterUniversities | undefined> {
   let query = `
   query GetMasterAppliedUniversities {
     getMasterAppliedUniversities(id:  "${id}") {
@@ -867,11 +875,36 @@ export async function getMasterUniversityByID(id?: string): Promise<any> {
   `;
 
   let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;
-  console.log(JSON.stringify(res));
 
-  let tempProgramList = res.data.getMasterAppliedUniversities as University;
+  let tempProgramList = res.data
+    .getMasterAppliedUniversities as MasterUniversities;
 
-  console.log(JSON.stringify(tempProgramList));
+  return tempProgramList;
+}
+
+export async function getBahrainiUniversityById(
+  id?: string
+): Promise<BahrainUniversities | undefined> {
+  let query = `
+  query GetBahrainiUniversities {
+    getBahrainUniversities(id: "${id}"){
+      id
+      universityName
+      universityNameAr
+      _deleted
+      _lastChangedAt
+      _version
+      isDeactivated
+      updatedAt
+      createdAt
+    }
+  }
+  `;
+
+  let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;
+
+  let tempProgramList = res.data.getBahrainUniversities as BahrainUniversities;
+
   return tempProgramList;
 }
 
@@ -913,6 +946,30 @@ export async function updateUniversityById(
     query: updateUniversity,
     variables: mutationVars,
   })) as GraphQLResult<UpdateUniversityMutation>;
+
+  return res.data;
+}
+
+//TODO comment
+export async function updateMasterUniversityById(
+  mutationVars: UpdateMasterUniversitiesMutationVariables
+): Promise<UpdateMasterUniversitiesMutation | undefined> {
+  let res = (await API.graphql({
+    query: updateMasterAppliedUniversities,
+    variables: mutationVars,
+  })) as GraphQLResult<UpdateMasterUniversitiesMutation>;
+
+  return res.data;
+}
+
+//TODO comment
+export async function updateBahrainUniversityById(
+  mutationVars: UpdateBahrainUniversitiesMutationVariables
+): Promise<UpdateBahrainUniversitiesMutation | undefined> {
+  let res = (await API.graphql({
+    query: updateBahrainUniversities,
+    variables: mutationVars,
+  })) as GraphQLResult<UpdateBahrainUniversitiesMutation>;
 
   return res.data;
 }

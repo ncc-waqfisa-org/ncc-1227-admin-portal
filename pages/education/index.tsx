@@ -7,7 +7,7 @@ import {
 import { useEducation } from "../../context/EducationContext";
 import {
   BahrainUniversities,
-  MasterAppliedUniversities,
+  MasterUniversities,
   Program,
   University,
 } from "../../src/API";
@@ -627,7 +627,9 @@ const Education = () => {
                               datum.isDeactivated && "text-gray-400"
                             }`}
                             onClick={() =>
-                              push(`education/universities/masters/${datum.id}`)
+                              push(
+                                `education/universities/masters/${datum.id}?type=bahrainiUni`
+                              )
                             }
                           >{`${
                             locale == "ar"
@@ -702,7 +704,9 @@ const Education = () => {
                               datum.isDeactivated && "text-gray-400"
                             }`}
                             onClick={() =>
-                              push(`education/universities/masters/${datum.id}`)
+                              push(
+                                `education/universities/masters/${datum.id}?type=masterUni`
+                              )
                             }
                           >{`${
                             locale == "ar"
