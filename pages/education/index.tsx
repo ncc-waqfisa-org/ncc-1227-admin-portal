@@ -31,6 +31,7 @@ import {
 } from "../../src/CustomAPI";
 import { BMTabs } from "../../components/BMTabs";
 import { MasterUniTabs } from "../../components/MasterUniTabs";
+import MasterUniversitiesTable from "../../components/universities/MasterUniversitiesTable";
 
 interface InitialFilterValues {
   search: string;
@@ -257,12 +258,6 @@ const Education = () => {
                 <div className="flex">
                   <div className="h-full w-[1px] bg-gray-300"></div>
 
-                  {type === "masters" && (
-                    <SecondaryButton
-                      name={t("addUniversityButton")}
-                      buttonClick={() => setIsSubmitted(!isSubmitted)}
-                    ></SecondaryButton>
-                  )}
                   {type === "bachelor" && (
                     <div className="flex gap-4">
                       <button
@@ -278,6 +273,16 @@ const Education = () => {
                         }}
                       ></SecondaryButton>
                     </div>
+                  )}
+
+                  {type === "masters" && (
+                    <SecondaryButton
+                      name={t("addUniversityButton")}
+                      buttonClick={() => {
+                        toast("Currently not available");
+                      }} //TODO allow user to create a new master/bahrain university
+                      // buttonClick={() => setIsSubmitted(!isSubmitted)}
+                    ></SecondaryButton>
                   )}
                 </div>
               )}
@@ -439,6 +444,15 @@ const Education = () => {
         </div>
       </div>
 
+      <div className=" pb-4">
+        {/* TODO list all batches  - pull from query */}
+        <select className="select select-bordered">
+          <option>2025</option>
+          <option>2024</option>
+          <option>2023</option>
+        </select>
+      </div>
+
       {/* Education Table */}
       {type === "bachelor" && (
         <div>
@@ -586,166 +600,19 @@ const Education = () => {
       )}
 
       {type === "masters" && (
-        //TODO make sure the keys for master type universities are correct
-        <div>
+        <>
           <div className=" pb-4">
             <MasterUniTabs type={uniType} onChange={setUniType} />
           </div>
-          {uniType === "bahrainiUni" && (
-            <div className="w-full overflow-x-auto border rounded-xl">
-              <table className="table w-full border-b table-auto">
-                <thead className="">
-                  <tr>
-                    {MasterEducationTableHeaders.map((title, index) => (
-                      <th className=" bg-nccGray-100" key={index}>
-                        {t(title)}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {bahrainiUniversities
-                    ?.sort((a, b) => {
-                      let bD = b.isDeactivated === true ? -1 : 1;
-                      return bD;
-                    })
-                    .map((datum: any, index: number) => (
-                      <tr
-                        key={index}
-                        className={cn(
-                          `hover:bg-anzac-50 hover:text-anzac-500`,
-                          index % 2 !== 0 && "bg-anzac-50",
-                          datum.isDeactivated && " bg-gray-200"
-                        )}
-                      >
-                        <td
-                          key={`${datum.id}-isDeactivated`}
-                          className="bg-transparent"
-                        >
-                          <div
-                            className={`flex justify-between hover:cursor-pointer ${
-                              datum.isDeactivated && "text-gray-400"
-                            }`}
-                            onClick={() =>
-                              push(
-                                `education/universities/masters/${datum.id}?type=bahrainiUni`
-                              )
-                            }
-                          >{`${
-                            locale == "ar"
-                              ? datum.universityNameAr ?? "-"
-                              : datum.universityName
-                          }`}</div>
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
-              {/* fake pagination */}
-              <div className="flex justify-center my-4 ">
-                <div className="join">
-                  <button
-                    className="btn btn-accent join-item text-anzac-500"
-                    onClick={goPrevPage}
-                    disabled={disableBackward}
-                  >
-                    «
-                  </button>
-                  <button
-                    disabled
-                    className="btn hover:cursor-auto join-item disabled:btn-accent"
-                  >
-                    {currentPage}
-                  </button>
-                  <button
-                    className="btn btn-accent join-item text-anzac-500"
-                    onClick={goNextPage}
-                    disabled={disableForward}
-                  >
-                    »
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-          {uniType === "masterUni" && (
-            <div className="w-full overflow-x-auto border rounded-xl">
-              <table className="table w-full border-b table-auto">
-                <thead className="">
-                  <tr>
-                    {MasterEducationTableHeaders.map((title, index) => (
-                      <th className=" bg-nccGray-100" key={index}>
-                        {t(title)}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {masterUniversities
-                    ?.sort((a, b) => {
-                      let bD = b.isDeactivated === true ? -1 : 1;
-                      return bD;
-                    })
-                    .map((datum: any, index: number) => (
-                      <tr
-                        key={index}
-                        className={cn(
-                          `hover:bg-anzac-50 hover:text-anzac-500`,
-                          index % 2 !== 0 && "bg-anzac-50",
-                          datum.isDeactivated && " bg-gray-200"
-                        )}
-                      >
-                        <td
-                          key={`${datum.id}-isDeactivated`}
-                          className="bg-transparent"
-                        >
-                          <div
-                            className={`flex justify-between hover:cursor-pointer ${
-                              datum.isDeactivated && "text-gray-400"
-                            }`}
-                            onClick={() =>
-                              push(
-                                `education/universities/masters/${datum.id}?type=masterUni`
-                              )
-                            }
-                          >{`${
-                            locale == "ar"
-                              ? datum.universityNameAr ?? "-"
-                              : datum.universityName
-                          }`}</div>
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </table>
-              {/* fake pagination */}
-              <div className="flex justify-center my-4 ">
-                <div className="join">
-                  <button
-                    className="btn btn-accent join-item text-anzac-500"
-                    onClick={goPrevPage}
-                    disabled={disableBackward}
-                  >
-                    «
-                  </button>
-                  <button
-                    disabled
-                    className="btn hover:cursor-auto join-item disabled:btn-accent"
-                  >
-                    {currentPage}
-                  </button>
-                  <button
-                    className="btn btn-accent join-item text-anzac-500"
-                    onClick={goNextPage}
-                    disabled={disableForward}
-                  >
-                    »
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+          <MasterUniversitiesTable
+            uniType={uniType}
+            university={
+              uniType === "bahrainiUni"
+                ? bahrainiUniversities
+                : masterUniversities
+            }
+          />
+        </>
       )}
     </PageComponent>
   );
