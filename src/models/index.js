@@ -65,10 +65,11 @@ const Income = {
 const Major = {
   "SCIENCE": "SCIENCE",
   "TECHNOLOGY": "TECHNOLOGY",
-  "ENGINEERING": "ENGINEERING"
+  "ENGINEERING": "ENGINEERING",
+  "MATH": "MATH"
 };
 
-const { Attachment, Application, ProgramChoice, Program, University, AdminLog, StudentLog, Admin, ParentInfo, Student, Batch, Scholarship, Statistics, MasterBatch, MasterLog, BahrainUniversities, MasterUniversities, MasterApplication, MasterStatistics, MasterAttachment, MasterScholarship } = initSchema(schema);
+const { Attachment, Application, ProgramChoice, Program, University, AdminLog, StudentLog, Admin, ParentInfo, Student, Batch, Scholarship, Statistics, MasterBatch, MasterLog, BahrainUniversities, MasterApplication, MasterStatistics, MasterAttachment, MasterAppliedUniversities, MasterScholarship } = initSchema(schema);
 
 export {
   Attachment,
@@ -87,10 +88,10 @@ export {
   MasterBatch,
   MasterLog,
   BahrainUniversities,
-  MasterUniversities,
   MasterApplication,
   MasterStatistics,
   MasterAttachment,
+  MasterAppliedUniversities,
   MasterScholarship,
   AdminRole,
   Status,

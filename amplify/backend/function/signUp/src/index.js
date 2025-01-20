@@ -67,8 +67,11 @@ exports.handler = async (event) => {
         console.log("deleted parent from dynamo");
 
         await signUpUserToCognito(username, email, password);
+
+        // TODO: see why this sometimes casing errors sometimes not??
+        // ? remember when you go to staging adding thise to saveStudentToDynmoDB in order to solve this error.
         studentData.parentInfoID = await saveParentToDynamoDB(parentData);
-        await saveStudentToDynamoDB(studentData);
+        await saveStudentToDynamoDB(studentData, parentData);
         return {
           isBase64Encoded: false,
           statusCode: 201,
@@ -197,8 +200,11 @@ async function saveStudentToDynamoDB(studentData, parentData) {
   studentData._lastChangedAt = new Date().getTime(); // Get timestamp in milliseconds
   studentData.createdAt = new Date().toISOString(); // Get current date in ISO format
   studentData.updatedAt = new Date().toISOString(); // Get current date in ISO format
+  studentData.m_applicantType = ["STUDENT"];
 
   studentData.batch = new Date().getFullYear();
+  // TODO: why getting error here
+  // ? There is data passed here but I don't know why it's not accept it.
   studentData.numberOfFamilyMembers = parentData.numberOfFamilyMembers;
   const params = {
     TableName: STUDENT_TABLE,

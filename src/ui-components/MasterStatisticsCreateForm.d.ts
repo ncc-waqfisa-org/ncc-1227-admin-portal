@@ -30,9 +30,9 @@ export declare type MasterStatisticsCreateFormInputValues = {
     gpaHistogram?: string;
     totalApplicationsPerUniversity?: string;
     topUniversities?: string;
-    topPrograms?: string;
+    topBahrainUniversities?: string;
     familyIncome?: string;
-    schoolType?: string;
+    universitiesBahrain?: string;
     students?: string;
     applications?: string;
     today?: string;
@@ -46,9 +46,9 @@ export declare type MasterStatisticsCreateFormValidationValues = {
     gpaHistogram?: ValidationFunction<string>;
     totalApplicationsPerUniversity?: ValidationFunction<string>;
     topUniversities?: ValidationFunction<string>;
-    topPrograms?: ValidationFunction<string>;
+    topBahrainUniversities?: ValidationFunction<string>;
     familyIncome?: ValidationFunction<string>;
-    schoolType?: ValidationFunction<string>;
+    universitiesBahrain?: ValidationFunction<string>;
     students?: ValidationFunction<string>;
     applications?: ValidationFunction<string>;
     today?: ValidationFunction<string>;
@@ -64,9 +64,9 @@ export declare type MasterStatisticsCreateFormOverridesProps = {
     gpaHistogram?: PrimitiveOverrideProps<TextAreaFieldProps>;
     totalApplicationsPerUniversity?: PrimitiveOverrideProps<TextAreaFieldProps>;
     topUniversities?: PrimitiveOverrideProps<TextAreaFieldProps>;
-    topPrograms?: PrimitiveOverrideProps<TextAreaFieldProps>;
+    topBahrainUniversities?: PrimitiveOverrideProps<TextAreaFieldProps>;
     familyIncome?: PrimitiveOverrideProps<TextAreaFieldProps>;
-    schoolType?: PrimitiveOverrideProps<TextAreaFieldProps>;
+    universitiesBahrain?: PrimitiveOverrideProps<TextAreaFieldProps>;
     students?: PrimitiveOverrideProps<TextAreaFieldProps>;
     applications?: PrimitiveOverrideProps<TextAreaFieldProps>;
     today?: PrimitiveOverrideProps<TextAreaFieldProps>;

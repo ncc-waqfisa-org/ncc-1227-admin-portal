@@ -2528,84 +2528,6 @@ export const deleteBahrainUniversities = /* GraphQL */ `mutation DeleteBahrainUn
   APITypes.DeleteBahrainUniversitiesMutationVariables,
   APITypes.DeleteBahrainUniversitiesMutation
 >;
-export const createMasterUniversities = /* GraphQL */ `mutation CreateMasterUniversities(
-  $input: CreateMasterUniversitiesInput!
-  $condition: ModelMasterUniversitiesConditionInput
-) {
-  createMasterUniversities(input: $input, condition: $condition) {
-    id
-    universityName
-    universityNameAr
-    isDeactivated
-    applications {
-      nextToken
-      startedAt
-      __typename
-    }
-    createdAt
-    updatedAt
-    _version
-    _deleted
-    _lastChangedAt
-    __typename
-  }
-}
-` as GeneratedMutation<
-  APITypes.CreateMasterUniversitiesMutationVariables,
-  APITypes.CreateMasterUniversitiesMutation
->;
-export const updateMasterUniversities = /* GraphQL */ `mutation UpdateMasterUniversities(
-  $input: UpdateMasterUniversitiesInput!
-  $condition: ModelMasterUniversitiesConditionInput
-) {
-  updateMasterUniversities(input: $input, condition: $condition) {
-    id
-    universityName
-    universityNameAr
-    isDeactivated
-    applications {
-      nextToken
-      startedAt
-      __typename
-    }
-    createdAt
-    updatedAt
-    _version
-    _deleted
-    _lastChangedAt
-    __typename
-  }
-}
-` as GeneratedMutation<
-  APITypes.UpdateMasterUniversitiesMutationVariables,
-  APITypes.UpdateMasterUniversitiesMutation
->;
-export const deleteMasterUniversities = /* GraphQL */ `mutation DeleteMasterUniversities(
-  $input: DeleteMasterUniversitiesInput!
-  $condition: ModelMasterUniversitiesConditionInput
-) {
-  deleteMasterUniversities(input: $input, condition: $condition) {
-    id
-    universityName
-    universityNameAr
-    isDeactivated
-    applications {
-      nextToken
-      startedAt
-      __typename
-    }
-    createdAt
-    updatedAt
-    _version
-    _deleted
-    _lastChangedAt
-    __typename
-  }
-}
-` as GeneratedMutation<
-  APITypes.DeleteMasterUniversitiesMutationVariables,
-  APITypes.DeleteMasterUniversitiesMutation
->;
 export const createMasterApplication = /* GraphQL */ `mutation CreateMasterApplication(
   $input: CreateMasterApplicationInput!
   $condition: ModelMasterApplicationConditionInput
@@ -2976,9 +2898,9 @@ export const createMasterStatistics = /* GraphQL */ `mutation CreateMasterStatis
     gpaHistogram
     totalApplicationsPerUniversity
     topUniversities
-    topPrograms
+    topBahrainUniversities
     familyIncome
-    schoolType
+    universitiesBahrain
     students
     applications
     today
@@ -3007,9 +2929,9 @@ export const updateMasterStatistics = /* GraphQL */ `mutation UpdateMasterStatis
     gpaHistogram
     totalApplicationsPerUniversity
     topUniversities
-    topPrograms
+    topBahrainUniversities
     familyIncome
-    schoolType
+    universitiesBahrain
     students
     applications
     today
@@ -3038,9 +2960,9 @@ export const deleteMasterStatistics = /* GraphQL */ `mutation DeleteMasterStatis
     gpaHistogram
     totalApplicationsPerUniversity
     topUniversities
-    topPrograms
+    topBahrainUniversities
     familyIncome
-    schoolType
+    universitiesBahrain
     students
     applications
     today
@@ -3127,6 +3049,84 @@ export const deleteMasterAttachment = /* GraphQL */ `mutation DeleteMasterAttach
 ` as GeneratedMutation<
   APITypes.DeleteMasterAttachmentMutationVariables,
   APITypes.DeleteMasterAttachmentMutation
+>;
+export const createMasterAppliedUniversities = /* GraphQL */ `mutation CreateMasterAppliedUniversities(
+  $input: CreateMasterAppliedUniversitiesInput!
+  $condition: ModelMasterAppliedUniversitiesConditionInput
+) {
+  createMasterAppliedUniversities(input: $input, condition: $condition) {
+    id
+    universityName
+    universityNameAr
+    isDeactivated
+    applications {
+      nextToken
+      startedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.CreateMasterAppliedUniversitiesMutationVariables,
+  APITypes.CreateMasterAppliedUniversitiesMutation
+>;
+export const updateMasterAppliedUniversities = /* GraphQL */ `mutation UpdateMasterAppliedUniversities(
+  $input: UpdateMasterAppliedUniversitiesInput!
+  $condition: ModelMasterAppliedUniversitiesConditionInput
+) {
+  updateMasterAppliedUniversities(input: $input, condition: $condition) {
+    id
+    universityName
+    universityNameAr
+    isDeactivated
+    applications {
+      nextToken
+      startedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.UpdateMasterAppliedUniversitiesMutationVariables,
+  APITypes.UpdateMasterAppliedUniversitiesMutation
+>;
+export const deleteMasterAppliedUniversities = /* GraphQL */ `mutation DeleteMasterAppliedUniversities(
+  $input: DeleteMasterAppliedUniversitiesInput!
+  $condition: ModelMasterAppliedUniversitiesConditionInput
+) {
+  deleteMasterAppliedUniversities(input: $input, condition: $condition) {
+    id
+    universityName
+    universityNameAr
+    isDeactivated
+    applications {
+      nextToken
+      startedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.DeleteMasterAppliedUniversitiesMutationVariables,
+  APITypes.DeleteMasterAppliedUniversitiesMutation
 >;
 export const createMasterScholarship = /* GraphQL */ `mutation CreateMasterScholarship(
   $input: CreateMasterScholarshipInput!

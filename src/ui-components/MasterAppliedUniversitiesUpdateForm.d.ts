@@ -43,7 +43,7 @@ export declare type MasterAppliedUniversitiesUpdateFormProps = React.PropsWithCh
     overrides?: MasterAppliedUniversitiesUpdateFormOverridesProps | undefined | null;
 } & {
     id?: string;
-    MasterAppliedUniversities?: MasterAppliedUniversities;
+    masterAppliedUniversities?: MasterAppliedUniversities;
     onSubmit?: (fields: MasterAppliedUniversitiesUpdateFormInputValues) => MasterAppliedUniversitiesUpdateFormInputValues;
     onSuccess?: (fields: MasterAppliedUniversitiesUpdateFormInputValues) => void;
     onError?: (fields: MasterAppliedUniversitiesUpdateFormInputValues, errorMessage: string) => void;

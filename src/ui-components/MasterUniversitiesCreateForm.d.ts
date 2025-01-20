@@ -5,47 +5,72 @@
  **************************************************************************/
 
 import * as React from "react";
-import { GridProps, SwitchFieldProps, TextFieldProps } from "@aws-amplify/ui-react";
+import {
+  GridProps,
+  SwitchFieldProps,
+  TextFieldProps,
+} from "@aws-amplify/ui-react";
 export declare type EscapeHatchProps = {
-    [elementHierarchy: string]: Record<string, unknown>;
+  [elementHierarchy: string]: Record<string, unknown>;
 } | null;
 export declare type VariantValues = {
-    [key: string]: string;
+  [key: string]: string;
 };
 export declare type Variant = {
-    variantValues: VariantValues;
-    overrides: EscapeHatchProps;
+  variantValues: VariantValues;
+  overrides: EscapeHatchProps;
 };
 export declare type ValidationResponse = {
-    hasError: boolean;
-    errorMessage?: string;
+  hasError: boolean;
+  errorMessage?: string;
 };
-export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
-export declare type MasterUniversitiesCreateFormInputValues = {
-    universityName?: string;
-    universityNameAr?: string;
-    isDeactivated?: boolean;
+export declare type ValidationFunction<T> = (
+  value: T,
+  validationResponse: ValidationResponse
+) => ValidationResponse | Promise<ValidationResponse>;
+export declare type MasterAppliedUniversitiesCreateFormInputValues = {
+  universityName?: string;
+  universityNameAr?: string;
+  isDeactivated?: boolean;
 };
-export declare type MasterUniversitiesCreateFormValidationValues = {
-    universityName?: ValidationFunction<string>;
-    universityNameAr?: ValidationFunction<string>;
-    isDeactivated?: ValidationFunction<boolean>;
+export declare type MasterAppliedUniversitiesCreateFormValidationValues = {
+  universityName?: ValidationFunction<string>;
+  universityNameAr?: ValidationFunction<string>;
+  isDeactivated?: ValidationFunction<boolean>;
 };
-export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
-export declare type MasterUniversitiesCreateFormOverridesProps = {
-    MasterUniversitiesCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
-    universityName?: PrimitiveOverrideProps<TextFieldProps>;
-    universityNameAr?: PrimitiveOverrideProps<TextFieldProps>;
-    isDeactivated?: PrimitiveOverrideProps<SwitchFieldProps>;
+export declare type PrimitiveOverrideProps<T> = Partial<T> &
+  React.DOMAttributes<HTMLDivElement>;
+export declare type MasterAppliedUniversitiesCreateFormOverridesProps = {
+  MasterAppliedUniversitiesCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
+  universityName?: PrimitiveOverrideProps<TextFieldProps>;
+  universityNameAr?: PrimitiveOverrideProps<TextFieldProps>;
+  isDeactivated?: PrimitiveOverrideProps<SwitchFieldProps>;
 } & EscapeHatchProps;
-export declare type MasterUniversitiesCreateFormProps = React.PropsWithChildren<{
-    overrides?: MasterUniversitiesCreateFormOverridesProps | undefined | null;
-} & {
-    clearOnSuccess?: boolean;
-    onSubmit?: (fields: MasterUniversitiesCreateFormInputValues) => MasterUniversitiesCreateFormInputValues;
-    onSuccess?: (fields: MasterUniversitiesCreateFormInputValues) => void;
-    onError?: (fields: MasterUniversitiesCreateFormInputValues, errorMessage: string) => void;
-    onChange?: (fields: MasterUniversitiesCreateFormInputValues) => MasterUniversitiesCreateFormInputValues;
-    onValidate?: MasterUniversitiesCreateFormValidationValues;
-} & React.CSSProperties>;
-export default function MasterUniversitiesCreateForm(props: MasterUniversitiesCreateFormProps): React.ReactElement;
+export declare type MasterAppliedUniversitiesCreateFormProps =
+  React.PropsWithChildren<
+    {
+      overrides?:
+        | MasterAppliedUniversitiesCreateFormOverridesProps
+        | undefined
+        | null;
+    } & {
+      clearOnSuccess?: boolean;
+      onSubmit?: (
+        fields: MasterAppliedUniversitiesCreateFormInputValues
+      ) => MasterAppliedUniversitiesCreateFormInputValues;
+      onSuccess?: (
+        fields: MasterAppliedUniversitiesCreateFormInputValues
+      ) => void;
+      onError?: (
+        fields: MasterAppliedUniversitiesCreateFormInputValues,
+        errorMessage: string
+      ) => void;
+      onChange?: (
+        fields: MasterAppliedUniversitiesCreateFormInputValues
+      ) => MasterAppliedUniversitiesCreateFormInputValues;
+      onValidate?: MasterAppliedUniversitiesCreateFormValidationValues;
+    } & React.CSSProperties
+  >;
+export default function MasterAppliedUniversitiesCreateForm(
+  props: MasterAppliedUniversitiesCreateFormProps
+): React.ReactElement;

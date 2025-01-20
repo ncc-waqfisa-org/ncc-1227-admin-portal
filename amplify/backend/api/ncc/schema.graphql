@@ -303,13 +303,6 @@ type BahrainUniversities @model @auth(rules: [{ allow: public }]) {
   students: [Student] @hasMany(indexName: "byBahrianUniversity", fields: ["id"])
 }
 # These are universities that student want to apply to
-type MasterUniversities @model @auth(rules: [{ allow: public }]) {
-  id: ID! @primaryKey
-  universityName: String!
-  universityNameAr: String!
-  isDeactivated: Boolean
-  applications: [MasterApplication] @hasMany(fields: ["id"])
-}
 
 # Since we don't store any details
 type MasterApplication @model @auth(rules: [{ allow: public }]) {
@@ -327,7 +320,7 @@ type MasterApplication @model @auth(rules: [{ allow: public }]) {
   nationalityCategory: Nationality
     @index(name: "byMasterNationalityCategory", sortKeyFields: ["batch"])
   universityID: ID! # Make this required since @belongsTo relies on it
-  university: MasterUniversities @belongsTo(fields: ["universityID"])
+  university: MasterAppliedUniversities @belongsTo(fields: ["universityID"])
   studentCPR: String! @index(name: "byMasterStudentCPR", sortKeyFields: ["gpa"])
   studentName: String
   student: Student @belongsTo(fields: ["studentCPR"])
@@ -350,12 +343,16 @@ type MasterStatistics @model @auth(rules: [{ allow: public }]) {
   totalApplicationsPerStatus: AWSJSON
   scoreHistogram: AWSJSON
   gpaHistogram: AWSJSON
+  # This should reference master uniiversites application (master applications) table but it's depending on the number of universities.
   totalApplicationsPerUniversity: AWSJSON
-  #  topPrograms: AWSJSON
+  # This should reference the master universities that students applied to it.
   topUniversities: AWSJSON
-  topPrograms: AWSJSON
+  # This referse to the universities that users come from depending on their application when they select from the table (BahrainUniversities)
+  topBahrainUniversities: AWSJSON
+  # This will be referse to the garduin income
   familyIncome: AWSJSON
-  schoolType: AWSJSON
+  # This will be referse to the universites that user come form.
+  universitiesBahrain: AWSJSON
   students: AWSJSON
   applications: AWSJSON
   today: AWSJSON
@@ -369,6 +366,14 @@ type MasterAttachment @model @auth(rules: [{ allow: public }]) {
   universityCertificate: String
   toeflIELTSCertificate: String
   acceptanceLetterDoc: String
+}
+
+type MasterAppliedUniversities @model @auth(rules: [{ allow: public }]) {
+  id: ID! @primaryKey
+  universityName: String!
+  universityNameAr: String!
+  isDeactivated: Boolean
+  applications: [MasterApplication] @hasMany(fields: ["id"])
 }
 
 type MasterScholarship @model @auth(rules: [{ allow: public }]) {
@@ -403,4 +408,5 @@ enum Major {
   SCIENCE
   TECHNOLOGY
   ENGINEERING
+  MATH
 }

@@ -8,14 +8,14 @@ const dynamoDB = new AWS.DynamoDB.DocumentClient();
 const {
   MasterApplicationTable: APPLICATION_TABLE,
   BahrainUniversities: UNIVERSITY_Bahrain_TABLE,
-  MasterUniversities: UNIVERSITY_MASTER_TABLE,
+  MasterAppliedUniversities: UNIVERSITY_MASTER_TABLE,
   StudentTable: STUDENT_TABLE,
   MasterStatisticsTable: STATISTICS_TABLE,
 } = {
   MasterApplicationTable:
     "MasterApplication-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
   BahrainUniversities: "",
-  MasterUniversities: "",
+  MasterAppliedUniversities: "",
   StudentTable: "Student-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
   MasterStatisticsTable: "Statistics-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
 };

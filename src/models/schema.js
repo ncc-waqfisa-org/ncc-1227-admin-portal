@@ -2620,103 +2620,6 @@ export const schema = {
                 }
             ]
         },
-        "MasterUniversities": {
-            "name": "MasterUniversities",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "universityName": {
-                    "name": "universityName",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "universityNameAr": {
-                    "name": "universityNameAr",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "isDeactivated": {
-                    "name": "isDeactivated",
-                    "isArray": false,
-                    "type": "Boolean",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "applications": {
-                    "name": "applications",
-                    "isArray": true,
-                    "type": {
-                        "model": "MasterApplication"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true,
-                    "association": {
-                        "connectionType": "HAS_MANY",
-                        "associatedWith": [
-                            "university"
-                        ]
-                    }
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "MasterUniversities",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "key",
-                    "properties": {
-                        "fields": [
-                            "id"
-                        ]
-                    }
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
         "MasterApplication": {
             "name": "MasterApplication",
             "fields": {
@@ -2841,7 +2744,7 @@ export const schema = {
                     "name": "university",
                     "isArray": false,
                     "type": {
-                        "model": "MasterUniversities"
+                        "model": "MasterAppliedUniversities"
                     },
                     "isRequired": false,
                     "attributes": [],
@@ -3116,8 +3019,8 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "topPrograms": {
-                    "name": "topPrograms",
+                "topBahrainUniversities": {
+                    "name": "topBahrainUniversities",
                     "isArray": false,
                     "type": "AWSJSON",
                     "isRequired": false,
@@ -3130,8 +3033,8 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "schoolType": {
-                    "name": "schoolType",
+                "universitiesBahrain": {
+                    "name": "universitiesBahrain",
                     "isArray": false,
                     "type": "AWSJSON",
                     "isRequired": false,
@@ -3293,6 +3196,103 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "MasterAppliedUniversities": {
+            "name": "MasterAppliedUniversities",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "universityName": {
+                    "name": "universityName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "universityNameAr": {
+                    "name": "universityNameAr",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "isDeactivated": {
+                    "name": "isDeactivated",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "applications": {
+                    "name": "applications",
+                    "isArray": true,
+                    "type": {
+                        "model": "MasterApplication"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "university"
+                        ]
+                    }
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "MasterAppliedUniversities",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "fields": [
+                            "id"
+                        ]
+                    }
                 },
                 {
                     "type": "auth",
@@ -3584,11 +3584,12 @@ export const schema = {
             "values": [
                 "SCIENCE",
                 "TECHNOLOGY",
-                "ENGINEERING"
+                "ENGINEERING",
+                "MATH"
             ]
         }
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "965507e0cb9db4763f40110fd5cda4db"
+    "version": "77db5a3d294a4251ff53f979408c9d77"
 };

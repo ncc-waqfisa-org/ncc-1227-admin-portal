@@ -45,5 +45,7 @@
   "scholarshipType": "Scholarship Type",
   "programType": "Program Type",
   "masters": "Masters",
-  "bachelor": "Bachelor"
+  "bachelor": "Bachelor",
+  "bahrainiUnis": "Universities graduated from",
+  "mastersUnis": "Universities applying for"
 }

@@ -15,6 +15,7 @@ const { ScholarshipTable: SCHOLARSHIP_TABLE, S3Bucket: S3_BUCKET } = {
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
+  // this is the requiremtns (ID, student signature, gradianSignature)
   const { scholarshipId, studentSignature, guardianSignature } = JSON.parse(
     event.body
   );
@@ -55,7 +56,7 @@ exports.handler = async (event) => {
 
   const key = "public/" + scholarship.unsignedContractDoc;
   const link = s3.getSignedUrl("getObject", {
-    Bucket: "ncc1227bucket65406-staging",
+    Bucket: S3_BUCKET,
     Key: key,
   });
 

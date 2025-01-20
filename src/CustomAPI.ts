@@ -34,6 +34,7 @@ import {
   ListMasterBatchesQuery,
   ListMasterBatchesQueryVariables,
   MasterApplication,
+  MasterUniversities,
   Program,
   Scholarship,
   StudentLog,
@@ -848,6 +849,32 @@ export async function getUniversityByID(
   return tempProgramList;
 }
 
+export async function getMasterUniversityByID(id?: string): Promise<any> {
+  let query = `
+  query GetMasterAppliedUniversities {
+    getMasterAppliedUniversities(id:  "${id}") {
+      id
+      universityName
+      universityNameAr
+      _deleted
+      _lastChangedAt
+      _version
+      isDeactivated
+      updatedAt
+      createdAt
+    }
+  }
+  `;
+
+  let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;
+  console.log(JSON.stringify(res));
+
+  let tempProgramList = res.data.getMasterAppliedUniversities as University;
+
+  console.log(JSON.stringify(tempProgramList));
+  return tempProgramList;
+}
+
 interface IUpdateEmailSentToApplication {
   applicationId: string;
   version: number;
@@ -1602,6 +1629,29 @@ export async function listAllBahrainUniversities() {
 
   let universities = res.data?.listBahrainUniversities
     .items as BahrainUniversities[];
+  return universities;
+}
+
+export async function listAllMasterUniversities() {
+  let q = `
+  query ListAllMasterAppliedUniversities {
+  listMasterAppliedUniversities(limit:9999999){
+    items {
+      id
+      universityName
+      universityNameAr
+      isDeactivated
+      _version
+      _deleted
+    }
+  }
+}
+`;
+
+  let res = (await API.graphql(graphqlOperation(q))) as GraphQLResult<any>; // your fetch function here
+
+  let universities = res.data?.listMasterAppliedUniversities
+    .items as MasterUniversities[];
   return universities;
 }
 

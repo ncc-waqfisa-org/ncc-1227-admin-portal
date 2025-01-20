@@ -44,6 +44,11 @@
     }
   },
   "function": {
+    "SignUpMaster": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "bulkAutoReject": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -169,6 +174,22 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_SignUpMaster_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "SignUpMaster"
+        }
+      ]
+    },
+    "AMPLIFY_function_SignUpMaster_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "SignUpMaster"
+        }
+      ]
+    },
     "AMPLIFY_function_bulkAutoReject_deploymentBucketName": {
       "usedBy": [
         {

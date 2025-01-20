@@ -44,5 +44,7 @@
   "scholarshipType": "نوع المنحة الدراسية",
   "programType": "نوع البرنامج",
   "masters": "الماجستير",
-  "bachelor": "البكالوريوس"
+  "bachelor": "البكالوريوس",
+  "bahrainiUnis": "الجامعات المتخرج منها",
+  "mastersUnis": "الجامعات المتقدم لها"
 }

@@ -6,7 +6,6 @@
 
 import * as React from "react";
 import { GridProps, SwitchFieldProps, TextFieldProps } from "@aws-amplify/ui-react";
-import { MasterAppliedUniversities } from "../models";
 export declare type EscapeHatchProps = {
     [elementHierarchy: string]: Record<string, unknown>;
 } | null;
@@ -22,32 +21,31 @@ export declare type ValidationResponse = {
     errorMessage?: string;
 };
 export declare type ValidationFunction<T> = (value: T, validationResponse: ValidationResponse) => ValidationResponse | Promise<ValidationResponse>;
-export declare type MasterAppliedUniversitiesUpdateFormInputValues = {
+export declare type MasterAppliedUniversitiesCreateFormInputValues = {
     universityName?: string;
     universityNameAr?: string;
     isDeactivated?: boolean;
 };
-export declare type MasterAppliedUniversitiesUpdateFormValidationValues = {
+export declare type MasterAppliedUniversitiesCreateFormValidationValues = {
     universityName?: ValidationFunction<string>;
     universityNameAr?: ValidationFunction<string>;
     isDeactivated?: ValidationFunction<boolean>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
-export declare type MasterAppliedUniversitiesUpdateFormOverridesProps = {
-    MasterAppliedUniversitiesUpdateFormGrid?: PrimitiveOverrideProps<GridProps>;
+export declare type MasterAppliedUniversitiesCreateFormOverridesProps = {
+    MasterAppliedUniversitiesCreateFormGrid?: PrimitiveOverrideProps<GridProps>;
     universityName?: PrimitiveOverrideProps<TextFieldProps>;
     universityNameAr?: PrimitiveOverrideProps<TextFieldProps>;
     isDeactivated?: PrimitiveOverrideProps<SwitchFieldProps>;
 } & EscapeHatchProps;
-export declare type MasterAppliedUniversitiesUpdateFormProps = React.PropsWithChildren<{
-    overrides?: MasterAppliedUniversitiesUpdateFormOverridesProps | undefined | null;
+export declare type MasterAppliedUniversitiesCreateFormProps = React.PropsWithChildren<{
+    overrides?: MasterAppliedUniversitiesCreateFormOverridesProps | undefined | null;
 } & {
-    id?: string;
-    MasterAppliedUniversities?: MasterAppliedUniversities;
-    onSubmit?: (fields: MasterAppliedUniversitiesUpdateFormInputValues) => MasterAppliedUniversitiesUpdateFormInputValues;
-    onSuccess?: (fields: MasterAppliedUniversitiesUpdateFormInputValues) => void;
-    onError?: (fields: MasterAppliedUniversitiesUpdateFormInputValues, errorMessage: string) => void;
-    onChange?: (fields: MasterAppliedUniversitiesUpdateFormInputValues) => MasterAppliedUniversitiesUpdateFormInputValues;
-    onValidate?: MasterAppliedUniversitiesUpdateFormValidationValues;
+    clearOnSuccess?: boolean;
+    onSubmit?: (fields: MasterAppliedUniversitiesCreateFormInputValues) => MasterAppliedUniversitiesCreateFormInputValues;
+    onSuccess?: (fields: MasterAppliedUniversitiesCreateFormInputValues) => void;
+    onError?: (fields: MasterAppliedUniversitiesCreateFormInputValues, errorMessage: string) => void;
+    onChange?: (fields: MasterAppliedUniversitiesCreateFormInputValues) => MasterAppliedUniversitiesCreateFormInputValues;
+    onValidate?: MasterAppliedUniversitiesCreateFormValidationValues;
 } & React.CSSProperties>;
-export default function MasterAppliedUniversitiesUpdateForm(props: MasterAppliedUniversitiesUpdateFormProps): React.ReactElement;
+export default function MasterAppliedUniversitiesCreateForm(props: MasterAppliedUniversitiesCreateFormProps): React.ReactElement;

@@ -2028,97 +2028,6 @@ export const syncBahrainUniversities = /* GraphQL */ `query SyncBahrainUniversit
   APITypes.SyncBahrainUniversitiesQueryVariables,
   APITypes.SyncBahrainUniversitiesQuery
 >;
-export const getMasterUniversities = /* GraphQL */ `query GetMasterUniversities($id: ID!) {
-  getMasterUniversities(id: $id) {
-    id
-    universityName
-    universityNameAr
-    isDeactivated
-    applications {
-      nextToken
-      startedAt
-      __typename
-    }
-    createdAt
-    updatedAt
-    _version
-    _deleted
-    _lastChangedAt
-    __typename
-  }
-}
-` as GeneratedQuery<
-  APITypes.GetMasterUniversitiesQueryVariables,
-  APITypes.GetMasterUniversitiesQuery
->;
-export const listMasterUniversities = /* GraphQL */ `query ListMasterUniversities(
-  $id: ID
-  $filter: ModelMasterUniversitiesFilterInput
-  $limit: Int
-  $nextToken: String
-  $sortDirection: ModelSortDirection
-) {
-  listMasterUniversities(
-    id: $id
-    filter: $filter
-    limit: $limit
-    nextToken: $nextToken
-    sortDirection: $sortDirection
-  ) {
-    items {
-      id
-      universityName
-      universityNameAr
-      isDeactivated
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-    nextToken
-    startedAt
-    __typename
-  }
-}
-` as GeneratedQuery<
-  APITypes.ListMasterUniversitiesQueryVariables,
-  APITypes.ListMasterUniversitiesQuery
->;
-export const syncMasterUniversities = /* GraphQL */ `query SyncMasterUniversities(
-  $filter: ModelMasterUniversitiesFilterInput
-  $limit: Int
-  $nextToken: String
-  $lastSync: AWSTimestamp
-) {
-  syncMasterUniversities(
-    filter: $filter
-    limit: $limit
-    nextToken: $nextToken
-    lastSync: $lastSync
-  ) {
-    items {
-      id
-      universityName
-      universityNameAr
-      isDeactivated
-      createdAt
-      updatedAt
-      _version
-      _deleted
-      _lastChangedAt
-      __typename
-    }
-    nextToken
-    startedAt
-    __typename
-  }
-}
-` as GeneratedQuery<
-  APITypes.SyncMasterUniversitiesQueryVariables,
-  APITypes.SyncMasterUniversitiesQuery
->;
 export const getMasterApplication = /* GraphQL */ `query GetMasterApplication($id: ID!) {
   getMasterApplication(id: $id) {
     id
@@ -2343,9 +2252,9 @@ export const getMasterStatistics = /* GraphQL */ `query GetMasterStatistics($id:
     gpaHistogram
     totalApplicationsPerUniversity
     topUniversities
-    topPrograms
+    topBahrainUniversities
     familyIncome
-    schoolType
+    universitiesBahrain
     students
     applications
     today
@@ -2384,9 +2293,9 @@ export const listMasterStatistics = /* GraphQL */ `query ListMasterStatistics(
       gpaHistogram
       totalApplicationsPerUniversity
       topUniversities
-      topPrograms
+      topBahrainUniversities
       familyIncome
-      schoolType
+      universitiesBahrain
       students
       applications
       today
@@ -2427,9 +2336,9 @@ export const syncMasterStatistics = /* GraphQL */ `query SyncMasterStatistics(
       gpaHistogram
       totalApplicationsPerUniversity
       topUniversities
-      topPrograms
+      topBahrainUniversities
       familyIncome
-      schoolType
+      universitiesBahrain
       students
       applications
       today
@@ -2535,6 +2444,97 @@ export const syncMasterAttachments = /* GraphQL */ `query SyncMasterAttachments(
 ` as GeneratedQuery<
   APITypes.SyncMasterAttachmentsQueryVariables,
   APITypes.SyncMasterAttachmentsQuery
+>;
+export const getMasterAppliedUniversities = /* GraphQL */ `query GetMasterAppliedUniversities($id: ID!) {
+  getMasterAppliedUniversities(id: $id) {
+    id
+    universityName
+    universityNameAr
+    isDeactivated
+    applications {
+      nextToken
+      startedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.GetMasterAppliedUniversitiesQueryVariables,
+  APITypes.GetMasterAppliedUniversitiesQuery
+>;
+export const listMasterAppliedUniversities = /* GraphQL */ `query ListMasterAppliedUniversities(
+  $id: ID
+  $filter: ModelMasterAppliedUniversitiesFilterInput
+  $limit: Int
+  $nextToken: String
+  $sortDirection: ModelSortDirection
+) {
+  listMasterAppliedUniversities(
+    id: $id
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    sortDirection: $sortDirection
+  ) {
+    items {
+      id
+      universityName
+      universityNameAr
+      isDeactivated
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.ListMasterAppliedUniversitiesQueryVariables,
+  APITypes.ListMasterAppliedUniversitiesQuery
+>;
+export const syncMasterAppliedUniversities = /* GraphQL */ `query SyncMasterAppliedUniversities(
+  $filter: ModelMasterAppliedUniversitiesFilterInput
+  $limit: Int
+  $nextToken: String
+  $lastSync: AWSTimestamp
+) {
+  syncMasterAppliedUniversities(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    lastSync: $lastSync
+  ) {
+    items {
+      id
+      universityName
+      universityNameAr
+      isDeactivated
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+      __typename
+    }
+    nextToken
+    startedAt
+    __typename
+  }
+}
+` as GeneratedQuery<
+  APITypes.SyncMasterAppliedUniversitiesQueryVariables,
+  APITypes.SyncMasterAppliedUniversitiesQuery
 >;
 export const getMasterScholarship = /* GraphQL */ `query GetMasterScholarship($id: ID!) {
   getMasterScholarship(id: $id) {
@@ -3766,9 +3766,9 @@ export const masterStatisticsByBatchAndTotalApplications = /* GraphQL */ `query 
       gpaHistogram
       totalApplicationsPerUniversity
       topUniversities
-      topPrograms
+      topBahrainUniversities
       familyIncome
-      schoolType
+      universitiesBahrain
       students
       applications
       today

@@ -2,16 +2,7 @@ const AWS = require("aws-sdk");
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 const cognito = new AWS.CognitoIdentityServiceProvider();
 
-const {
-  //   ApplicationTable: APPLICATION_TABLE,
-  //   UniversityTable: UNIVERSITY_TABLE,
-  //   ProgramChoice: PROGRAM_CHOICE_TABLE,
-  StatisticsTable: STATISTICS_TABLE,
-  AdminTable: ADMIN_TABLE,
-} = {
-  //   ApplicationTable: "Application-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
-  //   UniversityTable: "University-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
-  //   ProgramChoice: "ProgramChoice-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
+const { StatisticsTable: STATISTICS_TABLE, AdminTable: ADMIN_TABLE } = {
   StatisticsTable: "MasterStatistics-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
   AdminTable: "Admin-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
 };

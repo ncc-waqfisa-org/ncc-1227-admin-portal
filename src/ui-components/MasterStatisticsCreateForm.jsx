@@ -36,9 +36,9 @@ export default function MasterStatisticsCreateForm(props) {
     gpaHistogram: "",
     totalApplicationsPerUniversity: "",
     topUniversities: "",
-    topPrograms: "",
+    topBahrainUniversities: "",
     familyIncome: "",
-    schoolType: "",
+    universitiesBahrain: "",
     students: "",
     applications: "",
     today: "",
@@ -61,13 +61,15 @@ export default function MasterStatisticsCreateForm(props) {
   const [topUniversities, setTopUniversities] = React.useState(
     initialValues.topUniversities
   );
-  const [topPrograms, setTopPrograms] = React.useState(
-    initialValues.topPrograms
+  const [topBahrainUniversities, setTopBahrainUniversities] = React.useState(
+    initialValues.topBahrainUniversities
   );
   const [familyIncome, setFamilyIncome] = React.useState(
     initialValues.familyIncome
   );
-  const [schoolType, setSchoolType] = React.useState(initialValues.schoolType);
+  const [universitiesBahrain, setUniversitiesBahrain] = React.useState(
+    initialValues.universitiesBahrain
+  );
   const [students, setStudents] = React.useState(initialValues.students);
   const [applications, setApplications] = React.useState(
     initialValues.applications
@@ -85,9 +87,9 @@ export default function MasterStatisticsCreateForm(props) {
       initialValues.totalApplicationsPerUniversity
     );
     setTopUniversities(initialValues.topUniversities);
-    setTopPrograms(initialValues.topPrograms);
+    setTopBahrainUniversities(initialValues.topBahrainUniversities);
     setFamilyIncome(initialValues.familyIncome);
-    setSchoolType(initialValues.schoolType);
+    setUniversitiesBahrain(initialValues.universitiesBahrain);
     setStudents(initialValues.students);
     setApplications(initialValues.applications);
     setToday(initialValues.today);
@@ -102,9 +104,9 @@ export default function MasterStatisticsCreateForm(props) {
     gpaHistogram: [{ type: "JSON" }],
     totalApplicationsPerUniversity: [{ type: "JSON" }],
     topUniversities: [{ type: "JSON" }],
-    topPrograms: [{ type: "JSON" }],
+    topBahrainUniversities: [{ type: "JSON" }],
     familyIncome: [{ type: "JSON" }],
-    schoolType: [{ type: "JSON" }],
+    universitiesBahrain: [{ type: "JSON" }],
     students: [{ type: "JSON" }],
     applications: [{ type: "JSON" }],
     today: [{ type: "JSON" }],
@@ -143,9 +145,9 @@ export default function MasterStatisticsCreateForm(props) {
           gpaHistogram,
           totalApplicationsPerUniversity,
           topUniversities,
-          topPrograms,
+          topBahrainUniversities,
           familyIncome,
-          schoolType,
+          universitiesBahrain,
           students,
           applications,
           today,
@@ -215,9 +217,9 @@ export default function MasterStatisticsCreateForm(props) {
               gpaHistogram,
               totalApplicationsPerUniversity,
               topUniversities,
-              topPrograms,
+              topBahrainUniversities,
               familyIncome,
-              schoolType,
+              universitiesBahrain,
               students,
               applications,
               today,
@@ -256,9 +258,9 @@ export default function MasterStatisticsCreateForm(props) {
               gpaHistogram,
               totalApplicationsPerUniversity,
               topUniversities,
-              topPrograms,
+              topBahrainUniversities,
               familyIncome,
-              schoolType,
+              universitiesBahrain,
               students,
               applications,
               today,
@@ -297,9 +299,9 @@ export default function MasterStatisticsCreateForm(props) {
               gpaHistogram,
               totalApplicationsPerUniversity,
               topUniversities,
-              topPrograms,
+              topBahrainUniversities,
               familyIncome,
-              schoolType,
+              universitiesBahrain,
               students,
               applications,
               today,
@@ -335,9 +337,9 @@ export default function MasterStatisticsCreateForm(props) {
               gpaHistogram,
               totalApplicationsPerUniversity,
               topUniversities,
-              topPrograms,
+              topBahrainUniversities,
               familyIncome,
-              schoolType,
+              universitiesBahrain,
               students,
               applications,
               today,
@@ -376,9 +378,9 @@ export default function MasterStatisticsCreateForm(props) {
               gpaHistogram,
               totalApplicationsPerUniversity,
               topUniversities,
-              topPrograms,
+              topBahrainUniversities,
               familyIncome,
-              schoolType,
+              universitiesBahrain,
               students,
               applications,
               today,
@@ -412,9 +414,9 @@ export default function MasterStatisticsCreateForm(props) {
               gpaHistogram: value,
               totalApplicationsPerUniversity,
               topUniversities,
-              topPrograms,
+              topBahrainUniversities,
               familyIncome,
-              schoolType,
+              universitiesBahrain,
               students,
               applications,
               today,
@@ -448,9 +450,9 @@ export default function MasterStatisticsCreateForm(props) {
               gpaHistogram,
               totalApplicationsPerUniversity: value,
               topUniversities,
-              topPrograms,
+              topBahrainUniversities,
               familyIncome,
-              schoolType,
+              universitiesBahrain,
               students,
               applications,
               today,
@@ -489,9 +491,9 @@ export default function MasterStatisticsCreateForm(props) {
               gpaHistogram,
               totalApplicationsPerUniversity,
               topUniversities: value,
-              topPrograms,
+              topBahrainUniversities,
               familyIncome,
-              schoolType,
+              universitiesBahrain,
               students,
               applications,
               today,
@@ -510,7 +512,7 @@ export default function MasterStatisticsCreateForm(props) {
         {...getOverrideProps(overrides, "topUniversities")}
       ></TextAreaField>
       <TextAreaField
-        label="Top programs"
+        label="Top bahrain universities"
         isRequired={false}
         isReadOnly={false}
         onChange={(e) => {
@@ -525,25 +527,27 @@ export default function MasterStatisticsCreateForm(props) {
               gpaHistogram,
               totalApplicationsPerUniversity,
               topUniversities,
-              topPrograms: value,
+              topBahrainUniversities: value,
               familyIncome,
-              schoolType,
+              universitiesBahrain,
               students,
               applications,
               today,
             };
             const result = onChange(modelFields);
-            value = result?.topPrograms ?? value;
+            value = result?.topBahrainUniversities ?? value;
           }
-          if (errors.topPrograms?.hasError) {
-            runValidationTasks("topPrograms", value);
+          if (errors.topBahrainUniversities?.hasError) {
+            runValidationTasks("topBahrainUniversities", value);
           }
-          setTopPrograms(value);
+          setTopBahrainUniversities(value);
         }}
-        onBlur={() => runValidationTasks("topPrograms", topPrograms)}
-        errorMessage={errors.topPrograms?.errorMessage}
-        hasError={errors.topPrograms?.hasError}
-        {...getOverrideProps(overrides, "topPrograms")}
+        onBlur={() =>
+          runValidationTasks("topBahrainUniversities", topBahrainUniversities)
+        }
+        errorMessage={errors.topBahrainUniversities?.errorMessage}
+        hasError={errors.topBahrainUniversities?.hasError}
+        {...getOverrideProps(overrides, "topBahrainUniversities")}
       ></TextAreaField>
       <TextAreaField
         label="Family income"
@@ -561,9 +565,9 @@ export default function MasterStatisticsCreateForm(props) {
               gpaHistogram,
               totalApplicationsPerUniversity,
               topUniversities,
-              topPrograms,
+              topBahrainUniversities,
               familyIncome: value,
-              schoolType,
+              universitiesBahrain,
               students,
               applications,
               today,
@@ -582,7 +586,7 @@ export default function MasterStatisticsCreateForm(props) {
         {...getOverrideProps(overrides, "familyIncome")}
       ></TextAreaField>
       <TextAreaField
-        label="School type"
+        label="Universities bahrain"
         isRequired={false}
         isReadOnly={false}
         onChange={(e) => {
@@ -597,25 +601,27 @@ export default function MasterStatisticsCreateForm(props) {
               gpaHistogram,
               totalApplicationsPerUniversity,
               topUniversities,
-              topPrograms,
+              topBahrainUniversities,
               familyIncome,
-              schoolType: value,
+              universitiesBahrain: value,
               students,
               applications,
               today,
             };
             const result = onChange(modelFields);
-            value = result?.schoolType ?? value;
+            value = result?.universitiesBahrain ?? value;
           }
-          if (errors.schoolType?.hasError) {
-            runValidationTasks("schoolType", value);
+          if (errors.universitiesBahrain?.hasError) {
+            runValidationTasks("universitiesBahrain", value);
           }
-          setSchoolType(value);
+          setUniversitiesBahrain(value);
         }}
-        onBlur={() => runValidationTasks("schoolType", schoolType)}
-        errorMessage={errors.schoolType?.errorMessage}
-        hasError={errors.schoolType?.hasError}
-        {...getOverrideProps(overrides, "schoolType")}
+        onBlur={() =>
+          runValidationTasks("universitiesBahrain", universitiesBahrain)
+        }
+        errorMessage={errors.universitiesBahrain?.errorMessage}
+        hasError={errors.universitiesBahrain?.hasError}
+        {...getOverrideProps(overrides, "universitiesBahrain")}
       ></TextAreaField>
       <TextAreaField
         label="Students"
@@ -633,9 +639,9 @@ export default function MasterStatisticsCreateForm(props) {
               gpaHistogram,
               totalApplicationsPerUniversity,
               topUniversities,
-              topPrograms,
+              topBahrainUniversities,
               familyIncome,
-              schoolType,
+              universitiesBahrain,
               students: value,
               applications,
               today,
@@ -669,9 +675,9 @@ export default function MasterStatisticsCreateForm(props) {
               gpaHistogram,
               totalApplicationsPerUniversity,
               topUniversities,
-              topPrograms,
+              topBahrainUniversities,
               familyIncome,
-              schoolType,
+              universitiesBahrain,
               students,
               applications: value,
               today,
@@ -705,9 +711,9 @@ export default function MasterStatisticsCreateForm(props) {
               gpaHistogram,
               totalApplicationsPerUniversity,
               topUniversities,
-              topPrograms,
+              topBahrainUniversities,
               familyIncome,
-              schoolType,
+              universitiesBahrain,
               students,
               applications,
               today: value,

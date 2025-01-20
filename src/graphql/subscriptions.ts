@@ -2444,81 +2444,6 @@ export const onDeleteBahrainUniversities = /* GraphQL */ `subscription OnDeleteB
   APITypes.OnDeleteBahrainUniversitiesSubscriptionVariables,
   APITypes.OnDeleteBahrainUniversitiesSubscription
 >;
-export const onCreateMasterUniversities = /* GraphQL */ `subscription OnCreateMasterUniversities(
-  $filter: ModelSubscriptionMasterUniversitiesFilterInput
-) {
-  onCreateMasterUniversities(filter: $filter) {
-    id
-    universityName
-    universityNameAr
-    isDeactivated
-    applications {
-      nextToken
-      startedAt
-      __typename
-    }
-    createdAt
-    updatedAt
-    _version
-    _deleted
-    _lastChangedAt
-    __typename
-  }
-}
-` as GeneratedSubscription<
-  APITypes.OnCreateMasterUniversitiesSubscriptionVariables,
-  APITypes.OnCreateMasterUniversitiesSubscription
->;
-export const onUpdateMasterUniversities = /* GraphQL */ `subscription OnUpdateMasterUniversities(
-  $filter: ModelSubscriptionMasterUniversitiesFilterInput
-) {
-  onUpdateMasterUniversities(filter: $filter) {
-    id
-    universityName
-    universityNameAr
-    isDeactivated
-    applications {
-      nextToken
-      startedAt
-      __typename
-    }
-    createdAt
-    updatedAt
-    _version
-    _deleted
-    _lastChangedAt
-    __typename
-  }
-}
-` as GeneratedSubscription<
-  APITypes.OnUpdateMasterUniversitiesSubscriptionVariables,
-  APITypes.OnUpdateMasterUniversitiesSubscription
->;
-export const onDeleteMasterUniversities = /* GraphQL */ `subscription OnDeleteMasterUniversities(
-  $filter: ModelSubscriptionMasterUniversitiesFilterInput
-) {
-  onDeleteMasterUniversities(filter: $filter) {
-    id
-    universityName
-    universityNameAr
-    isDeactivated
-    applications {
-      nextToken
-      startedAt
-      __typename
-    }
-    createdAt
-    updatedAt
-    _version
-    _deleted
-    _lastChangedAt
-    __typename
-  }
-}
-` as GeneratedSubscription<
-  APITypes.OnDeleteMasterUniversitiesSubscriptionVariables,
-  APITypes.OnDeleteMasterUniversitiesSubscription
->;
 export const onCreateMasterApplication = /* GraphQL */ `subscription OnCreateMasterApplication(
   $filter: ModelSubscriptionMasterApplicationFilterInput
 ) {
@@ -2885,9 +2810,9 @@ export const onCreateMasterStatistics = /* GraphQL */ `subscription OnCreateMast
     gpaHistogram
     totalApplicationsPerUniversity
     topUniversities
-    topPrograms
+    topBahrainUniversities
     familyIncome
-    schoolType
+    universitiesBahrain
     students
     applications
     today
@@ -2915,9 +2840,9 @@ export const onUpdateMasterStatistics = /* GraphQL */ `subscription OnUpdateMast
     gpaHistogram
     totalApplicationsPerUniversity
     topUniversities
-    topPrograms
+    topBahrainUniversities
     familyIncome
-    schoolType
+    universitiesBahrain
     students
     applications
     today
@@ -2945,9 +2870,9 @@ export const onDeleteMasterStatistics = /* GraphQL */ `subscription OnDeleteMast
     gpaHistogram
     totalApplicationsPerUniversity
     topUniversities
-    topPrograms
+    topBahrainUniversities
     familyIncome
-    schoolType
+    universitiesBahrain
     students
     applications
     today
@@ -3031,6 +2956,81 @@ export const onDeleteMasterAttachment = /* GraphQL */ `subscription OnDeleteMast
 ` as GeneratedSubscription<
   APITypes.OnDeleteMasterAttachmentSubscriptionVariables,
   APITypes.OnDeleteMasterAttachmentSubscription
+>;
+export const onCreateMasterAppliedUniversities = /* GraphQL */ `subscription OnCreateMasterAppliedUniversities(
+  $filter: ModelSubscriptionMasterAppliedUniversitiesFilterInput
+) {
+  onCreateMasterAppliedUniversities(filter: $filter) {
+    id
+    universityName
+    universityNameAr
+    isDeactivated
+    applications {
+      nextToken
+      startedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnCreateMasterAppliedUniversitiesSubscriptionVariables,
+  APITypes.OnCreateMasterAppliedUniversitiesSubscription
+>;
+export const onUpdateMasterAppliedUniversities = /* GraphQL */ `subscription OnUpdateMasterAppliedUniversities(
+  $filter: ModelSubscriptionMasterAppliedUniversitiesFilterInput
+) {
+  onUpdateMasterAppliedUniversities(filter: $filter) {
+    id
+    universityName
+    universityNameAr
+    isDeactivated
+    applications {
+      nextToken
+      startedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnUpdateMasterAppliedUniversitiesSubscriptionVariables,
+  APITypes.OnUpdateMasterAppliedUniversitiesSubscription
+>;
+export const onDeleteMasterAppliedUniversities = /* GraphQL */ `subscription OnDeleteMasterAppliedUniversities(
+  $filter: ModelSubscriptionMasterAppliedUniversitiesFilterInput
+) {
+  onDeleteMasterAppliedUniversities(filter: $filter) {
+    id
+    universityName
+    universityNameAr
+    isDeactivated
+    applications {
+      nextToken
+      startedAt
+      __typename
+    }
+    createdAt
+    updatedAt
+    _version
+    _deleted
+    _lastChangedAt
+    __typename
+  }
+}
+` as GeneratedSubscription<
+  APITypes.OnDeleteMasterAppliedUniversitiesSubscriptionVariables,
+  APITypes.OnDeleteMasterAppliedUniversitiesSubscription
 >;
 export const onCreateMasterScholarship = /* GraphQL */ `subscription OnCreateMasterScholarship(
   $filter: ModelSubscriptionMasterScholarshipFilterInput

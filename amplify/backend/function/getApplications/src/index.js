@@ -66,7 +66,7 @@ async function getApplications(pageSize, startKey, batch, status = null) {
     TableName: APPLICATION_TABLE,
     Limit: pageSize,
     ExclusiveStartKey: startKey,
-    IndexName: "byMasterScore",
+    IndexName: "byScore",
     KeyConditionExpression: "#batch = :batchValue AND score >= :score",
     ScanIndexForward: false,
     ExpressionAttributeNames: {

@@ -19,7 +19,7 @@ import { DataStore } from "aws-amplify";
 export default function MasterAppliedUniversitiesUpdateForm(props) {
   const {
     id: idProp,
-    MasterAppliedUniversities: MasterAppliedUniversitiesModelProp,
+    masterAppliedUniversities: masterAppliedUniversitiesModelProp,
     onSuccess,
     onError,
     onSubmit,
@@ -44,26 +44,26 @@ export default function MasterAppliedUniversitiesUpdateForm(props) {
   );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
-    const cleanValues = MasterAppliedUniversitiesRecord
-      ? { ...initialValues, ...MasterAppliedUniversitiesRecord }
+    const cleanValues = masterAppliedUniversitiesRecord
+      ? { ...initialValues, ...masterAppliedUniversitiesRecord }
       : initialValues;
     setUniversityName(cleanValues.universityName);
     setUniversityNameAr(cleanValues.universityNameAr);
     setIsDeactivated(cleanValues.isDeactivated);
     setErrors({});
   };
-  const [MasterAppliedUniversitiesRecord, setMasterAppliedUniversitiesRecord] =
-    React.useState(MasterAppliedUniversitiesModelProp);
+  const [masterAppliedUniversitiesRecord, setMasterAppliedUniversitiesRecord] =
+    React.useState(masterAppliedUniversitiesModelProp);
   React.useEffect(() => {
     const queryData = async () => {
       const record = idProp
         ? await DataStore.query(MasterAppliedUniversities, idProp)
-        : MasterAppliedUniversitiesModelProp;
+        : masterAppliedUniversitiesModelProp;
       setMasterAppliedUniversitiesRecord(record);
     };
     queryData();
-  }, [idProp, MasterAppliedUniversitiesModelProp]);
-  React.useEffect(resetStateValues, [MasterAppliedUniversitiesRecord]);
+  }, [idProp, masterAppliedUniversitiesModelProp]);
+  React.useEffect(resetStateValues, [masterAppliedUniversitiesRecord]);
   const validations = {
     universityName: [{ type: "Required" }],
     universityNameAr: [{ type: "Required" }],
@@ -129,7 +129,7 @@ export default function MasterAppliedUniversitiesUpdateForm(props) {
           });
           await DataStore.save(
             MasterAppliedUniversities.copyOf(
-              MasterAppliedUniversitiesRecord,
+              masterAppliedUniversitiesRecord,
               (updated) => {
                 Object.assign(updated, modelFields);
               }
@@ -236,7 +236,7 @@ export default function MasterAppliedUniversitiesUpdateForm(props) {
             event.preventDefault();
             resetStateValues();
           }}
-          isDisabled={!(idProp || MasterAppliedUniversitiesModelProp)}
+          isDisabled={!(idProp || masterAppliedUniversitiesModelProp)}
           {...getOverrideProps(overrides, "ResetButton")}
         ></Button>
         <Flex
@@ -248,7 +248,7 @@ export default function MasterAppliedUniversitiesUpdateForm(props) {
             type="submit"
             variation="primary"
             isDisabled={
-              !(idProp || MasterAppliedUniversitiesModelProp) ||
+              !(idProp || masterAppliedUniversitiesModelProp) ||
               Object.values(errors).some((e) => e?.hasError)
             }
             {...getOverrideProps(overrides, "SubmitButton")}
