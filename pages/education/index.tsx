@@ -65,6 +65,8 @@ const Education = () => {
 
   // const [searchValue, setSearchValue] = useState("");
   const [resultList, setResultList] = useState<any>([]);
+  const [masterUniResultList, setMasterUniResultList] = useState<any>([]);
+  const [bahrainiUniResultList, setBahrainiUniResultList] = useState<any>([]);
 
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
@@ -145,8 +147,10 @@ const Education = () => {
 
   useEffect(() => {
     setResultList(universityList);
+    setBahrainiUniResultList(bahrainiUniversities);
+    setMasterUniResultList(masterUniversities);
     return () => {};
-  }, [universityList]);
+  }, [universityList, bahrainiUniversities, masterUniversities]);
   // Table Data Pagination
 
   function resetList() {
@@ -192,6 +196,76 @@ const Education = () => {
     }
   }
 
+  // filter through master universities
+  function searchMasterUniversities(searchValue: string, isDisabled: string) {
+    let searchMasterUniResult = masterUniversities
+      ?.filter((value) => {
+        let sameUniName = (
+          locale == "ar" ? value.universityNameAr ?? "-" : value.universityName
+        )
+          ?.toLowerCase()
+          .includes(searchValue.toLowerCase());
+
+        if (sameUniName) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .filter((value: MasterUniversities) => {
+        let temp = value.isDeactivated === true ? "Active" : "Inactive";
+
+        if (isDisabled === "") {
+          return true;
+        }
+
+        if (temp === isDisabled) {
+          return false;
+        } else {
+          return true;
+        }
+      });
+
+    if (searchMasterUniResult) {
+      setMasterUniResultList(searchMasterUniResult);
+    }
+  }
+
+  // filter through bahrain universities
+  function searchBahrainiUniversities(searchValue: string, isDisabled: string) {
+    let searchBahrainiUniResult = bahrainiUniversities
+      ?.filter((value) => {
+        let sameUniName = (
+          locale == "ar" ? value.universityNameAr ?? "-" : value.universityName
+        )
+          ?.toLowerCase()
+          .includes(searchValue.toLowerCase());
+
+        if (sameUniName) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .filter((value: BahrainUniversities) => {
+        let temp = value.isDeactivated === true ? "Active" : "Inactive";
+
+        if (isDisabled === "") {
+          return true;
+        }
+
+        if (temp === isDisabled) {
+          return false;
+        } else {
+          return true;
+        }
+      });
+
+    if (searchBahrainiUniResult) {
+      setBahrainiUniResultList(searchBahrainiUniResult);
+    }
+  }
+
   // allow admins to add, edit university and related program info here
   return (
     <PageComponent title={"Education"}>
@@ -211,7 +285,18 @@ const Education = () => {
           if (values.search === "") {
             resetList();
           }
-          search(values.search, values.activeStatus);
+
+          if (type === "bachelor") {
+            search(values.search, values.activeStatus);
+          }
+
+          if (type === "masters") {
+            if (uniType === "bahrainiUni") {
+              searchBahrainiUniversities(values.search, values.activeStatus);
+            } else {
+              searchMasterUniversities(values.search, values.activeStatus);
+            }
+          }
 
           actions.setSubmitting(false);
         }}
@@ -291,7 +376,44 @@ const Education = () => {
         )}
       </Formik>
 
-      {/* modal dialogue - adds university to db */}
+      {/* 
+        Allow admins to create master & bahraini universities depending on type provided (masters | bahraini)
+        
+        mutation variables :: 
+        MASTERS
+        id: string,
+        universityName: string,
+        universityNameAr: string,
+        isDeactivated?: boolean | null,
+        applications?:  {
+          __typename: "ModelMasterApplicationConnection",
+          nextToken?: string | null,
+          startedAt?: number | null,
+        } | null,
+        createdAt: string,
+        updatedAt: string,
+        _version: number,
+        _deleted?: boolean | null,
+        _lastChangedAt: number,
+
+        BAHRAINI
+          id: string,
+          universityName?: string | null,
+          universityNameAr?: string | null,
+          isDeactivated?: boolean | null,
+          students?:  {
+            __typename: "ModelStudentConnection",
+            nextToken?: string | null,
+            startedAt?: number | null,
+          } | null,
+          createdAt: string,
+          updatedAt: string,
+          _version: number,
+          _deleted?: boolean | null,
+          _lastChangedAt: number,
+      */}
+
+      {/* modal dialogue - adds bachelor universities to db */}
       <div className={` modal ${isSubmitted && "modal-open"}`}>
         <div className="relative modal-box">
           <label
@@ -442,15 +564,6 @@ const Education = () => {
             </div>
           </div>
         </div>
-      </div>
-
-      <div className=" pb-4">
-        {/* TODO list all batches  - pull from query */}
-        <select className="select select-bordered">
-          <option>2025</option>
-          <option>2024</option>
-          <option>2023</option>
-        </select>
       </div>
 
       {/* Education Table */}
@@ -608,8 +721,8 @@ const Education = () => {
             uniType={uniType}
             university={
               uniType === "bahrainiUni"
-                ? bahrainiUniversities
-                : masterUniversities
+                ? bahrainiUniResultList
+                : masterUniResultList
             }
           />
         </>

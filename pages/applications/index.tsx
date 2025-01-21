@@ -8,6 +8,7 @@ import { PageComponent } from "../../components/page-component";
 
 import { InfiniteApplications } from "../../components/ui/applications/infinite-applications";
 import { useAppContext } from "../../context/AppContext";
+import { InfiniteMasterApplications } from "../../components/ui/applications/infinite-masters-applications";
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const { locale } = ctx;
@@ -49,15 +50,21 @@ const Applications = () => {
       </div>
 
       {type === "bachelor" && <InfiniteApplications></InfiniteApplications>}
+
       {type === "masters" && (
-        <div>
-          {/* TODO: Create a InfiniteMastersApplications version of InfiniteApplications */}
-          MASTER APPLICATIONS TABLE
-        </div>
+        <InfiniteMasterApplications></InfiniteMasterApplications>
       )}
-      {/* {type === "masters" && <InfiniteApplications></InfiniteApplications>} */}
     </PageComponent>
   );
 };
+
+// {
+//   type === "masters" && (
+//     <div>
+//       {/* TODO: Create a InfiniteMastersApplications version of InfiniteApplications */}
+//       MASTER APPLICATIONS TABLE
+//     </div>
+//   );
+// }
 
 export default Applications;

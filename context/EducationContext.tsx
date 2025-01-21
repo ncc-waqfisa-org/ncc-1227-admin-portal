@@ -7,10 +7,26 @@ import {
   useEffect,
   useState,
 } from "react";
-import { ListUniversitiesQuery, Program, University } from "../src/API";
+import {
+  BahrainUniversities,
+  CreateBahrainUniversitiesMutationVariables,
+  CreateMasterUniversitiesMutation,
+  CreateMasterUniversitiesMutationVariables,
+  ListUniversitiesQuery,
+  MasterUniversities,
+  Program,
+  University,
+} from "../src/API";
 import { GraphQLResult } from "@aws-amplify/api-graphql";
-import { getUniversityByID } from "../src/CustomAPI";
+import {
+  createBahrainiUniversityInDb,
+  createMasterUniversityInDb,
+  getUniversityByID,
+  listAllBahrainUniversities,
+  listAllMasterUniversities,
+} from "../src/CustomAPI";
 import { useAuth } from "../hooks/use-auth";
+import { getMasterAppliedUniversities } from "../src/graphql/queries";
 
 interface IUseEducationContext {
   universityList: University[] | undefined;
@@ -99,6 +115,37 @@ function useProviderEducation() {
   async function syncUniList() {
     await getUniList();
   }
+
+  /* 
+    MASTERS UNIVERSITY  
+  */
+  // async function addNewMasterUniversity(
+  //   values: CreateMasterUniversitiesMutationVariables
+  // ): Promise<MasterUniversities | undefined> {
+  //   let res = (await createMasterUniversityInDb(
+  //     values
+  //   )) as GraphQLResult<MasterUniversities>;
+
+  //   if (res.data) {
+  //     await listAllMasterUniversities();
+  //   }
+
+  //   return res.data;
+  // }
+
+  // async function addNewBahrainiUniversity(
+  //   values: CreateBahrainUniversitiesMutationVariables
+  // ): Promise<BahrainUniversities | undefined> {
+  //   let res = (await createBahrainiUniversityInDb(
+  //     values
+  //   )) as GraphQLResult<BahrainUniversities>;
+
+  //   if (res.data) {
+  //     await listAllBahrainUniversities();
+  //   }
+
+  //   return res.data;
+  // }
 
   async function getUniList(): Promise<University[] | undefined> {
     let q = `

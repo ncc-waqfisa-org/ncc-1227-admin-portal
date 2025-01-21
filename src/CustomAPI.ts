@@ -13,10 +13,14 @@ import {
   CreateApplicationMutationVariables,
   CreateAttachmentMutation,
   CreateAttachmentMutationVariables,
+  CreateBahrainUniversitiesMutation,
+  CreateBahrainUniversitiesMutationVariables,
   CreateBatchMutation,
   CreateBatchMutationVariables,
   CreateMasterBatchMutation,
   CreateMasterBatchMutationVariables,
+  CreateMasterUniversitiesMutation,
+  CreateMasterUniversitiesMutationVariables,
   CreateProgramChoiceMutation,
   CreateProgramChoiceMutationVariables,
   CreateScholarshipMutation,
@@ -89,6 +93,8 @@ import {
   createScholarship,
   updateMasterAppliedUniversities,
   updateBahrainUniversities,
+  createMasterAppliedUniversities,
+  createBahrainUniversities,
 } from "./graphql/mutations";
 import {
   getBatch,
@@ -882,6 +888,17 @@ export async function getMasterUniversityByID(
   return tempProgramList;
 }
 
+export async function createMasterUniversityInDb(
+  mutationVars: CreateMasterUniversitiesMutationVariables
+): Promise<CreateMasterUniversitiesMutation | undefined> {
+  let res = (await API.graphql({
+    query: createMasterAppliedUniversities,
+    variables: mutationVars,
+  })) as GraphQLResult<CreateMasterUniversitiesMutation>;
+
+  return res.data;
+}
+
 export async function getBahrainiUniversityById(
   id?: string
 ): Promise<BahrainUniversities | undefined> {
@@ -906,6 +923,17 @@ export async function getBahrainiUniversityById(
   let tempProgramList = res.data.getBahrainUniversities as BahrainUniversities;
 
   return tempProgramList;
+}
+
+export async function createBahrainiUniversityInDb(
+  mutationVars: CreateBahrainUniversitiesMutationVariables
+): Promise<CreateBahrainUniversitiesMutation | undefined> {
+  let res = (await API.graphql({
+    query: createBahrainUniversities,
+    variables: mutationVars,
+  })) as GraphQLResult<CreateBahrainUniversitiesMutation>;
+
+  return res.data;
 }
 
 interface IUpdateEmailSentToApplication {
