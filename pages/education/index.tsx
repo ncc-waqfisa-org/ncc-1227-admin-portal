@@ -32,6 +32,7 @@ import {
 import { BMTabs } from "../../components/BMTabs";
 import { MasterUniTabs } from "../../components/MasterUniTabs";
 import MasterUniversitiesTable from "../../components/universities/MasterUniversitiesTable";
+import AddMasterUniversityDialog from "../../components/universities/AddMasterUniversityDialog";
 
 interface InitialFilterValues {
   search: string;
@@ -60,7 +61,7 @@ const Education = () => {
   const { isSuperAdmin } = useAuth();
   const { type } = useAppContext();
   const { t } = useTranslation("education");
-  const { t: common } = useTranslation("common");
+  const { t: tCommon } = useTranslation("common");
   const { t: tErrors } = useTranslation("errors");
 
   // const [searchValue, setSearchValue] = useState("");
@@ -69,6 +70,8 @@ const Education = () => {
   const [bahrainiUniResultList, setBahrainiUniResultList] = useState<any>([]);
 
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [isCreateMasterUniSubmitted, setIsCreateMasterUniSubmitted] =
+    useState<boolean>(false);
 
   // Table Data Pagination
   const elementPerPage = 10;
@@ -80,6 +83,8 @@ const Education = () => {
   const [uniType, setUniType] = useState<"bahrainiUni" | "masterUni">(
     "bahrainiUni"
   );
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const initialFilterValues: InitialFilterValues = {
     search: "",
@@ -309,7 +314,7 @@ const Education = () => {
                   className="w-full input input-bordered"
                   type="text"
                   name="search"
-                  placeholder={`${common("search")}...`}
+                  placeholder={`${tCommon("search")}...`}
                   onChange={handleChange}
                   value={values.search}
                 ></Field>
@@ -359,14 +364,10 @@ const Education = () => {
                       ></SecondaryButton>
                     </div>
                   )}
-
                   {type === "masters" && (
                     <SecondaryButton
                       name={t("addUniversityButton")}
-                      buttonClick={() => {
-                        toast("Currently not available");
-                      }} //TODO allow user to create a new master/bahrain university
-                      // buttonClick={() => setIsSubmitted(!isSubmitted)}
+                      buttonClick={() => setIsDialogOpen(!isDialogOpen)}
                     ></SecondaryButton>
                   )}
                 </div>
@@ -375,43 +376,6 @@ const Education = () => {
           </Form>
         )}
       </Formik>
-
-      {/* 
-        Allow admins to create master & bahraini universities depending on type provided (masters | bahraini)
-        
-        mutation variables :: 
-        MASTERS
-        id: string,
-        universityName: string,
-        universityNameAr: string,
-        isDeactivated?: boolean | null,
-        applications?:  {
-          __typename: "ModelMasterApplicationConnection",
-          nextToken?: string | null,
-          startedAt?: number | null,
-        } | null,
-        createdAt: string,
-        updatedAt: string,
-        _version: number,
-        _deleted?: boolean | null,
-        _lastChangedAt: number,
-
-        BAHRAINI
-          id: string,
-          universityName?: string | null,
-          universityNameAr?: string | null,
-          isDeactivated?: boolean | null,
-          students?:  {
-            __typename: "ModelStudentConnection",
-            nextToken?: string | null,
-            startedAt?: number | null,
-          } | null,
-          createdAt: string,
-          updatedAt: string,
-          _version: number,
-          _deleted?: boolean | null,
-          _lastChangedAt: number,
-      */}
 
       {/* modal dialogue - adds bachelor universities to db */}
       <div className={` modal ${isSubmitted && "modal-open"}`}>
@@ -434,54 +398,126 @@ const Education = () => {
                   universityArName: yup
                     .string()
                     .required(`${tErrors("requiredField")}`),
-                  universityAvailability: yup
-                    .number()
-                    .integer()
-                    .required(`${tErrors("requiredField")}`),
+                  universityAvailability:
+                    type === "bachelor"
+                      ? yup
+                          .number()
+                          .integer()
+                          .required(`${tErrors("requiredField")}`)
+                      : yup.number().integer(),
                 })}
                 onSubmit={async (values) => {
-                  let uniFound = universityList
-                    ?.filter((value) => value._deleted !== true)
-                    .find(
-                      (value) =>
-                        value.name?.toLowerCase() ===
-                        values.universityName.toLowerCase()
+                  if (type === "bachelor") {
+                    let uniFound = universityList
+                      ?.filter((value) => value._deleted !== true)
+                      .find(
+                        (value) =>
+                          value.name?.toLowerCase() ===
+                          values.universityName.toLowerCase()
+                      );
+
+                    if (uniFound) {
+                      toast.error("aUniversityAlreadyExistsWithTheSameName");
+                    } else {
+                      setIsSubmitted(true);
+                      toast
+                        .promise(
+                          addNewUniversity(
+                            values.universityName,
+                            values.universityArName,
+                            values.universityAvailability
+                          ).catch((error) => {
+                            throw error;
+                          }),
+                          {
+                            loading: "Loading...",
+                            success: () => {
+                              return `universitySuccessfullyAdded`;
+                            },
+                            error: (error) => {
+                              return `${error?.message}`;
+                            },
+                          }
+                        )
+                        .then(async (val) => {
+                          await syncUniList();
+
+                          return val;
+                        })
+                        .catch((err) => {
+                          console.log(err);
+                        })
+                        .finally(() => {
+                          setIsSubmitted(false);
+                        });
+                    }
+                  }
+
+                  if (type === "masters") {
+                    let uniFound: boolean = false;
+
+                    let masterUniAlreadyExists = masterUniversities
+                      ?.filter((value) => value._deleted !== true)
+                      .find(
+                        (value) =>
+                          value.universityName?.toLowerCase() ===
+                          values.universityName.toLowerCase()
+                      );
+
+                    let bahrainiUniAlreadyExists = bahrainiUniversities
+                      ?.filter((value) => value._deleted !== true)
+                      .find(
+                        (value) =>
+                          value.universityName?.toLowerCase() ===
+                          values.universityName.toLowerCase()
+                      );
+
+                    if (masterUniAlreadyExists || bahrainiUniAlreadyExists) {
+                      uniFound = true;
+                    } else {
+                      uniFound = false;
+                    }
+
+                    if (uniFound) {
+                      toast.error("aUniversityAlreadyExistsWithTheSameName");
+                    } else {
+                      setIsSubmitted(true);
+                      toast
+                        .promise(
+                          addNewUniversity(
+                            values.universityName,
+                            values.universityArName,
+                            values.universityAvailability
+                          ).catch((error) => {
+                            throw error;
+                          }),
+                          {
+                            loading: "Loading...",
+                            success: () => {
+                              return `universitySuccessfullyAdded`;
+                            },
+                            error: (error) => {
+                              return `${error?.message}`;
+                            },
+                          }
+                        )
+                        .then(async (val) => {
+                          await syncUniList();
+
+                          return val;
+                        })
+                        .catch((err) => {
+                          console.log(err);
+                        })
+                        .finally(() => {
+                          setIsSubmitted(false);
+                        });
+                    }
+                    console.log(
+                      `Add university form values: ${JSON.stringify(
+                        values
+                      )}, already exists? ${uniFound}`
                     );
-
-                  if (uniFound) {
-                    toast.error("aUniversityAlreadyExistsWithTheSameName");
-                  } else {
-                    setIsSubmitted(true);
-                    toast
-                      .promise(
-                        addNewUniversity(
-                          values.universityName,
-                          values.universityArName,
-                          values.universityAvailability
-                        ).catch((error) => {
-                          throw error;
-                        }),
-                        {
-                          loading: "Loading...",
-                          success: () => {
-                            return `universitySuccessfullyAdded`;
-                          },
-                          error: (error) => {
-                            return `${error?.message}`;
-                          },
-                        }
-                      )
-                      .then(async (val) => {
-                        await syncUniList();
-
-                        return val;
-                      })
-                      .catch((err) => {
-                        console.log(err);
-                      })
-                      .finally(() => {
-                        setIsSubmitted(false);
-                      });
                   }
                 }}
               >
@@ -540,6 +576,7 @@ const Education = () => {
                         placeholder=""
                         onChange={handleChange}
                         onBlur={handleBlur}
+                        disabled={type === "masters"}
                         className={`input input-bordered input-primary ${
                           errors.universityAvailability && "input-error"
                         }`}
@@ -565,6 +602,13 @@ const Education = () => {
           </div>
         </div>
       </div>
+
+      <AddMasterUniversityDialog
+        masterUniversities={masterUniversities}
+        bahrainiUniversities={bahrainiUniversities}
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(!isDialogOpen)}
+      />
 
       {/* Education Table */}
       {type === "bachelor" && (

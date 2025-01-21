@@ -47,5 +47,8 @@
   "masters": "Masters",
   "bachelor": "Bachelor",
   "bahrainiUnis": "Universities graduated from",
-  "mastersUnis": "Universities applying for"
+  "mastersUnis": "Universities applying for",
+  "forMasters": "(Masters)",
+  "bahrainiUnisDescription": "List of universities where eligible students have graduated from",
+  "mastersUnisDescription": "List of partner universities where eligible students can apply a scholarship for"
 }

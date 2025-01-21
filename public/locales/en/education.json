@@ -44,5 +44,7 @@
   "exception": "Acceptance letter not required",
   "exceptionD": "This will make applications to this university does not required acceptance letter.",
   "search": "Search",
-  "m_educationTitle": "Master Universities"
+  "m_educationTitle": "Master Universities",
+  "masterUniType": "University Type",
+  "masterUniTypeDescription": "Determines which category this university falls under"
 }

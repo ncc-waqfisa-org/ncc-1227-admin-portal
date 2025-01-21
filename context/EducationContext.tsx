@@ -37,6 +37,12 @@ interface IUseEducationContext {
     nameAr: string,
     availability: number
   ) => Promise<University | undefined>;
+  addNewMasterUniversity: (
+    values: CreateMasterUniversitiesMutationVariables
+  ) => Promise<MasterUniversities | undefined>;
+  addNewBahrainiUniversity: (
+    values: CreateBahrainUniversitiesMutationVariables
+  ) => Promise<BahrainUniversities | undefined>;
   getProgramsFromUniID: (id: string) => Promise<University | undefined>;
   addProgramToUni: ({
     uniID,
@@ -63,6 +69,8 @@ const defaultState: IUseEducationContext = {
   universityPrograms: undefined,
   programsList: [],
   addNewUniversity: async () => undefined,
+  addNewMasterUniversity: async () => undefined,
+  addNewBahrainiUniversity: async () => undefined,
   getProgramsFromUniID: async () => undefined,
   addProgramToUni: async () => undefined,
   syncUniList: async () => {},
@@ -119,33 +127,35 @@ function useProviderEducation() {
   /* 
     MASTERS UNIVERSITY  
   */
-  // async function addNewMasterUniversity(
-  //   values: CreateMasterUniversitiesMutationVariables
-  // ): Promise<MasterUniversities | undefined> {
-  //   let res = (await createMasterUniversityInDb(
-  //     values
-  //   )) as GraphQLResult<MasterUniversities>;
+  async function addNewMasterUniversity(
+    values: CreateMasterUniversitiesMutationVariables
+  ): Promise<MasterUniversities | undefined> {
+    let res = (await createMasterUniversityInDb(
+      values
+    )) as GraphQLResult<MasterUniversities>;
 
-  //   if (res.data) {
-  //     await listAllMasterUniversities();
-  //   }
+    if (res.data) {
+      //TODO resync list of bahrain universities
+      await listAllMasterUniversities();
+    }
 
-  //   return res.data;
-  // }
+    return res.data;
+  }
 
-  // async function addNewBahrainiUniversity(
-  //   values: CreateBahrainUniversitiesMutationVariables
-  // ): Promise<BahrainUniversities | undefined> {
-  //   let res = (await createBahrainiUniversityInDb(
-  //     values
-  //   )) as GraphQLResult<BahrainUniversities>;
+  async function addNewBahrainiUniversity(
+    values: CreateBahrainUniversitiesMutationVariables
+  ): Promise<BahrainUniversities | undefined> {
+    let res = (await createBahrainiUniversityInDb(
+      values
+    )) as GraphQLResult<BahrainUniversities>;
 
-  //   if (res.data) {
-  //     await listAllBahrainUniversities();
-  //   }
+    if (res.data) {
+      //TODO resync list of bahrain universities
+      await listAllBahrainUniversities();
+    }
 
-  //   return res.data;
-  // }
+    return res.data;
+  }
 
   async function getUniList(): Promise<University[] | undefined> {
     let q = `
@@ -336,6 +346,8 @@ function useProviderEducation() {
     universityPrograms,
     universityList,
     addNewUniversity,
+    addNewBahrainiUniversity,
+    addNewMasterUniversity,
     getProgramsFromUniID,
     addProgramToUni,
     programsList,
