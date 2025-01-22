@@ -34,7 +34,7 @@ export default function MasterInfoForm({
   universities,
 }: {
   student: Student;
-  universities: BahrainUniversities[];
+  universities?: BahrainUniversities[];
 }) {
   const router = useRouter();
   const { t: tErrors } = useTranslation("errors");

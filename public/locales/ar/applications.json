@@ -152,5 +152,7 @@
   "applicantSearch": "البحث عن المتقدم",
   "applicantCPR": "الرقم الشخصي للمتقدم",
   "searching": "جاري البحث...",
-  "exportAllAsCSV": "تصدير الكل CSV"
+  "exportAllAsCSV": "تصدير الكل CSV",
+  "guardianInformation": "Guardian Information",
+  "isIncomeVerified": "Verified Income"
 }

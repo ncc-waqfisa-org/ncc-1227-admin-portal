@@ -53,6 +53,8 @@ import {
   UpdateBahrainUniversitiesMutationVariables,
   UpdateBatchMutation,
   UpdateBatchMutationVariables,
+  UpdateMasterAttachmentMutation,
+  UpdateMasterAttachmentMutationVariables,
   UpdateMasterBatchMutation,
   UpdateMasterBatchMutationVariables,
   UpdateMasterUniversitiesMutation,
@@ -95,6 +97,7 @@ import {
   updateBahrainUniversities,
   createMasterAppliedUniversities,
   createBahrainUniversities,
+  updateMasterAttachment,
 } from "./graphql/mutations";
 import {
   getBatch,
@@ -346,6 +349,18 @@ export async function updateAttachmentInDB(
     query: updateAttachment,
     variables: mutationVars,
   })) as GraphQLResult<UpdateAttachmentMutation>;
+
+  return res.data;
+}
+
+//TODO comment && test
+export async function updateMasterAttachmentInDB(
+  mutationVars: UpdateMasterAttachmentMutationVariables
+): Promise<UpdateMasterAttachmentMutation | undefined> {
+  let res = (await API.graphql({
+    query: updateMasterAttachment,
+    variables: mutationVars,
+  })) as GraphQLResult<UpdateMasterAttachmentMutation>;
 
   return res.data;
 }
@@ -1749,13 +1764,35 @@ type TGetStatistics = {
   token?: string | null;
   locale?: string | null;
 };
+
 export async function getStatistics({ token, batch, locale }: TGetStatistics) {
   if (!token) {
     return null;
   }
 
-  return fetch(
+  return await fetch(
     `${process.env.NEXT_PUBLIC_BACHELOR_STATISTICS_ENDPOINT}?batch=${batch}`,
+    // `https://a69a50c47l.execute-api.us-east-1.amazonaws.com/default/applications/statistics?batch=${batch}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Accept-Language": locale ? locale : "en",
+      },
+    }
+  ).then((res) => res.json().then((data) => data.statistics as TStatistics));
+}
+
+export async function getMastersStatistics({
+  token,
+  batch,
+  locale,
+}: TGetStatistics) {
+  if (!token) {
+    return null;
+  }
+
+  return await fetch(
+    `${process.env.NEXT_PUBLIC_MASTERS_STATISTICS_ENDPOINT}?batch=${batch}`,
     // `https://a69a50c47l.execute-api.us-east-1.amazonaws.com/default/applications/statistics?batch=${batch}`,
     {
       headers: {

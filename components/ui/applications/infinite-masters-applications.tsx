@@ -36,6 +36,8 @@ import { useBatchContext } from "../../../context/BatchContext";
 import { schoolTypes, statuses } from "./data/data";
 import { Status } from "../../../src/API";
 import { FiAlertCircle, FiCircle } from "react-icons/fi";
+import { Program } from "../../../src/models";
+import { DataTableToolbar } from "./data-table-toolbar";
 
 export const InfiniteMasterApplications = () => {
   //we need a reference to the scrolling element for logic down below
@@ -167,33 +169,33 @@ export const InfiniteMasterApplications = () => {
           return value.includes(row.getValue(id));
         },
       },
-      // {
-      //   size: 100,
-      //   accessorKey: "attentionNeeded",
-      //   header: ({ column }) => (
-      //     <DataTableColumnHeader
-      //       column={column}
-      //       title={t("tableTitleAttention")}
-      //     />
-      //   ),
-      //   cell: ({ row }) => {
-      //     return (
-      //       <div className="flex w-full space-x-2">
-      //         <span className="font-medium truncate ">
-      //           {!row.original.isFamilyIncomeVerified ||
-      //           !row.original.verifiedGPA ||
-      //           !row.original.adminPoints ? (
-      //             <FiAlertCircle className="text-warning" />
-      //           ) : (
-      //             <FiCircle className="text-gray-300" />
-      //           )}
-      //         </span>
-      //       </div>
-      //     );
-      //   },
-      //   enableSorting: false,
-      //   enableHiding: false,
-      // },
+      {
+        size: 100,
+        accessorKey: "attentionNeeded",
+        header: ({ column }) => (
+          <DataTableColumnHeader
+            column={column}
+            title={t("tableTitleAttention")}
+          />
+        ),
+        cell: ({ row }) => {
+          return (
+            <div className="flex w-full space-x-2">
+              <span className="font-medium truncate ">
+                {!row.original.isIncomeVerified ||
+                !row.original.verifiedGPA ||
+                !row.original.adminPoints ? (
+                  <FiAlertCircle className="text-warning" />
+                ) : (
+                  <FiCircle className="text-gray-300" />
+                )}
+              </span>
+            </div>
+          );
+        },
+        enableSorting: false,
+        enableHiding: false,
+      },
       {
         size: 60,
         accessorKey: "score",
@@ -256,30 +258,35 @@ export const InfiniteMasterApplications = () => {
       },
 
       {
-        accessorKey: "schoolType",
+        accessorKey: "program",
         size: 100,
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} title={t("schoolType")} />
+          <DataTableColumnHeader column={column} title={t("program")} />
         ),
         cell: ({ row }) => {
-          const schoolType = schoolTypes.find(
-            (schoolType) => schoolType.value === row.getValue("schoolType")
-          );
+          // const program = program.find(
+          //   (schoolType) => schoolType.value === row.getValue("program")
+          // );
 
-          if (!schoolType) {
+          // if (!schoolType) {
+          //   return null;
+          // }
+
+          if (!row.getValue("program")) {
             return null;
           }
 
-          return (
-            <div className="flex items-center">
-              {schoolType.icon && (
-                <schoolType.icon className="w-4 h-4 me-2 text-muted-foreground" />
-              )}
-              <span>
-                {locale === "ar" ? schoolType.arLabel : schoolType.label}
-              </span>
-            </div>
-          );
+          return <div className="flex items-center">{"program"}</div>;
+          // return (
+          //   <div className="flex items-center">
+          //     {schoolType.icon && (
+          //       <schoolType.icon className="w-4 h-4 me-2 text-muted-foreground" />
+          //     )}
+          //     <span>
+          //       {locale === "ar" ? schoolType.arLabel : schoolType.label}
+          //     </span>
+          //   </div>
+          // );
         },
         enableSorting: false,
         enableHiding: false,
@@ -476,18 +483,20 @@ export const InfiniteMasterApplications = () => {
     );
   }
 
+  console.log(masterApplicationsData);
+
   return (
     <div className="relative flex flex-col gap-4">
-      {/* <div className="flex flex-wrap items-baseline gap-3">
-        <BatchApplicationsToolbar
+      <div className="flex flex-wrap items-baseline gap-3">
+        {/* <BatchApplicationsToolbar
           handleStatusChange={handleStatusChange}
           selectedStatus={selectedStatus}
           handleBatchChange={handleBatchChange}
           // handleSearchChange={handleSearchChange}
           table={table}
-        />
-      </div> */}
-      {/* <DataTableToolbar table={table} /> */}
+        /> */}
+      </div>
+      <DataTableToolbar table={table} />
       <div
         className=" border rounded-md overflow-auto relative h-[600px] space-y-4"
         onScroll={(e) => fetchMoreOnBottomReached(e.target as HTMLDivElement)}

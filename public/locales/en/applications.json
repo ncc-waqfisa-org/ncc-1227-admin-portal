@@ -153,5 +153,8 @@
   "applicantCPR": "Applicant CPR",
   "searchForApplicant": "Search for Applicant",
   "searching": "Searching...",
-  "exportAllAsCSV": "Export all as CSV"
+  "exportAllAsCSV": "Export all as CSV",
+  "guardianInformation": "Guardian Information",
+  "isIncomeVerified": "Verified Income",
+  "universityCertificate": "University Certificate"
 }

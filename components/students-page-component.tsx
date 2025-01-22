@@ -418,7 +418,7 @@ function ApplicationCard({ application }: IApplicationCard) {
     <div>
       {!application && <div>null</div>}
       {application && (
-        <Link href={`/applications/masters/${application.id}`}>
+        <Link href={`/applications/${application.id}`}>
           <div className="p-3 border min-w-[18rem] flex flex-col gap-1 border-gray-200 bg-zinc-50 hover:bg-zinc-100 stat card">
             <div className="flex justify-between items-center">
               <p className="stat-desc"> {t("tableTitleApplicationDate")} </p>
@@ -455,7 +455,7 @@ function MasterApplicationCard({ application }: IMasterApplicationCard) {
     <div>
       {!application && <div>null</div>}
       {application && (
-        <Link href={`/applications/${application.id}`}>
+        <Link href={`/applications/masters/${application.id}`}>
           <div className="p-3 border min-w-[18rem] flex flex-col gap-1 border-gray-200 bg-zinc-50 hover:bg-zinc-100 stat card">
             <div className="flex justify-between items-center">
               <p className="stat-desc"> {t("tableTitleApplicationDate")} </p>

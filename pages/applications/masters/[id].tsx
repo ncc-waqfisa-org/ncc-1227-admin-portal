@@ -1,42 +1,45 @@
 import React, { FC } from "react";
 import { Toaster } from "react-hot-toast";
-import { PageComponent } from "../../components/page-component";
-import { getApplicationByIdAPI } from "../../context/StudentContext";
+import { MasterApplication, Status } from "../../../src/API";
 import { GetServerSideProps } from "next";
-import { Application, Status } from "../../src/API";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "react-i18next";
+import router, { useRouter } from "next/router";
+import { PageComponent } from "../../../components/page-component";
+import { DownloadFileFromUrl } from "../../../components/download-file-from-url";
+import { FiAlertCircle, FiCheckCircle, FiPrinter } from "react-icons/fi";
+import { PhoneNumberInput } from "../../../components/phone";
+import { Button, buttonVariants } from "../../../components/ui/button";
+import { IoMdArrowRoundBack } from "react-icons/io";
+
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "../../components/ui/accordion";
-import StudentUpdate from "../../components/student/StudentUpdate";
-import UpdateParentInfo from "../../components/student/UpdateParentInfo";
-import { ApplicationForm } from "../../components/application/ApplicationForm";
-import { listScholarshipsOfApplicationId } from "../../src/CustomAPI";
+} from "../../../components/ui/accordion";
 import {
   Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
-} from "../../components/ui/dialog";
-import { Button, buttonVariants } from "../../components/ui/button";
-import { CreateScholarshipForm } from "../../components/scholarships/NewScholarshipForm";
-import { useRouter } from "next/router";
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+} from "@radix-ui/react-dialog";
 import Link from "next/link";
-import { cn } from "../../src/utils";
-import { PhoneNumberInput } from "../../components/phone";
-import { FiAlertCircle, FiCheckCircle, FiPrinter } from "react-icons/fi";
-import { DownloadFileFromUrl } from "../../components/download-file-from-url";
-import { Textarea } from "../../components/ui/textarea";
-import { Divider } from "@aws-amplify/ui-react";
+import { MasterApplicationForm } from "../../../components/application/MasterApplicationForm";
+import { CreateScholarshipForm } from "../../../components/scholarships/NewScholarshipForm";
+import StudentUpdate from "../../../components/student/StudentUpdate";
+import UpdateParentInfo from "../../../components/student/UpdateParentInfo";
+import { DialogHeader } from "../../../components/ui/dialog";
+import { Textarea } from "../../../components/ui/textarea";
+
+import { listScholarshipsOfApplicationId } from "../../../src/CustomAPI";
+import { cn } from "../../../src/utils";
+import { getMasterApplicationByIdAPI } from "../../../context/StudentContext";
+import MasterInfoForm from "../../../components/student/MasterInfoForm";
 
 interface Props {
-  application: Application;
+  application: MasterApplication;
   scholarship: {
     canCreateNewScholarship: boolean;
     scholarshipId: string | null;
@@ -47,7 +50,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { id } = ctx.query;
   const { locale } = ctx;
 
-  const res = await getApplicationByIdAPI(`${id}`);
+  const res = await getMasterApplicationByIdAPI(`${id}`);
 
   // check if application have scholarship
   const scholarships = await listScholarshipsOfApplicationId({
@@ -69,21 +72,34 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         "common",
         "applicationLog",
         "errors",
+        "account",
       ])),
     },
   };
 };
 
-const ApplicationInfo: FC<Props> = (props) => {
+const MasterApplicationInfo: FC<Props> = (props) => {
   const { t } = useTranslation("applications");
+  const { t: tCommon } = useTranslation("common");
+
   const { locale } = useRouter();
+
+  function goBack() {
+    router.back();
+  }
 
   return (
     <div>
       <PageComponent title={"ApplicationInfo"}>
+        <button className="flex-1 btn btn-ghost" onClick={goBack}>
+          <IoMdArrowRoundBack />
+
+          {tCommon("back")}
+        </button>
         <Toaster />
         <div className="flex items-center justify-between">
           <div className="text-2xl font-semibold ">{t("application")}</div>
+          {/* TODO add this url to env */}
           <DownloadFileFromUrl
             url={`https://a69a50c47l.execute-api.us-east-1.amazonaws.com/default/applications/pdf?applicationId=${
               props.application.id
@@ -98,7 +114,7 @@ const ApplicationInfo: FC<Props> = (props) => {
         </div>
 
         {/*  */}
-        <div className="grid gap-3 p-4 mt-4 border rounded-lg sm:grid-cols-2">
+        <div className="grid gap-3 p-4 my-4 border rounded-lg sm:grid-cols-2">
           <div className="flex flex-col gap-3">
             <p className="w-fit">{props.application.student?.fullName}</p>
             <p className="p-1 border rounded-md w-fit">
@@ -138,9 +154,9 @@ const ApplicationInfo: FC<Props> = (props) => {
               )}
             </div>
             <div className="flex items-center gap-4">
-              <p>{t("isFamilyIncomeVerified")}</p>
+              <p>{t("isIncomeVerified")}</p>
 
-              {props.application.isFamilyIncomeVerified ? (
+              {props.application.isIncomeVerified ? (
                 <FiCheckCircle className="text-success" />
               ) : (
                 <FiAlertCircle className="text-warning" />
@@ -168,16 +184,10 @@ const ApplicationInfo: FC<Props> = (props) => {
                 <p>{t("createScholarshipFor")}</p>
               )}
               <p className="text-gray-500">
-                {`${
+                {`${props.application.program} - ${
                   locale === "ar"
-                    ? props.application.programs?.items?.[0]?.program?.nameAr
-                    : props.application.programs?.items?.[0]?.program?.name
-                } - ${
-                  locale === "ar"
-                    ? props.application.programs?.items?.[0]?.program
-                        ?.university?.nameAr
-                    : props.application.programs?.items?.[0]?.program
-                        ?.university?.name
+                    ? props.application.university?.universityNameAr
+                    : props.application.university?.universityName
                 }`}
               </p>
             </div>
@@ -222,8 +232,8 @@ const ApplicationInfo: FC<Props> = (props) => {
                       {`${t("downloadContractTemplateD")}`}
                     </DialogDescription>
                   </div>
-
-                  <CreateScholarshipForm application={props.application} />
+                  {/* TODO create scholarship form application */}
+                  {/* <CreateScholarshipForm application={props.application} /> */}
                 </div>
               </DialogContent>
             </Dialog>
@@ -241,35 +251,34 @@ const ApplicationInfo: FC<Props> = (props) => {
               <AccordionTrigger className="text-xl font-medium">
                 {t("applicationInformation")}
               </AccordionTrigger>
-
               <AccordionContent>
-                <ApplicationForm application={props.application} />
+                <MasterApplicationForm application={props.application} />
               </AccordionContent>
             </AccordionItem>
-
             <AccordionItem value="studentInformation">
               <AccordionTrigger className="text-xl font-medium">
                 {t("studentInformation")}
               </AccordionTrigger>
               <AccordionContent>
-                <StudentUpdate
+                {/* <StudentUpdate
                   applicationId={props.application.id}
                   student={props.application.student}
-                />
+                /> */}
+                <MasterInfoForm student={props.application.student} />
               </AccordionContent>
             </AccordionItem>
-            <AccordionItem value="parentsInformation">
+            {/* <AccordionItem value="guardianInformation">
               <AccordionTrigger className="text-xl font-medium">
-                {t("parentsInformation")}
+                {t("guardianInformation")}
               </AccordionTrigger>
               <AccordionContent>
-                {props.application.student.ParentInfo && (
-                  <UpdateParentInfo
-                    parentInfo={props.application.student.ParentInfo}
-                  />
-                )}
+                {props.application.student.m_guardianCPR && (
+                  // <UpdateParentInfo
+                  //   parentInfo={props.application.student.ParentInfo}
+                  // />
+                )} 
               </AccordionContent>
-            </AccordionItem>
+            </AccordionItem> */}
           </Accordion>
         )}
       </PageComponent>
@@ -277,4 +286,4 @@ const ApplicationInfo: FC<Props> = (props) => {
   );
 };
 
-export default ApplicationInfo;
+export default MasterApplicationInfo;

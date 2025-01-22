@@ -359,7 +359,30 @@ function useBatchProviderApp() {
       })) as TInfiniteMasterApplications;
     setMasterApplicationsData(fetchedData.data);
     setNextMasterApplicationsKey(fetchedData.nextStartKey);
+    console.log(fetchedData);
     return fetchedData;
+  }
+
+  // useEffect(() => {
+  //   if (token) {
+  //     fetchFirstMasterApplicationsPage();
+  //   }
+
+  //   return () => {};
+  // }, [token]);
+
+  //TODO fetch first master scholarships page
+  async function fetchFirstMasterScholarshipsPage() {
+    // setIsInitialFetching(true);
+    // const fetchedData = await listAllScholarshipsOfBatch({
+    //   batch,
+    //   nextToken: nextScholarshipsKey,
+    // }).finally(() => {
+    //   setIsInitialFetching(false);
+    // });
+    // setScholarshipsData(fetchedData.items);
+    // setNextScholarshipsKey(fetchedData.nextToken);
+    // return fetchedData;
   }
 
   // NOTE: return all the values & functions you want to export

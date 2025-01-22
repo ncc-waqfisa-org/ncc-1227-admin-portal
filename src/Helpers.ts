@@ -1,5 +1,12 @@
 import _, { round } from "lodash";
-import { Admin, Application, FamilyIncome, Program, Status } from "./API";
+import {
+  Admin,
+  Application,
+  FamilyIncome,
+  Income,
+  Program,
+  Status,
+} from "./API";
 
 /* -------------------------------------------------------------------------- */
 /*                                  INTERFACE                                 */
@@ -58,6 +65,30 @@ export function calculateScore({
   if (familyIncome === FamilyIncome.LESS_THAN_1500) {
     score += 20;
   } else if (familyIncome === FamilyIncome.MORE_THAN_1500) {
+    score += 10;
+  }
+  return round(score, 2);
+}
+
+// calculate score for master applicants
+type TCalculateMasterScore = {
+  income: Income | null | undefined;
+  gpa: number;
+  adminScore?: number;
+};
+
+export function calculateMasterScore({
+  income,
+  gpa,
+  adminScore = 0,
+}: TCalculateMasterScore) {
+  // Convert GPA from 4.0 scale to 100 scale
+  const gpaAs100 = (gpa / 4) * 100;
+
+  let score = gpaAs100 * 0.7 + adminScore;
+  if (income === Income.LESS_THAN_1500) {
+    score += 20;
+  } else if (income === Income.MORE_THAN_1500) {
     score += 10;
   }
   return round(score, 2);

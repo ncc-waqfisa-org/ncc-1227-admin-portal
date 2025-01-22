@@ -113,7 +113,8 @@ const SingleBatchPage: FC<PageType> = ({ batchYear }) => {
           <div className="flex flex-wrap gap-3 p-3 border rounded-lg">
             <DownloadFileFromUrl
               fileName={"Unverified-CPR's"}
-              url={`https://zcpmds4jptbtkcc6ynxxxsmcee0kjlud.lambda-url.us-east-1.on.aws?batch=${batchYear}`}
+              url={`${process.env.NEXT_PUBLIC_ELIGIBLE_CPRS_ENDPOINT}?batch=${batchYear}`}
+              // url={`https://zcpmds4jptbtkcc6ynxxxsmcee0kjlud.lambda-url.us-east-1.on.aws?batch=${batchYear}`}
             >
               {t("downloadCPRsList")}
             </DownloadFileFromUrl>

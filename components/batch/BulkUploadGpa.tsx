@@ -57,11 +57,11 @@ export const BulkUploadGpa: FC<TBulkUploadGpa> = ({ batch }) => {
       // const base64string = await toBase64(file);
       // console.log("🚀 ~ mutationFn: ~ base64string:", base64string);
       const formData = new FormData();
+      console.log(formData);
       formData.append("csv", file);
 
       return fetch(
         `${process.env.NEXT_PUBLIC_LAMBDA_POST_UPDATE_GPA_CSV}?batch=${batch}`,
-        // `https://ob7e09fm1m.execute-api.us-east-1.amazonaws.com/default/gpas?batch=${batch}`,
         {
           method: "POST",
           headers: {

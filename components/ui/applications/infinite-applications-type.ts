@@ -52,6 +52,7 @@ export type InfiniteMasterApplication = {
   status: string;
   // TODO: check if we need universityNameAr
   universityName: string;
+  universityNameAr: string;
   score: number;
   universityID: string;
   _version: number;
