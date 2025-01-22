@@ -363,6 +363,8 @@ function useBatchProviderApp() {
     return fetchedData;
   }
 
+  //comments
+
   // useEffect(() => {
   //   if (token) {
   //     fetchFirstMasterApplicationsPage();
