@@ -7,7 +7,7 @@ import {
 import { useEducation } from "../../context/EducationContext";
 import {
   BahrainUniversities,
-  MasterUniversities,
+  MasterAppliedUniversities,
   Program,
   University,
 } from "../../src/API";
@@ -217,7 +217,7 @@ const Education = () => {
           return false;
         }
       })
-      .filter((value: MasterUniversities) => {
+      .filter((value: MasterAppliedUniversities) => {
         let temp = value.isDeactivated === true ? "Active" : "Inactive";
 
         if (isDisabled === "") {

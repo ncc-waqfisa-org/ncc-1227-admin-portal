@@ -10,10 +10,10 @@ import {
 import {
   BahrainUniversities,
   CreateBahrainUniversitiesMutationVariables,
-  CreateMasterUniversitiesMutation,
-  CreateMasterUniversitiesMutationVariables,
+  CreateMasterAppliedUniversitiesMutation,
+  CreateMasterAppliedUniversitiesMutationVariables,
   ListUniversitiesQuery,
-  MasterUniversities,
+  MasterAppliedUniversities,
   Program,
   University,
 } from "../src/API";
@@ -38,8 +38,8 @@ interface IUseEducationContext {
     availability: number
   ) => Promise<University | undefined>;
   addNewMasterUniversity: (
-    values: CreateMasterUniversitiesMutationVariables
-  ) => Promise<MasterUniversities | undefined>;
+    values: CreateMasterAppliedUniversitiesMutationVariables
+  ) => Promise<MasterAppliedUniversities | undefined>;
   addNewBahrainiUniversity: (
     values: CreateBahrainUniversitiesMutationVariables
   ) => Promise<BahrainUniversities | undefined>;
@@ -128,11 +128,11 @@ function useProviderEducation() {
     MASTERS UNIVERSITY  
   */
   async function addNewMasterUniversity(
-    values: CreateMasterUniversitiesMutationVariables
-  ): Promise<MasterUniversities | undefined> {
+    values: CreateMasterAppliedUniversitiesMutationVariables
+  ): Promise<MasterAppliedUniversities | undefined> {
     let res = (await createMasterUniversityInDb(
       values
-    )) as GraphQLResult<MasterUniversities>;
+    )) as GraphQLResult<MasterAppliedUniversities>;
 
     if (res.data) {
       //TODO resync list of bahrain universities

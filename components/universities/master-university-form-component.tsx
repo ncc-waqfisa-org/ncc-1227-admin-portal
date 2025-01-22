@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import {
   BahrainUniversities,
-  MasterUniversities,
+  MasterAppliedUniversities,
   UpdateBahrainUniversitiesMutationVariables,
-  UpdateMasterUniversitiesMutationVariables,
+  UpdateMasterAppliedUniversitiesMutationVariables,
   UpdateUniversityMutationVariables,
 } from "../../src/API";
 import {
@@ -39,7 +39,7 @@ import {
 
 interface Props {
   type: "bahrainiUni" | "masterUni";
-  university: MasterUniversities | BahrainUniversities | null;
+  university: MasterAppliedUniversities | BahrainUniversities | null;
 }
 
 export default function MasterUniversityFormComponent({
@@ -95,19 +95,20 @@ export default function MasterUniversityFormComponent({
           },
         };
 
-      let updatedMasterUniDetails: UpdateMasterUniversitiesMutationVariables = {
-        input: {
-          id: university.id,
-          _version: university?._version,
-          universityName: values.universityName,
-          universityNameAr: values.universityArName,
-          // availability: values.universityAvailability,
-          isDeactivated: values.isDeactivated,
-          // isException: values.isException,
-          // isExtended: values.isExtended,
-          // extensionDuration: values.extensionDuration,
-        },
-      };
+      let updatedMasterUniDetails: UpdateMasterAppliedUniversitiesMutationVariables =
+        {
+          input: {
+            id: university.id,
+            _version: university?._version,
+            universityName: values.universityName,
+            universityNameAr: values.universityArName,
+            // availability: values.universityAvailability,
+            isDeactivated: values.isDeactivated,
+            // isException: values.isException,
+            // isExtended: values.isExtended,
+            // extensionDuration: values.extensionDuration,
+          },
+        };
 
       //TODO add await updateBahrainUniversityById
       type === "masterUni"

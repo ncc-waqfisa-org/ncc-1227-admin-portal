@@ -533,7 +533,7 @@ export type MasterApplication = {
   isEmailSent?: boolean | null,
   nationalityCategory?: Nationality | null,
   universityID: string,
-  university?: MasterUniversities | null,
+  university?: MasterAppliedUniversities | null,
   studentCPR: string,
   studentName?: string | null,
   student?: Student | null,
@@ -570,8 +570,8 @@ export type MasterAttachment = {
   _lastChangedAt: number,
 };
 
-export type MasterUniversities = {
-  __typename: "MasterUniversities",
+export type MasterAppliedUniversities = {
+  __typename: "MasterAppliedUniversities",
   id: string,
   universityName: string,
   universityNameAr: string,
@@ -588,6 +588,7 @@ export enum Major {
   SCIENCE = "SCIENCE",
   TECHNOLOGY = "TECHNOLOGY",
   ENGINEERING = "ENGINEERING",
+  MATH = "MATH",
 }
 
 
@@ -1551,39 +1552,6 @@ export type DeleteBahrainUniversitiesInput = {
   _version?: number | null,
 };
 
-export type CreateMasterUniversitiesInput = {
-  id?: string | null,
-  universityName: string,
-  universityNameAr: string,
-  isDeactivated?: boolean | null,
-  _version?: number | null,
-};
-
-export type ModelMasterUniversitiesConditionInput = {
-  universityName?: ModelStringInput | null,
-  universityNameAr?: ModelStringInput | null,
-  isDeactivated?: ModelBooleanInput | null,
-  and?: Array< ModelMasterUniversitiesConditionInput | null > | null,
-  or?: Array< ModelMasterUniversitiesConditionInput | null > | null,
-  not?: ModelMasterUniversitiesConditionInput | null,
-  _deleted?: ModelBooleanInput | null,
-  createdAt?: ModelStringInput | null,
-  updatedAt?: ModelStringInput | null,
-};
-
-export type UpdateMasterUniversitiesInput = {
-  id: string,
-  universityName?: string | null,
-  universityNameAr?: string | null,
-  isDeactivated?: boolean | null,
-  _version?: number | null,
-};
-
-export type DeleteMasterUniversitiesInput = {
-  id: string,
-  _version?: number | null,
-};
-
 export type CreateMasterApplicationInput = {
   id?: string | null,
   gpa?: number | null,
@@ -1682,9 +1650,9 @@ export type CreateMasterStatisticsInput = {
   gpaHistogram?: string | null,
   totalApplicationsPerUniversity?: string | null,
   topUniversities?: string | null,
-  topPrograms?: string | null,
+  topBahrainUniversities?: string | null,
   familyIncome?: string | null,
-  schoolType?: string | null,
+  universitiesBahrain?: string | null,
   students?: string | null,
   applications?: string | null,
   today?: string | null,
@@ -1699,9 +1667,9 @@ export type ModelMasterStatisticsConditionInput = {
   gpaHistogram?: ModelStringInput | null,
   totalApplicationsPerUniversity?: ModelStringInput | null,
   topUniversities?: ModelStringInput | null,
-  topPrograms?: ModelStringInput | null,
+  topBahrainUniversities?: ModelStringInput | null,
   familyIncome?: ModelStringInput | null,
-  schoolType?: ModelStringInput | null,
+  universitiesBahrain?: ModelStringInput | null,
   students?: ModelStringInput | null,
   applications?: ModelStringInput | null,
   today?: ModelStringInput | null,
@@ -1723,9 +1691,9 @@ export type MasterStatistics = {
   gpaHistogram?: string | null,
   totalApplicationsPerUniversity?: string | null,
   topUniversities?: string | null,
-  topPrograms?: string | null,
+  topBahrainUniversities?: string | null,
   familyIncome?: string | null,
-  schoolType?: string | null,
+  universitiesBahrain?: string | null,
   students?: string | null,
   applications?: string | null,
   today?: string | null,
@@ -1745,9 +1713,9 @@ export type UpdateMasterStatisticsInput = {
   gpaHistogram?: string | null,
   totalApplicationsPerUniversity?: string | null,
   topUniversities?: string | null,
-  topPrograms?: string | null,
+  topBahrainUniversities?: string | null,
   familyIncome?: string | null,
-  schoolType?: string | null,
+  universitiesBahrain?: string | null,
   students?: string | null,
   applications?: string | null,
   today?: string | null,
@@ -1797,6 +1765,39 @@ export type UpdateMasterAttachmentInput = {
 };
 
 export type DeleteMasterAttachmentInput = {
+  id: string,
+  _version?: number | null,
+};
+
+export type CreateMasterAppliedUniversitiesInput = {
+  id?: string | null,
+  universityName: string,
+  universityNameAr: string,
+  isDeactivated?: boolean | null,
+  _version?: number | null,
+};
+
+export type ModelMasterAppliedUniversitiesConditionInput = {
+  universityName?: ModelStringInput | null,
+  universityNameAr?: ModelStringInput | null,
+  isDeactivated?: ModelBooleanInput | null,
+  and?: Array< ModelMasterAppliedUniversitiesConditionInput | null > | null,
+  or?: Array< ModelMasterAppliedUniversitiesConditionInput | null > | null,
+  not?: ModelMasterAppliedUniversitiesConditionInput | null,
+  _deleted?: ModelBooleanInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
+};
+
+export type UpdateMasterAppliedUniversitiesInput = {
+  id: string,
+  universityName?: string | null,
+  universityNameAr?: string | null,
+  isDeactivated?: boolean | null,
+  _version?: number | null,
+};
+
+export type DeleteMasterAppliedUniversitiesInput = {
   id: string,
   _version?: number | null,
 };
@@ -2278,26 +2279,6 @@ export type ModelBahrainUniversitiesConnection = {
   startedAt?: number | null,
 };
 
-export type ModelMasterUniversitiesFilterInput = {
-  id?: ModelIDInput | null,
-  universityName?: ModelStringInput | null,
-  universityNameAr?: ModelStringInput | null,
-  isDeactivated?: ModelBooleanInput | null,
-  createdAt?: ModelStringInput | null,
-  updatedAt?: ModelStringInput | null,
-  and?: Array< ModelMasterUniversitiesFilterInput | null > | null,
-  or?: Array< ModelMasterUniversitiesFilterInput | null > | null,
-  not?: ModelMasterUniversitiesFilterInput | null,
-  _deleted?: ModelBooleanInput | null,
-};
-
-export type ModelMasterUniversitiesConnection = {
-  __typename: "ModelMasterUniversitiesConnection",
-  items:  Array<MasterUniversities | null >,
-  nextToken?: string | null,
-  startedAt?: number | null,
-};
-
 export type ModelMasterApplicationFilterInput = {
   id?: ModelIDInput | null,
   gpa?: ModelFloatInput | null,
@@ -2337,9 +2318,9 @@ export type ModelMasterStatisticsFilterInput = {
   gpaHistogram?: ModelStringInput | null,
   totalApplicationsPerUniversity?: ModelStringInput | null,
   topUniversities?: ModelStringInput | null,
-  topPrograms?: ModelStringInput | null,
+  topBahrainUniversities?: ModelStringInput | null,
   familyIncome?: ModelStringInput | null,
-  schoolType?: ModelStringInput | null,
+  universitiesBahrain?: ModelStringInput | null,
   students?: ModelStringInput | null,
   applications?: ModelStringInput | null,
   today?: ModelStringInput | null,
@@ -2377,6 +2358,26 @@ export type ModelMasterAttachmentFilterInput = {
 export type ModelMasterAttachmentConnection = {
   __typename: "ModelMasterAttachmentConnection",
   items:  Array<MasterAttachment | null >,
+  nextToken?: string | null,
+  startedAt?: number | null,
+};
+
+export type ModelMasterAppliedUniversitiesFilterInput = {
+  id?: ModelIDInput | null,
+  universityName?: ModelStringInput | null,
+  universityNameAr?: ModelStringInput | null,
+  isDeactivated?: ModelBooleanInput | null,
+  createdAt?: ModelStringInput | null,
+  updatedAt?: ModelStringInput | null,
+  and?: Array< ModelMasterAppliedUniversitiesFilterInput | null > | null,
+  or?: Array< ModelMasterAppliedUniversitiesFilterInput | null > | null,
+  not?: ModelMasterAppliedUniversitiesFilterInput | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelMasterAppliedUniversitiesConnection = {
+  __typename: "ModelMasterAppliedUniversitiesConnection",
+  items:  Array<MasterAppliedUniversities | null >,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -2804,18 +2805,6 @@ export type ModelSubscriptionBahrainUniversitiesFilterInput = {
   _deleted?: ModelBooleanInput | null,
 };
 
-export type ModelSubscriptionMasterUniversitiesFilterInput = {
-  id?: ModelSubscriptionIDInput | null,
-  universityName?: ModelSubscriptionStringInput | null,
-  universityNameAr?: ModelSubscriptionStringInput | null,
-  isDeactivated?: ModelSubscriptionBooleanInput | null,
-  createdAt?: ModelSubscriptionStringInput | null,
-  updatedAt?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionMasterUniversitiesFilterInput | null > | null,
-  or?: Array< ModelSubscriptionMasterUniversitiesFilterInput | null > | null,
-  _deleted?: ModelBooleanInput | null,
-};
-
 export type ModelSubscriptionMasterApplicationFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   gpa?: ModelSubscriptionFloatInput | null,
@@ -2856,9 +2845,9 @@ export type ModelSubscriptionMasterStatisticsFilterInput = {
   gpaHistogram?: ModelSubscriptionStringInput | null,
   totalApplicationsPerUniversity?: ModelSubscriptionStringInput | null,
   topUniversities?: ModelSubscriptionStringInput | null,
-  topPrograms?: ModelSubscriptionStringInput | null,
+  topBahrainUniversities?: ModelSubscriptionStringInput | null,
   familyIncome?: ModelSubscriptionStringInput | null,
-  schoolType?: ModelSubscriptionStringInput | null,
+  universitiesBahrain?: ModelSubscriptionStringInput | null,
   students?: ModelSubscriptionStringInput | null,
   applications?: ModelSubscriptionStringInput | null,
   today?: ModelSubscriptionStringInput | null,
@@ -2881,6 +2870,18 @@ export type ModelSubscriptionMasterAttachmentFilterInput = {
   updatedAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionMasterAttachmentFilterInput | null > | null,
   or?: Array< ModelSubscriptionMasterAttachmentFilterInput | null > | null,
+  _deleted?: ModelBooleanInput | null,
+};
+
+export type ModelSubscriptionMasterAppliedUniversitiesFilterInput = {
+  id?: ModelSubscriptionIDInput | null,
+  universityName?: ModelSubscriptionStringInput | null,
+  universityNameAr?: ModelSubscriptionStringInput | null,
+  isDeactivated?: ModelSubscriptionBooleanInput | null,
+  createdAt?: ModelSubscriptionStringInput | null,
+  updatedAt?: ModelSubscriptionStringInput | null,
+  and?: Array< ModelSubscriptionMasterAppliedUniversitiesFilterInput | null > | null,
+  or?: Array< ModelSubscriptionMasterAppliedUniversitiesFilterInput | null > | null,
   _deleted?: ModelBooleanInput | null,
 };
 
@@ -5377,81 +5378,6 @@ export type DeleteBahrainUniversitiesMutation = {
   } | null,
 };
 
-export type CreateMasterUniversitiesMutationVariables = {
-  input: CreateMasterUniversitiesInput,
-  condition?: ModelMasterUniversitiesConditionInput | null,
-};
-
-export type CreateMasterUniversitiesMutation = {
-  createMasterUniversities?:  {
-    __typename: "MasterUniversities",
-    id: string,
-    universityName: string,
-    universityNameAr: string,
-    isDeactivated?: boolean | null,
-    applications?:  {
-      __typename: "ModelMasterApplicationConnection",
-      nextToken?: string | null,
-      startedAt?: number | null,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
-};
-
-export type UpdateMasterUniversitiesMutationVariables = {
-  input: UpdateMasterUniversitiesInput,
-  condition?: ModelMasterUniversitiesConditionInput | null,
-};
-
-export type UpdateMasterUniversitiesMutation = {
-  updateMasterUniversities?:  {
-    __typename: "MasterUniversities",
-    id: string,
-    universityName: string,
-    universityNameAr: string,
-    isDeactivated?: boolean | null,
-    applications?:  {
-      __typename: "ModelMasterApplicationConnection",
-      nextToken?: string | null,
-      startedAt?: number | null,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
-};
-
-export type DeleteMasterUniversitiesMutationVariables = {
-  input: DeleteMasterUniversitiesInput,
-  condition?: ModelMasterUniversitiesConditionInput | null,
-};
-
-export type DeleteMasterUniversitiesMutation = {
-  deleteMasterUniversities?:  {
-    __typename: "MasterUniversities",
-    id: string,
-    universityName: string,
-    universityNameAr: string,
-    isDeactivated?: boolean | null,
-    applications?:  {
-      __typename: "ModelMasterApplicationConnection",
-      nextToken?: string | null,
-      startedAt?: number | null,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
-};
-
 export type CreateMasterApplicationMutationVariables = {
   input: CreateMasterApplicationInput,
   condition?: ModelMasterApplicationConditionInput | null,
@@ -5495,7 +5421,7 @@ export type CreateMasterApplicationMutation = {
     nationalityCategory?: Nationality | null,
     universityID: string,
     university?:  {
-      __typename: "MasterUniversities",
+      __typename: "MasterAppliedUniversities",
       id: string,
       universityName: string,
       universityNameAr: string,
@@ -5613,7 +5539,7 @@ export type UpdateMasterApplicationMutation = {
     nationalityCategory?: Nationality | null,
     universityID: string,
     university?:  {
-      __typename: "MasterUniversities",
+      __typename: "MasterAppliedUniversities",
       id: string,
       universityName: string,
       universityNameAr: string,
@@ -5731,7 +5657,7 @@ export type DeleteMasterApplicationMutation = {
     nationalityCategory?: Nationality | null,
     universityID: string,
     university?:  {
-      __typename: "MasterUniversities",
+      __typename: "MasterAppliedUniversities",
       id: string,
       universityName: string,
       universityNameAr: string,
@@ -5822,9 +5748,9 @@ export type CreateMasterStatisticsMutation = {
     gpaHistogram?: string | null,
     totalApplicationsPerUniversity?: string | null,
     topUniversities?: string | null,
-    topPrograms?: string | null,
+    topBahrainUniversities?: string | null,
     familyIncome?: string | null,
-    schoolType?: string | null,
+    universitiesBahrain?: string | null,
     students?: string | null,
     applications?: string | null,
     today?: string | null,
@@ -5852,9 +5778,9 @@ export type UpdateMasterStatisticsMutation = {
     gpaHistogram?: string | null,
     totalApplicationsPerUniversity?: string | null,
     topUniversities?: string | null,
-    topPrograms?: string | null,
+    topBahrainUniversities?: string | null,
     familyIncome?: string | null,
-    schoolType?: string | null,
+    universitiesBahrain?: string | null,
     students?: string | null,
     applications?: string | null,
     today?: string | null,
@@ -5882,9 +5808,9 @@ export type DeleteMasterStatisticsMutation = {
     gpaHistogram?: string | null,
     totalApplicationsPerUniversity?: string | null,
     topUniversities?: string | null,
-    topPrograms?: string | null,
+    topBahrainUniversities?: string | null,
     familyIncome?: string | null,
-    schoolType?: string | null,
+    universitiesBahrain?: string | null,
     students?: string | null,
     applications?: string | null,
     today?: string | null,
@@ -5957,6 +5883,81 @@ export type DeleteMasterAttachmentMutation = {
     universityCertificate?: string | null,
     toeflIELTSCertificate?: string | null,
     acceptanceLetterDoc?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type CreateMasterAppliedUniversitiesMutationVariables = {
+  input: CreateMasterAppliedUniversitiesInput,
+  condition?: ModelMasterAppliedUniversitiesConditionInput | null,
+};
+
+export type CreateMasterAppliedUniversitiesMutation = {
+  createMasterAppliedUniversities?:  {
+    __typename: "MasterAppliedUniversities",
+    id: string,
+    universityName: string,
+    universityNameAr: string,
+    isDeactivated?: boolean | null,
+    applications?:  {
+      __typename: "ModelMasterApplicationConnection",
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type UpdateMasterAppliedUniversitiesMutationVariables = {
+  input: UpdateMasterAppliedUniversitiesInput,
+  condition?: ModelMasterAppliedUniversitiesConditionInput | null,
+};
+
+export type UpdateMasterAppliedUniversitiesMutation = {
+  updateMasterAppliedUniversities?:  {
+    __typename: "MasterAppliedUniversities",
+    id: string,
+    universityName: string,
+    universityNameAr: string,
+    isDeactivated?: boolean | null,
+    applications?:  {
+      __typename: "ModelMasterApplicationConnection",
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type DeleteMasterAppliedUniversitiesMutationVariables = {
+  input: DeleteMasterAppliedUniversitiesInput,
+  condition?: ModelMasterAppliedUniversitiesConditionInput | null,
+};
+
+export type DeleteMasterAppliedUniversitiesMutation = {
+  deleteMasterAppliedUniversities?:  {
+    __typename: "MasterAppliedUniversities",
+    id: string,
+    universityName: string,
+    universityNameAr: string,
+    isDeactivated?: boolean | null,
+    applications?:  {
+      __typename: "ModelMasterApplicationConnection",
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -8033,85 +8034,6 @@ export type SyncBahrainUniversitiesQuery = {
   } | null,
 };
 
-export type GetMasterUniversitiesQueryVariables = {
-  id: string,
-};
-
-export type GetMasterUniversitiesQuery = {
-  getMasterUniversities?:  {
-    __typename: "MasterUniversities",
-    id: string,
-    universityName: string,
-    universityNameAr: string,
-    isDeactivated?: boolean | null,
-    applications?:  {
-      __typename: "ModelMasterApplicationConnection",
-      nextToken?: string | null,
-      startedAt?: number | null,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
-};
-
-export type ListMasterUniversitiesQueryVariables = {
-  id?: string | null,
-  filter?: ModelMasterUniversitiesFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  sortDirection?: ModelSortDirection | null,
-};
-
-export type ListMasterUniversitiesQuery = {
-  listMasterUniversities?:  {
-    __typename: "ModelMasterUniversitiesConnection",
-    items:  Array< {
-      __typename: "MasterUniversities",
-      id: string,
-      universityName: string,
-      universityNameAr: string,
-      isDeactivated?: boolean | null,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
-export type SyncMasterUniversitiesQueryVariables = {
-  filter?: ModelMasterUniversitiesFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-  lastSync?: number | null,
-};
-
-export type SyncMasterUniversitiesQuery = {
-  syncMasterUniversities?:  {
-    __typename: "ModelMasterUniversitiesConnection",
-    items:  Array< {
-      __typename: "MasterUniversities",
-      id: string,
-      universityName: string,
-      universityNameAr: string,
-      isDeactivated?: boolean | null,
-      createdAt: string,
-      updatedAt: string,
-      _version: number,
-      _deleted?: boolean | null,
-      _lastChangedAt: number,
-    } | null >,
-    nextToken?: string | null,
-    startedAt?: number | null,
-  } | null,
-};
-
 export type GetMasterApplicationQueryVariables = {
   id: string,
 };
@@ -8154,7 +8076,7 @@ export type GetMasterApplicationQuery = {
     nationalityCategory?: Nationality | null,
     universityID: string,
     university?:  {
-      __typename: "MasterUniversities",
+      __typename: "MasterAppliedUniversities",
       id: string,
       universityName: string,
       universityNameAr: string,
@@ -8331,9 +8253,9 @@ export type GetMasterStatisticsQuery = {
     gpaHistogram?: string | null,
     totalApplicationsPerUniversity?: string | null,
     topUniversities?: string | null,
-    topPrograms?: string | null,
+    topBahrainUniversities?: string | null,
     familyIncome?: string | null,
-    schoolType?: string | null,
+    universitiesBahrain?: string | null,
     students?: string | null,
     applications?: string | null,
     today?: string | null,
@@ -8366,9 +8288,9 @@ export type ListMasterStatisticsQuery = {
       gpaHistogram?: string | null,
       totalApplicationsPerUniversity?: string | null,
       topUniversities?: string | null,
-      topPrograms?: string | null,
+      topBahrainUniversities?: string | null,
       familyIncome?: string | null,
-      schoolType?: string | null,
+      universitiesBahrain?: string | null,
       students?: string | null,
       applications?: string | null,
       today?: string | null,
@@ -8403,9 +8325,9 @@ export type SyncMasterStatisticsQuery = {
       gpaHistogram?: string | null,
       totalApplicationsPerUniversity?: string | null,
       topUniversities?: string | null,
-      topPrograms?: string | null,
+      topBahrainUniversities?: string | null,
       familyIncome?: string | null,
-      schoolType?: string | null,
+      universitiesBahrain?: string | null,
       students?: string | null,
       applications?: string | null,
       today?: string | null,
@@ -8490,6 +8412,85 @@ export type SyncMasterAttachmentsQuery = {
       universityCertificate?: string | null,
       toeflIELTSCertificate?: string | null,
       acceptanceLetterDoc?: string | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type GetMasterAppliedUniversitiesQueryVariables = {
+  id: string,
+};
+
+export type GetMasterAppliedUniversitiesQuery = {
+  getMasterAppliedUniversities?:  {
+    __typename: "MasterAppliedUniversities",
+    id: string,
+    universityName: string,
+    universityNameAr: string,
+    isDeactivated?: boolean | null,
+    applications?:  {
+      __typename: "ModelMasterApplicationConnection",
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type ListMasterAppliedUniversitiesQueryVariables = {
+  id?: string | null,
+  filter?: ModelMasterAppliedUniversitiesFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  sortDirection?: ModelSortDirection | null,
+};
+
+export type ListMasterAppliedUniversitiesQuery = {
+  listMasterAppliedUniversities?:  {
+    __typename: "ModelMasterAppliedUniversitiesConnection",
+    items:  Array< {
+      __typename: "MasterAppliedUniversities",
+      id: string,
+      universityName: string,
+      universityNameAr: string,
+      isDeactivated?: boolean | null,
+      createdAt: string,
+      updatedAt: string,
+      _version: number,
+      _deleted?: boolean | null,
+      _lastChangedAt: number,
+    } | null >,
+    nextToken?: string | null,
+    startedAt?: number | null,
+  } | null,
+};
+
+export type SyncMasterAppliedUniversitiesQueryVariables = {
+  filter?: ModelMasterAppliedUniversitiesFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+  lastSync?: number | null,
+};
+
+export type SyncMasterAppliedUniversitiesQuery = {
+  syncMasterAppliedUniversities?:  {
+    __typename: "ModelMasterAppliedUniversitiesConnection",
+    items:  Array< {
+      __typename: "MasterAppliedUniversities",
+      id: string,
+      universityName: string,
+      universityNameAr: string,
+      isDeactivated?: boolean | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -9561,9 +9562,9 @@ export type MasterStatisticsByBatchAndTotalApplicationsQuery = {
       gpaHistogram?: string | null,
       totalApplicationsPerUniversity?: string | null,
       topUniversities?: string | null,
-      topPrograms?: string | null,
+      topBahrainUniversities?: string | null,
       familyIncome?: string | null,
-      schoolType?: string | null,
+      universitiesBahrain?: string | null,
       students?: string | null,
       applications?: string | null,
       today?: string | null,
@@ -12115,78 +12116,6 @@ export type OnDeleteBahrainUniversitiesSubscription = {
   } | null,
 };
 
-export type OnCreateMasterUniversitiesSubscriptionVariables = {
-  filter?: ModelSubscriptionMasterUniversitiesFilterInput | null,
-};
-
-export type OnCreateMasterUniversitiesSubscription = {
-  onCreateMasterUniversities?:  {
-    __typename: "MasterUniversities",
-    id: string,
-    universityName: string,
-    universityNameAr: string,
-    isDeactivated?: boolean | null,
-    applications?:  {
-      __typename: "ModelMasterApplicationConnection",
-      nextToken?: string | null,
-      startedAt?: number | null,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
-};
-
-export type OnUpdateMasterUniversitiesSubscriptionVariables = {
-  filter?: ModelSubscriptionMasterUniversitiesFilterInput | null,
-};
-
-export type OnUpdateMasterUniversitiesSubscription = {
-  onUpdateMasterUniversities?:  {
-    __typename: "MasterUniversities",
-    id: string,
-    universityName: string,
-    universityNameAr: string,
-    isDeactivated?: boolean | null,
-    applications?:  {
-      __typename: "ModelMasterApplicationConnection",
-      nextToken?: string | null,
-      startedAt?: number | null,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
-};
-
-export type OnDeleteMasterUniversitiesSubscriptionVariables = {
-  filter?: ModelSubscriptionMasterUniversitiesFilterInput | null,
-};
-
-export type OnDeleteMasterUniversitiesSubscription = {
-  onDeleteMasterUniversities?:  {
-    __typename: "MasterUniversities",
-    id: string,
-    universityName: string,
-    universityNameAr: string,
-    isDeactivated?: boolean | null,
-    applications?:  {
-      __typename: "ModelMasterApplicationConnection",
-      nextToken?: string | null,
-      startedAt?: number | null,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-    _version: number,
-    _deleted?: boolean | null,
-    _lastChangedAt: number,
-  } | null,
-};
-
 export type OnCreateMasterApplicationSubscriptionVariables = {
   filter?: ModelSubscriptionMasterApplicationFilterInput | null,
 };
@@ -12229,7 +12158,7 @@ export type OnCreateMasterApplicationSubscription = {
     nationalityCategory?: Nationality | null,
     universityID: string,
     university?:  {
-      __typename: "MasterUniversities",
+      __typename: "MasterAppliedUniversities",
       id: string,
       universityName: string,
       universityNameAr: string,
@@ -12346,7 +12275,7 @@ export type OnUpdateMasterApplicationSubscription = {
     nationalityCategory?: Nationality | null,
     universityID: string,
     university?:  {
-      __typename: "MasterUniversities",
+      __typename: "MasterAppliedUniversities",
       id: string,
       universityName: string,
       universityNameAr: string,
@@ -12463,7 +12392,7 @@ export type OnDeleteMasterApplicationSubscription = {
     nationalityCategory?: Nationality | null,
     universityID: string,
     university?:  {
-      __typename: "MasterUniversities",
+      __typename: "MasterAppliedUniversities",
       id: string,
       universityName: string,
       universityNameAr: string,
@@ -12553,9 +12482,9 @@ export type OnCreateMasterStatisticsSubscription = {
     gpaHistogram?: string | null,
     totalApplicationsPerUniversity?: string | null,
     topUniversities?: string | null,
-    topPrograms?: string | null,
+    topBahrainUniversities?: string | null,
     familyIncome?: string | null,
-    schoolType?: string | null,
+    universitiesBahrain?: string | null,
     students?: string | null,
     applications?: string | null,
     today?: string | null,
@@ -12582,9 +12511,9 @@ export type OnUpdateMasterStatisticsSubscription = {
     gpaHistogram?: string | null,
     totalApplicationsPerUniversity?: string | null,
     topUniversities?: string | null,
-    topPrograms?: string | null,
+    topBahrainUniversities?: string | null,
     familyIncome?: string | null,
-    schoolType?: string | null,
+    universitiesBahrain?: string | null,
     students?: string | null,
     applications?: string | null,
     today?: string | null,
@@ -12611,9 +12540,9 @@ export type OnDeleteMasterStatisticsSubscription = {
     gpaHistogram?: string | null,
     totalApplicationsPerUniversity?: string | null,
     topUniversities?: string | null,
-    topPrograms?: string | null,
+    topBahrainUniversities?: string | null,
     familyIncome?: string | null,
-    schoolType?: string | null,
+    universitiesBahrain?: string | null,
     students?: string | null,
     applications?: string | null,
     today?: string | null,
@@ -12683,6 +12612,78 @@ export type OnDeleteMasterAttachmentSubscription = {
     universityCertificate?: string | null,
     toeflIELTSCertificate?: string | null,
     acceptanceLetterDoc?: string | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnCreateMasterAppliedUniversitiesSubscriptionVariables = {
+  filter?: ModelSubscriptionMasterAppliedUniversitiesFilterInput | null,
+};
+
+export type OnCreateMasterAppliedUniversitiesSubscription = {
+  onCreateMasterAppliedUniversities?:  {
+    __typename: "MasterAppliedUniversities",
+    id: string,
+    universityName: string,
+    universityNameAr: string,
+    isDeactivated?: boolean | null,
+    applications?:  {
+      __typename: "ModelMasterApplicationConnection",
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnUpdateMasterAppliedUniversitiesSubscriptionVariables = {
+  filter?: ModelSubscriptionMasterAppliedUniversitiesFilterInput | null,
+};
+
+export type OnUpdateMasterAppliedUniversitiesSubscription = {
+  onUpdateMasterAppliedUniversities?:  {
+    __typename: "MasterAppliedUniversities",
+    id: string,
+    universityName: string,
+    universityNameAr: string,
+    isDeactivated?: boolean | null,
+    applications?:  {
+      __typename: "ModelMasterApplicationConnection",
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    createdAt: string,
+    updatedAt: string,
+    _version: number,
+    _deleted?: boolean | null,
+    _lastChangedAt: number,
+  } | null,
+};
+
+export type OnDeleteMasterAppliedUniversitiesSubscriptionVariables = {
+  filter?: ModelSubscriptionMasterAppliedUniversitiesFilterInput | null,
+};
+
+export type OnDeleteMasterAppliedUniversitiesSubscription = {
+  onDeleteMasterAppliedUniversities?:  {
+    __typename: "MasterAppliedUniversities",
+    id: string,
+    universityName: string,
+    universityNameAr: string,
+    isDeactivated?: boolean | null,
+    applications?:  {
+      __typename: "ModelMasterApplicationConnection",
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
     createdAt: string,
     updatedAt: string,
     _version: number,

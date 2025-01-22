@@ -19,8 +19,8 @@ import {
   CreateBatchMutationVariables,
   CreateMasterBatchMutation,
   CreateMasterBatchMutationVariables,
-  CreateMasterUniversitiesMutation,
-  CreateMasterUniversitiesMutationVariables,
+  CreateMasterAppliedUniversitiesMutation,
+  CreateMasterAppliedUniversitiesMutationVariables,
   CreateProgramChoiceMutation,
   CreateProgramChoiceMutationVariables,
   CreateScholarshipMutation,
@@ -38,7 +38,7 @@ import {
   ListMasterBatchesQuery,
   ListMasterBatchesQueryVariables,
   MasterApplication,
-  MasterUniversities,
+  MasterAppliedUniversities,
   Program,
   Scholarship,
   StudentLog,
@@ -57,8 +57,8 @@ import {
   UpdateMasterAttachmentMutationVariables,
   UpdateMasterBatchMutation,
   UpdateMasterBatchMutationVariables,
-  UpdateMasterUniversitiesMutation,
-  UpdateMasterUniversitiesMutationVariables,
+  UpdateMasterAppliedUniversitiesMutation,
+  UpdateMasterAppliedUniversitiesMutationVariables,
   UpdateParentInfoMutation,
   UpdateParentInfoMutationVariables,
   UpdateProgramChoiceMutation,
@@ -878,7 +878,7 @@ export async function getUniversityByID(
 
 export async function getMasterUniversityByID(
   id?: string
-): Promise<MasterUniversities | undefined> {
+): Promise<MasterAppliedUniversities | undefined> {
   let query = `
   query GetMasterAppliedUniversities {
     getMasterAppliedUniversities(id:  "${id}") {
@@ -898,18 +898,18 @@ export async function getMasterUniversityByID(
   let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;
 
   let tempProgramList = res.data
-    .getMasterAppliedUniversities as MasterUniversities;
+    .getMasterAppliedUniversities as MasterAppliedUniversities;
 
   return tempProgramList;
 }
 
 export async function createMasterUniversityInDb(
-  mutationVars: CreateMasterUniversitiesMutationVariables
-): Promise<CreateMasterUniversitiesMutation | undefined> {
+  mutationVars: CreateMasterAppliedUniversitiesMutationVariables
+): Promise<CreateMasterAppliedUniversitiesMutation | undefined> {
   let res = (await API.graphql({
     query: createMasterAppliedUniversities,
     variables: mutationVars,
-  })) as GraphQLResult<CreateMasterUniversitiesMutation>;
+  })) as GraphQLResult<CreateMasterAppliedUniversitiesMutation>;
 
   return res.data;
 }
@@ -995,12 +995,12 @@ export async function updateUniversityById(
 
 //TODO comment
 export async function updateMasterUniversityById(
-  mutationVars: UpdateMasterUniversitiesMutationVariables
-): Promise<UpdateMasterUniversitiesMutation | undefined> {
+  mutationVars: UpdateMasterAppliedUniversitiesMutationVariables
+): Promise<UpdateMasterAppliedUniversitiesMutation | undefined> {
   let res = (await API.graphql({
     query: updateMasterAppliedUniversities,
     variables: mutationVars,
-  })) as GraphQLResult<UpdateMasterUniversitiesMutation>;
+  })) as GraphQLResult<UpdateMasterAppliedUniversitiesMutation>;
 
   return res.data;
 }
@@ -1751,7 +1751,7 @@ export async function listAllMasterUniversities() {
   let res = (await API.graphql(graphqlOperation(q))) as GraphQLResult<any>; // your fetch function here
 
   let universities = res.data?.listMasterAppliedUniversities
-    .items as MasterUniversities[];
+    .items as MasterAppliedUniversities[];
   return universities;
 }
 

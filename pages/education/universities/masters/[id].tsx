@@ -5,7 +5,10 @@ import { Toaster } from "react-hot-toast";
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "react-i18next";
-import { BahrainUniversities, MasterUniversities } from "../../../../src/API";
+import {
+  BahrainUniversities,
+  MasterAppliedUniversities,
+} from "../../../../src/API";
 import {
   getBahrainiUniversityById,
   getMasterUniversityByID,
@@ -16,7 +19,7 @@ import MasterUniversityFormComponent from "../../../../components/universities/m
 
 interface Props {
   universityType: "bahrainiUni" | "masterUni";
-  university: MasterUniversities | BahrainUniversities | null;
+  university: MasterAppliedUniversities | BahrainUniversities | null;
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {

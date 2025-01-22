@@ -38,7 +38,7 @@
         },
         "exportEligibleCsv": {
           "deploymentBucketName": "amplify-ncc-masterdev-2e2e0-deployment",
-          "s3Key": "amplify-builds/exportEligibleCsv-5136707662397561554e-build.zip"
+          "s3Key": "amplify-builds/exportEligibleCsv-47356156425279335464-build.zip"
         },
         "exportUniversityEmails": {
           "deploymentBucketName": "amplify-ncc-masterdev-2e2e0-deployment",
@@ -86,7 +86,7 @@
         },
         "updateGpaCsv": {
           "deploymentBucketName": "amplify-ncc-masterdev-2e2e0-deployment",
-          "s3Key": "amplify-builds/updateGpaCsv-73496445574761574833-build.zip"
+          "s3Key": "amplify-builds/updateGpaCsv-6556526843432f33682b-build.zip"
         },
         "updateStatistics": {
           "deploymentBucketName": "amplify-ncc-masterdev-2e2e0-deployment",

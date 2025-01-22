@@ -6,13 +6,13 @@ import { useTranslation } from "react-i18next";
 import {
   BahrainUniversities,
   CreateBahrainUniversitiesMutationVariables,
-  CreateMasterUniversitiesMutationVariables,
-  MasterUniversities,
+  CreateMasterAppliedUniversitiesMutationVariables,
+  MasterAppliedUniversities,
 } from "../../src/API";
 import { useEducation } from "../../context/EducationContext";
 
 interface Props {
-  masterUniversities: MasterUniversities[] | undefined;
+  masterUniversities: MasterAppliedUniversities[] | undefined;
   bahrainiUniversities: BahrainUniversities[] | undefined;
   isOpen: boolean;
   onClose: () => void;
@@ -92,14 +92,14 @@ const AddMasterUniversityDialog = ({
                     toast.error(t("aUniversityAlreadyExistsWithTheSameName"));
                   } else {
                     if (values.universityType.includes("mastersUni")) {
-                      let createMasterUniversityVariableInput: CreateMasterUniversitiesMutationVariables =
+                      let createMasterUniversityVariableInput: CreateMasterAppliedUniversitiesMutationVariables =
                         {
                           input: {
                             universityName: values.universityName,
                             universityNameAr: values.universityArName,
                           },
                         };
-                      // setIsSubmitted(true);
+                      onClose(); // Call onClose prop to communicate dialog should close
                       toast
                         .promise(
                           addNewMasterUniversity(
@@ -125,6 +125,7 @@ const AddMasterUniversityDialog = ({
                         })
                         .finally(() => {
                           // setIsSubmitted(false);
+                          onClose();
                         });
                     }
 
@@ -136,6 +137,7 @@ const AddMasterUniversityDialog = ({
                             universityNameAr: values.universityArName,
                           },
                         };
+                      //   isOpen = !isOpen;
                       // setIsSubmitted(true);
                       toast
                         .promise(
@@ -161,6 +163,7 @@ const AddMasterUniversityDialog = ({
                           console.log(err);
                         })
                         .finally(() => {
+                          //   isOpen = !isOpen;
                           // setIsSubmitted(false);
                         });
                     }

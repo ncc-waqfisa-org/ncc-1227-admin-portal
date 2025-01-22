@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   BahrainUniversities,
-  MasterUniversities,
+  MasterAppliedUniversities,
   University,
 } from "../../src/API";
 import { MasterEducationTableHeaders } from "../../constants/table-headers";
@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 
 interface Props {
   uniType: "bahrainiUni" | "masterUni";
-  university: MasterUniversities[] | BahrainUniversities[] | undefined;
+  university: MasterAppliedUniversities[] | BahrainUniversities[] | undefined;
 }
 
 const MasterUniversitiesTable = ({ uniType, university }: Props) => {

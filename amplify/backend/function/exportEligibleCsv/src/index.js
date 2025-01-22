@@ -19,7 +19,7 @@ const {
   UniversityTable: "University-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
   BatchTable: "Batch-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
   AdminTable: "Admin-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
-  S3Bucket: "amplify-ncc-masterdev-deployment",
+  S3Bucket: "amplify-ncc-masterdev-2e2e0-deployment",
 };
 
 /**
@@ -28,6 +28,8 @@ const {
 
 exports.handler = async (event) => {
   const token = event.headers?.authorization?.slice(7);
+
+  // Get the user from cognito to check the login status
   const isUserLoggedIn = await isLoggedIn(token);
   if (!isUserLoggedIn) {
     return {
@@ -36,6 +38,7 @@ exports.handler = async (event) => {
     };
   }
 
+  // Check if the user is admin or not
   const isAdmin = await checkIsAdmin(token);
   if (!isAdmin) {
     return {
@@ -44,6 +47,7 @@ exports.handler = async (event) => {
     };
   }
 
+  // Get the batch paramerter from the query and to print the current batch
   const batchValue =
     parseInt(event.queryStringParameters?.batch) || new Date().getFullYear();
   const exceptionUniversities = await getExceptionUniversities();
@@ -118,35 +122,6 @@ async function getApplications(
     ) {
       return false;
     }
-    // Filter out not completed applications unless they are from exception or extended universities
-    // if (application.status === 'NOT_COMPLETED') {
-    //     // return exceptionUniversities.some(university => university.id === application.universityID)
-    //     //     || extendedUniversities.some(university => university.id === application.universityID);
-    //     if(exceptionUniversities.some(university => university.id === application.universityID)){
-    //         return true;
-    //     }
-    //     if (extendedUniversities.some(university => university.id === application.universityID)) {
-    //         // Check if today is before the extended deadline
-    //         const today = new Date();
-    //         const chosenUniversity = extendedUniversities.find(university => university.id === application.universityID);
-    //
-    //         const updateApplicationEndDate = batchDetails.updateApplicationEndDate;
-    //
-    //         const [year, month, day] = updateApplicationEndDate.split('-').map(Number);
-    //
-    //         let deadline = new Date(year, month - 1, day);
-    //
-    //         deadline.setDate(deadline.getDate() + chosenUniversity.extensionDuration);
-    //
-    //         console.log('Today:', today);
-    //         console.log('Deadline:', deadline);
-    //         console.log('Is today before deadline:', today <= deadline);
-    //
-    //         return today <= deadline;
-    //     }
-    //     return false;
-    // }
-    // Keep all other applications
     return true;
   });
 
@@ -154,12 +129,8 @@ async function getApplications(
 }
 
 async function convertToCsv(applications) {
-  // TODO: REMOVE THE Status, UniversityID, ProgramID from the CSV
-  // let csv = 'StudentCPR,GPA,verifiedGPA,Status,University\n';
   let csv = "Student CPR,Verified GPA\n";
   for (const application of applications) {
-    // let university = application.universityID? await getUniversity(application.universityID): {name: 'UNKNOWN'};
-    // csv += `=""${application.studentCPR}"",${application.gpa},PLEASE VERIFY,${application.status},${university?.name}\n`;
     csv += `=""${application.studentCPR}"",${
       application.verifiedGPA ? application.verifiedGPA : "PLEASE VERIFY"
     }\n`;
@@ -241,35 +212,6 @@ async function getBatchDetails(batch) {
   const batchDetails = await dynamoDB.get(params).promise();
   return batchDetails.Item;
 }
-
-// async function getPrograms() {
-//     const params = {
-//         TableName: 'Program-cw7beg2perdtnl7onnneec4jfa-staging',
-//     };
-//
-//     let allPrograms = [];
-//
-//     do {
-//         const programs = await dynamoDB.scan(params).promise();
-//         allPrograms = allPrograms.concat(programs.Items);
-//         params.ExclusiveStartKey = programs.LastEvaluatedKey;
-//     } while (params.ExclusiveStartKey);
-//
-//     return allPrograms;
-// }
-//
-
-// async function getUniversity(universityID) {
-//     const params = {
-//         TableName: 'University-cw7beg2perdtnl7onnneec4jfa-staging',
-//         Key: {
-//             id: universityID
-//         }
-//     };
-//
-//     const university = await dynamoDB.get(params).promise();
-//     return university.Item;
-// }
 
 async function checkIsAdmin(token) {
   // get the username from the token using cognito
