@@ -578,34 +578,36 @@ export async function getMasterApplicationByIdAPI(
     status
     student {
       cpr
-    cprDoc
-gender
-nationalityCategory
-phone
-preferredLanguage
-address
+      cprDoc
+      gender
+      email
+      nationalityCategory
+      phone
+      preferredLanguage
+      placeOfBirth
+      address
       m_firstName
-    m_secondName
-    m_lastName
-    m_numberOfFamilyMembers
-    m_graduationYear
-    m_university {
-      isDeactivated
-      universityName
-      universityNameAr
-      id
-      _version
-    }
-    m_universityID
-    m_oldProgram
-    m_applicantType
-    m_isEmployed
-    m_placeOfEmployment
-    m_income
-    m_incomeDoc
-    m_guardianCPR
-    m_guardianFullName
-    m_guardianCPRDoc
+      m_secondName
+      m_lastName
+      m_numberOfFamilyMembers
+      m_graduationYear
+      m_university {
+        isDeactivated
+        universityName
+        universityNameAr
+        id
+        _version
+      }
+      m_universityID
+      m_oldProgram
+      m_applicantType
+      m_isEmployed
+      m_placeOfEmployment
+      m_income
+      m_incomeDoc
+      m_guardianCPR
+      m_guardianFullName
+      m_guardianCPRDoc
     }
     studentCPR
     studentName

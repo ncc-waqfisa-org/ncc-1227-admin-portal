@@ -417,7 +417,7 @@ const Education = () => {
                       );
 
                     if (uniFound) {
-                      toast.error("aUniversityAlreadyExistsWithTheSameName");
+                      toast.error(t("aUniversityAlreadyExistsWithTheSameName"));
                     } else {
                       setIsSubmitted(true);
                       toast
@@ -432,7 +432,7 @@ const Education = () => {
                           {
                             loading: "Loading...",
                             success: () => {
-                              return `universitySuccessfullyAdded`;
+                              return t(`universitySuccessfullyAdded`);
                             },
                             error: (error) => {
                               return `${error?.message}`;
@@ -479,7 +479,7 @@ const Education = () => {
                     }
 
                     if (uniFound) {
-                      toast.error("aUniversityAlreadyExistsWithTheSameName");
+                      toast.error(t("aUniversityAlreadyExistsWithTheSameName"));
                     } else {
                       setIsSubmitted(true);
                       toast
@@ -494,7 +494,7 @@ const Education = () => {
                           {
                             loading: "Loading...",
                             success: () => {
-                              return `universitySuccessfullyAdded`;
+                              return t(`universitySuccessfullyAdded`);
                             },
                             error: (error) => {
                               return `${error?.message}`;

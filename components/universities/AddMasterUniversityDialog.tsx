@@ -149,7 +149,7 @@ const AddMasterUniversityDialog = ({
                           {
                             loading: "Loading...",
                             success: () => {
-                              return `universitySuccessfullyAdded`;
+                              return t(`universitySuccessfullyAdded`);
                             },
                             error: (error) => {
                               return `${error?.message}`;

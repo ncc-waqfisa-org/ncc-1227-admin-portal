@@ -135,40 +135,6 @@ export default function MasterInfoForm({
 
   const updateMutation = useMutation({
     mutationFn: (values: MasterUpdateData) => {
-      // Personal data
-      // id: string;
-      // version: number;
-      // cpr_doc?: string;
-
-      // first_name: string;
-      // second_name: string;
-      // last_name: string;
-      // address: string;
-
-      // phone: string;
-      // // gender: string;
-      // // place_of_birth: string;
-      // // nationality: string;
-      // number_of_family_member: number;
-
-      // // Graduated from
-      // graduation_year: string;
-      // universityID: string;
-      // old_program: string;
-
-      // // Employment info
-      // isEmployed: boolean;
-      // place_of_employment: string | null;
-
-      // // Personal income or guardian income based on employment
-      // income: Income;
-      // income_doc?: string;
-
-      // // Guardian data
-      // guardian_cpr: string;
-      // guardian_full_name: string;
-      // guardian_cpr_doc?: string;
-
       //   TODO: update with graphql
       let studentData: UpdateStudentMutationVariables = {
         input: {
@@ -288,6 +254,8 @@ export default function MasterInfoForm({
 
     await updateMutation.mutateAsync(dataToSend);
   }
+
+  console.log(student?.m_universityID);
 
   return (
     <div className="flex flex-col items-center">
