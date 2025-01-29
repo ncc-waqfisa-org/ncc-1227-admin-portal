@@ -54,7 +54,8 @@ exports.handler = async (event) => {
   const extendedUniversities = await getExtendedUniversities();
   const batchDetails = await getBatchDetails(batchValue);
 
-  console.log("Universities:", exceptionUniversities);
+  console.log("Exception Universities:", exceptionUniversities);
+  console.log("Extended Universities:", extendedUniversities);
   console.log(`EVENT: ${JSON.stringify(event)}`);
 
   try {
@@ -89,7 +90,7 @@ async function getApplications(
 ) {
   // const programs = await getPrograms();
   const params = {
-    TableName: APPLICATION_TABLE,
+    TableName: tableName,
     IndexName: "byNationalityCategory",
     KeyConditionExpression:
       "#batch = :batchValue AND nationalityCategory = :nationalityCategory",
@@ -107,8 +108,8 @@ async function getApplications(
   do {
     const applications = await dynamoDB.query(params).promise();
     allApplications = allApplications.concat(applications.Items);
+    console.log(`All applications from DynmoDB: ${allApplications}`);
 
-    // Check if there are more items to fetch
     params.ExclusiveStartKey = applications.LastEvaluatedKey;
   } while (params.ExclusiveStartKey);
 
@@ -122,8 +123,19 @@ async function getApplications(
     ) {
       return false;
     }
+
+    if (application.status === "NOT_COMPLETED") {
+      return (
+        exceptionUniversities.some((u) => u.id === application.universityID) ||
+        extendedUniversities.some((u) => u.id === application.universityID)
+      );
+    }
+
+    // Keep all other applications
     return true;
   });
+
+  console.log(`applications from getApplications function ${allApplications}`);
 
   return allApplications;
 }

@@ -292,6 +292,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "allProgramsTextOption": {
+                    "name": "allProgramsTextOption",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "student": {
                     "name": "student",
                     "isArray": false,
@@ -1636,6 +1643,48 @@ export const schema = {
                         ]
                     }
                 },
+                "firstName": {
+                    "name": "firstName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "secondName": {
+                    "name": "secondName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "thirdName": {
+                    "name": "thirdName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "lastName": {
+                    "name": "lastName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "dob": {
+                    "name": "dob",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "schoolMajor": {
+                    "name": "schoolMajor",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "m_MasterLogs": {
                     "name": "m_MasterLogs",
                     "isArray": true,
@@ -1661,6 +1710,13 @@ export const schema = {
                 },
                 "m_secondName": {
                     "name": "m_secondName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "m_thirdName": {
+                    "name": "m_thirdName",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -3591,5 +3647,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "77db5a3d294a4251ff53f979408c9d77"
+    "version": "1a13ab4148d87b15fc382f7aede4025d"
 };

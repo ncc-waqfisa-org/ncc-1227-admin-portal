@@ -1,13 +1,13 @@
 /* Amplify Params - DO NOT EDIT
-	ENV
-	REGION
+    ENV
+    REGION
 Amplify Params - DO NOT EDIT */
 
 const AWS = require("aws-sdk");
-
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 const cognito = new AWS.CognitoIdentityServiceProvider();
 const uuid = require("uuid");
+
 const {
   UserPoolId: USER_POOL_ID,
   ClientId: CLIENT_ID,
@@ -24,99 +24,133 @@ const {
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
  */
 exports.handler = async (event) => {
-  console.log(`This is event from sign up function ${event}`);
+  console.log(`Received event: ${JSON.stringify(event)}`);
   try {
     const requestBody = JSON.parse(event.body);
-    let studentData = requestBody.student.input;
-    let parentData = requestBody.parentInfo?.input;
+    const studentData = requestBody.student?.input;
+    const parentInfo = requestBody.parentInfo?.input;
     const username = studentData?.cpr;
     let email = studentData?.email;
     const password = requestBody.password;
+
+    // Log the extracted data for debugging
+    console.log(`studentData: ${JSON.stringify(studentData)}`);
+    console.log(`parentInfo: ${JSON.stringify(parentInfo)}`);
+
+    if (!username || !email || !password) {
+      return response(
+        400,
+        { message: "Missing required fields: cpr, email, or password." },
+        "application/json"
+      );
+    }
+
     const user = await getUserFromCognito(username);
-
-    console.log(`This is user from SignUp function ${user}`);
+    console.log(`Cognito user: ${JSON.stringify(user)}`);
     const userExists = !!user;
+
     if (userExists) {
-      if (
+      const isEmailVerified =
         user.UserAttributes.find((attr) => attr.Name === "email_verified")
-          .Value === "true"
-      ) {
-        return {
-          statusCode: 400,
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Headers": "*",
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
-          },
-          isBase64Encoded: false,
-          body: JSON.stringify({
-            message: "User already exists",
-          }),
-        };
+          ?.Value === "true";
+
+      if (isEmailVerified) {
+        return response(
+          400,
+          { message: "User already exists and email is verified." },
+          "application/json"
+        );
       } else {
-        email = studentData.email;
-        const oldStudent = await getUserFromDynamoDB(username);
-        const oldParentID = oldStudent.parentInfoID;
-        console.log(oldParentID, "oldParentID");
-        await deleteUserFromCognito(username);
-        console.log("deleted from cognito");
-        await deleteUserFromDynamoDB(username);
-        console.log("deleted from dynamo");
-        await deleteParentFromDynamoDB(oldParentID);
-        console.log("deleted parent from dynamo");
-
-        await signUpUserToCognito(username, email, password);
-
-        // TODO: see why this sometimes casing errors sometimes not??
-        // ? remember when you go to staging adding thise to saveStudentToDynmoDB in order to solve this error.
-        studentData.parentInfoID = await saveParentToDynamoDB(parentData);
-        await saveStudentToDynamoDB(studentData, parentData);
-        return {
-          isBase64Encoded: false,
-          statusCode: 201,
-          body: JSON.stringify({
-            message: "User created successfully",
-          }),
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Headers": "*",
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
-          },
-        };
+        // Handle re-registration if email is not verified
+        await handleReRegistration(username, studentData, parentInfo, password);
+        return response(
+          201,
+          { message: "User re-registered successfully." },
+          "application/json"
+        );
       }
     }
 
-    studentData.parentInfoID = await saveParentToDynamoDB(parentData);
+    // New user registration
+    if (!parentInfo) {
+      // Ensure parentInfo is present
+      return response(
+        400,
+        { message: "Missing parentInfo input." },
+        "application/json"
+      );
+    }
 
-    await saveStudentToDynamoDB(studentData, parentData);
+    studentData.parentInfoID = await saveParentToDynamoDB(parentInfo);
+    await saveStudentToDynamoDB(studentData, parentInfo);
     await signUpUserToCognito(username, email, password);
 
-    return {
-      isBase64Encoded: false,
-      statusCode: 201,
-      body: JSON.stringify({
-        message: "User created successfully",
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Headers": "*",
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
-      },
-    };
+    return response(
+      201,
+      { message: "User created successfully." },
+      "application/json"
+    );
   } catch (error) {
-    console.error(error);
-    await rollback(JSON.parse(event.body).student.input.cpr);
-    return {
-      statusCode: 500,
-      body: JSON.stringify("Error" + error),
-    };
+    console.error(`Error during signup: ${error}`);
+    const cpr = JSON.parse(event.body)?.student?.input?.cpr;
+    if (cpr) {
+      await rollback(cpr);
+    }
+    return response(
+      500,
+      { message: `Internal Server Error: ${error.message}` },
+      "application/json"
+    );
   }
 };
 
-// 1. get functions
+// Default headers for CORS
+const defaultHeaders = () => ({
+  "Content-Type": "application/json",
+  "Access-Control-Allow-Headers": "*",
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
+});
+
+// Helper to construct responses
+const response = (statusCode, body, contentType = "application/json") => ({
+  statusCode,
+  headers: {
+    "Content-Type": contentType,
+    "Access-Control-Allow-Headers": "*",
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
+  },
+  isBase64Encoded: false,
+  body: JSON.stringify(body),
+});
+
+// Handle user re-registration
+const handleReRegistration = async (
+  username,
+  studentData,
+  parentInfo,
+  password
+) => {
+  const oldStudent = await getUserFromDynamoDB(username);
+  const oldParentID = oldStudent.parentInfoID;
+  console.log(`Old Parent ID: ${oldParentID}`);
+
+  // Delete old records
+  await deleteUserFromCognito(username);
+  console.log("Deleted user from Cognito.");
+  await deleteUserFromDynamoDB(username);
+  console.log("Deleted user from DynamoDB.");
+  await deleteParentFromDynamoDB(oldParentID);
+  console.log("Deleted parent from DynamoDB.");
+
+  // Re-register the user
+  await signUpUserToCognito(username, studentData.email, password);
+  studentData.parentInfoID = await saveParentToDynamoDB(parentInfo);
+  await saveStudentToDynamoDB(studentData, parentInfo);
+};
+
+// 1. Get Functions
 async function getUserFromCognito(username) {
   const params = {
     UserPoolId: USER_POOL_ID,
@@ -126,7 +160,8 @@ async function getUserFromCognito(username) {
     const user = await cognito.adminGetUser(params).promise();
     return user;
   } catch (error) {
-    return false;
+    console.warn(`User not found in Cognito: ${username}`);
+    return null;
   }
 }
 
@@ -137,10 +172,16 @@ async function getUserFromDynamoDB(username) {
       cpr: username,
     },
   };
-  const { Item } = await dynamoDB.get(params).promise();
-  console.log(Item, "Item");
-  return Item;
+  try {
+    const { Item } = await dynamoDB.get(params).promise();
+    console.log(`DynamoDB Item: ${JSON.stringify(Item)}`);
+    return Item;
+  } catch (error) {
+    console.error(`Error fetching user from DynamoDB: ${error}`);
+    throw error;
+  }
 }
+
 async function getParentFromDynamoDB(parentID) {
   const params = {
     TableName: PARENT_TABLE,
@@ -148,18 +189,30 @@ async function getParentFromDynamoDB(parentID) {
       id: parentID,
     },
   };
-  const { Item } = await dynamoDB.get(params).promise();
-  return Item;
+  try {
+    const { Item } = await dynamoDB.get(params).promise();
+    return Item;
+  } catch (error) {
+    console.error(`Error fetching parent from DynamoDB: ${error}`);
+    throw error;
+  }
 }
 
-// 2. delete functions
+// 2. Delete Functions
 async function deleteUserFromCognito(username) {
   const params = {
     UserPoolId: USER_POOL_ID,
     Username: username,
   };
-  await cognito.adminDeleteUser(params).promise();
+  try {
+    await cognito.adminDeleteUser(params).promise();
+    console.log(`Deleted user from Cognito: ${username}`);
+  } catch (error) {
+    console.error(`Error deleting user from Cognito: ${error}`);
+    throw error;
+  }
 }
+
 async function deleteUserFromDynamoDB(username) {
   const params = {
     TableName: STUDENT_TABLE,
@@ -167,8 +220,15 @@ async function deleteUserFromDynamoDB(username) {
       cpr: username,
     },
   };
-  await dynamoDB.delete(params).promise();
+  try {
+    await dynamoDB.delete(params).promise();
+    console.log(`Deleted user from DynamoDB: ${username}`);
+  } catch (error) {
+    console.error(`Error deleting user from DynamoDB: ${error}`);
+    throw error;
+  }
 }
+
 async function deleteParentFromDynamoDB(parentID) {
   const params = {
     TableName: PARENT_TABLE,
@@ -176,12 +236,18 @@ async function deleteParentFromDynamoDB(parentID) {
       id: parentID,
     },
   };
-  await dynamoDB.delete(params).promise();
+  try {
+    await dynamoDB.delete(params).promise();
+    console.log(`Deleted parent from DynamoDB: ${parentID}`);
+  } catch (error) {
+    console.error(`Error deleting parent from DynamoDB: ${error}`);
+    throw error;
+  }
 }
 
-// 3. save functions
+// 3. Save Functions
 async function signUpUserToCognito(username, email, password) {
-  console.log(username, email, password);
+  console.log(`Signing up user to Cognito: ${username}, ${email}`);
   const params = {
     ClientId: CLIENT_ID,
     Username: username,
@@ -193,67 +259,97 @@ async function signUpUserToCognito(username, email, password) {
       },
     ],
   };
-  await cognito.signUp(params).promise();
+  try {
+    await cognito.signUp(params).promise();
+    console.log(`User signed up to Cognito: ${username}`);
+  } catch (error) {
+    console.error(`Error signing up user to Cognito: ${error}`);
+    throw error;
+  }
 }
-async function saveStudentToDynamoDB(studentData, parentData) {
-  studentData._version = 1;
-  studentData._lastChangedAt = new Date().getTime(); // Get timestamp in milliseconds
-  studentData.createdAt = new Date().toISOString(); // Get current date in ISO format
-  studentData.updatedAt = new Date().toISOString(); // Get current date in ISO format
-  studentData.m_applicantType = ["STUDENT"];
 
+async function saveStudentToDynamoDB(studentData, parentInfo) {
+  // Accept parentInfo
+  // Ensure all required fields are present
+  const requiredFields = ["cpr", "firstName", "lastName", "email"];
+  for (const field of requiredFields) {
+    if (!studentData[field]) {
+      throw new Error(`Missing required field: ${field}`);
+    }
+  }
+
+  // Assign additional fields
+  studentData._version = 1;
+  studentData._lastChangedAt = Date.now(); // Timestamp in milliseconds
+  const currentTimestamp = new Date().toISOString();
+  studentData.createdAt = currentTimestamp;
+  studentData.updatedAt = currentTimestamp;
+  studentData.m_applicantType = ["STUDENT"];
   studentData.batch = new Date().getFullYear();
-  // TODO: why getting error here
-  // ? There is data passed here but I don't know why it's not accept it.
-  studentData.numberOfFamilyMembers = parentData.numberOfFamilyMembers;
+
+  // Assign studentOrderAmongSiblings if provided
+  if (parentInfo?.numberOfFamilyMembers !== undefined) {
+    studentData.studentOrderAmongSiblings = parentInfo.numberOfFamilyMembers;
+  }
+
   const params = {
     TableName: STUDENT_TABLE,
     Item: studentData,
   };
-  await dynamoDB.put(params).promise();
+
+  try {
+    await dynamoDB.put(params).promise();
+    console.log(`Saved student to DynamoDB: ${studentData.cpr}`);
+  } catch (error) {
+    console.error(`Error saving student to DynamoDB: ${error}`);
+    throw error;
+  }
 }
 
-async function saveParentToDynamoDB(parentData) {
-  // generate a unique id for the parent
-  parentData.id = uuid.v4();
-  parentData._version = 1;
-  parentData._lastChangedAt = new Date().getTime(); // Get timestamp in milliseconds
-  parentData.createdAt = new Date().toISOString(); // Get current date in ISO format
-  parentData.updatedAt = new Date().toISOString(); // Get current date in ISO format
+async function saveParentToDynamoDB(parentInfo) {
+  // Renamed to parentInfo
+  // Generate a unique ID for the parent if not provided
+  parentInfo.id = parentInfo.id || uuid.v4();
+  parentInfo._version = 1;
+  parentInfo._lastChangedAt = Date.now(); // Timestamp in milliseconds
+  const currentTimestamp = new Date().toISOString();
+  parentInfo.createdAt = currentTimestamp;
+  parentInfo.updatedAt = currentTimestamp;
 
   const params = {
     TableName: PARENT_TABLE,
-    Item: parentData,
+    Item: parentInfo,
   };
-  let createdItem = dynamoDB.put(params).promise();
-  await createdItem;
-  return parentData.id;
+
+  try {
+    await dynamoDB.put(params).promise();
+    console.log(`Saved parent to DynamoDB: ${parentInfo.id}`);
+    return parentInfo.id;
+  } catch (error) {
+    console.error(`Error saving parent to DynamoDB: ${error}`);
+    throw error;
+  }
 }
 
-// 4. rollback function
+// 4. Rollback Function
 async function rollback(username) {
-  // Perform rollback operations
-  // Delete the user from DynamoDB
-  const userExistsDynamoDB = await getUserFromDynamoDB(username);
-  if (userExistsDynamoDB) {
-    await dynamoDB
-      .delete({
-        TableName: STUDENT_TABLE,
-        Key: {
-          cpr: username,
-        },
-      })
-      .promise();
-  }
+  console.log(`Initiating rollback for user: ${username}`);
+  try {
+    // Delete the user from DynamoDB
+    const userExistsDynamoDB = await getUserFromDynamoDB(username);
+    if (userExistsDynamoDB) {
+      await deleteUserFromDynamoDB(username);
+      console.log(`Rolled back DynamoDB entry for: ${username}`);
+    }
 
-  // Delete the user from Cognito
-  const userExistsCognito = await getUserFromCognito(username);
-  if (userExistsCognito) {
-    await cognito
-      .adminDeleteUser({
-        UserPoolId: USER_POOL_ID,
-        Username: username,
-      })
-      .promise();
+    // Delete the user from Cognito
+    const userExistsCognito = await getUserFromCognito(username);
+    if (userExistsCognito) {
+      await deleteUserFromCognito(username);
+      console.log(`Rolled back Cognito user: ${username}`);
+    }
+  } catch (error) {
+    console.error(`Error during rollback for ${username}: ${error}`);
+    // Depending on requirements, you might want to handle this differently
   }
 }

@@ -154,6 +154,7 @@ export const onCreateApplication = /* GraphQL */ `subscription OnCreateApplicati
       __typename
     }
     studentCPR
+    allProgramsTextOption
     student {
       cpr
       cprDoc
@@ -176,8 +177,15 @@ export const onCreateApplication = /* GraphQL */ `subscription OnCreateApplicati
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear
@@ -302,6 +310,7 @@ export const onUpdateApplication = /* GraphQL */ `subscription OnUpdateApplicati
       __typename
     }
     studentCPR
+    allProgramsTextOption
     student {
       cpr
       cprDoc
@@ -324,8 +333,15 @@ export const onUpdateApplication = /* GraphQL */ `subscription OnUpdateApplicati
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear
@@ -450,6 +466,7 @@ export const onDeleteApplication = /* GraphQL */ `subscription OnDeleteApplicati
       __typename
     }
     studentCPR
+    allProgramsTextOption
     student {
       cpr
       cprDoc
@@ -472,8 +489,15 @@ export const onDeleteApplication = /* GraphQL */ `subscription OnDeleteApplicati
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear
@@ -557,6 +581,7 @@ export const onCreateProgramChoice = /* GraphQL */ `subscription OnCreateProgram
       programID
       universityID
       studentCPR
+      allProgramsTextOption
       batch
       score
       adminPoints
@@ -631,6 +656,7 @@ export const onUpdateProgramChoice = /* GraphQL */ `subscription OnUpdateProgram
       programID
       universityID
       studentCPR
+      allProgramsTextOption
       batch
       score
       adminPoints
@@ -705,6 +731,7 @@ export const onDeleteProgramChoice = /* GraphQL */ `subscription OnDeleteProgram
       programID
       universityID
       studentCPR
+      allProgramsTextOption
       batch
       score
       adminPoints
@@ -1138,8 +1165,15 @@ export const onCreateStudentLog = /* GraphQL */ `subscription OnCreateStudentLog
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear
@@ -1206,8 +1240,15 @@ export const onUpdateStudentLog = /* GraphQL */ `subscription OnUpdateStudentLog
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear
@@ -1274,8 +1315,15 @@ export const onDeleteStudentLog = /* GraphQL */ `subscription OnDeleteStudentLog
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear
@@ -1519,6 +1567,12 @@ export const onCreateStudent = /* GraphQL */ `subscription OnCreateStudent($filt
       startedAt
       __typename
     }
+    firstName
+    secondName
+    thirdName
+    lastName
+    dob
+    schoolMajor
     m_MasterLogs {
       nextToken
       startedAt
@@ -1526,6 +1580,7 @@ export const onCreateStudent = /* GraphQL */ `subscription OnCreateStudent($filt
     }
     m_firstName
     m_secondName
+    m_thirdName
     m_lastName
     m_numberOfFamilyMembers
     m_graduationYear
@@ -1621,6 +1676,12 @@ export const onUpdateStudent = /* GraphQL */ `subscription OnUpdateStudent($filt
       startedAt
       __typename
     }
+    firstName
+    secondName
+    thirdName
+    lastName
+    dob
+    schoolMajor
     m_MasterLogs {
       nextToken
       startedAt
@@ -1628,6 +1689,7 @@ export const onUpdateStudent = /* GraphQL */ `subscription OnUpdateStudent($filt
     }
     m_firstName
     m_secondName
+    m_thirdName
     m_lastName
     m_numberOfFamilyMembers
     m_graduationYear
@@ -1723,6 +1785,12 @@ export const onDeleteStudent = /* GraphQL */ `subscription OnDeleteStudent($filt
       startedAt
       __typename
     }
+    firstName
+    secondName
+    thirdName
+    lastName
+    dob
+    schoolMajor
     m_MasterLogs {
       nextToken
       startedAt
@@ -1730,6 +1798,7 @@ export const onDeleteStudent = /* GraphQL */ `subscription OnDeleteStudent($filt
     }
     m_firstName
     m_secondName
+    m_thirdName
     m_lastName
     m_numberOfFamilyMembers
     m_graduationYear
@@ -1857,6 +1926,7 @@ export const onCreateScholarship = /* GraphQL */ `subscription OnCreateScholarsh
       programID
       universityID
       studentCPR
+      allProgramsTextOption
       batch
       score
       adminPoints
@@ -1918,6 +1988,7 @@ export const onUpdateScholarship = /* GraphQL */ `subscription OnUpdateScholarsh
       programID
       universityID
       studentCPR
+      allProgramsTextOption
       batch
       score
       adminPoints
@@ -1979,6 +2050,7 @@ export const onDeleteScholarship = /* GraphQL */ `subscription OnDeleteScholarsh
       programID
       universityID
       studentCPR
+      allProgramsTextOption
       batch
       score
       adminPoints
@@ -2201,8 +2273,15 @@ export const onCreateMasterLog = /* GraphQL */ `subscription OnCreateMasterLog($
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear
@@ -2267,8 +2346,15 @@ export const onUpdateMasterLog = /* GraphQL */ `subscription OnUpdateMasterLog($
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear
@@ -2333,8 +2419,15 @@ export const onDeleteMasterLog = /* GraphQL */ `subscription OnDeleteMasterLog($
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear
@@ -2518,8 +2611,15 @@ export const onCreateMasterApplication = /* GraphQL */ `subscription OnCreateMas
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear
@@ -2636,8 +2736,15 @@ export const onUpdateMasterApplication = /* GraphQL */ `subscription OnUpdateMas
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear
@@ -2754,8 +2861,15 @@ export const onDeleteMasterApplication = /* GraphQL */ `subscription OnDeleteMas
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear

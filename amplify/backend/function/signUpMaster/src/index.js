@@ -52,10 +52,11 @@ exports.handler = async (event) => {
       first_name: "m_firstName",
       second_name: "m_secondName",
       last_name: "m_lastName",
+      third_name: "m_thirdName", // Changed from m_thirdName to thirdName
       number_of_family_member: "m_numberOfFamilyMembers",
       graduation_year: "m_graduationYear",
       universityID: "m_universityID",
-      old_program: "m_oldProgram", // If you plan to remove this field later, keep it until it's no longer needed in the schema
+      old_program: "m_oldProgram",
       isEmployed: "m_isEmployeed",
       place_of_employment: "m_placeOfEmployment",
       income: "m_income",
@@ -74,10 +75,11 @@ exports.handler = async (event) => {
       cpr: requestBody.cpr?.trim(),
       email: requestBody.email?.trim() || null,
       phone: requestBody.phone?.trim() || null,
-      gender: requestBody.gender, // If you have an enum, you might do an enum validation here
+      gender: requestBody.gender,
       placeOfBirth: requestBody.place_of_birth?.trim() || null,
       nationality: requestBody.nationality?.trim() || null,
       address: requestBody.address?.trim() || null,
+      dob: requestBody.dob?.trim() || null, // Added dob field
     };
 
     // Copy fields using the fieldMap

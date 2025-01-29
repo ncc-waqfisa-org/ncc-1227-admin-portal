@@ -29,6 +29,7 @@ type Application @model @auth(rules: [{ allow: public }]) {
   universityID: ID
   university: University @belongsTo(fields: ["universityID"])
   studentCPR: String! @index(name: "byCPR", sortKeyFields: ["gpa"])
+  allProgramsTextOption: String
 
   student: Student @belongsTo(fields: ["studentCPR"])
   #  batchID: ID! @index(name: "byBatchRelation") @default(value: "48745538-4051-4c99-ad0f-7be0cac6cf16")
@@ -188,11 +189,18 @@ type Student @model @auth(rules: [{ allow: public }]) {
   ParentInfo: ParentInfo @hasOne(fields: ["parentInfoID"])
   parentInfoID: ID
   StudentLogs: [StudentLog] @hasMany
+  firstName: String
+  secondName: String
+  thirdName: String
+  lastName: String
+  dob: String
+  schoolMajor: String
 
   # MASTER THINGS
   m_MasterLogs: [MasterLog] @hasMany
   m_firstName: String
   m_secondName: String
+  m_thirdName: String
   m_lastName: String
   m_numberOfFamilyMembers: Int
   m_graduationYear: String
@@ -332,7 +340,7 @@ type MasterApplication @model @auth(rules: [{ allow: public }]) {
   major: Major
   reason: String
   income: Income
-  incomeDoc: String
+  incomeDoc: String # not used
 }
 
 type MasterStatistics @model @auth(rules: [{ allow: public }]) {

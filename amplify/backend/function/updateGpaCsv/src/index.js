@@ -1,20 +1,11 @@
 const AWS = require("aws-sdk");
-const csv = require("csv-parser");
 const cognito = new AWS.CognitoIdentityServiceProvider();
-const lambda = new AWS.Lambda();
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
-const {
-  ApplicationTable: APPLICATION_TABLE,
-  AdminTable: ADMIN_TABLE,
-  StudentTable: STUDENT_TABLE,
-  BulkFunction: BULK_FUNCTION,
-} = {
+const { ApplicationTable: APPLICATION_TABLE, AdminTable: ADMIN_TABLE } = {
   ApplicationTable: "Application-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
   AdminTable: "Admin-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
-  StudentTable: "Student-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
-  BulkFunction: "bulkAutoReject-masterdev",
 };
 
 /**
@@ -23,7 +14,10 @@ const {
 exports.handler = async (event) => {
   console.log(`EVENT: ${JSON.stringify(event)}`);
   const token = event.headers?.authorization?.slice(7);
+  console.log("Authorization token extracted:", token);
+
   if (!token) {
+    console.log("Missing authorization token");
     return {
       statusCode: 401,
       body: JSON.stringify({ message: "Unauthorized!" }),
@@ -31,7 +25,10 @@ exports.handler = async (event) => {
   }
 
   const isAdmin = await checkIsAdmin(token);
+  console.log("Is user admin:", isAdmin);
+
   if (!isAdmin) {
+    console.log("User is not an admin");
     return {
       statusCode: 403,
       body: JSON.stringify({ message: "Forbidden. You are not an admin" }),
@@ -40,34 +37,34 @@ exports.handler = async (event) => {
 
   const csvData = event.body;
   if (!csvData) {
+    console.log("Missing CSV data in request body");
     return {
       statusCode: 400,
       body: JSON.stringify({ message: "Missing required parameters, csv" }),
     };
   }
 
+  console.log("csvData from body event: ", csvData);
+
   const batchValue =
     parseInt(event.queryStringParameters?.batch) || new Date().getFullYear();
+  console.log("Batch value:", batchValue);
+
   const applications = await getApplications(batchValue);
+  console.log("Applications retrieved:", applications);
+
   const dataStream = processCsv(csvData, applications);
+  console.log("Processed CSV data:", dataStream);
 
   try {
     await bulkUpdateApplications(APPLICATION_TABLE, batchValue, dataStream);
-
-    // invoke the autoReject lambda function
-    const params = {
-      FunctionName: BULK_FUNCTION,
-      InvocationType: "Event",
-      Payload: JSON.stringify({ batch: batchValue }),
-    };
-    await lambda.invoke(params).promise();
 
     return {
       statusCode: 200,
       body: JSON.stringify({ message: "Applications updated" }),
     };
   } catch (error) {
-    console.error("Error updating applications", error);
+    console.error("Error updating applications:", error);
     return {
       statusCode: 500,
       body: JSON.stringify({ message: "Error updating applications" }),
@@ -76,8 +73,11 @@ exports.handler = async (event) => {
 };
 
 async function bulkUpdateApplications(tableName, batchValue, dataStream) {
+  console.log("Starting bulk update...");
   const updatePromises = dataStream.map(async (row) => {
+    console.log("Processing row:", row);
     let score = calculateScore(row.familyIncome, row.verifiedGPA);
+    console.log("Calculated score:", score);
 
     const params = {
       TableName: tableName,
@@ -90,6 +90,7 @@ async function bulkUpdateApplications(tableName, batchValue, dataStream) {
         ":score": score,
       },
     };
+    console.log("Update params:", params);
 
     return dynamoDB.update(params).promise();
   });
@@ -98,26 +99,49 @@ async function bulkUpdateApplications(tableName, batchValue, dataStream) {
 }
 
 function processCsv(csvData, applications) {
-  const dataStream = csvData
-    .split("\n")
-    .slice(1)
+  let csvString = Buffer.from(csvData, "base64").toString("utf-8");
+  const rows = csvString.split(/\r?\n/).slice(1);
+
+  const dataStream = rows
     .map((row) => {
       const columns = row.split(",");
+      let cpr = columns[0]?.replace(/[^0-9]/g, "");
+      console.log("CPR:", cpr);
+
+      if (cpr.length < 9) {
+        cpr = "0".repeat(9 - cpr.length) + cpr;
+      }
+
       return {
-        id: columns[0],
+        id: applications.find((application) => application.studentCPR === cpr)
+          ?.id,
+        cpr: cpr,
         verifiedGPA: columns[1],
-        familyIncome: columns[2],
+        familyIncome: applications.find(
+          (application) => application.studentCPR === cpr
+        )?.familyIncome,
+        adminPoints:
+          applications.find((application) => application.studentCPR === cpr)
+            ?.adminPoints ?? 0,
       };
     })
-    .filter((row) => row.id && row.verifiedGPA && !isNaN(row.verifiedGPA));
+    .filter(
+      (row) =>
+        row.id &&
+        row.verifiedGPA &&
+        !isNaN(row.verifiedGPA) &&
+        row.cpr.length === 9
+    );
 
   return dataStream;
 }
 
 async function checkIsAdmin(token) {
   try {
+    console.log("Checking if user is admin...");
     const cognitoUser = await cognito.getUser({ AccessToken: token }).promise();
     const username = cognitoUser.Username;
+    console.log("Cognito username:", username);
 
     const params = {
       TableName: ADMIN_TABLE,
@@ -125,36 +149,38 @@ async function checkIsAdmin(token) {
         cpr: username,
       },
     };
+    console.log("Admin table query params:", params);
+
     const { Item } = await dynamoDB.get(params).promise();
+    console.log("Admin table query result:", Item);
+
     return Item !== undefined;
   } catch (error) {
-    console.error("Error checking if user is admin", error);
+    console.error("Error checking if user is admin:", error);
     return false;
   }
 }
 
 function calculateScore(familyIncome, gpa, adminPoints = 0) {
+  console.log(
+    "Calculating score with familyIncome:",
+    familyIncome,
+    "GPA:",
+    gpa
+  );
   let score = gpa * 0.7 + adminPoints;
   if (familyIncome === "LESS_THAN_1500") {
     score += 20;
   } else if (familyIncome === "MORE_THAN_1500") {
     score += 10;
   }
-  return Math.round(score * 100) / 100;
-}
-
-async function getStudent(cpr) {
-  const params = {
-    TableName: STUDENT_TABLE,
-    Key: {
-      cpr: cpr,
-    },
-  };
-  const { Item } = await dynamoDB.get(params).promise();
-  return Item;
+  const roundedScore = Math.round(score * 100) / 100;
+  console.log("Calculated score:", roundedScore);
+  return roundedScore;
 }
 
 async function getApplications(batch) {
+  console.log("Fetching applications for batch:", batch);
   const params = {
     TableName: APPLICATION_TABLE,
     KeyConditionExpression: "#batch = :batchValue",
@@ -170,10 +196,13 @@ async function getApplications(batch) {
 
   let allApplications = [];
   do {
+    console.log("Querying DynamoDB with params:", params);
     const applications = await dynamoDB.query(params).promise();
+    console.log("Applications batch result:", applications.Items);
     allApplications = allApplications.concat(applications.Items);
     params.ExclusiveStartKey = applications.LastEvaluatedKey;
   } while (params.ExclusiveStartKey);
 
+  console.log("All applications retrieved:", allApplications);
   return allApplications;
 }

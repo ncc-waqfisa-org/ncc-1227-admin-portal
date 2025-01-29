@@ -5,6 +5,7 @@ Amplify Params - DO NOT EDIT */
 const AWS = require("aws-sdk");
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
+//TODO: need to work on this also
 const {
   MasterApplicationTable: APPLICATION_TABLE,
   BahrainUniversities: UNIVERSITY_Bahrain_TABLE,

@@ -170,6 +170,7 @@ export const getApplication = /* GraphQL */ `query GetApplication($id: ID!) {
       __typename
     }
     studentCPR
+    allProgramsTextOption
     student {
       cpr
       cprDoc
@@ -192,8 +193,15 @@ export const getApplication = /* GraphQL */ `query GetApplication($id: ID!) {
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear
@@ -257,6 +265,7 @@ export const listApplications = /* GraphQL */ `query ListApplications(
       programID
       universityID
       studentCPR
+      allProgramsTextOption
       batch
       score
       adminPoints
@@ -310,6 +319,7 @@ export const syncApplications = /* GraphQL */ `query SyncApplications(
       programID
       universityID
       studentCPR
+      allProgramsTextOption
       batch
       score
       adminPoints
@@ -375,6 +385,7 @@ export const getProgramChoice = /* GraphQL */ `query GetProgramChoice($id: ID!) 
       programID
       universityID
       studentCPR
+      allProgramsTextOption
       batch
       score
       adminPoints
@@ -838,8 +849,15 @@ export const getStudentLog = /* GraphQL */ `query GetStudentLog($id: ID!) {
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear
@@ -1188,6 +1206,12 @@ export const getStudent = /* GraphQL */ `query GetStudent($cpr: String!) {
       startedAt
       __typename
     }
+    firstName
+    secondName
+    thirdName
+    lastName
+    dob
+    schoolMajor
     m_MasterLogs {
       nextToken
       startedAt
@@ -1195,6 +1219,7 @@ export const getStudent = /* GraphQL */ `query GetStudent($cpr: String!) {
     }
     m_firstName
     m_secondName
+    m_thirdName
     m_lastName
     m_numberOfFamilyMembers
     m_graduationYear
@@ -1273,8 +1298,15 @@ export const listStudents = /* GraphQL */ `query ListStudents(
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear
@@ -1338,8 +1370,15 @@ export const syncStudents = /* GraphQL */ `query SyncStudents(
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear
@@ -1481,6 +1520,7 @@ export const getScholarship = /* GraphQL */ `query GetScholarship($id: ID!) {
       programID
       universityID
       studentCPR
+      allProgramsTextOption
       batch
       score
       adminPoints
@@ -1833,8 +1873,15 @@ export const getMasterLog = /* GraphQL */ `query GetMasterLog($id: ID!) {
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear
@@ -2100,8 +2147,15 @@ export const getMasterApplication = /* GraphQL */ `query GetMasterApplication($i
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear
@@ -2706,6 +2760,7 @@ export const applicationsByIdAndDateTime = /* GraphQL */ `query ApplicationsById
       programID
       universityID
       studentCPR
+      allProgramsTextOption
       batch
       score
       adminPoints
@@ -2763,6 +2818,7 @@ export const applicationsByNationalityCategoryAndBatch = /* GraphQL */ `query Ap
       programID
       universityID
       studentCPR
+      allProgramsTextOption
       batch
       score
       adminPoints
@@ -2820,6 +2876,7 @@ export const applicationsByStudentCPRAndGpa = /* GraphQL */ `query ApplicationsB
       programID
       universityID
       studentCPR
+      allProgramsTextOption
       batch
       score
       adminPoints
@@ -2877,6 +2934,7 @@ export const applicationsByBatchAndStatus = /* GraphQL */ `query ApplicationsByB
       programID
       universityID
       studentCPR
+      allProgramsTextOption
       batch
       score
       adminPoints
@@ -2934,6 +2992,7 @@ export const applicationsByScoreAndStatus = /* GraphQL */ `query ApplicationsByS
       programID
       universityID
       studentCPR
+      allProgramsTextOption
       batch
       score
       adminPoints
@@ -2991,6 +3050,7 @@ export const applicationsByProcessedAndBatch = /* GraphQL */ `query Applications
       programID
       universityID
       studentCPR
+      allProgramsTextOption
       batch
       score
       adminPoints
@@ -3136,8 +3196,15 @@ export const studentsByNationalityCategoryAndGraduationDate = /* GraphQL */ `que
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear
@@ -3203,8 +3270,15 @@ export const studentsByM_universityID = /* GraphQL */ `query StudentsByM_univers
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear

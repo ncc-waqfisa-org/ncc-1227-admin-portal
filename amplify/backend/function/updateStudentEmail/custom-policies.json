@@ -1,6 +1,9 @@
 [
   {
-    "Action": [],
-    "Resource": []
+    "Effect": "Allow",
+    "Action": ["cognito-idp:AdminUpdateUserAttributes", "cognito-idp:GetUser"],
+    "Resource": [
+      "arn:aws:cognito-idp:us-east-1:232269327483:userpool/us-east-1_79xE8d6FS"
+    ]
   }
 ]

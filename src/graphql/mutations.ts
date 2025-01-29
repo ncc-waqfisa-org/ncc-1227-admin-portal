@@ -158,6 +158,7 @@ export const createApplication = /* GraphQL */ `mutation CreateApplication(
       __typename
     }
     studentCPR
+    allProgramsTextOption
     student {
       cpr
       cprDoc
@@ -180,8 +181,15 @@ export const createApplication = /* GraphQL */ `mutation CreateApplication(
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear
@@ -307,6 +315,7 @@ export const updateApplication = /* GraphQL */ `mutation UpdateApplication(
       __typename
     }
     studentCPR
+    allProgramsTextOption
     student {
       cpr
       cprDoc
@@ -329,8 +338,15 @@ export const updateApplication = /* GraphQL */ `mutation UpdateApplication(
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear
@@ -456,6 +472,7 @@ export const deleteApplication = /* GraphQL */ `mutation DeleteApplication(
       __typename
     }
     studentCPR
+    allProgramsTextOption
     student {
       cpr
       cprDoc
@@ -478,8 +495,15 @@ export const deleteApplication = /* GraphQL */ `mutation DeleteApplication(
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear
@@ -564,6 +588,7 @@ export const createProgramChoice = /* GraphQL */ `mutation CreateProgramChoice(
       programID
       universityID
       studentCPR
+      allProgramsTextOption
       batch
       score
       adminPoints
@@ -639,6 +664,7 @@ export const updateProgramChoice = /* GraphQL */ `mutation UpdateProgramChoice(
       programID
       universityID
       studentCPR
+      allProgramsTextOption
       batch
       score
       adminPoints
@@ -714,6 +740,7 @@ export const deleteProgramChoice = /* GraphQL */ `mutation DeleteProgramChoice(
       programID
       universityID
       studentCPR
+      allProgramsTextOption
       batch
       score
       adminPoints
@@ -1169,8 +1196,15 @@ export const createStudentLog = /* GraphQL */ `mutation CreateStudentLog(
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear
@@ -1238,8 +1272,15 @@ export const updateStudentLog = /* GraphQL */ `mutation UpdateStudentLog(
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear
@@ -1307,8 +1348,15 @@ export const deleteStudentLog = /* GraphQL */ `mutation DeleteStudentLog(
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear
@@ -1567,6 +1615,12 @@ export const createStudent = /* GraphQL */ `mutation CreateStudent(
       startedAt
       __typename
     }
+    firstName
+    secondName
+    thirdName
+    lastName
+    dob
+    schoolMajor
     m_MasterLogs {
       nextToken
       startedAt
@@ -1574,6 +1628,7 @@ export const createStudent = /* GraphQL */ `mutation CreateStudent(
     }
     m_firstName
     m_secondName
+    m_thirdName
     m_lastName
     m_numberOfFamilyMembers
     m_graduationYear
@@ -1672,6 +1727,12 @@ export const updateStudent = /* GraphQL */ `mutation UpdateStudent(
       startedAt
       __typename
     }
+    firstName
+    secondName
+    thirdName
+    lastName
+    dob
+    schoolMajor
     m_MasterLogs {
       nextToken
       startedAt
@@ -1679,6 +1740,7 @@ export const updateStudent = /* GraphQL */ `mutation UpdateStudent(
     }
     m_firstName
     m_secondName
+    m_thirdName
     m_lastName
     m_numberOfFamilyMembers
     m_graduationYear
@@ -1777,6 +1839,12 @@ export const deleteStudent = /* GraphQL */ `mutation DeleteStudent(
       startedAt
       __typename
     }
+    firstName
+    secondName
+    thirdName
+    lastName
+    dob
+    schoolMajor
     m_MasterLogs {
       nextToken
       startedAt
@@ -1784,6 +1852,7 @@ export const deleteStudent = /* GraphQL */ `mutation DeleteStudent(
     }
     m_firstName
     m_secondName
+    m_thirdName
     m_lastName
     m_numberOfFamilyMembers
     m_graduationYear
@@ -1921,6 +1990,7 @@ export const createScholarship = /* GraphQL */ `mutation CreateScholarship(
       programID
       universityID
       studentCPR
+      allProgramsTextOption
       batch
       score
       adminPoints
@@ -1983,6 +2053,7 @@ export const updateScholarship = /* GraphQL */ `mutation UpdateScholarship(
       programID
       universityID
       studentCPR
+      allProgramsTextOption
       batch
       score
       adminPoints
@@ -2045,6 +2116,7 @@ export const deleteScholarship = /* GraphQL */ `mutation DeleteScholarship(
       programID
       universityID
       studentCPR
+      allProgramsTextOption
       batch
       score
       adminPoints
@@ -2276,8 +2348,15 @@ export const createMasterLog = /* GraphQL */ `mutation CreateMasterLog(
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear
@@ -2345,8 +2424,15 @@ export const updateMasterLog = /* GraphQL */ `mutation UpdateMasterLog(
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear
@@ -2414,8 +2500,15 @@ export const deleteMasterLog = /* GraphQL */ `mutation DeleteMasterLog(
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear
@@ -2603,8 +2696,15 @@ export const createMasterApplication = /* GraphQL */ `mutation CreateMasterAppli
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear
@@ -2722,8 +2822,15 @@ export const updateMasterApplication = /* GraphQL */ `mutation UpdateMasterAppli
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear
@@ -2841,8 +2948,15 @@ export const deleteMasterApplication = /* GraphQL */ `mutation DeleteMasterAppli
       graduationDate
       address
       parentInfoID
+      firstName
+      secondName
+      thirdName
+      lastName
+      dob
+      schoolMajor
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear

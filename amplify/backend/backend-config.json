@@ -54,6 +54,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "bulkAutoRejectMaster": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "deleteAdmin": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -77,6 +82,11 @@
     "exportEligibleCsv": {
       "build": true,
       "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "exportEligibleCsvMaster": {
+      "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
@@ -111,6 +121,11 @@
       "service": "Lambda"
     },
     "getStatisticsMaster": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "otpResend": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
@@ -156,6 +171,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "updateGpaCsvMaster": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "updateStatistics": {
       "build": true,
       "dependsOn": [],
@@ -168,6 +188,11 @@
       "service": "Lambda"
     },
     "updateStudentEmail": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "verifiyStudentEmail": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
@@ -187,6 +212,22 @@
         {
           "category": "function",
           "resourceName": "SignUpMaster"
+        }
+      ]
+    },
+    "AMPLIFY_function_bulkAutoRejectMaster_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "bulkAutoRejectMaster"
+        }
+      ]
+    },
+    "AMPLIFY_function_bulkAutoRejectMaster_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "bulkAutoRejectMaster"
         }
       ]
     },
@@ -267,6 +308,22 @@
         {
           "category": "function",
           "resourceName": "exportApplicationsCsv"
+        }
+      ]
+    },
+    "AMPLIFY_function_exportEligibleCsvMaster_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "exportEligibleCsvMaster"
+        }
+      ]
+    },
+    "AMPLIFY_function_exportEligibleCsvMaster_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "exportEligibleCsvMaster"
         }
       ]
     },
@@ -398,6 +455,22 @@
         }
       ]
     },
+    "AMPLIFY_function_otpResend_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "otpResend"
+        }
+      ]
+    },
+    "AMPLIFY_function_otpResend_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "otpResend"
+        }
+      ]
+    },
     "AMPLIFY_function_revertAutoReject_deploymentBucketName": {
       "usedBy": [
         {
@@ -526,6 +599,22 @@
         }
       ]
     },
+    "AMPLIFY_function_updateGpaCsvMaster_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateGpaCsvMaster"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateGpaCsvMaster_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateGpaCsvMaster"
+        }
+      ]
+    },
     "AMPLIFY_function_updateGpaCsv_deploymentBucketName": {
       "usedBy": [
         {
@@ -587,6 +676,22 @@
         {
           "category": "function",
           "resourceName": "updateStudentEmail"
+        }
+      ]
+    },
+    "AMPLIFY_function_verifiyStudentEmail_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "verifiyStudentEmail"
+        }
+      ]
+    },
+    "AMPLIFY_function_verifiyStudentEmail_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "verifiyStudentEmail"
         }
       ]
     }

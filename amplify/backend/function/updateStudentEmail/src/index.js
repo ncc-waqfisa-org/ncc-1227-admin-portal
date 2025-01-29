@@ -37,11 +37,12 @@ exports.handler = async (event) => {
 
     const token = event.headers.authorization.slice(7);
 
-    // Use cognito to validate the token
+    // Declare cognitoUser outside the try block
+    let cognitoUser;
+
+    // Use Cognito to validate the token
     try {
-      const cognitoUser = await cognito
-        .getUser({ AccessToken: token })
-        .promise();
+      cognitoUser = await cognito.getUser({ AccessToken: token }).promise();
       console.log(cognitoUser);
       if (cognitoUser.Username !== username) {
         return {
@@ -63,19 +64,12 @@ exports.handler = async (event) => {
       };
     }
 
-    // Update the user's email in Cognito user pool
     await updateUserEmailInCognito(username, newEmail);
-    await updateStudentEmail(username, newEmail);
 
     return {
       statusCode: 200,
-      //  Uncomment below to enable CORS requests
-      //  headers: {
-      //      "Access-Control-Allow-Origin": "*",
-      //      "Access-Control-Allow-Headers": "*"
-      //  },
       body: JSON.stringify({
-        message: "Email updated successfully",
+        message: "Email OTP sent successfully",
         newEmail: newEmail,
       }),
     };
@@ -92,17 +86,29 @@ exports.handler = async (event) => {
 };
 
 async function updateUserEmailInCognito(username, newEmail) {
-  const params = {
-    UserPoolId: USER_POOL_ID,
-    Username: username,
-    UserAttributes: [
-      {
-        Name: "email",
-        Value: newEmail,
-      },
-    ],
-  };
-  await cognito.adminUpdateUserAttributes(params).promise();
+  try {
+    console.log("Try to update user with new email: ", username, newEmail);
+    const params = {
+      UserPoolId: USER_POOL_ID,
+      Username: username,
+      UserAttributes: [
+        {
+          Name: "email",
+          Value: newEmail,
+        },
+      ],
+    };
+    const response = await cognito.adminUpdateUserAttributes(params).promise();
+    console.log("Update response:", response);
+  } catch (error) {
+    console.error("Detailed error:", {
+      code: error.code,
+      message: error.message,
+      stack: error.stack,
+    });
+    console.error(error.message);
+    throw error;
+  }
 }
 
 async function getUserFromDynamoDB(username) {
@@ -116,24 +122,6 @@ async function getUserFromDynamoDB(username) {
   return Item !== undefined;
 }
 
-async function updateStudentEmail(username, newEmail) {
-  const currentTime = new Date().toISOString();
-
-  const params = {
-    TableName: STUDENT_TABLE,
-    Key: {
-      cpr: username,
-    },
-    UpdateExpression: "set email = :e, updatedAt = :updatedAt",
-    ExpressionAttributeValues: {
-      ":e": newEmail,
-      ":updatedAt": currentTime,
-    },
-  };
-
-  return dynamoDB.update(params).promise();
-}
-
 function validate(username, newEmail) {
   if (!username || !newEmail) {
     return {
@@ -145,7 +133,7 @@ function validate(username, newEmail) {
     };
   }
 
-  // simple email validation
+  // Simple email validation
   if (!newEmail.includes("@")) {
     return {
       statusCode: 400,
