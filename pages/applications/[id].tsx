@@ -35,6 +35,8 @@ import { DownloadFileFromUrl } from "../../components/download-file-from-url";
 import { Textarea } from "../../components/ui/textarea";
 import { Divider } from "@aws-amplify/ui-react";
 
+import { IoMdArrowRoundBack } from "react-icons/io";
+
 interface Props {
   application: Application;
   scholarship: {
@@ -76,11 +78,17 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 const ApplicationInfo: FC<Props> = (props) => {
   const { t } = useTranslation("applications");
-  const { locale } = useRouter();
+  const { t: tCommon } = useTranslation("common");
+  const { locale, back } = useRouter();
 
   return (
     <div>
       <PageComponent title={"ApplicationInfo"}>
+        <button className="flex-1 btn btn-ghost" onClick={back}>
+          <IoMdArrowRoundBack />
+
+          {tCommon("back")}
+        </button>
         <Toaster />
         <div className="flex items-center justify-between">
           <div className="text-2xl font-semibold ">{t("application")}</div>

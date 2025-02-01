@@ -267,18 +267,16 @@ const MasterApplicationInfo: FC<Props> = (props) => {
                 <MasterInfoForm student={props.application.student} />
               </AccordionContent>
             </AccordionItem>
-            {/* <AccordionItem value="guardianInformation">
+            <AccordionItem value="guardianInformation">
               <AccordionTrigger className="text-xl font-medium">
                 {t("guardianInformation")}
               </AccordionTrigger>
               <AccordionContent>
                 {props.application.student.m_guardianCPR && (
-                  // <UpdateParentInfo
-                  //   parentInfo={props.application.student.ParentInfo}
-                  // />
-                )} 
+                  <MasterInfoForm student={props.application.student} />
+                )}
               </AccordionContent>
-            </AccordionItem> */}
+            </AccordionItem>
           </Accordion>
         )}
       </PageComponent>

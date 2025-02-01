@@ -93,6 +93,7 @@ export type MasterUpdateData = {
 
   first_name: string;
   second_name: string;
+  third_name: string;
   last_name: string;
   address: string;
 
@@ -128,6 +129,7 @@ export type MasterUpdateFormSchema = {
 
   first_name: string;
   second_name: string;
+  third_name: string;
   last_name: string;
   address: string;
 

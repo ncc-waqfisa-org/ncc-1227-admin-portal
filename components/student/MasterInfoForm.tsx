@@ -27,6 +27,8 @@ import {
 } from "../../src/API";
 
 import GetStorageLinkComponent from "../get-storage-link-component";
+import DatePicker from "react-datepicker";
+// import "react-datepicker/dist/react-datepicker.css";
 
 // Add an optional readOnly that will disable all fields and remove the update button
 export default function MasterInfoForm({
@@ -50,9 +52,14 @@ export default function MasterInfoForm({
     income_doc: null,
   });
 
+  const [dateOfBirth, setDateOfBirth] = useState<Date | null>(
+    student.dob ? new Date(student.dob) : new Date()
+  );
+
   const initialValues: MasterUpdateFormSchema = {
     first_name: student?.m_firstName ?? "",
     second_name: student?.m_secondName ?? "",
+    third_name: student?.m_thirdName ?? "",
     last_name: student?.m_lastName ?? "",
 
     address: student?.address ?? "",
@@ -85,6 +92,7 @@ export default function MasterInfoForm({
 
     first_name: yup.string().required(`${tErrors("requiredField")}`),
     second_name: yup.string().required(`${tErrors("requiredField")}`),
+    third_name: yup.string().required(`${tErrors("requiredField")}`),
     last_name: yup.string().required(`${tErrors("requiredField")}`),
     address: yup.string().required(`${tErrors("requiredField")}`),
 
@@ -148,6 +156,7 @@ export default function MasterInfoForm({
 
           m_firstName: values.first_name,
           m_secondName: values.second_name,
+          m_thirdName: values.third_name,
           m_lastName: values.last_name,
           m_isEmployed: values.isEmployed,
           m_graduationYear: values.graduation_year,
@@ -171,7 +180,7 @@ export default function MasterInfoForm({
     async onSuccess(data) {
       if (data?.updateStudent?.cpr) {
         // syncStudent();
-        // TODO: sync studnet data
+        // TODO: sync student data
         toast.success(`${tToast("processComplete")}`);
       } else {
         throw new Error(`${tErrors("somethingWentWrong")}`);
@@ -354,7 +363,7 @@ export default function MasterInfoForm({
                   }
                 />
                 {/* User Name */}
-                <div className="grid grid-cols-1 gap-4 md:col-span-2 md:grid-cols-3">
+                <div className="grid grid-cols-1 gap-4 md:col-span-2 md:grid-cols-4">
                   <LabelField
                     title={t("firstName")}
                     fieldName={"first_name"}
@@ -372,6 +381,17 @@ export default function MasterInfoForm({
                     value={values.second_name}
                     errors={errors.second_name}
                     touched={touched.second_name}
+                    handleChange={handleChange}
+                    handleBlur={handleBlur}
+                    setFieldError={setFieldError}
+                    setFieldValue={setFieldValue}
+                  />
+                  <LabelField
+                    title={t("thirdName")}
+                    fieldName={"third_name"}
+                    value={values.third_name}
+                    errors={errors.third_name}
+                    touched={touched.third_name}
                     handleChange={handleChange}
                     handleBlur={handleBlur}
                     setFieldError={setFieldError}
@@ -468,6 +488,15 @@ export default function MasterInfoForm({
                     }
                   />
                 </div> */}
+
+                <div>
+                  <label className=" label">{t("dateOfBirth")}</label>
+                  <DatePicker
+                    className=" w-full input input-bordered input-primary"
+                    selected={dateOfBirth}
+                    onChange={(date) => setDateOfBirth(date)}
+                  />
+                </div>
 
                 <LabelField
                   title={t("placeOfBirth")}

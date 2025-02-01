@@ -92,7 +92,7 @@ const Home = () => {
                 </div>
                 {isPending ? (
                   <div className="flex items-center justify-center p-4 rounded-md animate-pulse bg-black/10">
-                    <p>{t("loading")}</p>
+                     <p>{t("loading")}</p>
                   </div>
                 ) : (
                   <div className="flex flex-col justify-between w-full p-4">

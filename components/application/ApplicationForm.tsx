@@ -251,7 +251,7 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 max-w-4xl mx-auto">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
