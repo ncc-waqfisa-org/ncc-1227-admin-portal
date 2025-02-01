@@ -48,23 +48,22 @@ interface ApplicationsStatusFilterProps {
   // handleSearchChange: (value: string) => void;
   selectedStatus: Status | string | undefined;
   // search: string;
-  table?: Table<InfiniteApplication>;
+  masterTable?: Table<InfiniteMasterApplication>;
 }
 
-export const BatchApplicationsToolbar: React.FC<
+export const BatchMasterApplicationsToolbar: React.FC<
   ApplicationsStatusFilterProps
 > = ({
   selectedStatus,
   handleStatusChange,
   handleBatchChange,
   // handleSearchChange,
-  table,
+  masterTable,
   // search,
 }) => {
   const {
     batch,
     resetApplicationsFilter,
-    searchCpr,
     searchedCpr,
     searchMasterCpr,
     resetApplications,
@@ -93,7 +92,7 @@ export const BatchApplicationsToolbar: React.FC<
 
   async function autoRejectApplications(): Promise<void> {
     await toast.promise(
-      fetch(`${process.env.NEXT_PUBLIC_LAMBDA_PUT_AUTO_REJECT_BACHELOR}`, {
+      fetch(`${process.env.NEXT_PUBLIC_LAMBDA_PUT_AUTO_REJECT_MASTER}`, {
         method: "PUT",
         headers: {
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -113,7 +112,7 @@ export const BatchApplicationsToolbar: React.FC<
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof searchFormSchema>) {
-    table && searchCpr(values.cpr);
+    masterTable && searchMasterCpr(values.cpr);
   }
 
   return (
@@ -193,11 +192,12 @@ export const BatchApplicationsToolbar: React.FC<
         )}
       </div>
       <BatchSelector handleBatchChange={handleBatchChange} />
-      {(table?.getIsSomeRowsSelected() || table?.getIsAllRowsSelected()) && (
+      {(masterTable?.getIsSomeRowsSelected() ||
+        masterTable?.getIsAllRowsSelected()) && (
         <Button
           onClick={() => {
-            table.toggleAllRowsSelected(false);
-            const selectedApplications = table
+            masterTable.toggleAllRowsSelected(false);
+            const selectedApplications = masterTable
               .getSelectedRowModel()
               .rows.map((row) => row.original);
             const selectedApplicationsIds = selectedApplications.map(
@@ -264,8 +264,9 @@ export const BatchApplicationsToolbar: React.FC<
                 }
               })
               .finally(() => {
-                if (table) {
-                  table.toggleAllRowsSelected(false);
+                if (masterTable) {
+                  masterTable.toggleAllRowsSelected(false);
+                  console.log("changing batch");
                 }
               }),
             {
@@ -280,7 +281,7 @@ export const BatchApplicationsToolbar: React.FC<
       </Button>
       <Link
         className={cn(buttonVariants({ variant: "outline" }))}
-        href={`/batches/${batch}`}
+        href={`/batches/masters/${batch}`}
       >
         {t("goToBatch")}
       </Link>

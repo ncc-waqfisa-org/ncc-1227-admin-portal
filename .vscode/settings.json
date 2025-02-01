@@ -11,6 +11,7 @@
   "cSpell.words": [
     "Appstore",
     "chartjs",
+    "CPRS",
     "daisyui",
     "Formik",
     "hookform",
@@ -25,11 +26,10 @@
     "Salman",
     "tailwindcss",
     "tanstack",
-    "unparse"
+    "unparse",
+    "Waqfisa"
   ],
-  "i18n-ally.localesPaths": [
-    "public/locales"
-  ],
+  "i18n-ally.localesPaths": ["public/locales"],
   "i18n-ally.keystyle": "nested",
   "react-i18n.i18nPaths": "public/locales"
 }

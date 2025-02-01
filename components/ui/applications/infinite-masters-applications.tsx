@@ -38,6 +38,7 @@ import { Status } from "../../../src/API";
 import { FiAlertCircle, FiCircle } from "react-icons/fi";
 import { Program } from "../../../src/models";
 import { DataTableToolbar } from "./data-table-toolbar";
+import { BatchMasterApplicationsToolbar } from "./batch-master-applications-toolbar";
 
 export const InfiniteMasterApplications = () => {
   //we need a reference to the scrolling element for logic down below
@@ -103,7 +104,7 @@ export const InfiniteMasterApplications = () => {
         ),
         cell: ({ row }) => (
           <Link
-            href={`/applications/${row.original.id}`}
+            href={`/applications/masters/${row.original.id}`}
             className=" hover:text-anzac-400"
           >
             <p className="font-semibold">{row.original.studentName}</p>
@@ -169,6 +170,7 @@ export const InfiniteMasterApplications = () => {
           return value.includes(row.getValue(id));
         },
       },
+
       {
         size: 100,
         accessorKey: "attentionNeeded",
@@ -347,7 +349,7 @@ export const InfiniteMasterApplications = () => {
           <DataTableColumnHeader column={column} title={common("view")} />
         ),
         cell: ({ row }) => (
-          <Link href={`/applications/${row.original.id}`}>
+          <Link href={`/applications/masters/${row.original.id}`}>
             <Button variant={"outline"}>{common("view")}</Button>
           </Link>
         ),
@@ -451,12 +453,12 @@ export const InfiniteMasterApplications = () => {
       rowVirtualizer.scrollToIndex?.(0);
     }
   };
-  // const handleSearchChange = (updater: string) => {
-  //   setSearch(updater);
-  //   if (!!table.getRowModel().rows.length) {
-  //     rowVirtualizer.scrollToIndex?.(0);
-  //   }
-  // };
+  const handleSearchChange = (updater: string) => {
+    setSearch(updater);
+    if (!!table.getRowModel().rows.length) {
+      rowVirtualizer.scrollToIndex?.(0);
+    }
+  };
 
   const { rows } = table?.getRowModel();
 
@@ -483,20 +485,18 @@ export const InfiniteMasterApplications = () => {
     );
   }
 
-  console.log(masterApplicationsData);
-
   return (
     <div className="relative flex flex-col gap-4">
       <div className="flex flex-wrap items-baseline gap-3">
-        {/* <BatchApplicationsToolbar
+        <BatchMasterApplicationsToolbar
           handleStatusChange={handleStatusChange}
           selectedStatus={selectedStatus}
           handleBatchChange={handleBatchChange}
           // handleSearchChange={handleSearchChange}
-          table={table}
-        /> */}
+          masterTable={table}
+        />
       </div>
-      <DataTableToolbar table={table} />
+      {/* <DataTableToolbar table={table} />x */}
       <div
         className=" border rounded-md overflow-auto relative h-[600px] space-y-4"
         onScroll={(e) => fetchMoreOnBottomReached(e.target as HTMLDivElement)}

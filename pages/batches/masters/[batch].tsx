@@ -116,7 +116,7 @@ const SingleMasterBatchPage: FC<PageType> = ({ batchYear }) => {
           <div className="flex flex-wrap gap-3 p-3 border rounded-lg">
             <DownloadFileFromUrl
               fileName={"Eligible-CPR's"}
-              url={`${process.env.NEXT_PUBLIC_ELIGIBLE_CPRS_ENDPOINT}?batch=${batchYear}`}
+              url={`${process.env.NEXT_PUBLIC_ELIGIBLE_MASTERS_CPRS_ENDPOINT}?batch=${batchYear}`}
             >
               {t("downloadCPRsList")}
             </DownloadFileFromUrl>

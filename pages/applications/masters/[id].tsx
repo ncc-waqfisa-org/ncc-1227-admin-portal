@@ -217,7 +217,7 @@ const MasterApplicationInfo: FC<Props> = (props) => {
                       props.application.studentCPR
                     }`}
                   </DialogDescription>
-                  {/* Download Condtract template */}
+                  {/* Download Contract template */}
                 </DialogHeader>
                 <div className="flex flex-col gap-3">
                   <div className="flex flex-col gap-1">

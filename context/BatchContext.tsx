@@ -359,19 +359,19 @@ function useBatchProviderApp() {
       })) as TInfiniteMasterApplications;
     setMasterApplicationsData(fetchedData.data);
     setNextMasterApplicationsKey(fetchedData.nextStartKey);
-    console.log(fetchedData);
+
     return fetchedData;
   }
 
   //comments
 
-  // useEffect(() => {
-  //   if (token) {
-  //     fetchFirstMasterApplicationsPage();
-  //   }
+  useEffect(() => {
+    if (token) {
+      fetchFirstMasterApplicationsPage();
+    }
 
-  //   return () => {};
-  // }, [token]);
+    return () => {};
+  }, [token]);
 
   //TODO fetch first master scholarships page
   async function fetchFirstMasterScholarshipsPage() {
