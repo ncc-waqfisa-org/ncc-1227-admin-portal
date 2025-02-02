@@ -98,6 +98,7 @@ export type MasterUpdateData = {
   third_name: string;
   last_name: string;
   address: string;
+  dob: string;
 
   phone: string;
   gender: string;
@@ -138,6 +139,7 @@ export type MasterUpdateFormSchema = {
   third_name: string;
   last_name: string;
   address: string;
+  dob: string;
 
   phone: string;
   gender: string;

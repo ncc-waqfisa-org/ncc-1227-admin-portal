@@ -15,7 +15,7 @@ interface Props {
   masterUniversities: MasterAppliedUniversities[] | undefined;
   bahrainiUniversities: BahrainUniversities[] | undefined;
   isOpen: boolean;
-  onClose: () => void;
+  onClose: (isOpen: boolean) => void;
 }
 const AddMasterUniversityDialog = ({
   masterUniversities,
@@ -35,12 +35,14 @@ const AddMasterUniversityDialog = ({
     universityType: [] as string[],
   };
 
+  const [isDialogOpen, setIsDialogOpen] = useState(isOpen);
+
   return (
     <>
-      <div className={` modal ${isOpen && "modal-open"}`}>
+      <div className={` modal ${(isOpen || isDialogOpen) && "modal-open"}`}>
         <div className="relative modal-box">
           <label
-            onClick={onClose}
+            onClick={() => onClose(isOpen)}
             className="absolute btn btn-sm btn-circle right-2 top-2"
           >
             ✕
@@ -84,11 +86,25 @@ const AddMasterUniversityDialog = ({
                         values.universityName.toLowerCase()
                     );
 
-                  if (masterUniAlreadyExists || bahrainiUniAlreadyExists) {
+                  if (
+                    values.universityType.includes("mastersUni") &&
+                    masterUniAlreadyExists
+                  ) {
                     uniFound = true;
-                  } else {
-                    uniFound = false;
                   }
+
+                  if (
+                    values.universityType.includes("bahrainiUni") &&
+                    bahrainiUniAlreadyExists
+                  ) {
+                    uniFound = true;
+                  }
+
+                  // if (masterUniAlreadyExists || bahrainiUniAlreadyExists) {
+                  //   uniFound = true;
+                  // } else {
+                  //   uniFound = false;
+                  // }
 
                   if (uniFound) {
                     toast.error(t("aUniversityAlreadyExistsWithTheSameName"));
@@ -102,8 +118,10 @@ const AddMasterUniversityDialog = ({
                             availability: values.availability.toString(),
                           },
                         };
-                      onClose(); // Call onClose prop to communicate dialog should close
-                      toast
+                      console.log(isOpen);
+                      onClose(!isOpen); // Call onClose prop to communicate dialog should close
+                      console.log(isOpen);
+                      await toast
                         .promise(
                           addNewMasterUniversity(
                             createMasterUniversityVariableInput
@@ -128,7 +146,7 @@ const AddMasterUniversityDialog = ({
                         })
                         .finally(() => {
                           // setIsSubmitted(false);
-                          onClose();
+                          onClose(!isOpen);
                         });
                     }
 
@@ -143,7 +161,7 @@ const AddMasterUniversityDialog = ({
                         };
                       //   isOpen = !isOpen;
                       // setIsSubmitted(true);
-                      toast
+                      await toast
                         .promise(
                           addNewBahrainiUniversity(
                             createBahrainiUniversityVariableInput

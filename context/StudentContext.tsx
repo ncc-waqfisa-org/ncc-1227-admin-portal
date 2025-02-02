@@ -283,6 +283,7 @@ function useProviderStudent() {
     specialization
     studentOrderAmongSiblings
     address
+    dob
     ParentInfo {
       id
       _version
@@ -510,6 +511,7 @@ export async function getApplicationByIdAPI(
           secondaryMobile
           updatedAt
         }
+        dob
         _deleted
         _version
         address
@@ -531,6 +533,10 @@ export async function getApplicationByIdAPI(
         nationality
         nationalityCategory
         schoolType
+        firstName
+        secondName
+        thirdName
+        lastName
       }
       updatedAt
       createdAt

@@ -27,6 +27,9 @@ import GetStorageLinkComponent from "../get-storage-link-component";
 import { PhoneNumberInput } from "../phone";
 import { createStudentInfoChangeSnapshot } from "./studentAdminLog";
 import { useAuth } from "../../hooks/use-auth";
+import { TextField } from "@aws-amplify/ui-react";
+import React from "react";
+import { format } from "date-fns";
 
 interface Props {
   student: Student;
@@ -36,6 +39,11 @@ interface Props {
 interface FormValues {
   cprDocFile: string | null | undefined;
   fullName: string | null | undefined;
+  firstName: string | null | undefined;
+  secondName: string | null | undefined;
+  thirdName: string | null | undefined;
+  lastName: string | null | undefined;
+  dob: string | null | undefined;
   phone: string | null | undefined;
   gender: Gender | null | undefined;
   schoolName: string | null | undefined;
@@ -87,6 +95,11 @@ export default function ViewAccount({ student, applicationId }: Props) {
     preferredLanguage: student.preferredLanguage,
     graduationDate: student.graduationDate,
     address: student.address,
+    dob: student.dob,
+    firstName: student.firstName,
+    secondName: student.secondName,
+    thirdName: student.thirdName,
+    lastName: student.lastName,
   };
 
   async function updateProcess(inputs: UpdateStudentMutationVariables) {
@@ -128,6 +141,8 @@ export default function ViewAccount({ student, applicationId }: Props) {
         throw err;
       });
   }
+
+  const [dateOfBirth, setDateOfBirth] = React.useState(initialValues.dob);
 
   return (
     <Formik
@@ -357,22 +372,75 @@ export default function ViewAccount({ student, applicationId }: Props) {
           </div>
 
           {/* FullName */}
-          <div className="flex flex-col justify-start w-full">
-            <label className="label">{t("fullName")}</label>
-            <Field
-              dir="ltr"
-              type="text"
-              name="fullName"
-              title="fullName"
-              placeholder="Full name"
-              className={`input input-bordered input-primary`}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.fullName}
-            />
-            <label className="label-text-alt text-error">
-              {errors.fullName && touched.fullName && errors.fullName}
-            </label>
+          <div className=" md:col-span-2 grid grid-cols-1 gap-4 md:grid-cols-4">
+            <div className="flex flex-col justify-start w-full">
+              <label className="label">{t("firstName")}</label>
+              <Field
+                dir="ltr"
+                type="text"
+                name="firstName"
+                title="firstName"
+                placeholder="First name"
+                className={`input input-bordered input-primary`}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.firstName}
+              />
+              <label className="label-text-alt text-error">
+                {errors.firstName && touched.firstName && errors.firstName}
+              </label>
+            </div>
+            <div className="flex flex-col justify-start w-full">
+              <label className="label">{t("secondName")}</label>
+              <Field
+                dir="ltr"
+                type="text"
+                name="secondName"
+                title="secondName"
+                placeholder="Second name"
+                className={`input input-bordered input-primary`}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.secondName}
+              />
+              <label className="label-text-alt text-error">
+                {errors.secondName && touched.secondName && errors.secondName}
+              </label>
+            </div>
+            <div className="flex flex-col justify-start w-full">
+              <label className="label">{t("thirdName")}</label>
+              <Field
+                dir="ltr"
+                type="text"
+                name="thirdName"
+                title="thirdName"
+                placeholder="Third name"
+                className={`input input-bordered input-primary`}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.thirdName}
+              />
+              <label className="label-text-alt text-error">
+                {errors.thirdName && touched.thirdName && errors.thirdName}
+              </label>
+            </div>
+            <div className="flex flex-col justify-start w-full">
+              <label className="label">{t("lastName")}</label>
+              <Field
+                dir="ltr"
+                type="text"
+                name="lastName"
+                title="lastName"
+                placeholder="Last name"
+                className={`input input-bordered input-primary`}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.lastName}
+              />
+              <label className="label-text-alt text-error">
+                {errors.lastName && touched.lastName && errors.lastName}
+              </label>
+            </div>
           </div>
 
           {/* Gender */}
@@ -565,6 +633,22 @@ export default function ViewAccount({ student, applicationId }: Props) {
                 errors.nationalityCategory}
             </label>
           </div>
+
+          <TextField
+            label={t("dateOfBirth")}
+            isRequired={false}
+            isReadOnly={false}
+            type="date"
+            value={dateOfBirth ? format(dateOfBirth, "yyyy-MM-dd") : undefined}
+            onChange={(e) => {
+              let { value } = e.target;
+              const date = new Date(value);
+              setDateOfBirth(date.toISOString());
+
+              handleChange(date.toISOString());
+            }}
+            errorMessage={errors.dob}
+          ></TextField>
 
           {/* Student Order Among Siblings */}
           <div className="flex flex-col justify-start w-full">

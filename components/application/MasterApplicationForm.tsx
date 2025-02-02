@@ -303,7 +303,7 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
             <div className="grid gap-4">
               <Link
                 className={cn(buttonVariants({ variant: "outline" }))}
-                href={`/studentLogs/${application.id}`}
+                href={`/studentLogs/masters/${application.id}`}
               >
                 {t("view")}
               </Link>

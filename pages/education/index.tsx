@@ -607,7 +607,7 @@ const Education = () => {
         masterUniversities={masterUniversities}
         bahrainiUniversities={bahrainiUniversities}
         isOpen={isDialogOpen}
-        onClose={() => setIsDialogOpen(!isDialogOpen)}
+        onClose={(isDialogOpen: boolean) => setIsDialogOpen(!isDialogOpen)}
       />
 
       {/* Education Table */}

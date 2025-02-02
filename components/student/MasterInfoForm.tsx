@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import { DocType, updateStudentInDB, uploadFile } from "../../src/CustomAPI";
+import { TextField } from "@aws-amplify/ui-react";
 
 import { useMutation } from "@tanstack/react-query";
 import {
@@ -28,7 +29,8 @@ import {
 
 import GetStorageLinkComponent from "../get-storage-link-component";
 import DatePicker from "react-datepicker";
-// import "react-datepicker/dist/react-datepicker.css";
+import { datePickerStylesCss } from "../../styles/datepicker-style";
+import { format } from "date-fns";
 
 // Add an optional readOnly that will disable all fields and remove the update button
 export default function MasterInfoForm({
@@ -52,9 +54,9 @@ export default function MasterInfoForm({
     income_doc: null,
   });
 
-  const [dateOfBirth, setDateOfBirth] = useState<Date | null>(
-    student.dob ? new Date(student.dob) : new Date()
-  );
+  // const [dateOfBirth, setDateOfBirth] = useState<Date | null>(
+  //   student.dob ? new Date(student.dob) : null
+  // );
 
   const getNamePart = (
     fullName: string,
@@ -121,6 +123,8 @@ export default function MasterInfoForm({
     guardianLastName: student?.m_guardianFullName
       ? getNamePart(student?.m_guardianFullName, "last")
       : "",
+
+    dob: student.dob ?? "",
   };
 
   const formValidationSchema = yup.object({
@@ -190,6 +194,7 @@ export default function MasterInfoForm({
           gender: values.gender as Gender,
           placeOfBirth: values.place_of_birth,
           nationalityCategory: values.nationality as Nationality,
+          dob: values.dob,
 
           m_firstName: values.first_name,
           m_secondName: values.second_name,
@@ -304,6 +309,8 @@ export default function MasterInfoForm({
     await updateMutation.mutateAsync(dataToSend);
   }
 
+  const [dateOfBirth, setDateOfBirth] = React.useState(initialValues.dob);
+
   return (
     <div className="flex flex-col items-center">
       <Formik
@@ -324,6 +331,7 @@ export default function MasterInfoForm({
           setFieldError,
           setFieldValue,
           isValid,
+          dirty,
         }) => {
           const formErrors =
             !!errors.first_name ||
@@ -515,30 +523,23 @@ export default function MasterInfoForm({
                   </label>
                 </div>
 
-                {/* <div className="flex flex-col justify-start w-full">
-                  <div className="flex items-center">
-                    <label className="label">{t("gender")}</label>
-                  </div>
-                  <Field
-                    dir="ltr"
-                    disabled
-                    className={`input disabled input-bordered input-primary`}
-                    value={
-                      student?.gender
-                        ? t(student?.gender.toLowerCase())
-                        : student?.gender
-                    }
-                  />
-                </div> */}
+                <TextField
+                  label={t("dateOfBirth")}
+                  isRequired={false}
+                  isReadOnly={false}
+                  type="date"
+                  value={
+                    dateOfBirth ? format(dateOfBirth, "yyyy-MM-dd") : undefined
+                  }
+                  onChange={(e) => {
+                    let { value } = e.target;
+                    const date = new Date(value);
+                    setDateOfBirth(date.toISOString());
 
-                <div>
-                  <label className=" label">{t("dateOfBirth")}</label>
-                  <DatePicker
-                    className=" w-full input input-bordered input-primary"
-                    selected={dateOfBirth}
-                    onChange={(date) => setDateOfBirth(date)}
-                  />
-                </div>
+                    handleChange(date.toISOString());
+                  }}
+                  errorMessage={errors.dob}
+                ></TextField>
 
                 <LabelField
                   title={t("placeOfBirth")}
@@ -975,7 +976,7 @@ export default function MasterInfoForm({
                 <button
                   className={`my-3 text-white btn btn-primary md:col-span-2`}
                   type="submit"
-                  disabled={updateMutation.isPending || isLoading}
+                  disabled={updateMutation.isPending || isLoading || !dirty}
                 >
                   {isLoading && <span className="loading"></span>}
                   {t("update")}
@@ -1187,6 +1188,8 @@ const LabelField: FC<TLabelField> = ({
   labelComponent,
   disabled,
 }) => {
+  const { t } = useTranslation("account");
+
   return (
     <div className="flex flex-col justify-start w-full">
       <div className="flex items-center">
@@ -1230,6 +1233,7 @@ const LabelField: FC<TLabelField> = ({
           disabled={disabled}
           type={type}
           name={fieldName}
+          alt={t(`${fieldName}`)}
           title={fieldName}
           placeholder={title}
           onBlur={handleBlur}

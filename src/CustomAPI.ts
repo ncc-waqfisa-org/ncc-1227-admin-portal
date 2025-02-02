@@ -71,6 +71,7 @@ import {
   UpdateStudentMutationVariables,
   UpdateUniversityMutation,
   UpdateUniversityMutationVariables,
+  MasterLog,
 } from "./API";
 import {
   createAttachment,
@@ -625,6 +626,41 @@ export async function listAllStudentLogsOfApplication(applicationID: string) {
   return studentLogs;
 }
 
+export async function listAllMasterStudentLogsOfApplication(
+  applicationID: string
+) {
+  let q = `
+  query GetAllMasterApplicationStudentLogs {
+  getMasterApplication(id: "${applicationID}") {
+    id
+    masterLogs {
+      items {
+        id
+        _version
+        _lastChangedAt
+        _deleted
+        applicationID
+        createdAt
+        dateTime
+        reason
+        snapshot
+        studentCPR
+        updatedAt
+        masterApplicationMasterLogsId
+        studentM_MasterLogsCpr
+      }
+    }
+  }
+}
+    `;
+
+  let res = (await API.graphql(graphqlOperation(q))) as GraphQLResult<any>; // your fetch function here
+  let studentLogs = res.data
+    ? (res.data?.getMasterApplication?.masterLogs?.items as MasterLog[])
+    : [];
+  return studentLogs;
+}
+
 /**
  * It returns a list of all the admin logs in the database
  * @param {IlistAllAdminsLogs} input - IlistAllAdminsLogs
@@ -711,6 +747,46 @@ export async function getStudentLogsByLogID(
   }
 
   let studentLog = res.data.getStudentLog as StudentLog;
+
+  return studentLog;
+}
+
+export async function getMasterStudentLogsByLogID(
+  id: string
+): Promise<MasterLog | undefined> {
+  let q = `
+  query MasterStudentLogHistoryInfo {
+      getMasterLog(id: "${id}") {
+      id
+      _version
+      _lastChangedAt
+      _deleted
+      applicationID
+      applicationStudentLogsId
+      createdAt
+      dateTime
+      studentCPR
+      studentStudentLogsCpr
+      updatedAt
+      reason
+      snapshot
+      student {
+        fullName
+        email
+        phone
+        cpr
+      }
+    }
+  }
+      `;
+
+  const res = (await API.graphql(graphqlOperation(q))) as GraphQLResult<any>;
+
+  if (res.data === undefined || res.data === null) {
+    return undefined;
+  }
+
+  let studentLog = res.data.getMasterLog as MasterLog;
 
   return studentLog;
 }

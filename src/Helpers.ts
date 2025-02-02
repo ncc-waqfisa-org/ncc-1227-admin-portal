@@ -47,6 +47,17 @@ export interface ApplicationSnapshot {
   };
 }
 
+export interface MasterApplicationSnapshot {
+  gpa?: string;
+  program: string;
+  attachments?: {
+    cpr?: string;
+    transcript?: string;
+    schoolCertificate?: string;
+    signedContract?: string;
+  };
+}
+
 /* -------------------------------------------------------------------------- */
 /*                                  FUNCTIONS                                 */
 /* -------------------------------------------------------------------------- */
