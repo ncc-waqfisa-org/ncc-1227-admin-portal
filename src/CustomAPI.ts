@@ -1585,9 +1585,7 @@ export async function listAllScholarshipsOfBatch({
   nextToken?: string | null;
 }): Promise<{ nextToken: string | null; items: Scholarship[] }> {
   let query = `query listAllScholarshipsByBatch {
-    scholarshipsByBatchAndStatus(batch: ${batch}, nextToken: ${
-    `${nextToken}` ?? null
-  }) {
+    scholarshipsByBatchAndStatus(batch: ${batch}, nextToken: ${`${nextToken}`}) {
     nextToken
       items {
         id

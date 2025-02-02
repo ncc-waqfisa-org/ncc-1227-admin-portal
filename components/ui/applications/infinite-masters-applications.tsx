@@ -260,12 +260,68 @@ export const InfiniteMasterApplications = () => {
       },
 
       {
-        accessorKey: "program",
+        accessorKey: "major",
         size: 100,
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} title={t("program")} />
+          <DataTableColumnHeader column={column} title={t("major")} />
         ),
         cell: ({ row }) => {
+          if (!row.getValue("major")) {
+            return null;
+          }
+
+          return (
+            <div className="flex items-center">{row.getValue("major")}</div>
+          );
+        },
+        enableSorting: false,
+        enableHiding: false,
+      },
+      // {
+      //   accessorKey: "program",
+      //   size: 100,
+      //   header: ({ column }) => (
+      //     <DataTableColumnHeader column={column} title={t("program")} />
+      //   ),
+      //   cell: ({ row }) => {
+      //     // const program = program.find(
+      //     //   (schoolType) => schoolType.value === row.getValue("program")
+      //     // );
+
+      //     // if (!schoolType) {
+      //     //   return null;
+      //     // }
+
+      //     if (!row.getValue("program")) {
+      //       return null;
+      //     }
+
+      //     return (
+      //       <div className="flex items-center">{row.getValue("program")}</div>
+      //     );
+      //     // return (
+      //     //   <div className="flex items-center">
+      //     //     {schoolType.icon && (
+      //     //       <schoolType.icon className="w-4 h-4 me-2 text-muted-foreground" />
+      //     //     )}
+      //     //     <span>
+      //     //       {locale === "ar" ? schoolType.arLabel : schoolType.label}
+      //     //     </span>
+      //     //   </div>
+      //     // );
+      //   },
+      //   enableSorting: false,
+      //   enableHiding: false,
+      // },
+      {
+        accessorKey: "university",
+        size: 100,
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title={t("university")} />
+        ),
+        cell: ({ row }) => {
+          console.log(JSON.stringify(row));
+          // const university =
           // const program = program.find(
           //   (schoolType) => schoolType.value === row.getValue("program")
           // );
@@ -274,11 +330,15 @@ export const InfiniteMasterApplications = () => {
           //   return null;
           // }
 
-          if (!row.getValue("program")) {
+          if (!row.getValue("universityName")) {
             return null;
           }
 
-          return <div className="flex items-center">{"program"}</div>;
+          return (
+            <div className="flex items-center">
+              {row.getValue("universityName")}
+            </div>
+          );
           // return (
           //   <div className="flex items-center">
           //     {schoolType.icon && (
