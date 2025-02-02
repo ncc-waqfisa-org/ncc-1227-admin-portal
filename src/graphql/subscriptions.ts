@@ -1589,6 +1589,7 @@ export const onCreateStudent = /* GraphQL */ `subscription OnCreateStudent($filt
       universityName
       universityNameAr
       isDeactivated
+      availability
       createdAt
       updatedAt
       _version
@@ -1698,6 +1699,7 @@ export const onUpdateStudent = /* GraphQL */ `subscription OnUpdateStudent($filt
       universityName
       universityNameAr
       isDeactivated
+      availability
       createdAt
       updatedAt
       _version
@@ -1807,6 +1809,7 @@ export const onDeleteStudent = /* GraphQL */ `subscription OnDeleteStudent($filt
       universityName
       universityNameAr
       isDeactivated
+      availability
       createdAt
       updatedAt
       _version
@@ -2475,6 +2478,7 @@ export const onCreateBahrainUniversities = /* GraphQL */ `subscription OnCreateB
       startedAt
       __typename
     }
+    availability
     createdAt
     updatedAt
     _version
@@ -2500,6 +2504,7 @@ export const onUpdateBahrainUniversities = /* GraphQL */ `subscription OnUpdateB
       startedAt
       __typename
     }
+    availability
     createdAt
     updatedAt
     _version
@@ -2525,6 +2530,7 @@ export const onDeleteBahrainUniversities = /* GraphQL */ `subscription OnDeleteB
       startedAt
       __typename
     }
+    availability
     createdAt
     updatedAt
     _version
@@ -2580,6 +2586,7 @@ export const onCreateMasterApplication = /* GraphQL */ `subscription OnCreateMas
       universityName
       universityNameAr
       isDeactivated
+      availability
       createdAt
       updatedAt
       _version
@@ -2705,6 +2712,7 @@ export const onUpdateMasterApplication = /* GraphQL */ `subscription OnUpdateMas
       universityName
       universityNameAr
       isDeactivated
+      availability
       createdAt
       updatedAt
       _version
@@ -2830,6 +2838,7 @@ export const onDeleteMasterApplication = /* GraphQL */ `subscription OnDeleteMas
       universityName
       universityNameAr
       isDeactivated
+      availability
       createdAt
       updatedAt
       _version
@@ -3084,6 +3093,7 @@ export const onCreateMasterAppliedUniversities = /* GraphQL */ `subscription OnC
       startedAt
       __typename
     }
+    availability
     createdAt
     updatedAt
     _version
@@ -3109,6 +3119,7 @@ export const onUpdateMasterAppliedUniversities = /* GraphQL */ `subscription OnU
       startedAt
       __typename
     }
+    availability
     createdAt
     updatedAt
     _version
@@ -3134,6 +3145,7 @@ export const onDeleteMasterAppliedUniversities = /* GraphQL */ `subscription OnD
       startedAt
       __typename
     }
+    availability
     createdAt
     updatedAt
     _version

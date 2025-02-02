@@ -1228,6 +1228,7 @@ export const getStudent = /* GraphQL */ `query GetStudent($cpr: String!) {
       universityName
       universityNameAr
       isDeactivated
+      availability
       createdAt
       updatedAt
       _version
@@ -1995,6 +1996,7 @@ export const getBahrainUniversities = /* GraphQL */ `query GetBahrainUniversitie
       startedAt
       __typename
     }
+    availability
     createdAt
     updatedAt
     _version
@@ -2026,6 +2028,7 @@ export const listBahrainUniversities = /* GraphQL */ `query ListBahrainUniversit
       universityName
       universityNameAr
       isDeactivated
+      availability
       createdAt
       updatedAt
       _version
@@ -2059,6 +2062,7 @@ export const syncBahrainUniversities = /* GraphQL */ `query SyncBahrainUniversit
       universityName
       universityNameAr
       isDeactivated
+      availability
       createdAt
       updatedAt
       _version
@@ -2116,6 +2120,7 @@ export const getMasterApplication = /* GraphQL */ `query GetMasterApplication($i
       universityName
       universityNameAr
       isDeactivated
+      availability
       createdAt
       updatedAt
       _version
@@ -2510,6 +2515,7 @@ export const getMasterAppliedUniversities = /* GraphQL */ `query GetMasterApplie
       startedAt
       __typename
     }
+    availability
     createdAt
     updatedAt
     _version
@@ -2541,6 +2547,7 @@ export const listMasterAppliedUniversities = /* GraphQL */ `query ListMasterAppl
       universityName
       universityNameAr
       isDeactivated
+      availability
       createdAt
       updatedAt
       _version
@@ -2574,6 +2581,7 @@ export const syncMasterAppliedUniversities = /* GraphQL */ `query SyncMasterAppl
       universityName
       universityNameAr
       isDeactivated
+      availability
       createdAt
       updatedAt
       _version

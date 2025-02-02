@@ -20,7 +20,7 @@ export const EducationTableHeaders = [
   "tableUniPrograms",
 ];
 
-export const MasterEducationTableHeaders = ["tableUniName"];
+export const MasterEducationTableHeaders = ["tableUniName", "availability"];
 
 export const BatchesTableHeaders = [
   "tableBatchYear",

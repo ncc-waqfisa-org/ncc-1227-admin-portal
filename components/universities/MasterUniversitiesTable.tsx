@@ -120,6 +120,18 @@ const MasterUniversitiesTable = ({ uniType, university }: Props) => {
                         : datum.universityName
                     }`}</div>
                   </td>
+                  <td
+                    key={`${datum.id}-availability`}
+                    className="bg-transparent"
+                  >
+                    <div
+                      className={`flex justify-between hover:cursor-pointer ${
+                        datum.isDeactivated && "text-gray-400"
+                      }`}
+                    >
+                      {datum.availability ? `${datum.availability}` : "N/A"}
+                    </div>
+                  </td>
                 </tr>
               ))}
           </tbody>

@@ -885,6 +885,7 @@ export async function getMasterUniversityByID(
       id
       universityName
       universityNameAr
+      availability
       _deleted
       _lastChangedAt
       _version
@@ -923,6 +924,7 @@ export async function getBahrainiUniversityById(
       id
       universityName
       universityNameAr
+      availability
       _deleted
       _lastChangedAt
       _version
@@ -1717,6 +1719,7 @@ export async function listAllBahrainUniversities() {
         id
         universityName
         universityNameAr
+        availability
         isDeactivated
         _version
         _deleted
@@ -1740,6 +1743,7 @@ export async function listAllMasterUniversities() {
       id
       universityName
       universityNameAr
+      availability
       isDeactivated
       _version
       _deleted

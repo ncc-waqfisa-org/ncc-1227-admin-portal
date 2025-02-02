@@ -31,6 +31,7 @@ const AddMasterUniversityDialog = ({
   const initialValues = {
     universityName: "",
     universityArName: "",
+    availability: 0,
     universityType: [] as string[],
   };
 
@@ -58,6 +59,7 @@ const AddMasterUniversityDialog = ({
                   universityArName: yup
                     .string()
                     .required(`${tErrors("requiredField")}`),
+                  availability: yup.number().min(0),
                   universityType: yup
                     .array()
                     .min(1, `${tErrors("requiredField")}`)
@@ -97,6 +99,7 @@ const AddMasterUniversityDialog = ({
                           input: {
                             universityName: values.universityName,
                             universityNameAr: values.universityArName,
+                            availability: values.availability.toString(),
                           },
                         };
                       onClose(); // Call onClose prop to communicate dialog should close
@@ -135,6 +138,7 @@ const AddMasterUniversityDialog = ({
                           input: {
                             universityName: values.universityName,
                             universityNameAr: values.universityArName,
+                            availability: values.availability.toString(),
                           },
                         };
                       //   isOpen = !isOpen;
@@ -215,6 +219,24 @@ const AddMasterUniversityDialog = ({
                         {errors.universityArName &&
                           touched.universityArName &&
                           errors.universityArName}
+                      </label>
+                    </div>
+                    <div className="flex flex-col">
+                      <label className="label">{t("availability")}</label>
+                      <Field
+                        name="availability"
+                        type="number"
+                        placeholder=""
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        className={`input input-bordered input-primary ${
+                          errors.availability && "input-error"
+                        }`}
+                      />
+                      <label className="label-text-alt text-error">
+                        {errors.availability &&
+                          touched.availability &&
+                          errors.availability}
                       </label>
                     </div>
                     {/* Change this to type */}

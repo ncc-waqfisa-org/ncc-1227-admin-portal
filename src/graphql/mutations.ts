@@ -1637,6 +1637,7 @@ export const createStudent = /* GraphQL */ `mutation CreateStudent(
       universityName
       universityNameAr
       isDeactivated
+      availability
       createdAt
       updatedAt
       _version
@@ -1749,6 +1750,7 @@ export const updateStudent = /* GraphQL */ `mutation UpdateStudent(
       universityName
       universityNameAr
       isDeactivated
+      availability
       createdAt
       updatedAt
       _version
@@ -1861,6 +1863,7 @@ export const deleteStudent = /* GraphQL */ `mutation DeleteStudent(
       universityName
       universityNameAr
       isDeactivated
+      availability
       createdAt
       updatedAt
       _version
@@ -2557,6 +2560,7 @@ export const createBahrainUniversities = /* GraphQL */ `mutation CreateBahrainUn
       startedAt
       __typename
     }
+    availability
     createdAt
     updatedAt
     _version
@@ -2583,6 +2587,7 @@ export const updateBahrainUniversities = /* GraphQL */ `mutation UpdateBahrainUn
       startedAt
       __typename
     }
+    availability
     createdAt
     updatedAt
     _version
@@ -2609,6 +2614,7 @@ export const deleteBahrainUniversities = /* GraphQL */ `mutation DeleteBahrainUn
       startedAt
       __typename
     }
+    availability
     createdAt
     updatedAt
     _version
@@ -2665,6 +2671,7 @@ export const createMasterApplication = /* GraphQL */ `mutation CreateMasterAppli
       universityName
       universityNameAr
       isDeactivated
+      availability
       createdAt
       updatedAt
       _version
@@ -2791,6 +2798,7 @@ export const updateMasterApplication = /* GraphQL */ `mutation UpdateMasterAppli
       universityName
       universityNameAr
       isDeactivated
+      availability
       createdAt
       updatedAt
       _version
@@ -2917,6 +2925,7 @@ export const deleteMasterApplication = /* GraphQL */ `mutation DeleteMasterAppli
       universityName
       universityNameAr
       isDeactivated
+      availability
       createdAt
       updatedAt
       _version
@@ -3178,6 +3187,7 @@ export const createMasterAppliedUniversities = /* GraphQL */ `mutation CreateMas
       startedAt
       __typename
     }
+    availability
     createdAt
     updatedAt
     _version
@@ -3204,6 +3214,7 @@ export const updateMasterAppliedUniversities = /* GraphQL */ `mutation UpdateMas
       startedAt
       __typename
     }
+    availability
     createdAt
     updatedAt
     _version
@@ -3230,6 +3241,7 @@ export const deleteMasterAppliedUniversities = /* GraphQL */ `mutation DeleteMas
       startedAt
       __typename
     }
+    availability
     createdAt
     updatedAt
     _version

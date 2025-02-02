@@ -53,6 +53,8 @@ export default function MasterUniversityFormComponent({
 
   const [isLoading, setIsLoading] = useState(false);
 
+  console.log(university?.availability);
+
   const formSchema = z.object({
     universityName: z.string(),
     universityArName: z.string(),
@@ -68,7 +70,7 @@ export default function MasterUniversityFormComponent({
     defaultValues: {
       universityName: university?.universityName ?? "",
       universityArName: university?.universityNameAr ?? "",
-      // universityAvailability: university?.availability ?? 0,
+      universityAvailability: parseInt(university?.availability ?? "0"),
       isDeactivated: university?.isDeactivated ?? false,
       // isException: university?.isException ?? 0,
       // isExtended: university?.isExtended ?? 0,
@@ -87,7 +89,7 @@ export default function MasterUniversityFormComponent({
             _version: university?._version,
             universityName: values.universityName,
             universityNameAr: values.universityArName,
-            // availability: values.universityAvailability,
+            availability: values.universityAvailability.toString(),
             isDeactivated: values.isDeactivated,
             // isException: values.isException,
             // isExtended: values.isExtended,
@@ -102,7 +104,7 @@ export default function MasterUniversityFormComponent({
             _version: university?._version,
             universityName: values.universityName,
             universityNameAr: values.universityArName,
-            // availability: values.universityAvailability,
+            availability: values.universityAvailability.toString(),
             isDeactivated: values.isDeactivated,
             // isException: values.isException,
             // isExtended: values.isExtended,
