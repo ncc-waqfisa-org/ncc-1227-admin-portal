@@ -118,11 +118,11 @@
         },
         "SignUpMaster": {
           "deploymentBucketName": "amplify-ncc-masterdev-2e2e0-deployment",
-          "s3Key": "amplify-builds/SignUpMaster-677a664371526a452f58-build.zip"
+          "s3Key": "amplify-builds/SignUpMaster-6f6f6f33425078612b43-build.zip"
         },
         "exportEligibleCsvMaster": {
           "deploymentBucketName": "amplify-ncc-masterdev-2e2e0-deployment",
-          "s3Key": "amplify-builds/exportEligibleCsvMaster-556f485a52374d4d3677-build.zip"
+          "s3Key": "amplify-builds/exportEligibleCsvMaster-4f6335334b683758482b-build.zip"
         },
         "bulkAutoRejectMaster": {
           "deploymentBucketName": "amplify-ncc-masterdev-2e2e0-deployment",

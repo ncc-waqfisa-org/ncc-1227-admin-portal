@@ -26,11 +26,13 @@ export declare type BahrainUniversitiesUpdateFormInputValues = {
     universityName?: string;
     universityNameAr?: string;
     isDeactivated?: boolean;
+    availability?: string;
 };
 export declare type BahrainUniversitiesUpdateFormValidationValues = {
     universityName?: ValidationFunction<string>;
     universityNameAr?: ValidationFunction<string>;
     isDeactivated?: ValidationFunction<boolean>;
+    availability?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type BahrainUniversitiesUpdateFormOverridesProps = {
@@ -38,6 +40,7 @@ export declare type BahrainUniversitiesUpdateFormOverridesProps = {
     universityName?: PrimitiveOverrideProps<TextFieldProps>;
     universityNameAr?: PrimitiveOverrideProps<TextFieldProps>;
     isDeactivated?: PrimitiveOverrideProps<SwitchFieldProps>;
+    availability?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type BahrainUniversitiesUpdateFormProps = React.PropsWithChildren<{
     overrides?: BahrainUniversitiesUpdateFormOverridesProps | undefined | null;

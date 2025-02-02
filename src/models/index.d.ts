@@ -853,6 +853,7 @@ type EagerBahrainUniversities = {
   readonly universityNameAr?: string | null;
   readonly isDeactivated?: boolean | null;
   readonly students?: (Student | null)[] | null;
+  readonly availability?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -867,6 +868,7 @@ type LazyBahrainUniversities = {
   readonly universityNameAr?: string | null;
   readonly isDeactivated?: boolean | null;
   readonly students: AsyncCollection<Student>;
+  readonly availability?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -1053,6 +1055,7 @@ type EagerMasterAppliedUniversities = {
   readonly universityNameAr: string;
   readonly isDeactivated?: boolean | null;
   readonly applications?: (MasterApplication | null)[] | null;
+  readonly availability?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -1067,6 +1070,7 @@ type LazyMasterAppliedUniversities = {
   readonly universityNameAr: string;
   readonly isDeactivated?: boolean | null;
   readonly applications: AsyncCollection<MasterApplication>;
+  readonly availability?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

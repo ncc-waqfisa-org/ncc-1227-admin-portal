@@ -309,6 +309,7 @@ type BahrainUniversities @model @auth(rules: [{ allow: public }]) {
   universityNameAr: String
   isDeactivated: Boolean
   students: [Student] @hasMany(indexName: "byBahrianUniversity", fields: ["id"])
+  availability: String
 }
 # These are universities that student want to apply to
 
@@ -382,6 +383,7 @@ type MasterAppliedUniversities @model @auth(rules: [{ allow: public }]) {
   universityNameAr: String!
   isDeactivated: Boolean
   applications: [MasterApplication] @hasMany(fields: ["id"])
+  availability: String
 }
 
 type MasterScholarship @model @auth(rules: [{ allow: public }]) {

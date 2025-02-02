@@ -26,11 +26,13 @@ export declare type MasterAppliedUniversitiesUpdateFormInputValues = {
     universityName?: string;
     universityNameAr?: string;
     isDeactivated?: boolean;
+    availability?: string;
 };
 export declare type MasterAppliedUniversitiesUpdateFormValidationValues = {
     universityName?: ValidationFunction<string>;
     universityNameAr?: ValidationFunction<string>;
     isDeactivated?: ValidationFunction<boolean>;
+    availability?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type MasterAppliedUniversitiesUpdateFormOverridesProps = {
@@ -38,6 +40,7 @@ export declare type MasterAppliedUniversitiesUpdateFormOverridesProps = {
     universityName?: PrimitiveOverrideProps<TextFieldProps>;
     universityNameAr?: PrimitiveOverrideProps<TextFieldProps>;
     isDeactivated?: PrimitiveOverrideProps<SwitchFieldProps>;
+    availability?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type MasterAppliedUniversitiesUpdateFormProps = React.PropsWithChildren<{
     overrides?: MasterAppliedUniversitiesUpdateFormOverridesProps | undefined | null;

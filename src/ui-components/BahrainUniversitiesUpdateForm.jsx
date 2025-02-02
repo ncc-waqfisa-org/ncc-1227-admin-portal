@@ -32,6 +32,7 @@ export default function BahrainUniversitiesUpdateForm(props) {
     universityName: "",
     universityNameAr: "",
     isDeactivated: false,
+    availability: "",
   };
   const [universityName, setUniversityName] = React.useState(
     initialValues.universityName
@@ -42,6 +43,9 @@ export default function BahrainUniversitiesUpdateForm(props) {
   const [isDeactivated, setIsDeactivated] = React.useState(
     initialValues.isDeactivated
   );
+  const [availability, setAvailability] = React.useState(
+    initialValues.availability
+  );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = bahrainUniversitiesRecord
@@ -50,6 +54,7 @@ export default function BahrainUniversitiesUpdateForm(props) {
     setUniversityName(cleanValues.universityName);
     setUniversityNameAr(cleanValues.universityNameAr);
     setIsDeactivated(cleanValues.isDeactivated);
+    setAvailability(cleanValues.availability);
     setErrors({});
   };
   const [bahrainUniversitiesRecord, setBahrainUniversitiesRecord] =
@@ -68,6 +73,7 @@ export default function BahrainUniversitiesUpdateForm(props) {
     universityName: [],
     universityNameAr: [],
     isDeactivated: [],
+    availability: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -98,6 +104,7 @@ export default function BahrainUniversitiesUpdateForm(props) {
           universityName,
           universityNameAr,
           isDeactivated,
+          availability,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -156,6 +163,7 @@ export default function BahrainUniversitiesUpdateForm(props) {
               universityName: value,
               universityNameAr,
               isDeactivated,
+              availability,
             };
             const result = onChange(modelFields);
             value = result?.universityName ?? value;
@@ -182,6 +190,7 @@ export default function BahrainUniversitiesUpdateForm(props) {
               universityName,
               universityNameAr: value,
               isDeactivated,
+              availability,
             };
             const result = onChange(modelFields);
             value = result?.universityNameAr ?? value;
@@ -208,6 +217,7 @@ export default function BahrainUniversitiesUpdateForm(props) {
               universityName,
               universityNameAr,
               isDeactivated: value,
+              availability,
             };
             const result = onChange(modelFields);
             value = result?.isDeactivated ?? value;
@@ -222,6 +232,33 @@ export default function BahrainUniversitiesUpdateForm(props) {
         hasError={errors.isDeactivated?.hasError}
         {...getOverrideProps(overrides, "isDeactivated")}
       ></SwitchField>
+      <TextField
+        label="Availability"
+        isRequired={false}
+        isReadOnly={false}
+        value={availability}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              universityName,
+              universityNameAr,
+              isDeactivated,
+              availability: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.availability ?? value;
+          }
+          if (errors.availability?.hasError) {
+            runValidationTasks("availability", value);
+          }
+          setAvailability(value);
+        }}
+        onBlur={() => runValidationTasks("availability", availability)}
+        errorMessage={errors.availability?.errorMessage}
+        hasError={errors.availability?.hasError}
+        {...getOverrideProps(overrides, "availability")}
+      ></TextField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}

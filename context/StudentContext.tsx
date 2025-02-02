@@ -588,6 +588,7 @@ export async function getMasterApplicationByIdAPI(
       address
       m_firstName
       m_secondName
+      m_thirdName
       m_lastName
       m_numberOfFamilyMembers
       m_graduationYear
@@ -608,6 +609,7 @@ export async function getMasterApplicationByIdAPI(
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      dob
     }
     studentCPR
     studentName

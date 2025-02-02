@@ -56,6 +56,31 @@ export default function MasterInfoForm({
     student.dob ? new Date(student.dob) : new Date()
   );
 
+  const getNamePart = (
+    fullName: string,
+    part: "first" | "second" | "third" | "last"
+  ): string => {
+    const nameParts = fullName.trim().split(" ");
+
+    switch (part) {
+      case "first":
+        return nameParts[0] || "";
+      case "second":
+        // if (nameParts.length > 2) return nameParts[1];
+        // return "";
+        return nameParts[1] || "";
+      case "third":
+        // if (nameParts.length > 3) return nameParts[2];
+        return nameParts[2] || "";
+
+      case "last":
+        // if (nameParts.length === 4) return nameParts[2];
+        // if (nameParts.length === 4) return nameParts[2];
+        if (nameParts.length >= 3) return nameParts[nameParts.length - 1];
+        return "";
+    }
+  };
+
   const initialValues: MasterUpdateFormSchema = {
     first_name: student?.m_firstName ?? "",
     second_name: student?.m_secondName ?? "",
@@ -83,7 +108,19 @@ export default function MasterInfoForm({
     nationality: student?.nationalityCategory ?? "",
     universityID: student?.m_universityID ?? "",
     guardian_cpr: student?.m_guardianCPR ?? "",
-    guardian_full_name: student?.m_guardianFullName ?? "",
+    // guardian_full_name: student?.m_guardianFullName ?? "",
+    guardianFirstName: student?.m_guardianFullName
+      ? getNamePart(student?.m_guardianFullName, "first")
+      : "",
+    guardianSecondName: student?.m_guardianFullName
+      ? getNamePart(student?.m_guardianFullName, "second")
+      : "",
+    guardianThirdName: student?.m_guardianFullName
+      ? getNamePart(student?.m_guardianFullName, "third")
+      : "",
+    guardianLastName: student?.m_guardianFullName
+      ? getNamePart(student?.m_guardianFullName, "last")
+      : "",
   };
 
   const formValidationSchema = yup.object({
@@ -162,7 +199,7 @@ export default function MasterInfoForm({
           m_graduationYear: values.graduation_year,
           m_guardianCPR: values.guardian_cpr,
           m_guardianCPRDoc: values.guardian_cpr_doc,
-          m_guardianFullName: values.guardian_full_name,
+          m_guardianFullName: `${values.guardianFirstName} ${values.guardianSecondName} ${values.guardianThirdName} ${values.guardianLastName}`,
           address: values.address,
           m_income: values.income,
           // m_incomeDoc: values.income_doc,
@@ -252,10 +289,13 @@ export default function MasterInfoForm({
       );
     }
 
+    let guardian_full_name = `${data.guardianFirstName} ${data.guardianSecondName} ${data.guardianThirdName} ${data.guardianLastName}`;
+
     const dataToSend: MasterUpdateData = {
       ...data,
       cpr_doc,
       income_doc,
+      guardian_full_name,
       guardian_cpr_doc,
     };
 
@@ -263,8 +303,6 @@ export default function MasterInfoForm({
 
     await updateMutation.mutateAsync(dataToSend);
   }
-
-  console.log(student?.m_universityID);
 
   return (
     <div className="flex flex-col items-center">
@@ -303,7 +341,11 @@ export default function MasterInfoForm({
             (values.isEmployed ? !!errors.place_of_employment : false) ||
             (values.isEmployed ? !!errors.income : false) ||
             (values.isEmployed ? !!errors.income_doc : false);
-          !!errors.guardian_full_name ||
+          !!errors.guardianFirstName ||
+            !!errors.guardianSecondName ||
+            !!errors.guardianThirdName ||
+            !!errors.guardianLastName ||
+            // !!errors.guardian_full_name ||
             !!errors.guardian_cpr ||
             (!values.isEmployed ? !!errors.income : false) ||
             (!values.isEmployed ? !!errors.income_doc : false) ||
@@ -786,13 +828,46 @@ export default function MasterInfoForm({
                 )}
                 <FormSeparator title={t("guardianInfo")} />
 
-                <div className="md:col-span-2">
+                <div className="md:col-span-2 grid grid-cols-1 gap-4 md:grid-cols-4">
                   <LabelField
-                    title={t("guardianFullName")}
-                    value={values.guardian_full_name}
-                    errors={errors.guardian_full_name}
-                    touched={touched.guardian_full_name}
-                    fieldName={"guardian_full_name"}
+                    title={t("firstName")}
+                    value={values.guardianFirstName}
+                    errors={errors.guardianFirstName}
+                    touched={touched.guardianFirstName}
+                    fieldName={"guardianFirstName"}
+                    handleChange={handleChange}
+                    handleBlur={handleBlur}
+                    setFieldError={setFieldError}
+                    setFieldValue={setFieldValue}
+                  />
+                  <LabelField
+                    title={t("secondName")}
+                    value={values.guardianSecondName}
+                    errors={errors.guardianSecondName}
+                    touched={touched.guardianSecondName}
+                    fieldName={"guardianSecondName"}
+                    handleChange={handleChange}
+                    handleBlur={handleBlur}
+                    setFieldError={setFieldError}
+                    setFieldValue={setFieldValue}
+                  />
+                  <LabelField
+                    title={t("thirdName")}
+                    value={values.guardianThirdName}
+                    errors={errors.guardianThirdName}
+                    touched={touched.guardianThirdName}
+                    fieldName={"guardianThirdName"}
+                    handleChange={handleChange}
+                    handleBlur={handleBlur}
+                    setFieldError={setFieldError}
+                    setFieldValue={setFieldValue}
+                  />
+                  <LabelField
+                    title={t("lastName")}
+                    value={values.guardianLastName}
+                    errors={errors.guardianLastName}
+                    touched={touched.guardianLastName}
+                    fieldName={"guardianLastName"}
                     handleChange={handleChange}
                     handleBlur={handleBlur}
                     setFieldError={setFieldError}
@@ -1019,10 +1094,16 @@ export default function MasterInfoForm({
                             )}
                           </>
                         )}
-                        {errors.guardian_full_name && (
+                        {(errors.guardianFirstName ||
+                          errors.guardianSecondName ||
+                          errors.guardianThirdName ||
+                          errors.guardianLastName) && (
                           <li className="text-error">
                             <strong>{t("guardianFullName")}:</strong>{" "}
-                            {errors.guardian_full_name}
+                            {errors.guardianFirstName ||
+                              errors.guardianSecondName ||
+                              errors.guardianThirdName ||
+                              errors.guardianLastName}
                           </li>
                         )}
                         {errors.guardian_cpr && (

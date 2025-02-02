@@ -101,5 +101,9 @@
   "income": "Income",
   "incomeDoc": "Income Document",
   "termsAndConditions": "Terms & Conditions",
-  "formErrors": "Invalid Fields"
+  "guardianFirstName": "Guardian First Name",
+  "guardianSecondName": "Guardian Second Name",
+  "guardianThirdName": "Guardian Third Name",
+  "guardianLastName": "Guardian Last Name",
+  "dateOfBirth": "Date of Birth"
 }

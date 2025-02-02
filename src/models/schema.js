@@ -2626,6 +2626,13 @@ export const schema = {
                         ]
                     }
                 },
+                "availability": {
+                    "name": "availability",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -3318,6 +3325,13 @@ export const schema = {
                         ]
                     }
                 },
+                "availability": {
+                    "name": "availability",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -3647,5 +3661,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "1a13ab4148d87b15fc382f7aede4025d"
+    "version": "6073f0c485f4e9480ac7d99bacaef24e"
 };

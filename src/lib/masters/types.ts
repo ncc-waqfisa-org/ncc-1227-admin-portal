@@ -9,6 +9,7 @@ export type MasterSignUpData = {
 
   first_name: string;
   second_name: string;
+  third_name: string;
   last_name: string;
   address: string;
   email: string | null;
@@ -52,6 +53,7 @@ export type MasterSignUpFormSchema = {
 
   first_name: string;
   second_name: string;
+  third_name: string;
   last_name: string;
   address: string;
   email: string | null;
@@ -119,6 +121,10 @@ export type MasterUpdateData = {
   // Guardian data
   guardian_cpr: string;
   guardian_full_name: string;
+  guardianFirstName: string;
+  guardianSecondName: string;
+  guardianThirdName: string;
+  guardianLastName: string;
   guardian_cpr_doc?: string;
 };
 
@@ -154,7 +160,11 @@ export type MasterUpdateFormSchema = {
 
   // Guardian data
   guardian_cpr: string;
-  guardian_full_name: string;
+  // guardian_full_name: string;
+  guardianFirstName: string;
+  guardianSecondName: string;
+  guardianThirdName: string;
+  guardianLastName: string;
   guardian_cpr_doc?: File;
 };
 

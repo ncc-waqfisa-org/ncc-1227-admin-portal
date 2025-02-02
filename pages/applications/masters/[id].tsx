@@ -33,10 +33,14 @@ import UpdateParentInfo from "../../../components/student/UpdateParentInfo";
 import { DialogHeader } from "../../../components/ui/dialog";
 import { Textarea } from "../../../components/ui/textarea";
 
-import { listScholarshipsOfApplicationId } from "../../../src/CustomAPI";
+import {
+  listAllBahrainUniversities,
+  listScholarshipsOfApplicationId,
+} from "../../../src/CustomAPI";
 import { cn } from "../../../src/utils";
 import { getMasterApplicationByIdAPI } from "../../../context/StudentContext";
 import MasterInfoForm from "../../../components/student/MasterInfoForm";
+import { useQuery } from "@tanstack/react-query";
 
 interface Props {
   application: MasterApplication;
@@ -87,6 +91,11 @@ const MasterApplicationInfo: FC<Props> = (props) => {
   function goBack() {
     router.back();
   }
+
+  const { data: bahrainiUniversities } = useQuery({
+    queryKey: ["bahrainiUniversities"],
+    queryFn: () => listAllBahrainUniversities(),
+  });
 
   return (
     <div>
@@ -264,10 +273,13 @@ const MasterApplicationInfo: FC<Props> = (props) => {
                   applicationId={props.application.id}
                   student={props.application.student}
                 /> */}
-                <MasterInfoForm student={props.application.student} />
+                <MasterInfoForm
+                  student={props.application.student}
+                  universities={bahrainiUniversities}
+                />
               </AccordionContent>
             </AccordionItem>
-            <AccordionItem value="guardianInformation">
+            {/* <AccordionItem value="guardianInformation">
               <AccordionTrigger className="text-xl font-medium">
                 {t("guardianInformation")}
               </AccordionTrigger>
@@ -276,7 +288,7 @@ const MasterApplicationInfo: FC<Props> = (props) => {
                   <MasterInfoForm student={props.application.student} />
                 )}
               </AccordionContent>
-            </AccordionItem>
+            </AccordionItem> */}
           </Accordion>
         )}
       </PageComponent>
