@@ -13,12 +13,13 @@ type TBatchSelector = {
   handleBatchChange?: (value: string) => void;
 };
 export const BatchSelector: FC<TBatchSelector> = ({ handleBatchChange }) => {
-  const { batch, setBatch } = useBatchContext();
+  const { batch, setBatch, setMastersBatch } = useBatchContext();
 
   return (
     <Select
       onValueChange={(value) => {
         setBatch(Number(value));
+        setMastersBatch(Number(value));
 
         handleBatchChange && handleBatchChange(value);
       }}

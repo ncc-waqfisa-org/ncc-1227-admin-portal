@@ -86,7 +86,7 @@ export const BatchMasterApplicationsToolbar: React.FC<
   const form = useForm<z.infer<typeof searchFormSchema>>({
     resolver: zodResolver(searchFormSchema),
     defaultValues: {
-      cpr: searchedCpr ?? searchMasterCpr ?? "",
+      cpr: searchedCpr ?? "",
     },
   });
 
@@ -112,7 +112,7 @@ export const BatchMasterApplicationsToolbar: React.FC<
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof searchFormSchema>) {
-    masterTable && searchMasterCpr(values.cpr);
+    searchMasterCpr(values.cpr);
   }
 
   return (
@@ -203,6 +203,8 @@ export const BatchMasterApplicationsToolbar: React.FC<
             const selectedApplicationsIds = selectedApplications.map(
               (a) => a.id
             );
+
+            // TODO change lamba url
             const url = `https://a69a50c47l.execute-api.us-east-1.amazonaws.com/default/applications/export?batch=${batch}`;
             const test = JSON.stringify({ ids: selectedApplicationsIds });
 

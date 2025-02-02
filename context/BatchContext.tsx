@@ -21,6 +21,7 @@ import {
 import { useAuth } from "../hooks/use-auth";
 import { Scholarship } from "../src/API";
 import { listAllScholarshipsOfBatch } from "../src/CustomAPI";
+import { String } from "aws-sdk/clients/acm";
 
 // interface for all the values & functions
 interface IUseBatchContext {
@@ -270,7 +271,7 @@ function useBatchProviderApp() {
     setApplicationsData([]);
 
     return () => {};
-  }, [batch, selectedApplicationsStatus]);
+  }, [batch, mastersBatch, selectedApplicationsStatus]);
 
   useEffect(() => {
     if (token) {
@@ -327,26 +328,30 @@ function useBatchProviderApp() {
   /*                                   MASTERS                                  */
   /* -------------------------------------------------------------------------- */
 
-  function resetMasterApplications() {
+  function resetMasterApplications(newCPR?: String) {
     setNextMasterApplicationsKey(undefined);
     setMasterApplicationsData([]);
-    fetchFirstMasterApplicationsPage();
+    fetchFirstMasterApplicationsPage(newCPR);
   }
 
   function searchMasterCpr(newCpr: string) {
     setCpr(newCpr);
-    resetMasterApplications();
+    resetMasterApplications(newCpr);
   }
 
-  async function fetchFirstMasterApplicationsPage() {
+  async function fetchFirstMasterApplicationsPage(newCPR?: string) {
     const batchQuery = mastersBatch ? `batch=${mastersBatch}` : "";
     const statusQuery = selectedApplicationsStatus
       ? `&status=${selectedApplicationsStatus}`
       : "";
+
+    const searchQuery = newCPR && newCPR != "" ? `&cpr=${newCPR}` : "";
+    // setIsInitialFetching(true);
+
     setIsMasterInitialFetching(true);
 
     const fetchedData = (await fetch(
-      `${process.env.NEXT_PUBLIC_LAMBDA_GET_MASTERS_APPLICATION}?${batchQuery}${statusQuery}`,
+      `${process.env.NEXT_PUBLIC_LAMBDA_GET_MASTERS_APPLICATION}?${batchQuery}${statusQuery}${searchQuery}`,
       {
         headers: {
           Authorization: "Bearer " + token,
@@ -357,21 +362,41 @@ function useBatchProviderApp() {
       .finally(() => {
         setIsMasterInitialFetching(false);
       })) as TInfiniteMasterApplications;
-    setMasterApplicationsData(fetchedData.data);
+    setMasterApplicationsData(fetchedData.data ?? []);
     setNextMasterApplicationsKey(fetchedData.nextStartKey);
 
     return fetchedData;
   }
 
-  //comments
-
   useEffect(() => {
     if (token) {
       fetchFirstMasterApplicationsPage();
     }
+    async function fetchFirstMasterApplicationsPage() {
+      const batchQuery = mastersBatch ? `batch=${mastersBatch}` : "";
+      const statusQuery = selectedApplicationsStatus
+        ? `&status=${selectedApplicationsStatus}`
+        : "";
+      setIsMasterInitialFetching(true);
+      const fetchedData = (await fetch(
+        `${process.env.NEXT_PUBLIC_LAMBDA_GET_MASTERS_APPLICATION}?${batchQuery}${statusQuery}`,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        }
+      )
+        .then((d) => d.json())
+        .finally(() => {
+          setIsMasterInitialFetching(false);
+        })) as TInfiniteMasterApplications;
+      setMasterApplicationsData(fetchedData.data ?? []);
+      setNextMasterApplicationsKey(fetchedData.nextStartKey);
+      return fetchedData;
+    }
 
     return () => {};
-  }, [token]);
+  }, [mastersBatch, selectedApplicationsStatus, token]);
 
   //TODO fetch first master scholarships page
   async function fetchFirstMasterScholarshipsPage() {

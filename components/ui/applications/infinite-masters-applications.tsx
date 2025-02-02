@@ -453,12 +453,12 @@ export const InfiniteMasterApplications = () => {
       rowVirtualizer.scrollToIndex?.(0);
     }
   };
-  const handleSearchChange = (updater: string) => {
-    setSearch(updater);
-    if (!!table.getRowModel().rows.length) {
-      rowVirtualizer.scrollToIndex?.(0);
-    }
-  };
+  // const handleSearchChange = (updater: string) => {
+  //   setSearch(updater);
+  //   if (!!table.getRowModel().rows.length) {
+  //     rowVirtualizer.scrollToIndex?.(0);
+  //   }
+  // };
 
   const { rows } = table?.getRowModel();
 
