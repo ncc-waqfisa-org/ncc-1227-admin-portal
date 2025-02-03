@@ -160,5 +160,6 @@
   "firstName": "First Name",
   "secondName": "Second Name",
   "thirdName": "Third Name",
-  "lastName": "Last Name"
+  "lastName": "Last Name",
+  "dateOfBirth": "Date of Birth"
 }

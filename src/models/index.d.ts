@@ -393,6 +393,7 @@ type EagerStudentLog = {
   readonly updatedAt?: string | null;
   readonly applicationStudentLogsId?: string | null;
   readonly studentStudentLogsCpr?: string | null;
+  readonly masterApplicationStudentLogsId?: string | null;
 }
 
 type LazyStudentLog = {
@@ -411,6 +412,7 @@ type LazyStudentLog = {
   readonly updatedAt?: string | null;
   readonly applicationStudentLogsId?: string | null;
   readonly studentStudentLogsCpr?: string | null;
+  readonly masterApplicationStudentLogsId?: string | null;
 }
 
 export declare type StudentLog = LazyLoading extends LazyLoadingDisabled ? EagerStudentLog : LazyStudentLog
@@ -732,6 +734,7 @@ type EagerStatistics = {
   readonly students?: string | null;
   readonly applications?: string | null;
   readonly today?: string | null;
+  readonly participatingUniversities?: (string | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -755,6 +758,7 @@ type LazyStatistics = {
   readonly students?: string | null;
   readonly applications?: string | null;
   readonly today?: string | null;
+  readonly participatingUniversities?: (string | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -890,6 +894,7 @@ type EagerMasterApplication = {
   readonly status?: Status | keyof typeof Status | null;
   readonly adminLogs?: (AdminLog | null)[] | null;
   readonly masterLogs?: (MasterLog | null)[] | null;
+  readonly studentLogs?: (StudentLog | null)[] | null;
   readonly attachment?: MasterAttachment | null;
   readonly program?: string | null;
   readonly dateTime: string;
@@ -925,6 +930,7 @@ type LazyMasterApplication = {
   readonly status?: Status | keyof typeof Status | null;
   readonly adminLogs: AsyncCollection<AdminLog>;
   readonly masterLogs: AsyncCollection<MasterLog>;
+  readonly studentLogs: AsyncCollection<StudentLog>;
   readonly attachment: AsyncItem<MasterAttachment | undefined>;
   readonly program?: string | null;
   readonly dateTime: string;
@@ -974,6 +980,7 @@ type EagerMasterStatistics = {
   readonly students?: string | null;
   readonly applications?: string | null;
   readonly today?: string | null;
+  readonly participatingUniversities?: (string | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -997,6 +1004,7 @@ type LazyMasterStatistics = {
   readonly students?: string | null;
   readonly applications?: string | null;
   readonly today?: string | null;
+  readonly participatingUniversities?: (string | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

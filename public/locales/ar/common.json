@@ -50,5 +50,8 @@
   "forMasters": "(ماجستير)",
   "bahrainiUnisDescription": "قائمة الجامعات التي تخرج منها الطلاب المؤهلون",
   "mastersUnisDescription": "قائمة الجامعات الشريكة التي يمكن للطلاب المؤهلين التقدم للحصول على منحة دراسية فيها",
-  "back": "رجوع"
+  "back": "رجوع",
+  "success": "Success",
+  "participatingUniversities": "Participating Universities",
+  "applicantIncome": "Applicant/Guardian familyIncome"
 }

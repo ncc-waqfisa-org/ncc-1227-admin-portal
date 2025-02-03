@@ -20,6 +20,7 @@ import { getMastersStatistics, getStatistics } from "../src/CustomAPI";
 import { DownloadFileFromUrl } from "../components/download-file-from-url";
 import { MoreStatistics } from "../components/MoreStatistics";
 import { useAppContext } from "../context/AppContext";
+import { MoreMasterStatistics } from "../components/MoreMasterStatistics";
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const { locale } = ctx;
@@ -59,8 +60,6 @@ const Home = () => {
 
   return (
     <PageComponent title={"Home"}>
-      {type === "bachelor" && JSON.stringify(statistics)}
-      {type === "masters" && JSON.stringify(mastersStatistics)}
       {type === "bachelor" && (
         <div className="flex flex-col justify-between gap-4 mb-14">
           {/* Header */}
@@ -324,6 +323,20 @@ const Home = () => {
                   {t("exportCSV")}
                 </CSVLink>
               </LargeDonutGraphInfo>
+              <div className="flex flex-col justify-between w-full p-4 border rounded-xl bg-nccGray-50 md:col-span-2">
+                <div>{t("participatingUniversities")}</div>
+                <div className=" py-2">
+                  <ul className=" grid grid-cols-2">
+                    {statistics?.participatingUniversities.map((uni, index) => {
+                      return (
+                        <li key={index} className=" py-1">
+                          {uni}
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -598,11 +611,21 @@ const Home = () => {
                   {t("exportCSV")}
                 </CSVLink>
               </LargeDonutGraphInfo>
-              <div className=" border rounded-xl p-4 md:col-span-2">
-                <div>Active Participating Universities</div>
-                {mastersStatistics?.partneringUniversities.map((uni, index) => {
-                  return <p key={index}>{uni}</p>;
-                })}
+              <div className="flex flex-col justify-between w-full p-4 border rounded-xl bg-nccGray-50 md:col-span-2">
+                <div className="">{t("participatingUniversities")}</div>
+                <div className=" py-2">
+                  <ul className=" grid grid-cols-2 text-muted-foreground">
+                    {mastersStatistics?.participatingUniversities.map(
+                      (uni, index) => {
+                        return (
+                          <li key={index} className="py-1">
+                            {uni}
+                          </li>
+                        );
+                      }
+                    )}
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
@@ -610,7 +633,7 @@ const Home = () => {
           {/* more mastersStatistics */}
           <div className="pt-6">
             {mastersStatistics && (
-              <MoreStatistics statistics={mastersStatistics} />
+              <MoreMasterStatistics statistics={mastersStatistics} />
             )}
           </div>
         </div>

@@ -12,6 +12,7 @@ export type TStatistics = {
   schoolType: TMoreStatisticsSchoolType;
   familyIncome: TMoreStatisticsFamilyIncome;
   today: TMoreStatisticsToday;
+  participatingUniversities: string[];
 };
 
 export type TotalApplicationsPerStatus = {
@@ -39,6 +40,7 @@ export type TMoreStatisticsStudents = {
   female: number;
   total: number;
   male: number;
+  genderDistribution?: TMoreStatisticsGenderRatio;
 };
 
 // done

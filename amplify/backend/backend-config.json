@@ -130,6 +130,16 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "participatingUniversitiesBacholar": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "participatingUniversitiesMaster": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "revertAutoReject": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -468,6 +478,38 @@
         {
           "category": "function",
           "resourceName": "otpResend"
+        }
+      ]
+    },
+    "AMPLIFY_function_participatingUniversitiesBacholar_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "participatingUniversitiesBacholar"
+        }
+      ]
+    },
+    "AMPLIFY_function_participatingUniversitiesBacholar_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "participatingUniversitiesBacholar"
+        }
+      ]
+    },
+    "AMPLIFY_function_participatingUniversitiesMaster_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "participatingUniversitiesMaster"
+        }
+      ]
+    },
+    "AMPLIFY_function_participatingUniversitiesMaster_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "participatingUniversitiesMaster"
         }
       ]
     },

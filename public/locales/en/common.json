@@ -53,5 +53,7 @@
   "bahrainiUnisDescription": "List of universities where eligible students have graduated from",
   "mastersUnisDescription": "List of partner universities where eligible students can apply a scholarship for",
   "back": "Back",
-  "success": "Success"
+  "success": "Success",
+  "participatingUniversities": "Participating Universities",
+  "applicantIncome": "Applicant/Guardian familyIncome"
 }

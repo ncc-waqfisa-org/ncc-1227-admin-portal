@@ -7,15 +7,176 @@
 /* eslint-disable */
 import * as React from "react";
 import {
+  Badge,
   Button,
+  Divider,
   Flex,
   Grid,
+  Icon,
+  ScrollView,
+  Text,
   TextAreaField,
   TextField,
+  useTheme,
 } from "@aws-amplify/ui-react";
 import { Statistics } from "../models";
 import { fetchByPath, getOverrideProps, validateField } from "./utils";
 import { DataStore } from "aws-amplify";
+function ArrayField({
+  items = [],
+  onChange,
+  label,
+  inputFieldRef,
+  children,
+  hasError,
+  setFieldValue,
+  currentFieldValue,
+  defaultFieldValue,
+  lengthLimit,
+  getBadgeText,
+  runValidationTasks,
+  errorMessage,
+}) {
+  const labelElement = <Text>{label}</Text>;
+  const {
+    tokens: {
+      components: {
+        fieldmessages: { error: errorStyles },
+      },
+    },
+  } = useTheme();
+  const [selectedBadgeIndex, setSelectedBadgeIndex] = React.useState();
+  const [isEditing, setIsEditing] = React.useState();
+  React.useEffect(() => {
+    if (isEditing) {
+      inputFieldRef?.current?.focus();
+    }
+  }, [isEditing]);
+  const removeItem = async (removeIndex) => {
+    const newItems = items.filter((value, index) => index !== removeIndex);
+    await onChange(newItems);
+    setSelectedBadgeIndex(undefined);
+  };
+  const addItem = async () => {
+    const { hasError } = runValidationTasks();
+    if (
+      currentFieldValue !== undefined &&
+      currentFieldValue !== null &&
+      currentFieldValue !== "" &&
+      !hasError
+    ) {
+      const newItems = [...items];
+      if (selectedBadgeIndex !== undefined) {
+        newItems[selectedBadgeIndex] = currentFieldValue;
+        setSelectedBadgeIndex(undefined);
+      } else {
+        newItems.push(currentFieldValue);
+      }
+      await onChange(newItems);
+      setIsEditing(false);
+    }
+  };
+  const arraySection = (
+    <React.Fragment>
+      {!!items?.length && (
+        <ScrollView height="inherit" width="inherit" maxHeight={"7rem"}>
+          {items.map((value, index) => {
+            return (
+              <Badge
+                key={index}
+                style={{
+                  cursor: "pointer",
+                  alignItems: "center",
+                  marginRight: 3,
+                  marginTop: 3,
+                  backgroundColor:
+                    index === selectedBadgeIndex ? "#B8CEF9" : "",
+                }}
+                onClick={() => {
+                  setSelectedBadgeIndex(index);
+                  setFieldValue(items[index]);
+                  setIsEditing(true);
+                }}
+              >
+                {getBadgeText ? getBadgeText(value) : value.toString()}
+                <Icon
+                  style={{
+                    cursor: "pointer",
+                    paddingLeft: 3,
+                    width: 20,
+                    height: 20,
+                  }}
+                  viewBox={{ width: 20, height: 20 }}
+                  paths={[
+                    {
+                      d: "M10 10l5.09-5.09L10 10l5.09 5.09L10 10zm0 0L4.91 4.91 10 10l-5.09 5.09L10 10z",
+                      stroke: "black",
+                    },
+                  ]}
+                  ariaLabel="button"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    removeItem(index);
+                  }}
+                />
+              </Badge>
+            );
+          })}
+        </ScrollView>
+      )}
+      <Divider orientation="horizontal" marginTop={5} />
+    </React.Fragment>
+  );
+  if (lengthLimit !== undefined && items.length >= lengthLimit && !isEditing) {
+    return (
+      <React.Fragment>
+        {labelElement}
+        {arraySection}
+      </React.Fragment>
+    );
+  }
+  return (
+    <React.Fragment>
+      {labelElement}
+      {isEditing && children}
+      {!isEditing ? (
+        <>
+          <Button
+            onClick={() => {
+              setIsEditing(true);
+            }}
+          >
+            Add item
+          </Button>
+          {errorMessage && hasError && (
+            <Text color={errorStyles.color} fontSize={errorStyles.fontSize}>
+              {errorMessage}
+            </Text>
+          )}
+        </>
+      ) : (
+        <Flex justifyContent="flex-end">
+          {(currentFieldValue || isEditing) && (
+            <Button
+              children="Cancel"
+              type="button"
+              size="small"
+              onClick={() => {
+                setFieldValue(defaultFieldValue);
+                setIsEditing(false);
+                setSelectedBadgeIndex(undefined);
+              }}
+            ></Button>
+          )}
+          <Button size="small" variation="link" onClick={addItem}>
+            {selectedBadgeIndex !== undefined ? "Save" : "Add"}
+          </Button>
+        </Flex>
+      )}
+      {arraySection}
+    </React.Fragment>
+  );
+}
 export default function StatisticsUpdateForm(props) {
   const {
     id: idProp,
@@ -43,6 +204,7 @@ export default function StatisticsUpdateForm(props) {
     students: "",
     applications: "",
     today: "",
+    participatingUniversities: [],
   };
   const [id, setId] = React.useState(initialValues.id);
   const [batch, setBatch] = React.useState(initialValues.batch);
@@ -74,6 +236,8 @@ export default function StatisticsUpdateForm(props) {
     initialValues.applications
   );
   const [today, setToday] = React.useState(initialValues.today);
+  const [participatingUniversities, setParticipatingUniversities] =
+    React.useState(initialValues.participatingUniversities);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = statisticsRecord
@@ -146,6 +310,8 @@ export default function StatisticsUpdateForm(props) {
         ? cleanValues.today
         : JSON.stringify(cleanValues.today)
     );
+    setParticipatingUniversities(cleanValues.participatingUniversities ?? []);
+    setCurrentParticipatingUniversitiesValue("");
     setErrors({});
   };
   const [statisticsRecord, setStatisticsRecord] =
@@ -160,6 +326,11 @@ export default function StatisticsUpdateForm(props) {
     queryData();
   }, [idProp, statisticsModelProp]);
   React.useEffect(resetStateValues, [statisticsRecord]);
+  const [
+    currentParticipatingUniversitiesValue,
+    setCurrentParticipatingUniversitiesValue,
+  ] = React.useState("");
+  const participatingUniversitiesRef = React.createRef();
   const validations = {
     id: [{ type: "Required" }],
     batch: [{ type: "Required" }],
@@ -175,6 +346,7 @@ export default function StatisticsUpdateForm(props) {
     students: [{ type: "JSON" }],
     applications: [{ type: "JSON" }],
     today: [{ type: "JSON" }],
+    participatingUniversities: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -216,6 +388,7 @@ export default function StatisticsUpdateForm(props) {
           students,
           applications,
           today,
+          participatingUniversities,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -289,6 +462,7 @@ export default function StatisticsUpdateForm(props) {
               students,
               applications,
               today,
+              participatingUniversities,
             };
             const result = onChange(modelFields);
             value = result?.id ?? value;
@@ -330,6 +504,7 @@ export default function StatisticsUpdateForm(props) {
               students,
               applications,
               today,
+              participatingUniversities,
             };
             const result = onChange(modelFields);
             value = result?.batch ?? value;
@@ -371,6 +546,7 @@ export default function StatisticsUpdateForm(props) {
               students,
               applications,
               today,
+              participatingUniversities,
             };
             const result = onChange(modelFields);
             value = result?.totalApplications ?? value;
@@ -410,6 +586,7 @@ export default function StatisticsUpdateForm(props) {
               students,
               applications,
               today,
+              participatingUniversities,
             };
             const result = onChange(modelFields);
             value = result?.totalApplicationsPerStatus ?? value;
@@ -452,6 +629,7 @@ export default function StatisticsUpdateForm(props) {
               students,
               applications,
               today,
+              participatingUniversities,
             };
             const result = onChange(modelFields);
             value = result?.scoreHistogram ?? value;
@@ -489,6 +667,7 @@ export default function StatisticsUpdateForm(props) {
               students,
               applications,
               today,
+              participatingUniversities,
             };
             const result = onChange(modelFields);
             value = result?.gpaHistogram ?? value;
@@ -526,6 +705,7 @@ export default function StatisticsUpdateForm(props) {
               students,
               applications,
               today,
+              participatingUniversities,
             };
             const result = onChange(modelFields);
             value = result?.totalApplicationsPerUniversity ?? value;
@@ -568,6 +748,7 @@ export default function StatisticsUpdateForm(props) {
               students,
               applications,
               today,
+              participatingUniversities,
             };
             const result = onChange(modelFields);
             value = result?.topUniversities ?? value;
@@ -605,6 +786,7 @@ export default function StatisticsUpdateForm(props) {
               students,
               applications,
               today,
+              participatingUniversities,
             };
             const result = onChange(modelFields);
             value = result?.topPrograms ?? value;
@@ -642,6 +824,7 @@ export default function StatisticsUpdateForm(props) {
               students,
               applications,
               today,
+              participatingUniversities,
             };
             const result = onChange(modelFields);
             value = result?.familyIncome ?? value;
@@ -679,6 +862,7 @@ export default function StatisticsUpdateForm(props) {
               students,
               applications,
               today,
+              participatingUniversities,
             };
             const result = onChange(modelFields);
             value = result?.schoolType ?? value;
@@ -716,6 +900,7 @@ export default function StatisticsUpdateForm(props) {
               students: value,
               applications,
               today,
+              participatingUniversities,
             };
             const result = onChange(modelFields);
             value = result?.students ?? value;
@@ -753,6 +938,7 @@ export default function StatisticsUpdateForm(props) {
               students,
               applications: value,
               today,
+              participatingUniversities,
             };
             const result = onChange(modelFields);
             value = result?.applications ?? value;
@@ -790,6 +976,7 @@ export default function StatisticsUpdateForm(props) {
               students,
               applications,
               today: value,
+              participatingUniversities,
             };
             const result = onChange(modelFields);
             value = result?.today ?? value;
@@ -804,6 +991,73 @@ export default function StatisticsUpdateForm(props) {
         hasError={errors.today?.hasError}
         {...getOverrideProps(overrides, "today")}
       ></TextAreaField>
+      <ArrayField
+        onChange={async (items) => {
+          let values = items;
+          if (onChange) {
+            const modelFields = {
+              id,
+              batch,
+              totalApplications,
+              totalApplicationsPerStatus,
+              scoreHistogram,
+              gpaHistogram,
+              totalApplicationsPerUniversity,
+              topUniversities,
+              topPrograms,
+              familyIncome,
+              schoolType,
+              students,
+              applications,
+              today,
+              participatingUniversities: values,
+            };
+            const result = onChange(modelFields);
+            values = result?.participatingUniversities ?? values;
+          }
+          setParticipatingUniversities(values);
+          setCurrentParticipatingUniversitiesValue("");
+        }}
+        currentFieldValue={currentParticipatingUniversitiesValue}
+        label={"Participating universities"}
+        items={participatingUniversities}
+        hasError={errors?.participatingUniversities?.hasError}
+        runValidationTasks={async () =>
+          await runValidationTasks(
+            "participatingUniversities",
+            currentParticipatingUniversitiesValue
+          )
+        }
+        errorMessage={errors?.participatingUniversities?.errorMessage}
+        setFieldValue={setCurrentParticipatingUniversitiesValue}
+        inputFieldRef={participatingUniversitiesRef}
+        defaultFieldValue={""}
+      >
+        <TextField
+          label="Participating universities"
+          isRequired={false}
+          isReadOnly={false}
+          value={currentParticipatingUniversitiesValue}
+          onChange={(e) => {
+            let { value } = e.target;
+            if (errors.participatingUniversities?.hasError) {
+              runValidationTasks("participatingUniversities", value);
+            }
+            setCurrentParticipatingUniversitiesValue(value);
+          }}
+          onBlur={() =>
+            runValidationTasks(
+              "participatingUniversities",
+              currentParticipatingUniversitiesValue
+            )
+          }
+          errorMessage={errors.participatingUniversities?.errorMessage}
+          hasError={errors.participatingUniversities?.hasError}
+          ref={participatingUniversitiesRef}
+          labelHidden={true}
+          {...getOverrideProps(overrides, "participatingUniversities")}
+        ></TextField>
+      </ArrayField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}

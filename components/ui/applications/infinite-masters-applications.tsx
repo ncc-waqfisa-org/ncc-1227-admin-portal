@@ -313,46 +313,45 @@ export const InfiniteMasterApplications = () => {
       //   enableSorting: false,
       //   enableHiding: false,
       // },
-      {
-        accessorKey: "university",
-        size: 100,
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} title={t("university")} />
-        ),
-        cell: ({ row }) => {
-          console.log(JSON.stringify(row));
-          // const university =
-          // const program = program.find(
-          //   (schoolType) => schoolType.value === row.getValue("program")
-          // );
+      // {
+      //   accessorKey: "university",
+      //   size: 100,
+      //   header: ({ column }) => (
+      //     <DataTableColumnHeader column={column} title={t("university")} />
+      //   ),
+      //   cell: ({ row }) => {
+      //     // const university =
+      //     // const program = program.find(
+      //     //   (schoolType) => schoolType.value === row.getValue("program")
+      //     // );
 
-          // if (!schoolType) {
-          //   return null;
-          // }
+      //     // if (!schoolType) {
+      //     //   return null;
+      //     // }
 
-          if (!row.getValue("universityName")) {
-            return null;
-          }
+      //     if (!row.getValue("universityID")) {
+      //       return null;
+      //     }
 
-          return (
-            <div className="flex items-center">
-              {row.getValue("universityName")}
-            </div>
-          );
-          // return (
-          //   <div className="flex items-center">
-          //     {schoolType.icon && (
-          //       <schoolType.icon className="w-4 h-4 me-2 text-muted-foreground" />
-          //     )}
-          //     <span>
-          //       {locale === "ar" ? schoolType.arLabel : schoolType.label}
-          //     </span>
-          //   </div>
-          // );
-        },
-        enableSorting: false,
-        enableHiding: false,
-      },
+      //     return (
+      //       <div className="flex items-center">
+      //         {row.getValue("universityID")}
+      //       </div>
+      //     );
+      //     // return (
+      //     //   <div className="flex items-center">
+      //     //     {schoolType.icon && (
+      //     //       <schoolType.icon className="w-4 h-4 me-2 text-muted-foreground" />
+      //     //     )}
+      //     //     <span>
+      //     //       {locale === "ar" ? schoolType.arLabel : schoolType.label}
+      //     //     </span>
+      //     //   </div>
+      //     // );
+      //   },
+      //   enableSorting: false,
+      //   enableHiding: false,
+      // },
 
       {
         accessorKey: "dateTime",

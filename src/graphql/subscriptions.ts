@@ -1201,6 +1201,7 @@ export const onCreateStudentLog = /* GraphQL */ `subscription OnCreateStudentLog
     _lastChangedAt
     applicationStudentLogsId
     studentStudentLogsCpr
+    masterApplicationStudentLogsId
     __typename
   }
 }
@@ -1276,6 +1277,7 @@ export const onUpdateStudentLog = /* GraphQL */ `subscription OnUpdateStudentLog
     _lastChangedAt
     applicationStudentLogsId
     studentStudentLogsCpr
+    masterApplicationStudentLogsId
     __typename
   }
 }
@@ -1351,6 +1353,7 @@ export const onDeleteStudentLog = /* GraphQL */ `subscription OnDeleteStudentLog
     _lastChangedAt
     applicationStudentLogsId
     studentStudentLogsCpr
+    masterApplicationStudentLogsId
     __typename
   }
 }
@@ -2108,6 +2111,7 @@ export const onCreateStatistics = /* GraphQL */ `subscription OnCreateStatistics
     students
     applications
     today
+    participatingUniversities
     createdAt
     updatedAt
     _version
@@ -2138,6 +2142,7 @@ export const onUpdateStatistics = /* GraphQL */ `subscription OnUpdateStatistics
     students
     applications
     today
+    participatingUniversities
     createdAt
     updatedAt
     _version
@@ -2168,6 +2173,7 @@ export const onDeleteStatistics = /* GraphQL */ `subscription OnDeleteStatistics
     students
     applications
     today
+    participatingUniversities
     createdAt
     updatedAt
     _version
@@ -2561,6 +2567,11 @@ export const onCreateMasterApplication = /* GraphQL */ `subscription OnCreateMas
       startedAt
       __typename
     }
+    studentLogs {
+      nextToken
+      startedAt
+      __typename
+    }
     attachment {
       id
       cprDoc
@@ -2683,6 +2694,11 @@ export const onUpdateMasterApplication = /* GraphQL */ `subscription OnUpdateMas
       __typename
     }
     masterLogs {
+      nextToken
+      startedAt
+      __typename
+    }
+    studentLogs {
       nextToken
       startedAt
       __typename
@@ -2813,6 +2829,11 @@ export const onDeleteMasterApplication = /* GraphQL */ `subscription OnDeleteMas
       startedAt
       __typename
     }
+    studentLogs {
+      nextToken
+      startedAt
+      __typename
+    }
     attachment {
       id
       cprDoc
@@ -2939,6 +2960,7 @@ export const onCreateMasterStatistics = /* GraphQL */ `subscription OnCreateMast
     students
     applications
     today
+    participatingUniversities
     createdAt
     updatedAt
     _version
@@ -2969,6 +2991,7 @@ export const onUpdateMasterStatistics = /* GraphQL */ `subscription OnUpdateMast
     students
     applications
     today
+    participatingUniversities
     createdAt
     updatedAt
     _version
@@ -2999,6 +3022,7 @@ export const onDeleteMasterStatistics = /* GraphQL */ `subscription OnDeleteMast
     students
     applications
     today
+    participatingUniversities
     createdAt
     updatedAt
     _version

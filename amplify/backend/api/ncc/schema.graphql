@@ -263,6 +263,7 @@ type Statistics @model @auth(rules: [{ allow: public }]) {
   students: AWSJSON
   applications: AWSJSON
   today: AWSJSON
+  participatingUniversities: [String]
 }
 
 enum FamilyIncome {
@@ -322,6 +323,7 @@ type MasterApplication @model @auth(rules: [{ allow: public }]) {
   # attachmentID: String #check first
   adminLogs: [AdminLog] @hasMany
   masterLogs: [MasterLog] @hasMany
+  studentLogs: [StudentLog] @hasMany
   attachment: MasterAttachment @hasOne
   program: String
   dateTime: AWSDateTime!
@@ -365,6 +367,7 @@ type MasterStatistics @model @auth(rules: [{ allow: public }]) {
   students: AWSJSON
   applications: AWSJSON
   today: AWSJSON
+  participatingUniversities: [String]
 }
 
 type MasterAttachment @model @auth(rules: [{ allow: public }]) {

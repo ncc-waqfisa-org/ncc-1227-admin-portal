@@ -1161,6 +1161,13 @@ export const schema = {
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
+                },
+                "masterApplicationStudentLogsId": {
+                    "name": "masterApplicationStudentLogsId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
                 }
             },
             "syncable": true,
@@ -1176,6 +1183,15 @@ export const schema = {
                         "name": "gsi-Application.studentLogs",
                         "fields": [
                             "applicationStudentLogsId"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "gsi-MasterApplication.studentLogs",
+                        "fields": [
+                            "masterApplicationStudentLogsId"
                         ]
                     }
                 },
@@ -2299,6 +2315,14 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "participatingUniversities": {
+                    "name": "participatingUniversities",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -2748,6 +2772,22 @@ export const schema = {
                         ]
                     }
                 },
+                "studentLogs": {
+                    "name": "studentLogs",
+                    "isArray": true,
+                    "type": {
+                        "model": "StudentLog"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": [
+                            "masterApplicationStudentLogsId"
+                        ]
+                    }
+                },
                 "attachment": {
                     "name": "attachment",
                     "isArray": false,
@@ -3123,6 +3163,14 @@ export const schema = {
                     "type": "AWSJSON",
                     "isRequired": false,
                     "attributes": []
+                },
+                "participatingUniversities": {
+                    "name": "participatingUniversities",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -3661,5 +3709,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "6073f0c485f4e9480ac7d99bacaef24e"
+    "version": "a9c4f80dffaedb4ad26df0ff2feebfed"
 };

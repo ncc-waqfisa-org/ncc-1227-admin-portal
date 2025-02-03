@@ -1232,6 +1232,7 @@ export const createStudentLog = /* GraphQL */ `mutation CreateStudentLog(
     _lastChangedAt
     applicationStudentLogsId
     studentStudentLogsCpr
+    masterApplicationStudentLogsId
     __typename
   }
 }
@@ -1308,6 +1309,7 @@ export const updateStudentLog = /* GraphQL */ `mutation UpdateStudentLog(
     _lastChangedAt
     applicationStudentLogsId
     studentStudentLogsCpr
+    masterApplicationStudentLogsId
     __typename
   }
 }
@@ -1384,6 +1386,7 @@ export const deleteStudentLog = /* GraphQL */ `mutation DeleteStudentLog(
     _lastChangedAt
     applicationStudentLogsId
     studentStudentLogsCpr
+    masterApplicationStudentLogsId
     __typename
   }
 }
@@ -2175,6 +2178,7 @@ export const createStatistics = /* GraphQL */ `mutation CreateStatistics(
     students
     applications
     today
+    participatingUniversities
     createdAt
     updatedAt
     _version
@@ -2206,6 +2210,7 @@ export const updateStatistics = /* GraphQL */ `mutation UpdateStatistics(
     students
     applications
     today
+    participatingUniversities
     createdAt
     updatedAt
     _version
@@ -2237,6 +2242,7 @@ export const deleteStatistics = /* GraphQL */ `mutation DeleteStatistics(
     students
     applications
     today
+    participatingUniversities
     createdAt
     updatedAt
     _version
@@ -2646,6 +2652,11 @@ export const createMasterApplication = /* GraphQL */ `mutation CreateMasterAppli
       startedAt
       __typename
     }
+    studentLogs {
+      nextToken
+      startedAt
+      __typename
+    }
     attachment {
       id
       cprDoc
@@ -2769,6 +2780,11 @@ export const updateMasterApplication = /* GraphQL */ `mutation UpdateMasterAppli
       __typename
     }
     masterLogs {
+      nextToken
+      startedAt
+      __typename
+    }
+    studentLogs {
       nextToken
       startedAt
       __typename
@@ -2900,6 +2916,11 @@ export const deleteMasterApplication = /* GraphQL */ `mutation DeleteMasterAppli
       startedAt
       __typename
     }
+    studentLogs {
+      nextToken
+      startedAt
+      __typename
+    }
     attachment {
       id
       cprDoc
@@ -3027,6 +3048,7 @@ export const createMasterStatistics = /* GraphQL */ `mutation CreateMasterStatis
     students
     applications
     today
+    participatingUniversities
     createdAt
     updatedAt
     _version
@@ -3058,6 +3080,7 @@ export const updateMasterStatistics = /* GraphQL */ `mutation UpdateMasterStatis
     students
     applications
     today
+    participatingUniversities
     createdAt
     updatedAt
     _version
@@ -3089,6 +3112,7 @@ export const deleteMasterStatistics = /* GraphQL */ `mutation DeleteMasterStatis
     students
     applications
     today
+    participatingUniversities
     createdAt
     updatedAt
     _version

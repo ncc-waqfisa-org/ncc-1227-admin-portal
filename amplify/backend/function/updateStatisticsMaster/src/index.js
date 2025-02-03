@@ -1,763 +1,290 @@
-/* Amplify Params - DO NOT EDIT
-	ENV
-	REGION
-Amplify Params - DO NOT EDIT */
 const AWS = require("aws-sdk");
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
-//TODO: need to work on this also
+// Master-specific table names
 const {
   MasterApplicationTable: APPLICATION_TABLE,
-  BahrainUniversities: UNIVERSITY_Bahrain_TABLE,
-  MasterAppliedUniversities: UNIVERSITY_MASTER_TABLE,
+  MasterAppliedUniversities: UNIVERSITY_TABLE,
   StudentTable: STUDENT_TABLE,
   MasterStatisticsTable: STATISTICS_TABLE,
 } = {
   MasterApplicationTable:
     "MasterApplication-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
-  BahrainUniversities: "",
-  MasterAppliedUniversities: "",
+  MasterAppliedUniversities:
+    "MasterAppliedUniversities-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
   StudentTable: "Student-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
-  MasterStatisticsTable: "Statistics-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
+  MasterStatisticsTable:
+    "MasterStatistics-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
 };
 
 const tableName = APPLICATION_TABLE;
 const batchValue = new Date().getFullYear();
 
-/**
- * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
- */
 exports.handler = async (event) => {
-  console.log(`EVENT: ${JSON.stringify(event)}`);
+  console.log(`EVENT RECEIVED: ${JSON.stringify(event)}`);
+
   try {
+    console.log("Starting master statistics update...");
     await updateStatistics(tableName, batchValue);
+    console.log("Master statistics successfully updated.");
 
     return {
       statusCode: 200,
-      //  Uncomment below to enable CORS requests
-      //  headers: {
-      //      "Access-Control-Allow-Origin": "*",
-      //      "Access-Control-Allow-Headers": "*"
-      //  },
-      body: JSON.stringify({
-        message: "Statistics updated",
-      }),
+      body: JSON.stringify({ message: "Master statistics updated" }),
     };
   } catch (error) {
-    console.error("Error getting statistics", error);
+    console.error("Error updating master statistics", error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: "Error getting statistics" }),
+      body: JSON.stringify({ message: "Error updating master statistics" }),
     };
   }
 };
 
-async function getScoreHistograms(applications /*tableName, batchValue */) {
-  let histogramJson = {};
-  applications.forEach((item) => {
-    const score = item.score;
-    let bucket = Math.floor(score / 5) * 5;
-    const key = `${bucket}-${bucket + 5}`;
-    histogramJson[key] = (histogramJson[key] || 0) + 1;
-  });
-  return histogramJson;
-}
-
-async function getGpaHistogram(applications /*tableName, batchValue */) {
-  let histogramJson = {};
-  applications.forEach((item) => {
-    const gpa = item.gpa;
-    let bucket = Math.floor(gpa / 5) * 5;
-
-    if (bucket === 100) {
-      bucket = 95;
-    }
-    const key = `${bucket}-${bucket + 5}`;
-    histogramJson[key] = (histogramJson[key] || 0) + 1;
-  });
-  return histogramJson;
-}
-
-async function getTopUniversities(tableName, batchValue) {
-  let universityIDsCount = {};
-  let lastEvaluatedKey = null;
-
-  // get the highest 5 universityIDs repeated in Applications table, with their count
-
-  do {
-    const params = {
-      TableName: tableName,
-      ProjectionExpression: "universityID",
-      FilterExpression: "#batch = :batchValue",
-      ExpressionAttributeNames: {
-        "#batch": "batch",
+async function updateStatistics(tableName, batchValue) {
+  // First check if statistics for this batch already exists
+  const existingStats = await dynamoDB
+    .get({
+      TableName: STATISTICS_TABLE,
+      Key: {
+        id: batchValue,
       },
-      ExpressionAttributeValues: {
-        ":batchValue": batchValue,
-      },
-      ExclusiveStartKey: lastEvaluatedKey,
-    };
+    })
+    .promise();
 
-    const result = await dynamoDB.scan(params).promise();
+  const applications = await getAllApplications(tableName, batchValue);
+  const students = await getAllStudents(batchValue);
 
-    result.Items.forEach((item) => {
-      const universityID = item.universityID;
-      universityIDsCount[universityID] =
-        (universityIDsCount[universityID] || 0) + 1;
+  // Create statistics object without the id field
+  const statistics = {
+    batch: batchValue,
+    totalApplications: applications.length,
+    scoreHistogram: getScoreDistribution(applications),
+    gpaHistogram: getGPADistribution(applications),
+    totalApplicationsPerStatus: getStatusDistribution(applications),
+    totalApplicationsPerUniversity: await getUniversityDistribution(
+      applications
+    ),
+    topUniversities: await getUniversityDistribution(applications),
+    familyIncome: await getFamilyIncomeDistribution(applications, students),
+    updatedAt: new Date().toISOString(),
+  };
+
+  if (existingStats.Item) {
+    console.log(`Updating existing statistics for batch ${batchValue}`);
+    let updateExpression = "set ";
+    const expressionAttributeValues = {};
+    const expressionAttributeNames = {};
+
+    // Exclude id from the update operation
+    Object.entries(statistics).forEach(([key, value]) => {
+      updateExpression += `#${key} = :${key},`;
+      expressionAttributeValues[`:${key}`] = value;
+      expressionAttributeNames[`#${key}`] = key;
     });
 
-    lastEvaluatedKey = result.LastEvaluatedKey;
-  } while (lastEvaluatedKey);
-
-  // sort the universities by count
-  const sortedUniversities = Object.entries(universityIDsCount).sort(
-    (a, b) => b[1] - a[1]
-  );
-  const topUniversities = sortedUniversities.slice(0, 5);
-  // get the names of the universities from the university table
-
-  const universityNames = {};
-  for (const [universityID] of topUniversities) {
-    const universityParams = {
-      TableName: UNIVERSITY_TABLE,
-      Key: {
-        id: universityID,
-      },
-    };
-    const universityResult = await dynamoDB.get(universityParams).promise();
-    universityNames[universityID] = universityResult.Item?.name;
+    await dynamoDB
+      .update({
+        TableName: STATISTICS_TABLE,
+        Key: { id: batchValue },
+        UpdateExpression: updateExpression.slice(0, -1), // remove trailing comma
+        ExpressionAttributeValues: expressionAttributeValues,
+        ExpressionAttributeNames: expressionAttributeNames,
+      })
+      .promise();
+  } else {
+    console.log(`Creating new statistics for batch ${batchValue}`);
+    // Include id only when creating new item
+    await dynamoDB
+      .put({
+        TableName: STATISTICS_TABLE,
+        Item: {
+          id: batchValue,
+          ...statistics,
+        },
+      })
+      .promise();
   }
 
-  const topUniversitiesJson = {};
-  for (const [universityID, count] of topUniversities) {
-    topUniversitiesJson[universityNames[universityID]] = count;
-  }
-
-  return topUniversitiesJson;
-}
-
-async function getAllUniversities(tableName, batchValue) {
-  let universityIDsCount = {};
-  let lastEvaluatedKey = null;
-
-  // Get the count of each universityID in the Applications table, filtered by batch
-  do {
-    const params = {
-      TableName: tableName,
-      ProjectionExpression: "universityID",
-      FilterExpression: "#batch = :batchValue",
-      ExpressionAttributeNames: {
-        "#batch": "batch",
-      },
-      ExpressionAttributeValues: {
-        ":batchValue": batchValue,
-      },
-      ExclusiveStartKey: lastEvaluatedKey,
-    };
-
-    const result = await dynamoDB.scan(params).promise();
-
-    result.Items.forEach((item) => {
-      const universityID = item.universityID;
-      universityIDsCount[universityID] =
-        (universityIDsCount[universityID] || 0) + 1;
-    });
-
-    lastEvaluatedKey = result.LastEvaluatedKey;
-  } while (lastEvaluatedKey);
-
-  // Get the names of the universities from the University table
-  const universityNames = {};
-  for (const universityID of Object.keys(universityIDsCount)) {
-    const universityParams = {
-      TableName: UNIVERSITY_TABLE,
-      Key: {
-        id: universityID,
-      },
-    };
-    const universityResult = await dynamoDB.get(universityParams).promise();
-    universityNames[universityID] = universityResult.Item?.name;
-  }
-
-  // Prepare the final JSON object
-  const allUniversitiesJson = {};
-  for (const [universityID, count] of Object.entries(universityIDsCount)) {
-    allUniversitiesJson[universityNames[universityID]] = count;
-  }
-
-  return allUniversitiesJson;
+  console.log("Master statistics table successfully updated.");
 }
 
 async function getAllApplications(tableName, batchValue) {
+  console.log(`Fetching all applications for batch ${batchValue}...`);
+
   const params = {
     TableName: tableName,
-    IndexName: "byBatch",
-    KeyConditionExpression: "#batch = :batchValue",
-    ExpressionAttributeNames: {
-      "#batch": "batch",
-    },
-    ExpressionAttributeValues: {
-      ":batchValue": batchValue,
-    },
+    FilterExpression: "#batch = :batchValue",
+    ExpressionAttributeNames: { "#batch": "batch" },
+    ExpressionAttributeValues: { ":batchValue": batchValue },
   };
 
   let allApplications = [];
+  let lastEvaluatedKey = null;
 
   do {
-    const applications = await dynamoDB.query(params).promise();
-    allApplications = allApplications.concat(applications.Items);
+    if (lastEvaluatedKey) {
+      params.ExclusiveStartKey = lastEvaluatedKey;
+    }
 
-    // Check if there are more items to fetch
-    params.ExclusiveStartKey = applications.LastEvaluatedKey;
-  } while (params.ExclusiveStartKey);
+    const result = await dynamoDB.scan(params).promise();
+    allApplications = allApplications.concat(result.Items);
+    lastEvaluatedKey = result.LastEvaluatedKey;
 
+    console.log(
+      `Fetched ${
+        result.Items.length
+      } applications, lastEvaluatedKey: ${JSON.stringify(lastEvaluatedKey)}`
+    );
+  } while (lastEvaluatedKey);
+
+  console.log(`Total applications fetched: ${allApplications.length}`);
   return allApplications;
 }
 
-async function getPrivatePublicRatio(applications, students) {
-  let privateCountFemale = 0;
-  let privateCountMale = 0;
-  let publicCountFemale = 0;
-  let publicCountMale = 0;
+async function getAllStudents(batchValue) {
+  console.log(`Fetching all master students...`);
 
-  let privateCountFemaleToday = 0;
-  let privateCountMaleToday = 0;
-  let publicCountFemaleToday = 0;
-  let publicCountMaleToday = 0;
-
-  for (const application of applications) {
-    let student = students.find(
-      (student) => student.cpr === application.studentCPR
-    );
-    if (!student) {
-      student = await getStudent(
-        "Student-cw7beg2perdtnl7onnneec4jfa-staging",
-        application.studentCPR
-      );
-    }
-    if (student) {
-      if (student.schoolType === "PRIVATE") {
-        student.gender === "FEMALE" ? privateCountFemale++ : privateCountMale++;
-
-        student.gender === "FEMALE" &&
-        new Date(application.createdAt).toDateString() ===
-          new Date().toDateString()
-          ? privateCountFemaleToday++
-          : null;
-        student.gender === "MALE" &&
-        new Date(application.createdAt).toDateString() ===
-          new Date().toDateString()
-          ? privateCountMaleToday++
-          : null;
-      } else {
-        student.gender === "FEMALE" ? publicCountFemale++ : publicCountMale++;
-        student.gender === "FEMALE" &&
-        new Date(application.createdAt).toDateString() ===
-          new Date().toDateString()
-          ? publicCountFemaleToday++
-          : null;
-        student.gender === "MALE" &&
-        new Date(application.createdAt).toDateString() ===
-          new Date().toDateString()
-          ? publicCountMaleToday++
-          : null;
-      }
-    }
-  }
-  return {
-    private: {
-      male: privateCountMale,
-      female: privateCountFemale,
-    },
-    public: {
-      male: publicCountMale,
-      female: publicCountFemale,
-    },
-    // privateToday: {
-    //     "male": students.filter(student =>
-    //         new Date(student.createdAt).toDateString() === new Date().toDateString() && student.schoolType === 'PRIVATE' &&
-    //         student.gender === "MALE").length,
-    //     "female": students.filter(student =>
-    //         new Date(student.createdAt).toDateString() === new Date().toDateString() && student.schoolType === 'PRIVATE' &&
-    //         student.gender === "FEMALE").length,
-    //
-    // },
-    // publicToday: {
-    //     "male": students.filter(student =>
-    //         new Date(student.createdAt).toDateString() === new Date().toDateString() && student.schoolType === 'PUBLIC' &&
-    //         student.gender === "MALE").length,
-    //     "female": students.filter(student =>
-    //         new Date(student.createdAt).toDateString() === new Date().toDateString() && student.schoolType === 'PUBLIC' &&
-    //         student.gender === "FEMALE").length,
-    //
-    // }
-
-    privateToday: {
-      male: privateCountMaleToday,
-      female: privateCountFemaleToday,
-    },
-
-    publicToday: {
-      male: publicCountMaleToday,
-      female: publicCountFemaleToday,
-    },
-  };
-}
-
-async function getStudent(tableName, cpr) {
   const params = {
     TableName: STUDENT_TABLE,
-    Key: {
-      cpr: cpr,
-    },
+    FilterExpression: "attribute_exists(m_firstName)",
   };
-  const { Item } = await dynamoDB.get(params).promise();
-  return Item;
-}
 
-async function getFamilyIncomeRatio(applications, students) {
-  let above1500Female = 0;
-  let above1500Male = 0;
-  let below1500Female = 0;
-  let below1500Male = 0;
-
-  let above1500FemaleToday = 0;
-  let above1500MaleToday = 0;
-  let below1500FemaleToday = 0;
-  let below1500MaleToday = 0;
-
-  for (const application of applications) {
-    let student = students.find(
-      (student) => student.cpr === application.studentCPR
-    );
-    if (!student) {
-      student = await getStudent(
-        "Student-cw7beg2perdtnl7onnneec4jfa-staging",
-        application.studentCPR
-      );
-    }
-
-    if (student) {
-      if (
-        student.familyIncome === "BETWEEN_500_AND_700" ||
-        student.familyIncome === "BETWEEN_700_AND_1000" ||
-        student.familyIncome === "LESS_THAN_500"
-      ) {
-        student.familyIncome = "LESS_THAN_1500";
-      }
-      if (student.familyIncome === "OVER_1000") {
-        console.log("Over 1000:", student);
-      }
-
-      if (student.familyIncome === "MORE_THAN_1500") {
-        student.gender === "FEMALE" ? above1500Female++ : above1500Male++;
-        student.gender === "FEMALE" &&
-        new Date(application.createdAt).toDateString() ===
-          new Date().toDateString()
-          ? above1500FemaleToday++
-          : null;
-        student.gender === "MALE" &&
-        new Date(application.createdAt).toDateString() ===
-          new Date().toDateString()
-          ? above1500MaleToday++
-          : null;
-      } else {
-        student.gender === "FEMALE" ? below1500Female++ : below1500Male++;
-        student.gender === "FEMALE" &&
-        new Date(application.createdAt).toDateString() ===
-          new Date().toDateString()
-          ? below1500FemaleToday++
-          : null;
-        student.gender === "MALE" &&
-        new Date(application.createdAt).toDateString() ===
-          new Date().toDateString()
-          ? below1500MaleToday++
-          : null;
-        if (
-          new Date(application.createdAt).toDateString() ===
-          new Date().toDateString()
-        ) {
-          console.log("Today:", student);
-        }
-      }
-    }
-  }
-  return {
-    above1500: {
-      male: above1500Male,
-      female: above1500Female,
-    },
-    below1500: {
-      male: below1500Male,
-      female: below1500Female,
-    },
-    // above1500Today: {
-    //     "male": students.filter(student =>
-    //         new Date(student.createdAt).toDateString() === new Date().toDateString() && student.familyIncome === 'MORE_THAN_1500' &&
-    //         student.gender === "MALE").length,
-    //     "female": students.filter(student =>
-    //         new Date(student.createdAt).toDateString() === new Date().toDateString() && student.familyIncome === 'MORE_THAN_1500' &&
-    //         student.gender === "FEMALE").length,
-    // },
-    // below1500Today: {
-    //     "male": students.filter(student =>
-    //         new Date(student.createdAt).toDateString() === new Date().toDateString() && student.familyIncome === 'LESS_THAN_1500' &&
-    //         student.gender === "MALE").length,
-    //     "female": students.filter(student =>
-    //         new Date(student.createdAt).toDateString() === new Date().toDateString() && student.familyIncome === 'LESS_THAN_1500' &&
-    //         student.gender === "FEMALE").length,
-    // }
-
-    above1500Today: {
-      male: above1500MaleToday,
-      female: above1500FemaleToday,
-    },
-    below1500Today: {
-      male: below1500MaleToday,
-      female: below1500FemaleToday,
-    },
-  };
-}
-
-async function getStudents(batchValue) {
-  const params = {
-    TableName: "Student-cw7beg2perdtnl7onnneec4jfa-staging",
-    // graduationDate is contained in the batch attribute
-    FilterExpression: "#batch = :batchValue",
-    ExpressionAttributeValues: {
-      ":batchValue": batchValue,
-    },
-    ExpressionAttributeNames: {
-      "#batch": "batch",
-    },
-  };
   let allStudents = [];
+  let lastEvaluatedKey = null;
 
   do {
-    const students = await dynamoDB.scan(params).promise();
-    allStudents = allStudents.concat(students.Items);
+    if (lastEvaluatedKey) {
+      params.ExclusiveStartKey = lastEvaluatedKey;
+    }
 
-    // Check if there are more items to fetch
-    params.ExclusiveStartKey = students.LastEvaluatedKey;
-  } while (params.ExclusiveStartKey);
+    const result = await dynamoDB.scan(params).promise();
+    allStudents = allStudents.concat(result.Items);
+    lastEvaluatedKey = result.LastEvaluatedKey;
 
+    console.log(
+      `Fetched ${
+        result.Items.length
+      } students, lastEvaluatedKey: ${JSON.stringify(lastEvaluatedKey)}`
+    );
+  } while (lastEvaluatedKey);
+
+  console.log(`Total students fetched: ${allStudents.length}`);
   return allStudents;
 }
 
-// async function getTopPrograms(tableName, batchValue) {
-//     let programIDsCount = {};
-//     let lastEvaluatedKey = null;
-//
-//     // get the highest 5 programIDs repeated in Applications table, with their count
-//
-//     do {
-//         const params = {
-//             TableName: tableName,
-//             ProjectionExpression: 'programID',
-//             FilterExpression: '#batch = :batchValue',
-//             ExpressionAttributeNames: {
-//                 '#batch': 'batch'
-//             },
-//             ExpressionAttributeValues: {
-//                 ':batchValue': batchValue
-//             },
-//             ExclusiveStartKey: lastEvaluatedKey
-//         };
-//
-//         const result = await dynamoDB.scan(params).promise();
-//
-//         result.Items.forEach(item => {
-//             const programID = item.programID;
-//             programIDsCount[programID] = (programIDsCount[programID] || 0) + 1;
-//         });
-//
-//         lastEvaluatedKey = result.LastEvaluatedKey;
-//     }
-//     while (lastEvaluatedKey);
-//
-//     // sort the programs by count
-//     const sortedPrograms = Object.entries(programIDsCount).sort((a, b) => b[1] - a[1]);
-//     const topPrograms = sortedPrograms.slice(0, 5);
-//     // get the names of the programs from the program table
-//
-//     const programNames = {};
-//     for (const [programID] of topPrograms) {
-//         const programParams = {
-//             TableName: 'Program-cw7beg2perdtnl7onnneec4jfa-staging',
-//             Key: {
-//                 id: programID
-//             }
-//         };
-//         const programResult = await dynamoDB.get(programParams).promise();
-//         programNames[programID] = programResult.Item?.name;
-//     }
-//
-//     const topProgramsJson = {};
-//     for (const [programID, count] of topPrograms) {
-//         topProgramsJson[programNames[programID]] = count;
-//     }
-//
-//     return topProgramsJson;
-//
-// }
-
-async function getApplicationsPerYearChart(tableName, batchValue) {
-  let applicationsPerYear = {};
-  let lastEvaluatedKey = null;
-
-  do {
-    const applicationsPerYearParams = {
-      TableName: tableName,
-      ProjectionExpression: "#batch",
-      ExpressionAttributeNames: {
-        "#batch": "batch",
-      },
-      ExclusiveStartKey: lastEvaluatedKey,
-    };
-
-    const applicationsPerYearResult = await dynamoDB
-      .scan(applicationsPerYearParams)
-      .promise();
-
-    applicationsPerYearResult.Items.forEach((item) => {
-      const batch = item.batch;
-      applicationsPerYear[batch] = (applicationsPerYear[batch] || 0) + 1;
-    });
-
-    lastEvaluatedKey = applicationsPerYearResult.LastEvaluatedKey;
-  } while (lastEvaluatedKey);
-
-  return applicationsPerYear;
-}
-
-async function getTotalApplications(tableName, batchValue) {
-  let applicationsCount = 0;
-  let lastEvaluatedKey = null;
-
-  do {
-    const applicationsParams = {
-      TableName: tableName,
-      ProjectionExpression: "#batch",
-      FilterExpression: "#batch = :batchValue",
-      ExpressionAttributeNames: {
-        "#batch": "batch",
-      },
-      ExpressionAttributeValues: {
-        ":batchValue": batchValue,
-      },
-      ExclusiveStartKey: lastEvaluatedKey,
-    };
-
-    const applicationsResult = await dynamoDB
-      .scan(applicationsParams)
-      .promise();
-
-    applicationsCount += applicationsResult.Count || 0;
-
-    lastEvaluatedKey = applicationsResult.LastEvaluatedKey;
-  } while (lastEvaluatedKey);
-
-  return applicationsCount;
-}
-
-async function getStatusPieChart(applications /* tableName, batchValue */) {
-  // let statusCounts = {};
-  //
-  // let lastEvaluatedKey = null;
-  // do {
-  //     const statusParams = {
-  //         TableName: tableName,
-  //         ProjectionExpression: '#status',
-  //         ExpressionAttributeNames: {
-  //             '#status': 'status',
-  //             '#batch': 'batch'
-  //         },
-  //         FilterExpression: '#batch = :batchValue',
-  //         ExpressionAttributeValues: {
-  //             ':batchValue': batchValue
-  //         },
-  //         ExclusiveStartKey: lastEvaluatedKey
-  //     };
-  //
-  //     const statusResult = await dynamoDB.scan(statusParams).promise();
-  //
-  //     statusResult.Items.forEach(item => {
-  //         const status = item.status;
-  //         statusCounts[status] = (statusCounts[status] || 0) + 1;
-  //     });
-  //
-  //     lastEvaluatedKey = statusResult.LastEvaluatedKey;
-  // } while (lastEvaluatedKey);
-  //
-  // return statusCounts;
-
-  let statusCounts = {};
-  applications.forEach((item) => {
-    const status = item.status;
-    statusCounts[status] = (statusCounts[status] || 0) + 1;
+function getGenderDistribution(items, genderField) {
+  const distribution = { male: 0, female: 0 };
+  items.forEach((item) => {
+    const gender = item[genderField]
+      ? item[genderField].toUpperCase()
+      : "UNKNOWN";
+    if (gender === "MALE") distribution.male++;
+    else if (gender === "FEMALE") distribution.female++;
   });
-  return statusCounts;
+
+  console.log(`Gender distribution: ${JSON.stringify(distribution)}`);
+  return distribution;
 }
 
-async function getApplicationsPerGender(applications, students) {
-  let maleCount = 0;
-  let femaleCount = 0;
-
-  for (const application of applications) {
-    let student = students.find(
-      (student) => student.cpr === application.studentCPR
-    );
-    if (!student) {
-      student = await getStudent(
-        "Student-cw7beg2perdtnl7onnneec4jfa-staging",
-        application.studentCPR
-      );
-    }
-    if (student) {
-      student.gender === "FEMALE" ? femaleCount++ : maleCount++;
+async function getUniversityDistribution(applications) {
+  // Get all universities first
+  const universities = {};
+  for (const app of applications) {
+    const universityID = app.universityID;
+    if (!universities[universityID]) {
+      const params = {
+        TableName: UNIVERSITY_TABLE,
+        Key: {
+          id: universityID,
+        },
+      };
+      const result = await dynamoDB.get(params).promise();
+      if (result.Item) {
+        universities[universityID] = result.Item.universityName;
+      }
     }
   }
 
-  return {
-    male: maleCount,
-    female: femaleCount,
-    total: applications.length,
-  };
+  // Count applications per university
+  const distribution = {};
+  applications.forEach((app) => {
+    const universityName = universities[app.universityID] || "UNKNOWN";
+    distribution[universityName] = (distribution[universityName] || 0) + 1;
+  });
+
+  console.log(`University distribution: ${JSON.stringify(distribution)}`);
+  return distribution;
 }
 
-async function updateStatistics(tableName, batchValue) {
-  const applications = await getAllApplications(tableName, batchValue);
-  const allUniversities = await getAllUniversities(tableName, batchValue);
-  const scoreHistogram = await getScoreHistograms(applications);
-  // const applicationsPerYearChart = await getApplicationsPerYearChart(tableName, batchValue);
-  const statusPieChart = await getStatusPieChart(applications);
-  const gpaHistogramChart = await getGpaHistogram(applications);
-  const applicationsCount = applications.length;
-  const topUniversities = await getTopUniversities(tableName, batchValue);
-  const students = await getStudents(batchValue);
-  const privatePublicRatio = await getPrivatePublicRatio(
-    applications,
-    students
-  );
-  const familyIncomeRatio = await getFamilyIncomeRatio(applications, students);
-  const totalStudents = students.length;
-  const totalMaleStudents = students.filter(
-    (student) => student.gender === "MALE"
-  ).length;
-  const totalFemaleStudents = students.filter(
-    (student) => student.gender === "FEMALE"
-  ).length;
-  const studentsToday =
-    batchValue === new Date().getFullYear()
-      ? students.filter(
-          (student) =>
-            new Date(student.createdAt).toDateString() ===
-            new Date().toDateString()
-        )
-      : [];
-  const totalStudentsToday = studentsToday.length;
-
-  const totalFemaleStudentsToday =
-    batchValue === new Date().getFullYear()
-      ? studentsToday.filter((student) => student.gender === "FEMALE").length
-      : 0;
-  const totalMaleStudentsToday =
-    batchValue === new Date().getFullYear()
-      ? studentsToday.filter((student) => student.gender === "MALE").length
-      : 0;
-
-  const applicationsToday =
-    batchValue === new Date().getFullYear()
-      ? applications.filter(
-          (application) =>
-            new Date(application.createdAt).toDateString() ===
-            new Date().toDateString()
-        )
-      : [];
-  const applicationsPerGender = await getApplicationsPerGender(
-    applications,
-    students
-  );
-  const applicationsTodayPerGender =
-    batchValue === new Date().getFullYear()
-      ? await getApplicationsPerGender(applicationsToday, students)
-      : {
-          male: 0,
-          female: 0,
-          total: 0,
-        };
-
-  // await updateApplications(applications);
-
-  // const topPrograms = await getTopPrograms(tableName, batchValue);
-
-  // console.log('Top Programs:', topPrograms);
-  console.log("Top Universities:", topUniversities);
-
-  const params = {
-    TableName: STATISTICS_TABLE,
-    Item: {
-      id: batchValue,
-      batch: batchValue,
-      totalApplications: applicationsCount,
-      // totalApplicationsPerBatch: applicationsPerYearChart,
-      totalApplicationsPerStatus: statusPieChart,
-      scoreHistogram: scoreHistogram,
-      gpaHistogram: gpaHistogramChart,
-      totalApplicationsPerUniversity: allUniversities,
-      topUniversities: topUniversities,
-      schoolType: privatePublicRatio,
-      familyIncome: familyIncomeRatio,
-      students: {
-        total: totalStudents,
-        male: totalMaleStudents,
-        female: totalFemaleStudents,
-      },
-      applications: applicationsPerGender,
-      today: {
-        students: {
-          total: totalStudentsToday,
-          male: totalMaleStudentsToday,
-          female: totalFemaleStudentsToday,
-        },
-        totalApplications: applicationsToday.length,
-        applications: applicationsTodayPerGender,
-      },
-    },
+async function getFamilyIncomeDistribution(applications, students) {
+  const distribution = {
+    above1500: { female: 0, male: 0 },
+    below1500: { female: 0, male: 0 },
+    above1500Today: { female: 0, male: 0 },
+    below1500Today: { female: 0, male: 0 },
   };
 
-  await dynamoDB.put(params).promise();
+  for (const app of applications) {
+    let student = students.find((s) => s.cpr === app.studentCPR);
+    if (!student) {
+      student = await getStudent(STUDENT_TABLE, app.studentCPR);
+    }
+
+    if (student) {
+      const isToday =
+        new Date(app.createdAt).toDateString() === new Date().toDateString();
+      const gender = student.gender?.toLowerCase() || "male";
+      const income = student.m_income || "LESS_THAN_1500";
+
+      if (income === "MORE_THAN_1500") {
+        distribution.above1500[gender]++;
+        if (isToday) distribution.above1500Today[gender]++;
+      } else {
+        distribution.below1500[gender]++;
+        if (isToday) distribution.below1500Today[gender]++;
+      }
+    }
+  }
+
+  console.log(`Family income distribution: ${JSON.stringify(distribution)}`);
+  return distribution;
 }
 
-// async function updateApplications(applications){
-//     // SET familyIncome to be LESS_THAN_1500 if it is BETWEEN_500_AND_700, BETWEEN_700_AND_1000, or LESS_THAN_500
-//     console.log('Applications:', applications);
-//
-//     for (const application of applications) {
-//         const params = {
-//             TableName: 'Application-cw7beg2perdtnl7onnneec4jfa-staging',
-//             Key: {
-//                 id: application.id
-//             },
-//             UpdateExpression: 'SET ',
-//             ExpressionAttributeValues: {}
-//         };
-//         if (application.familyIncome === "BETWEEN_500_AND_700" || application.familyIncome === "BETWEEN_700_AND_1000" || application.familyIncome=== "LESS_THAN_500") {
-//             console.log('Family Income:', application.familyIncome);
-//             params.UpdateExpression += 'familyIncome = :familyIncome, ';
-//             params.ExpressionAttributeValues[':familyIncome'] = "LESS_THAN_1500";
-//             // add 20 to the score
-//             const score = application.score + 20;
-//             params.UpdateExpression += 'score = :score, ';
-//             params.ExpressionAttributeValues[':score'] = score;
-//
-//         }
-//         if (params.UpdateExpression === 'SET ') {
-//             return;
-//         }
-//
-//         params.UpdateExpression = params.UpdateExpression.slice(0, -2); // Remove the last comma
-//         await dynamoDB.update(params).promise();
-//
-//     }
-// }
+function getScoreDistribution(applications) {
+  const distribution = {};
+  applications.forEach((app) => {
+    const score = app.score || 0;
+    let bucket = Math.floor(score / 5) * 5;
+    const key = `${bucket}-${bucket + 5}`;
+    distribution[key] = (distribution[key] || 0) + 1;
+  });
+
+  console.log(`Score histogram: ${JSON.stringify(distribution)}`);
+  return distribution;
+}
+
+function getGPADistribution(applications) {
+  const distribution = {};
+  applications.forEach((app) => {
+    const gpa = app.gpa || 0;
+    let bucket = Math.floor(gpa / 5) * 5;
+    if (bucket === 100) bucket = 95;
+    const key = `${bucket}-${bucket + 5}`;
+    distribution[key] = (distribution[key] || 0) + 1;
+  });
+
+  console.log(`GPA histogram: ${JSON.stringify(distribution)}`);
+  return distribution;
+}
+
+function getStatusDistribution(applications) {
+  const distribution = {};
+  applications.forEach((app) => {
+    const status = app.status || "UNKNOWN";
+    distribution[status] = (distribution[status] || 0) + 1;
+  });
+
+  console.log(`Status distribution: ${JSON.stringify(distribution)}`);
+  return distribution;
+}

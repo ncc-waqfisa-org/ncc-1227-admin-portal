@@ -885,6 +885,7 @@ export const getStudentLog = /* GraphQL */ `query GetStudentLog($id: ID!) {
     _lastChangedAt
     applicationStudentLogsId
     studentStudentLogsCpr
+    masterApplicationStudentLogsId
     __typename
   }
 }
@@ -912,6 +913,7 @@ export const listStudentLogs = /* GraphQL */ `query ListStudentLogs(
       _lastChangedAt
       applicationStudentLogsId
       studentStudentLogsCpr
+      masterApplicationStudentLogsId
       __typename
     }
     nextToken
@@ -949,6 +951,7 @@ export const syncStudentLogs = /* GraphQL */ `query SyncStudentLogs(
       _lastChangedAt
       applicationStudentLogsId
       studentStudentLogsCpr
+      masterApplicationStudentLogsId
       __typename
     }
     nextToken
@@ -1652,6 +1655,7 @@ export const getStatistics = /* GraphQL */ `query GetStatistics($id: Int!) {
     students
     applications
     today
+    participatingUniversities
     createdAt
     updatedAt
     _version
@@ -1693,6 +1697,7 @@ export const listStatistics = /* GraphQL */ `query ListStatistics(
       students
       applications
       today
+      participatingUniversities
       createdAt
       updatedAt
       _version
@@ -1736,6 +1741,7 @@ export const syncStatistics = /* GraphQL */ `query SyncStatistics(
       students
       applications
       today
+      participatingUniversities
       createdAt
       updatedAt
       _version
@@ -2095,6 +2101,11 @@ export const getMasterApplication = /* GraphQL */ `query GetMasterApplication($i
       startedAt
       __typename
     }
+    studentLogs {
+      nextToken
+      startedAt
+      __typename
+    }
     attachment {
       id
       cprDoc
@@ -2317,6 +2328,7 @@ export const getMasterStatistics = /* GraphQL */ `query GetMasterStatistics($id:
     students
     applications
     today
+    participatingUniversities
     createdAt
     updatedAt
     _version
@@ -2358,6 +2370,7 @@ export const listMasterStatistics = /* GraphQL */ `query ListMasterStatistics(
       students
       applications
       today
+      participatingUniversities
       createdAt
       updatedAt
       _version
@@ -2401,6 +2414,7 @@ export const syncMasterStatistics = /* GraphQL */ `query SyncMasterStatistics(
       students
       applications
       today
+      participatingUniversities
       createdAt
       updatedAt
       _version
@@ -3483,6 +3497,7 @@ export const statisticsByBatchAndTotalApplications = /* GraphQL */ `query Statis
       students
       applications
       today
+      participatingUniversities
       createdAt
       updatedAt
       _version
@@ -3854,6 +3869,7 @@ export const masterStatisticsByBatchAndTotalApplications = /* GraphQL */ `query 
       students
       applications
       today
+      participatingUniversities
       createdAt
       updatedAt
       _version

@@ -37,6 +37,7 @@ export declare type MasterStatisticsUpdateFormInputValues = {
     students?: string;
     applications?: string;
     today?: string;
+    participatingUniversities?: string[];
 };
 export declare type MasterStatisticsUpdateFormValidationValues = {
     id?: ValidationFunction<number>;
@@ -53,6 +54,7 @@ export declare type MasterStatisticsUpdateFormValidationValues = {
     students?: ValidationFunction<string>;
     applications?: ValidationFunction<string>;
     today?: ValidationFunction<string>;
+    participatingUniversities?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type MasterStatisticsUpdateFormOverridesProps = {
@@ -71,6 +73,7 @@ export declare type MasterStatisticsUpdateFormOverridesProps = {
     students?: PrimitiveOverrideProps<TextAreaFieldProps>;
     applications?: PrimitiveOverrideProps<TextAreaFieldProps>;
     today?: PrimitiveOverrideProps<TextAreaFieldProps>;
+    participatingUniversities?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type MasterStatisticsUpdateFormProps = React.PropsWithChildren<{
     overrides?: MasterStatisticsUpdateFormOverridesProps | undefined | null;

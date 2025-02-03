@@ -364,6 +364,7 @@ export type StudentLog = {
   _lastChangedAt: number,
   applicationStudentLogsId?: string | null,
   studentStudentLogsCpr?: string | null,
+  masterApplicationStudentLogsId?: string | null,
 };
 
 export type Student = {
@@ -538,6 +539,7 @@ export type MasterApplication = {
   status?: Status | null,
   adminLogs?: ModelAdminLogConnection | null,
   masterLogs?: ModelMasterLogConnection | null,
+  studentLogs?: ModelStudentLogConnection | null,
   attachment?: MasterAttachment | null,
   program?: string | null,
   dateTime: string,
@@ -915,6 +917,7 @@ export type CreateStudentLogInput = {
   _version?: number | null,
   applicationStudentLogsId?: string | null,
   studentStudentLogsCpr?: string | null,
+  masterApplicationStudentLogsId?: string | null,
 };
 
 export type ModelStudentLogConditionInput = {
@@ -931,6 +934,7 @@ export type ModelStudentLogConditionInput = {
   updatedAt?: ModelStringInput | null,
   applicationStudentLogsId?: ModelIDInput | null,
   studentStudentLogsCpr?: ModelStringInput | null,
+  masterApplicationStudentLogsId?: ModelIDInput | null,
 };
 
 export type UpdateStudentLogInput = {
@@ -943,6 +947,7 @@ export type UpdateStudentLogInput = {
   _version?: number | null,
   applicationStudentLogsId?: string | null,
   studentStudentLogsCpr?: string | null,
+  masterApplicationStudentLogsId?: string | null,
 };
 
 export type DeleteStudentLogInput = {
@@ -1383,6 +1388,7 @@ export type CreateStatisticsInput = {
   students?: string | null,
   applications?: string | null,
   today?: string | null,
+  participatingUniversities?: Array< string | null > | null,
   _version?: number | null,
 };
 
@@ -1400,6 +1406,7 @@ export type ModelStatisticsConditionInput = {
   students?: ModelStringInput | null,
   applications?: ModelStringInput | null,
   today?: ModelStringInput | null,
+  participatingUniversities?: ModelStringInput | null,
   and?: Array< ModelStatisticsConditionInput | null > | null,
   or?: Array< ModelStatisticsConditionInput | null > | null,
   not?: ModelStatisticsConditionInput | null,
@@ -1424,6 +1431,7 @@ export type Statistics = {
   students?: string | null,
   applications?: string | null,
   today?: string | null,
+  participatingUniversities?: Array< string | null > | null,
   createdAt: string,
   updatedAt: string,
   _version: number,
@@ -1446,6 +1454,7 @@ export type UpdateStatisticsInput = {
   students?: string | null,
   applications?: string | null,
   today?: string | null,
+  participatingUniversities?: Array< string | null > | null,
   _version?: number | null,
 };
 
@@ -1693,6 +1702,7 @@ export type CreateMasterStatisticsInput = {
   students?: string | null,
   applications?: string | null,
   today?: string | null,
+  participatingUniversities?: Array< string | null > | null,
   _version?: number | null,
 };
 
@@ -1710,6 +1720,7 @@ export type ModelMasterStatisticsConditionInput = {
   students?: ModelStringInput | null,
   applications?: ModelStringInput | null,
   today?: ModelStringInput | null,
+  participatingUniversities?: ModelStringInput | null,
   and?: Array< ModelMasterStatisticsConditionInput | null > | null,
   or?: Array< ModelMasterStatisticsConditionInput | null > | null,
   not?: ModelMasterStatisticsConditionInput | null,
@@ -1734,6 +1745,7 @@ export type MasterStatistics = {
   students?: string | null,
   applications?: string | null,
   today?: string | null,
+  participatingUniversities?: Array< string | null > | null,
   createdAt: string,
   updatedAt: string,
   _version: number,
@@ -1756,6 +1768,7 @@ export type UpdateMasterStatisticsInput = {
   students?: string | null,
   applications?: string | null,
   today?: string | null,
+  participatingUniversities?: Array< string | null > | null,
   _version?: number | null,
 };
 
@@ -2074,6 +2087,7 @@ export type ModelStudentLogFilterInput = {
   _deleted?: ModelBooleanInput | null,
   applicationStudentLogsId?: ModelIDInput | null,
   studentStudentLogsCpr?: ModelStringInput | null,
+  masterApplicationStudentLogsId?: ModelIDInput | null,
 };
 
 export type ModelAdminFilterInput = {
@@ -2252,6 +2266,7 @@ export type ModelStatisticsFilterInput = {
   students?: ModelStringInput | null,
   applications?: ModelStringInput | null,
   today?: ModelStringInput | null,
+  participatingUniversities?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
   and?: Array< ModelStatisticsFilterInput | null > | null,
@@ -2373,6 +2388,7 @@ export type ModelMasterStatisticsFilterInput = {
   students?: ModelStringInput | null,
   applications?: ModelStringInput | null,
   today?: ModelStringInput | null,
+  participatingUniversities?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
   and?: Array< ModelMasterStatisticsFilterInput | null > | null,
@@ -2815,6 +2831,7 @@ export type ModelSubscriptionStatisticsFilterInput = {
   students?: ModelSubscriptionStringInput | null,
   applications?: ModelSubscriptionStringInput | null,
   today?: ModelSubscriptionStringInput | null,
+  participatingUniversities?: ModelSubscriptionStringInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionStatisticsFilterInput | null > | null,
@@ -2892,6 +2909,7 @@ export type ModelSubscriptionMasterApplicationFilterInput = {
   _deleted?: ModelBooleanInput | null,
   masterApplicationAdminLogsId?: ModelSubscriptionIDInput | null,
   masterApplicationMasterLogsId?: ModelSubscriptionIDInput | null,
+  masterApplicationStudentLogsId?: ModelSubscriptionIDInput | null,
   masterApplicationAttachmentId?: ModelSubscriptionIDInput | null,
 };
 
@@ -2910,6 +2928,7 @@ export type ModelSubscriptionMasterStatisticsFilterInput = {
   students?: ModelSubscriptionStringInput | null,
   applications?: ModelSubscriptionStringInput | null,
   today?: ModelSubscriptionStringInput | null,
+  participatingUniversities?: ModelSubscriptionStringInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
   and?: Array< ModelSubscriptionMasterStatisticsFilterInput | null > | null,
@@ -4175,6 +4194,7 @@ export type CreateStudentLogMutation = {
     _lastChangedAt: number,
     applicationStudentLogsId?: string | null,
     studentStudentLogsCpr?: string | null,
+    masterApplicationStudentLogsId?: string | null,
   } | null,
 };
 
@@ -4250,6 +4270,7 @@ export type UpdateStudentLogMutation = {
     _lastChangedAt: number,
     applicationStudentLogsId?: string | null,
     studentStudentLogsCpr?: string | null,
+    masterApplicationStudentLogsId?: string | null,
   } | null,
 };
 
@@ -4325,6 +4346,7 @@ export type DeleteStudentLogMutation = {
     _lastChangedAt: number,
     applicationStudentLogsId?: string | null,
     studentStudentLogsCpr?: string | null,
+    masterApplicationStudentLogsId?: string | null,
   } | null,
 };
 
@@ -5100,6 +5122,7 @@ export type CreateStatisticsMutation = {
     students?: string | null,
     applications?: string | null,
     today?: string | null,
+    participatingUniversities?: Array< string | null > | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -5130,6 +5153,7 @@ export type UpdateStatisticsMutation = {
     students?: string | null,
     applications?: string | null,
     today?: string | null,
+    participatingUniversities?: Array< string | null > | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -5160,6 +5184,7 @@ export type DeleteStatisticsMutation = {
     students?: string | null,
     applications?: string | null,
     today?: string | null,
+    participatingUniversities?: Array< string | null > | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -5559,6 +5584,11 @@ export type CreateMasterApplicationMutation = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+    studentLogs?:  {
+      __typename: "ModelStudentLogConnection",
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
     attachment?:  {
       __typename: "MasterAttachment",
       id: string,
@@ -5682,6 +5712,11 @@ export type UpdateMasterApplicationMutation = {
     } | null,
     masterLogs?:  {
       __typename: "ModelMasterLogConnection",
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    studentLogs?:  {
+      __typename: "ModelStudentLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
@@ -5811,6 +5846,11 @@ export type DeleteMasterApplicationMutation = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+    studentLogs?:  {
+      __typename: "ModelStudentLogConnection",
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
     attachment?:  {
       __typename: "MasterAttachment",
       id: string,
@@ -5937,6 +5977,7 @@ export type CreateMasterStatisticsMutation = {
     students?: string | null,
     applications?: string | null,
     today?: string | null,
+    participatingUniversities?: Array< string | null > | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -5967,6 +6008,7 @@ export type UpdateMasterStatisticsMutation = {
     students?: string | null,
     applications?: string | null,
     today?: string | null,
+    participatingUniversities?: Array< string | null > | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -5997,6 +6039,7 @@ export type DeleteMasterStatisticsMutation = {
     students?: string | null,
     applications?: string | null,
     today?: string | null,
+    participatingUniversities?: Array< string | null > | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -7172,6 +7215,7 @@ export type GetStudentLogQuery = {
     _lastChangedAt: number,
     applicationStudentLogsId?: string | null,
     studentStudentLogsCpr?: string | null,
+    masterApplicationStudentLogsId?: string | null,
   } | null,
 };
 
@@ -7199,6 +7243,7 @@ export type ListStudentLogsQuery = {
       _lastChangedAt: number,
       applicationStudentLogsId?: string | null,
       studentStudentLogsCpr?: string | null,
+      masterApplicationStudentLogsId?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -7230,6 +7275,7 @@ export type SyncStudentLogsQuery = {
       _lastChangedAt: number,
       applicationStudentLogsId?: string | null,
       studentStudentLogsCpr?: string | null,
+      masterApplicationStudentLogsId?: string | null,
     } | null >,
     nextToken?: string | null,
     startedAt?: number | null,
@@ -7891,6 +7937,7 @@ export type GetStatisticsQuery = {
     students?: string | null,
     applications?: string | null,
     today?: string | null,
+    participatingUniversities?: Array< string | null > | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -7926,6 +7973,7 @@ export type ListStatisticsQuery = {
       students?: string | null,
       applications?: string | null,
       today?: string | null,
+      participatingUniversities?: Array< string | null > | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -7963,6 +8011,7 @@ export type SyncStatisticsQuery = {
       students?: string | null,
       applications?: string | null,
       today?: string | null,
+      participatingUniversities?: Array< string | null > | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -8292,6 +8341,11 @@ export type GetMasterApplicationQuery = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+    studentLogs?:  {
+      __typename: "ModelStudentLogConnection",
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
     attachment?:  {
       __typename: "MasterAttachment",
       id: string,
@@ -8504,6 +8558,7 @@ export type GetMasterStatisticsQuery = {
     students?: string | null,
     applications?: string | null,
     today?: string | null,
+    participatingUniversities?: Array< string | null > | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -8539,6 +8594,7 @@ export type ListMasterStatisticsQuery = {
       students?: string | null,
       applications?: string | null,
       today?: string | null,
+      participatingUniversities?: Array< string | null > | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -8576,6 +8632,7 @@ export type SyncMasterStatisticsQuery = {
       students?: string | null,
       applications?: string | null,
       today?: string | null,
+      participatingUniversities?: Array< string | null > | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -9521,6 +9578,7 @@ export type StatisticsByBatchAndTotalApplicationsQuery = {
       students?: string | null,
       applications?: string | null,
       today?: string | null,
+      participatingUniversities?: Array< string | null > | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -9836,6 +9894,7 @@ export type MasterStatisticsByBatchAndTotalApplicationsQuery = {
       students?: string | null,
       applications?: string | null,
       today?: string | null,
+      participatingUniversities?: Array< string | null > | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
@@ -11150,6 +11209,7 @@ export type OnCreateStudentLogSubscription = {
     _lastChangedAt: number,
     applicationStudentLogsId?: string | null,
     studentStudentLogsCpr?: string | null,
+    masterApplicationStudentLogsId?: string | null,
   } | null,
 };
 
@@ -11224,6 +11284,7 @@ export type OnUpdateStudentLogSubscription = {
     _lastChangedAt: number,
     applicationStudentLogsId?: string | null,
     studentStudentLogsCpr?: string | null,
+    masterApplicationStudentLogsId?: string | null,
   } | null,
 };
 
@@ -11298,6 +11359,7 @@ export type OnDeleteStudentLogSubscription = {
     _lastChangedAt: number,
     applicationStudentLogsId?: string | null,
     studentStudentLogsCpr?: string | null,
+    masterApplicationStudentLogsId?: string | null,
   } | null,
 };
 
@@ -12057,6 +12119,7 @@ export type OnCreateStatisticsSubscription = {
     students?: string | null,
     applications?: string | null,
     today?: string | null,
+    participatingUniversities?: Array< string | null > | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -12086,6 +12149,7 @@ export type OnUpdateStatisticsSubscription = {
     students?: string | null,
     applications?: string | null,
     today?: string | null,
+    participatingUniversities?: Array< string | null > | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -12115,6 +12179,7 @@ export type OnDeleteStatisticsSubscription = {
     students?: string | null,
     applications?: string | null,
     today?: string | null,
+    participatingUniversities?: Array< string | null > | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -12504,6 +12569,11 @@ export type OnCreateMasterApplicationSubscription = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+    studentLogs?:  {
+      __typename: "ModelStudentLogConnection",
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
     attachment?:  {
       __typename: "MasterAttachment",
       id: string,
@@ -12626,6 +12696,11 @@ export type OnUpdateMasterApplicationSubscription = {
     } | null,
     masterLogs?:  {
       __typename: "ModelMasterLogConnection",
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
+    studentLogs?:  {
+      __typename: "ModelStudentLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
@@ -12754,6 +12829,11 @@ export type OnDeleteMasterApplicationSubscription = {
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
+    studentLogs?:  {
+      __typename: "ModelStudentLogConnection",
+      nextToken?: string | null,
+      startedAt?: number | null,
+    } | null,
     attachment?:  {
       __typename: "MasterAttachment",
       id: string,
@@ -12879,6 +12959,7 @@ export type OnCreateMasterStatisticsSubscription = {
     students?: string | null,
     applications?: string | null,
     today?: string | null,
+    participatingUniversities?: Array< string | null > | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -12908,6 +12989,7 @@ export type OnUpdateMasterStatisticsSubscription = {
     students?: string | null,
     applications?: string | null,
     today?: string | null,
+    participatingUniversities?: Array< string | null > | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -12937,6 +13019,7 @@ export type OnDeleteMasterStatisticsSubscription = {
     students?: string | null,
     applications?: string | null,
     today?: string | null,
+    participatingUniversities?: Array< string | null > | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
