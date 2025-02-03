@@ -827,13 +827,14 @@ export default function ViewAccount({ student, applicationId }: Props) {
 
           {/* Submit */}
           {
+            // TODO enable update when a field is changed 
             <button
               className="my-3 text-white md:col-span-2 btn btn-primary"
               type="submit"
               disabled={
                 isSubmitting ||
                 !isValid ||
-                !dirty ||
+                // !dirty ||
                 familyIncomeProofInvalid ||
                 (familyIncomeProofDocsFile.length === 0 &&
                   (student.familyIncomeProofDocs ?? []).length === 0)

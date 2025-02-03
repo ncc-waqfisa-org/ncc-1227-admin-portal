@@ -388,7 +388,6 @@ export default function MasterInfoForm({
                     value={student?.cpr}
                   />
                 </div>
-
                 <LabelField
                   title={t("cprDoc")}
                   value={values.cpr_doc}
@@ -522,7 +521,6 @@ export default function MasterInfoForm({
                     {errors.gender && touched.gender && errors.gender}
                   </label>
                 </div>
-
                 <TextField
                   label={t("dateOfBirth")}
                   isRequired={false}
@@ -540,7 +538,6 @@ export default function MasterInfoForm({
                   }}
                   errorMessage={errors.dob}
                 ></TextField>
-
                 <LabelField
                   title={t("placeOfBirth")}
                   value={values.place_of_birth}
@@ -552,7 +549,6 @@ export default function MasterInfoForm({
                   setFieldError={setFieldError}
                   setFieldValue={setFieldValue}
                 />
-
                 {/* <div className="flex flex-col justify-start w-full">
                   <div className="flex items-center">
                     <label className="label">{t("placeOfBirth")}</label>
@@ -564,7 +560,6 @@ export default function MasterInfoForm({
                     value={student?.placeOfBirth}
                   />
                 </div> */}
-
                 <div className="flex flex-col justify-start w-full">
                   <div className="flex items-center">
                     <label className="label">{t("nationality")}</label>
@@ -599,7 +594,6 @@ export default function MasterInfoForm({
                       errors.nationality}
                   </label>
                 </div>
-
                 {/* <div className="flex flex-col justify-start w-full">
                   <div className="flex items-center">
                     <label className="label">{t("nationality")}</label>
@@ -615,7 +609,6 @@ export default function MasterInfoForm({
                     }
                   />
                 </div> */}
-
                 <div className="flex flex-col justify-start w-full">
                   <div className="flex items-center">
                     <label className="label">
@@ -641,7 +634,6 @@ export default function MasterInfoForm({
                       errors.number_of_family_member}
                   </label>
                 </div>
-
                 <FormSeparator title={t("graduationUniversity")} />
                 <div className="flex flex-col justify-start w-full">
                   <div className="flex items-center">
@@ -706,7 +698,6 @@ export default function MasterInfoForm({
                       errors.graduation_year}
                   </label>
                 </div>
-
                 <LabelField
                   title={t("graduationProgram")}
                   value={values.old_program}
@@ -718,7 +709,6 @@ export default function MasterInfoForm({
                   setFieldError={setFieldError}
                   setFieldValue={setFieldValue}
                 />
-
                 <FormSeparator title={t("employment")} />
                 <div className="flex flex-col justify-start w-full">
                   <div className="flex items-center">
@@ -755,7 +745,6 @@ export default function MasterInfoForm({
                       errors.isEmployed}
                   </label>
                 </div>
-
                 {values.isEmployed && (
                   <>
                     <LabelField
@@ -828,7 +817,6 @@ export default function MasterInfoForm({
                   </>
                 )}
                 <FormSeparator title={t("guardianInfo")} />
-
                 <div className="md:col-span-2 grid grid-cols-1 gap-4 md:grid-cols-4">
                   <LabelField
                     title={t("firstName")}
@@ -909,7 +897,6 @@ export default function MasterInfoForm({
                     ></GetStorageLinkComponent>
                   }
                 />
-
                 {!values.isEmployed && (
                   <>
                     <div className="flex flex-col justify-start w-full">
@@ -970,10 +957,9 @@ export default function MasterInfoForm({
                     />
                   </>
                 )}
-
                 {/* Submit */}
-
                 <button
+                  // TODO enable update when a field is changed
                   className={`my-3 text-white btn btn-primary md:col-span-2`}
                   type="submit"
                   disabled={updateMutation.isPending || isLoading || !dirty}
