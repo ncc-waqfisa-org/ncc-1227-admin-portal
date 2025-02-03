@@ -265,6 +265,10 @@ function useProviderStudent() {
   getStudent(cpr: "${cpr}") {
     cpr
     cprDoc
+    firstName
+    secondName
+    thirdName
+    lastName
     _deleted
     _version
     email
