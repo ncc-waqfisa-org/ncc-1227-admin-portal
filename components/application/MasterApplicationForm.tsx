@@ -39,6 +39,7 @@ import {
   createAdminLogInDB,
   updateApplicationInDB,
   updateAttachmentInDB,
+  updateMasterAttachmentInDB,
   updateProgramChoiceInDB,
   uploadFile,
 } from "../../src/CustomAPI";
@@ -168,7 +169,7 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
     ]);
 
     // TODO test update master application functionality
-    // TODO verify how the score is calculated
+
     let updateVariables: UpdateMasterApplicationMutationVariables = {
       input: {
         id: application.id,
@@ -189,77 +190,71 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
 
     // TODO update master application attachments in db
 
-    // await toast
-    //   .promise(
-    //     Promise.all([
-    //       updateAttachmentInDB({
-    //         input: {
-    //           id: application.attachment?.id ?? "",
-    //           transcriptDoc: transcript,
-    //           universityCertificate: universityCertificate,
-    //           _version: application.attachment?._version,
-    //         },
-    //       }),
-    //       // updateProgramChoiceInDB({
-    //       //   input: {
-    //       //     id: application.programs?.items[0]?.id ?? "",
-    //       //     acceptanceLetterDoc: acceptanceLetter,
-    //       //     _version: application.programs?.items[0]?._version,
-    //       //   },
-    //       // }),
-    //       // updateApplicationInDB(updateVariables),
-    //     ]),
-    //     {
-    //       loading: "Updating...",
-    //       success: "Application updated successfully",
-    //       error: "Failed to update application",
-    //     }
-    //   )
-    //   .then(async (value) => {
-    //     const oldData = {
-    //       status: application.status,
-    //       adminPoints: application.adminPoints,
-    //       isIncomeVerified: application.isIncomeVerified,
-    //       verifiedGPA: application.verifiedGPA,
-    //       gpa: application.gpa,
-    //       reason: application.reason,
-    //     };
+    await toast
+      .promise(
+        Promise.all([
+          updateMasterAttachmentInDB({
+            input: {
+              id: application.attachment?.id ?? "",
+              transcriptDoc: transcript,
+              universityCertificate: universityCertificate,
+              acceptanceLetterDoc: acceptanceLetter,
+              _version: application.attachment?._version,
+            },
+          }),
+          updateApplicationInDB(updateVariables),
+        ]),
+        {
+          loading: "Updating...",
+          success: "Application updated successfully",
+          error: "Failed to update application",
+        }
+      )
+      .then(async (value) => {
+        const oldData = {
+          status: application.status,
+          adminPoints: application.adminPoints,
+          isIncomeVerified: application.isIncomeVerified,
+          verifiedGPA: application.verifiedGPA,
+          gpa: application.gpa,
+          reason: application.reason,
+        };
 
-    //     const newData = {
-    //       status: values.status,
-    //       adminPoints: values.adminPoints,
-    //       isIncomeVerified: values.isIncomeVerified,
-    //       verifiedGPA: values.verifiedGPA,
-    //       gpa: values.gpa,
-    //       reason: values.reason,
-    //     };
+        const newData = {
+          status: values.status,
+          adminPoints: values.adminPoints,
+          isIncomeVerified: values.isIncomeVerified,
+          verifiedGPA: values.verifiedGPA,
+          gpa: values.gpa,
+          reason: values.reason,
+        };
 
-    //     // Calculate changes
-    //     const snapshot = createChangeSnapshot(oldData, newData);
+        // Calculate changes
+        const snapshot = createChangeSnapshot(oldData, newData);
 
-    //     let createAdminLogVariables: CreateAdminLogMutationVariables = {
-    //       input: {
-    //         applicationID: application.id,
-    //         adminCPR: cpr ?? "",
-    //         dateTime: new Date().toISOString(),
-    //         snapshot: snapshot,
-    //         reason: values.adminReason,
-    //         applicationAdminLogsId: application.id,
-    //         adminAdminLogsCpr: cpr ?? "",
-    //       },
-    //     };
+        let createAdminLogVariables: CreateAdminLogMutationVariables = {
+          input: {
+            applicationID: application.id,
+            adminCPR: cpr ?? "",
+            dateTime: new Date().toISOString(),
+            snapshot: snapshot,
+            reason: values.adminReason,
+            applicationAdminLogsId: application.id,
+            adminAdminLogsCpr: cpr ?? "",
+          },
+        };
 
-    //     await createAdminLogInDB(createAdminLogVariables)
-    //       .then(async (logValue) => {
-    //         resetApplications();
-    //         push("/applications");
-    //         return logValue;
-    //       })
-    //       .catch((err) => {
-    //         console.log(err);
-    //         throw err;
-    //       });
-    //   });
+        await createAdminLogInDB(createAdminLogVariables)
+          .then(async (logValue) => {
+            resetApplications();
+            push("/applications");
+            return logValue;
+          })
+          .catch((err) => {
+            console.log(err);
+            throw err;
+          });
+      });
   }
 
   function getUniversityName() {
@@ -277,17 +272,6 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
   }
 
   function getProgramName() {
-    // let havePrograms = (application.programs?.items.length ?? 0) > 0;
-    // if (havePrograms) {
-    //   return locale === "ar"
-    //     ? application.programs?.items[0]?.program?.nameAr
-    //     : application.programs?.items[0]?.program?.name;
-    // } else {
-    //   return locale === "ar"
-    //     ? application.program?.nameAr
-    //     : application.program?.name;
-    // }
-
     return application.program ?? "";
   }
 
@@ -314,7 +298,7 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
             <div className="grid gap-4">
               <Link
                 className={cn(buttonVariants({ variant: "outline" }))}
-                href={`/applications/applicationHistory/${application.id}`}
+                href={`/applications/applicationHistory/masters/${application.id}`}
               >
                 {t("view")}
               </Link>

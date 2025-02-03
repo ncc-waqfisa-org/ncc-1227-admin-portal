@@ -72,6 +72,8 @@ import {
   UpdateUniversityMutation,
   UpdateUniversityMutationVariables,
   MasterLog,
+  UpdateMasterApplicationMutationVariables,
+  UpdateMasterApplicationMutation,
 } from "./API";
 import {
   createAttachment,
@@ -99,6 +101,7 @@ import {
   createMasterAppliedUniversities,
   createBahrainUniversities,
   updateMasterAttachment,
+  updateMasterApplication,
 } from "./graphql/mutations";
 import {
   getBatch,
@@ -394,6 +397,17 @@ export async function updateApplicationInDB(
     query: updateApplication,
     variables: mutationVars,
   })) as GraphQLResult<UpdateApplicationMutation>;
+
+  return res.data;
+}
+
+export async function updateMasterApplicationInDB(
+  mutationVars: UpdateMasterApplicationMutationVariables
+): Promise<UpdateMasterApplicationMutation | undefined> {
+  let res = (await API.graphql({
+    query: updateMasterApplication,
+    variables: mutationVars,
+  })) as GraphQLResult<UpdateMasterApplicationMutation>;
 
   return res.data;
 }
@@ -762,16 +776,24 @@ export async function getMasterStudentLogsByLogID(
       _lastChangedAt
       _deleted
       applicationID
-      applicationStudentLogsId
+      masterApplicationMasterLogsId
       createdAt
       dateTime
       studentCPR
-      studentStudentLogsCpr
+      studentM_MasterLogsCpr
       updatedAt
       reason
       snapshot
       student {
         fullName
+        firstName
+        secondName
+        thirdName
+        lastName
+        m_firstName
+        m_secondName
+        m_thirdName
+        m_lastName
         email
         phone
         cpr

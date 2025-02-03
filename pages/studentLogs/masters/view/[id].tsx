@@ -51,12 +51,6 @@ const StudentLogHistoryInfo = ({ studentLog }: Props) => {
     return () => {};
   }, [studentLog.snapshot]);
 
-  console.log(JSON.stringify(studentLog));
-  console.log(JSON.stringify(snapshot));
-
-  //  {JSON.stringify(studentLog)}
-  // {JSON.stringify(snapshot)}
-
   return (
     <PageComponent title={"StudentLogHistory"}>
       <Toaster />
@@ -80,10 +74,10 @@ const StudentLogHistoryInfo = ({ studentLog }: Props) => {
               <div className="text-xl font-semibold ">
                 {t("studentInformation")}
               </div>
-              {/* <div>{studentLog.student?.fullName}</div>
+              <div>{`${studentLog.student?.m_firstName} ${studentLog.student?.m_secondName} ${studentLog.student?.m_thirdName} ${studentLog.student?.m_lastName}`}</div>
               <div>{studentLog.student?.email}</div>
               <div>{studentLog.student?.phone}</div>
-              <div>{studentLog.student?.cpr}</div> */}
+              <div>{studentLog.student?.cpr}</div>
             </div>
             <div className="">
               <div className="text-xl font-semibold ">{t("changes")}</div>
@@ -102,6 +96,7 @@ const StudentLogHistoryInfo = ({ studentLog }: Props) => {
                         <td className="overflow-x-scroll">{snapshot.gpa}</td>
                       </tr>
                     )}
+                    {/* {JSON.stringify(snapshot)} */}
                     {/* {snapshot.primaryProgram && (
                       <tr>
                         <td>{t("primaryProgram")}</td>

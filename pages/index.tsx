@@ -323,13 +323,13 @@ const Home = () => {
                   {t("exportCSV")}
                 </CSVLink>
               </LargeDonutGraphInfo>
-              <div className="flex flex-col justify-between w-full p-4 border rounded-xl bg-nccGray-50 md:col-span-2">
-                <div>{t("participatingUniversities")}</div>
+              <div className="flex flex-col justify-between w-full p-4 border rounded-xl bg-nccGray-50 col-span-2">
+                <div className="">{t("participatingUniversities")}</div>
                 <div className=" py-2">
-                  <ul className=" grid grid-cols-2">
+                  <ul className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 text-muted-foreground">
                     {statistics?.participatingUniversities.map((uni, index) => {
                       return (
-                        <li key={index} className=" py-1">
+                        <li key={index} className="py-1">
                           {uni}
                         </li>
                       );
@@ -366,7 +366,7 @@ const Home = () => {
               <BatchSelector />
               <PrimaryButton
                 name={t("allApplicationsButton")}
-                buttonClick={() => push("/applications/masters")}
+                buttonClick={() => push("/applications?type=masters")}
               ></PrimaryButton>
 
               <DownloadFileFromUrl
@@ -611,7 +611,7 @@ const Home = () => {
                   {t("exportCSV")}
                 </CSVLink>
               </LargeDonutGraphInfo>
-              <div className="flex flex-col justify-between w-full p-4 border rounded-xl bg-nccGray-50 md:col-span-2">
+              <div className="flex flex-col justify-between w-full p-4 border rounded-xl bg-nccGray-50 col-span-2">
                 <div className="">{t("participatingUniversities")}</div>
                 <div className=" py-2">
                   <ul className=" grid grid-cols-2 text-muted-foreground">

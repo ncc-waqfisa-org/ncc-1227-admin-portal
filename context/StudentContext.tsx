@@ -650,6 +650,15 @@ export async function getMasterApplicationByIdAPI(
         studentM_MasterLogsCpr
       }
     }
+    adminLogs {
+      items {
+        adminAdminLogsCpr
+        adminCPR
+        applicationID
+        dateTime
+        snapshot
+      }
+    }
     university {
       _version
       id
