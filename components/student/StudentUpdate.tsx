@@ -261,6 +261,7 @@ export default function ViewAccount({ student, applicationId }: Props) {
         isValid,
         setFieldError,
         setFieldValue,
+        dirty,
       }) => (
         <Form className="container grid items-end max-w-3xl grid-cols-1 gap-3 mx-auto md:grid-cols-2">
           {/* CPR */}
@@ -832,6 +833,7 @@ export default function ViewAccount({ student, applicationId }: Props) {
               disabled={
                 isSubmitting ||
                 !isValid ||
+                !dirty ||
                 familyIncomeProofInvalid ||
                 (familyIncomeProofDocsFile.length === 0 &&
                   (student.familyIncomeProofDocs ?? []).length === 0)

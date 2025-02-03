@@ -9,16 +9,29 @@ import { updateParentInfoData } from "../../src/CustomAPI";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { PhoneNumberInput } from "../phone";
+import { getNamePart } from "../../src/Helpers";
 
 interface FormValues {
-  guardianFullName: string | null | undefined;
+  guardianFirstName: string | null | undefined;
+  guardianSecondName: string | null | undefined;
+  guardianThirdName: string | null | undefined;
+  guardianLastName: string | null | undefined;
+  // guardianFullName: string | null | undefined;
   relation: string | null | undefined;
   guardianCPR: string | null | undefined;
   primaryMobile: string | null | undefined;
   secondaryMobile: string | null | undefined;
-  fatherFullName: string | null | undefined;
+  fatherFirstName: string | null | undefined;
+  fatherSecondName: string | null | undefined;
+  fatherThirdName: string | null | undefined;
+  fatherLastName: string | null | undefined;
+  // fatherFullName: string | null | undefined;
   fatherCPR: string | null | undefined;
-  motherFullName: string | null | undefined;
+  motherFirstName: string | null | undefined;
+  motherSecondName: string | null | undefined;
+  motherThirdName: string | null | undefined;
+  motherLastName: string | null | undefined;
+  // motherFullName: string | null | undefined;
   motherCPR: string | null | undefined;
   numberOfFamilyMembers: number | null | undefined;
   address: string | null | undefined;
@@ -33,14 +46,52 @@ export default function UpdateParentInfo({ parentInfo }: Props) {
   const { t: tErrors } = useTranslation("errors");
 
   let initialValues: FormValues = {
-    guardianFullName: parentInfo.guardianFullName,
+    guardianFirstName: parentInfo.guardianFullName
+      ? getNamePart(parentInfo.guardianFullName, "first")
+      : "",
+    guardianSecondName: parentInfo.guardianFullName
+      ? getNamePart(parentInfo.guardianFullName, "second")
+      : "",
+    guardianThirdName: parentInfo.guardianFullName
+      ? getNamePart(parentInfo.guardianFullName, "third")
+      : "",
+    guardianLastName: parentInfo.guardianFullName
+      ? getNamePart(parentInfo.guardianFullName, "last")
+      : "",
+    // guardianFullName: parentInfo.guardianFullName,
     relation: parentInfo.relation,
     guardianCPR: parentInfo.guardianCPR,
     primaryMobile: parentInfo.primaryMobile,
     secondaryMobile: parentInfo.secondaryMobile,
-    fatherFullName: parentInfo.fatherFullName,
+    fatherFirstName: parentInfo.fatherFullName
+      ? getNamePart(parentInfo.fatherFullName, "first")
+      : "",
+    fatherSecondName: parentInfo.fatherFullName
+      ? getNamePart(parentInfo.fatherFullName, "second")
+      : "",
+    fatherThirdName: parentInfo.fatherFullName
+      ? getNamePart(parentInfo.fatherFullName, "third")
+      : "",
+    fatherLastName: parentInfo.fatherFullName
+      ? getNamePart(parentInfo.fatherFullName, "last")
+      : "",
+
+    // fatherFullName: parentInfo.fatherFullName,
     fatherCPR: parentInfo.fatherCPR,
-    motherFullName: parentInfo.motherFullName,
+
+    motherFirstName: parentInfo.motherFullName
+      ? getNamePart(parentInfo.motherFullName, "first")
+      : "",
+    motherSecondName: parentInfo.motherFullName
+      ? getNamePart(parentInfo.motherFullName, "second")
+      : "",
+    motherThirdName: parentInfo.motherFullName
+      ? getNamePart(parentInfo.motherFullName, "third")
+      : "",
+    motherLastName: parentInfo.motherFullName
+      ? getNamePart(parentInfo.motherFullName, "last")
+      : "",
+    // motherFullName: parentInfo.motherFullName,
     motherCPR: parentInfo.motherCPR,
     numberOfFamilyMembers: parentInfo.numberOfFamilyMembers,
     address: parentInfo.address,
@@ -98,14 +149,14 @@ export default function UpdateParentInfo({ parentInfo }: Props) {
         let updateVars: UpdateParentInfoMutationVariables = {
           input: {
             id: parentInfo.id,
-            guardianFullName: values.guardianFullName,
+            guardianFullName: `${values.guardianFirstName} ${values.guardianSecondName} ${values.guardianThirdName} ${values.guardianLastName}`,
             relation: values.relation,
             guardianCPR: values.guardianCPR,
             primaryMobile: values.primaryMobile,
             secondaryMobile: values.secondaryMobile,
-            fatherFullName: values.fatherFullName,
+            fatherFullName: `${values.fatherFirstName} ${values.fatherSecondName} ${values.fatherThirdName} ${values.fatherLastName}`,
             fatherCPR: values.fatherCPR,
-            motherFullName: values.motherFullName,
+            motherFullName: `${values.motherFirstName} ${values.motherSecondName} ${values.motherThirdName} ${values.motherLastName}`,
             motherCPR: values.motherCPR,
             numberOfFamilyMembers: values.numberOfFamilyMembers,
             address: values.address,
@@ -133,28 +184,112 @@ export default function UpdateParentInfo({ parentInfo }: Props) {
         isSubmitting,
         isValid,
         setFieldValue,
+        dirty,
       }) => (
         <Form className="container grid max-w-3xl grid-cols-1 gap-3 mx-auto md:grid-cols-2">
           {/* guardianFullName */}
-          <div className="flex flex-col justify-start w-full">
-            <label className="label">{t("guardianName")}</label>
-            <Field
-              dir="ltr"
-              type="text"
-              name="guardianFullName"
-              title="guardianFullName"
-              className={`input input-bordered input-primary ${
-                errors.guardianFullName && "input-error"
-              }`}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.guardianFullName ?? ""}
-            />
-            <label className="label-text-alt text-error">
-              {errors.guardianFullName &&
-                touched.guardianFullName &&
-                errors.guardianFullName}
-            </label>
+          <div className=" font-semibold">{t("guardianName")}</div>
+          <div className=" md:col-span-2 grid grid-cols-1 gap-4 md:grid-cols-4">
+            <div className="flex flex-col justify-start w-full">
+              <label className="label">{t("firstName")}</label>
+              <Field
+                dir="ltr"
+                type="text"
+                name="guardianFirstName"
+                title="guardianFirstName"
+                className={`input input-bordered input-primary ${
+                  errors.guardianFirstName && "input-error"
+                }`}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.guardianFirstName ?? ""}
+              />
+              <label className="label-text-alt text-error">
+                {errors.guardianFirstName &&
+                  touched.guardianFirstName &&
+                  errors.guardianFirstName}
+              </label>
+            </div>
+            <div className="flex flex-col justify-start w-full">
+              <label className="label">{t("secondName")}</label>
+              <Field
+                dir="ltr"
+                type="text"
+                name="guardianSecondName"
+                title="guardianSecondName"
+                className={`input input-bordered input-primary ${
+                  errors.guardianSecondName && "input-error"
+                }`}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.guardianSecondName ?? ""}
+              />
+              <label className="label-text-alt text-error">
+                {errors.guardianSecondName &&
+                  touched.guardianSecondName &&
+                  errors.guardianSecondName}
+              </label>
+            </div>
+            <div className="flex flex-col justify-start w-full">
+              <label className="label">{t("thirdName")}</label>
+              <Field
+                dir="ltr"
+                type="text"
+                name="guardianThirdName"
+                title="guardianThirdName"
+                className={`input input-bordered input-primary ${
+                  errors.guardianThirdName && "input-error"
+                }`}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.guardianThirdName ?? ""}
+              />
+              <label className="label-text-alt text-error">
+                {errors.guardianThirdName &&
+                  touched.guardianThirdName &&
+                  errors.guardianThirdName}
+              </label>
+            </div>
+            <div className="flex flex-col justify-start w-full">
+              <label className="label">{t("lastName")}</label>
+              <Field
+                dir="ltr"
+                type="text"
+                name="guardianLastName"
+                title="guardianLastName"
+                className={`input input-bordered input-primary ${
+                  errors.guardianLastName && "input-error"
+                }`}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.guardianLastName ?? ""}
+              />
+              <label className="label-text-alt text-error">
+                {errors.guardianLastName &&
+                  touched.guardianLastName &&
+                  errors.guardianLastName}
+              </label>
+            </div>
+            {/* <div className="flex flex-col justify-start w-full">
+              <label className="label">{t("guardianName")}</label>
+              <Field
+                dir="ltr"
+                type="text"
+                name="guardianFullName"
+                title="guardianFullName"
+                className={`input input-bordered input-primary ${
+                  errors.guardianFullName && "input-error"
+                }`}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.guardianFullName ?? ""}
+              />
+              <label className="label-text-alt text-error">
+                {errors.guardianFullName &&
+                  touched.guardianFullName &&
+                  errors.guardianFullName}
+              </label>
+            </div> */}
           </div>
 
           {/* relation */}
@@ -296,25 +431,108 @@ export default function UpdateParentInfo({ parentInfo }: Props) {
           <div className="divider md:col-span-2"></div>
 
           {/* Father Full Name */}
-          <div className="flex flex-col justify-start w-full">
-            <label className="label">{t("fatherName")}</label>
-            <Field
-              dir="ltr"
-              type="text"
-              name="fatherFullName"
-              title="fatherFullName"
-              className={`input input-bordered input-primary ${
-                errors.fatherFullName && "input-error"
-              }`}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.fatherFullName}
-            />
-            <label className="label-text-alt text-error">
-              {errors.fatherFullName &&
-                touched.fatherFullName &&
-                errors.fatherFullName}
-            </label>
+          <div className=" font-semibold">{t("fatherName")}</div>
+          <div className=" md:col-span-2 grid grid-cols-1 gap-4 md:grid-cols-4">
+            <div className="flex flex-col justify-start w-full">
+              <label className="label">{t("firstName")}</label>
+              <Field
+                dir="ltr"
+                type="text"
+                name="fatherFirstName"
+                title="fatherFirstName"
+                className={`input input-bordered input-primary ${
+                  errors.fatherFirstName && "input-error"
+                }`}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.fatherFirstName}
+              />
+              <label className="label-text-alt text-error">
+                {errors.fatherFirstName &&
+                  touched.fatherFirstName &&
+                  errors.fatherFirstName}
+              </label>
+            </div>
+            <div className="flex flex-col justify-start w-full">
+              <label className="label">{t("secondName")}</label>
+              <Field
+                dir="ltr"
+                type="text"
+                name="fatherSecondName"
+                title="fatherSecondName"
+                className={`input input-bordered input-primary ${
+                  errors.fatherSecondName && "input-error"
+                }`}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.fatherSecondName}
+              />
+              <label className="label-text-alt text-error">
+                {errors.fatherSecondName &&
+                  touched.fatherSecondName &&
+                  errors.fatherSecondName}
+              </label>
+            </div>
+            <div className="flex flex-col justify-start w-full">
+              <label className="label">{t("thirdName")}</label>
+              <Field
+                dir="ltr"
+                type="text"
+                name="fatherThirdName"
+                title="fatherThirdName"
+                className={`input input-bordered input-primary ${
+                  errors.fatherThirdName && "input-error"
+                }`}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.fatherThirdName}
+              />
+              <label className="label-text-alt text-error">
+                {errors.fatherThirdName &&
+                  touched.fatherThirdName &&
+                  errors.fatherThirdName}
+              </label>
+            </div>
+            <div className="flex flex-col justify-start w-full">
+              <label className="label">{t("lastName")}</label>
+              <Field
+                dir="ltr"
+                type="text"
+                name="fatherLastName"
+                title="fatherLastName"
+                className={`input input-bordered input-primary ${
+                  errors.fatherLastName && "input-error"
+                }`}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.fatherLastName}
+              />
+              <label className="label-text-alt text-error">
+                {errors.fatherLastName &&
+                  touched.fatherLastName &&
+                  errors.fatherLastName}
+              </label>
+            </div>
+            {/* <div className="flex flex-col justify-start w-full">
+              <label className="label">{t("fatherName")}</label>
+              <Field
+                dir="ltr"
+                type="text"
+                name="fatherFullName"
+                title="fatherFullName"
+                className={`input input-bordered input-primary ${
+                  errors.fatherFullName && "input-error"
+                }`}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.fatherFullName}
+              />
+              <label className="label-text-alt text-error">
+                {errors.fatherFullName &&
+                  touched.fatherFullName &&
+                  errors.fatherFullName}
+              </label>
+            </div> */}
           </div>
 
           {/* Father CPR */}
@@ -340,25 +558,108 @@ export default function UpdateParentInfo({ parentInfo }: Props) {
           <div className="md:col-span-2 divider"></div>
 
           {/* Mother Full Name */}
-          <div className="flex flex-col justify-start w-full">
-            <label className="label">{t("motherName")}</label>
-            <Field
-              dir="ltr"
-              type="text"
-              name="motherFullName"
-              title="motherFullName"
-              className={`input input-bordered input-primary ${
-                errors.motherFullName && "input-error"
-              }`}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.motherFullName}
-            />
-            <label className="label-text-alt text-error">
-              {errors.motherFullName &&
-                touched.motherFullName &&
-                errors.motherFullName}
-            </label>
+          <div className="font-semibold">{t("motherName")}</div>
+          <div className=" md:col-span-2 grid grid-cols-1 gap-4 md:grid-cols-4">
+            <div className="flex flex-col justify-start w-full">
+              <label className="label">{t("firstName")}</label>
+              <Field
+                dir="ltr"
+                type="text"
+                name="motherFirstName"
+                title="motherFirstName"
+                className={`input input-bordered input-primary ${
+                  errors.motherFirstName && "input-error"
+                }`}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.motherFirstName}
+              />
+              <label className="label-text-alt text-error">
+                {errors.motherFirstName &&
+                  touched.motherFirstName &&
+                  errors.motherFirstName}
+              </label>
+            </div>
+            <div className="flex flex-col justify-start w-full">
+              <label className="label">{t("secondName")}</label>
+              <Field
+                dir="ltr"
+                type="text"
+                name="motherSecondName"
+                title="motherSecondName"
+                className={`input input-bordered input-primary ${
+                  errors.motherSecondName && "input-error"
+                }`}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.motherSecondName}
+              />
+              <label className="label-text-alt text-error">
+                {errors.motherSecondName &&
+                  touched.motherSecondName &&
+                  errors.motherSecondName}
+              </label>
+            </div>
+            <div className="flex flex-col justify-start w-full">
+              <label className="label">{t("thirdName")}</label>
+              <Field
+                dir="ltr"
+                type="text"
+                name="motherThirdName"
+                title="motherThirdName"
+                className={`input input-bordered input-primary ${
+                  errors.motherThirdName && "input-error"
+                }`}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.motherThirdName}
+              />
+              <label className="label-text-alt text-error">
+                {errors.motherThirdName &&
+                  touched.motherThirdName &&
+                  errors.motherThirdName}
+              </label>
+            </div>
+            <div className="flex flex-col justify-start w-full">
+              <label className="label">{t("lastName")}</label>
+              <Field
+                dir="ltr"
+                type="text"
+                name="motherLastName"
+                title="motherLastName"
+                className={`input input-bordered input-primary ${
+                  errors.motherLastName && "input-error"
+                }`}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.motherLastName}
+              />
+              <label className="label-text-alt text-error">
+                {errors.motherLastName &&
+                  touched.motherLastName &&
+                  errors.motherLastName}
+              </label>
+            </div>
+            {/* <div className="flex flex-col justify-start w-full">
+              <label className="label">{t("motherName")}</label>
+              <Field
+                dir="ltr"
+                type="text"
+                name="motherFullName"
+                title="motherFullName"
+                className={`input input-bordered input-primary ${
+                  errors.motherFullName && "input-error"
+                }`}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.motherFullName}
+              />
+              <label className="label-text-alt text-error">
+                {errors.motherFullName &&
+                  touched.motherFullName &&
+                  errors.motherFullName}
+              </label>
+            </div> */}
           </div>
 
           {/* Mother CPR */}
@@ -386,7 +687,7 @@ export default function UpdateParentInfo({ parentInfo }: Props) {
             <button
               className={`my-3 text-white btn btn-primary md:col-span-2`}
               type="submit"
-              disabled={isSubmitting || !isValid}
+              disabled={isSubmitting || !isValid || !dirty}
             >
               {isSubmitting && <span className="loading"></span>}
               {t("update")}

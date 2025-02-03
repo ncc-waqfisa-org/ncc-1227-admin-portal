@@ -156,5 +156,9 @@
   "exportAllAsCSV": "Export all as CSV",
   "guardianInformation": "Guardian Information",
   "isIncomeVerified": "Verified Income",
-  "universityCertificate": "University Certificate"
+  "universityCertificate": "University Certificate",
+  "firstName": "First Name",
+  "secondName": "Second Name",
+  "thirdName": "Third Name",
+  "lastName": "Last Name"
 }

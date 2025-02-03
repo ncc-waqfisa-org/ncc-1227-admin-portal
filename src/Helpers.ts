@@ -50,11 +50,18 @@ export interface ApplicationSnapshot {
 export interface MasterApplicationSnapshot {
   gpa?: string;
   program: string;
+
   attachments?: {
     cpr?: string;
     transcript?: string;
-    schoolCertificate?: string;
+    // schoolCertificate?: string;
     signedContract?: string;
+    // cprDoc?: string | null;
+    // signedContractDoc?: string | null;
+    // transcriptDoc?: string | null;
+    universityCertificate?: string | null;
+    toeflIELTSCertificate?: string | null;
+    acceptanceLetterDoc?: string | null;
   };
 }
 
@@ -333,4 +340,29 @@ export function checkIfFilesAreTooBig(file?: File, maxSize?: number): boolean {
     }
   }
   return valid;
+}
+
+export function getNamePart(
+  fullName: string,
+  part: "first" | "second" | "third" | "last"
+): string {
+  const nameParts = fullName.trim().split(" ");
+
+  switch (part) {
+    case "first":
+      return nameParts[0] || "";
+    case "second":
+      // if (nameParts.length > 2) return nameParts[1];
+      // return "";
+      return nameParts[1] || "";
+    case "third":
+      // if (nameParts.length > 3) return nameParts[2];
+      return nameParts[2] || "";
+
+    case "last":
+      // if (nameParts.length === 4) return nameParts[2];
+      // if (nameParts.length === 4) return nameParts[2];
+      if (nameParts.length >= 3) return nameParts[nameParts.length - 1];
+      return "";
+  }
 }
