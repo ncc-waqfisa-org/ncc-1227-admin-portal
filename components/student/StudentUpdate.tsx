@@ -27,9 +27,13 @@ import GetStorageLinkComponent from "../get-storage-link-component";
 import { PhoneNumberInput } from "../phone";
 import { createStudentInfoChangeSnapshot } from "./studentAdminLog";
 import { useAuth } from "../../hooks/use-auth";
-import { TextField } from "@aws-amplify/ui-react";
 import React from "react";
+import DatePicker from "react-date-picker";
 import { format } from "date-fns";
+import "react-date-picker/dist/DatePicker.css";
+import "react-calendar/dist/Calendar.css";
+
+import { cn } from "../../src/lib/utils";
 
 interface Props {
   student: Student;
@@ -143,6 +147,7 @@ export default function ViewAccount({ student, applicationId }: Props) {
   }
 
   const [dateOfBirth, setDateOfBirth] = React.useState(initialValues.dob);
+  const onlyArabicLettersRegex = /^[\u0621-\u064A ]+$/;
 
   return (
     <Formik
@@ -154,7 +159,23 @@ export default function ViewAccount({ student, applicationId }: Props) {
           .string()
           .phone()
           .required(`${tErrors("requiredField")}`),
-        fullName: yup.string().required(`${tErrors("requiredField")}`),
+        firstName: yup
+          .string()
+          .matches(onlyArabicLettersRegex, `${tErrors("invalid")}`)
+          .required(`${tErrors("requiredField")}`),
+        secondName: yup
+          .string()
+          .matches(onlyArabicLettersRegex, `${tErrors("invalid")}`)
+          .required(`${tErrors("requiredField")}`),
+        thirdName: yup
+          .string()
+          .matches(onlyArabicLettersRegex, `${tErrors("invalid")}`)
+          .required(`${tErrors("requiredField")}`),
+        lastName: yup
+          .string()
+          .matches(onlyArabicLettersRegex, `${tErrors("invalid")}`)
+          .required(`${tErrors("requiredField")}`),
+        // fullName: yup.string().required(`${tErrors("requiredField")}`),
         gender: yup.string().required(`${tErrors("requiredField")}`),
         schoolName: yup.string().required(`${tErrors("requiredField")}`),
         schoolType: yup.string().required(`${tErrors("requiredField")}`),
@@ -215,6 +236,10 @@ export default function ViewAccount({ student, applicationId }: Props) {
             cprDoc: cprDocStorage,
             phone: values.phone,
             fullName: values.fullName,
+            firstName: values.firstName,
+            secondName: values.secondName,
+            thirdName: values.thirdName,
+            lastName: values.lastName,
             gender: values.gender,
             schoolName: values.schoolName,
             schoolType: values.schoolType,
@@ -229,6 +254,7 @@ export default function ViewAccount({ student, applicationId }: Props) {
             graduationDate: values.graduationDate,
             address: values.address,
             _version: student._version,
+            dob: dateOfBirth,
           },
         };
 
@@ -261,6 +287,7 @@ export default function ViewAccount({ student, applicationId }: Props) {
         isValid,
         setFieldError,
         setFieldValue,
+        setFieldTouched,
         dirty,
       }) => (
         <Form className="container grid items-end max-w-3xl grid-cols-1 gap-3 mx-auto md:grid-cols-2">
@@ -635,7 +662,7 @@ export default function ViewAccount({ student, applicationId }: Props) {
             </label>
           </div>
 
-          <TextField
+          {/* <TextField
             label={t("dateOfBirth")}
             isRequired={false}
             isReadOnly={false}
@@ -649,7 +676,38 @@ export default function ViewAccount({ student, applicationId }: Props) {
               handleChange(date.toISOString());
             }}
             errorMessage={errors.dob}
-          ></TextField>
+          ></TextField> */}
+
+          <div>
+            <div className="flex items-center">
+              <label className="label">{t("dateOfBirth")}</label>
+              <label className="text-error label">*</label>{" "}
+            </div>
+            <DatePicker
+              className={cn(
+                " input input-bordered input-primary",
+                errors.dob && "!input-error"
+              )}
+              onChange={(date) => {
+                const myDate: Date | null = date as Date | null;
+                setDateOfBirth(myDate?.toISOString() ?? "");
+                // setFieldValue("dob",)
+                if (myDate) {
+                  setFieldError("dob", undefined);
+                } else {
+                  setFieldError("dob", "Invalid date of birth");
+                }
+              }}
+              onTouchStart={(e) => setFieldTouched("dob", true)}
+              value={
+                dateOfBirth ? format(dateOfBirth, "yyyy-MM-dd") : undefined
+              }
+            />
+
+            <label className="pt-2 label-text-alt text-error">
+              {errors.dob}
+            </label>
+          </div>
 
           {/* Student Order Among Siblings */}
           <div className="flex flex-col justify-start w-full">
@@ -827,17 +885,14 @@ export default function ViewAccount({ student, applicationId }: Props) {
 
           {/* Submit */}
           {
-            // TODO enable update when a field is changed 
             <button
               className="my-3 text-white md:col-span-2 btn btn-primary"
               type="submit"
               disabled={
-                isSubmitting ||
-                !isValid ||
-                // !dirty ||
-                familyIncomeProofInvalid ||
-                (familyIncomeProofDocsFile.length === 0 &&
-                  (student.familyIncomeProofDocs ?? []).length === 0)
+                isSubmitting || !isValid || !dirty
+                // familyIncomeProofInvalid ||
+                // (familyIncomeProofDocsFile.length === 0 &&
+                //   (student.familyIncomeProofDocs ?? []).length === 0)
               }
             >
               {t("update")}

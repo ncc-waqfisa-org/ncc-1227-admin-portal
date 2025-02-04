@@ -505,7 +505,10 @@ export async function getApplicationByIdAPI(
           fatherCPR
           fatherFullName
           guardianCPR
-          guardianFullName
+          guardianFirstName
+          guardianSecondName
+          guardianThirdName
+          guardianLastName
           motherCPR
           id
           motherFullName

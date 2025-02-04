@@ -5,7 +5,6 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import { DocType, updateStudentInDB, uploadFile } from "../../src/CustomAPI";
-import { TextField } from "@aws-amplify/ui-react";
 
 import { useMutation } from "@tanstack/react-query";
 import {
@@ -32,8 +31,6 @@ import DatePicker from "react-date-picker";
 import { format } from "date-fns";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
-import { useAppContext } from "../../context/AppContext";
-import { useStudent } from "../../context/StudentContext";
 
 // Add an optional readOnly that will disable all fields and remove the update button
 export default function MasterInfoForm({
@@ -145,7 +142,7 @@ export default function MasterInfoForm({
 
     first_name: yup
       .string()
-      .matches(onlyArabicLettersRegex, `${tErrors("invalidFirstName")}`)
+      .matches(onlyArabicLettersRegex, `${tErrors("invalid")}`)
       .required(`${tErrors("requiredField")}`),
     second_name: yup
       .string()
@@ -235,7 +232,7 @@ export default function MasterInfoForm({
           gender: values.gender as Gender,
           placeOfBirth: values.place_of_birth,
           nationalityCategory: values.nationality as Nationality,
-          dob: values.dob,
+          dob: dateOfBirth,
 
           m_firstName: values.first_name,
           m_secondName: values.second_name,

@@ -46,18 +46,26 @@ export default function UpdateParentInfo({ parentInfo }: Props) {
   const { t: tErrors } = useTranslation("errors");
 
   let initialValues: FormValues = {
-    guardianFirstName: parentInfo.guardianFullName
-      ? getNamePart(parentInfo.guardianFullName, "first")
-      : "",
-    guardianSecondName: parentInfo.guardianFullName
-      ? getNamePart(parentInfo.guardianFullName, "second")
-      : "",
-    guardianThirdName: parentInfo.guardianFullName
-      ? getNamePart(parentInfo.guardianFullName, "third")
-      : "",
-    guardianLastName: parentInfo.guardianFullName
-      ? getNamePart(parentInfo.guardianFullName, "last")
-      : "",
+    guardianFirstName:
+      parentInfo.guardianFirstName ??
+      (parentInfo.guardianFullName
+        ? getNamePart(parentInfo.guardianFullName, "first")
+        : ""),
+    guardianSecondName:
+      parentInfo.guardianSecondName ??
+      (parentInfo.guardianFullName
+        ? getNamePart(parentInfo.guardianFullName, "second")
+        : ""),
+    guardianThirdName:
+      parentInfo.guardianThirdName ??
+      (parentInfo.guardianFullName
+        ? getNamePart(parentInfo.guardianFullName, "third")
+        : ""),
+    guardianLastName:
+      parentInfo.guardianLastName ??
+      (parentInfo.guardianFullName
+        ? getNamePart(parentInfo.guardianFullName, "last")
+        : ""),
     // guardianFullName: parentInfo.guardianFullName,
     relation: parentInfo.relation,
     guardianCPR: parentInfo.guardianCPR,
@@ -107,11 +115,29 @@ export default function UpdateParentInfo({ parentInfo }: Props) {
     });
   }
 
+  const onlyArabicLettersRegex = /^[\u0621-\u064A ]+$/;
+
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={yup.object({
-        guardianFullName: yup.string().required(`${tErrors("requiredField")}`),
+        guardianFirstName: yup
+          .string()
+          .matches(onlyArabicLettersRegex, `${tErrors("invalid")}`)
+          .required(`${tErrors("requiredField")}`),
+        guardianSecondName: yup
+          .string()
+          .matches(onlyArabicLettersRegex, `${tErrors("invalid")}`)
+          .required(`${tErrors("requiredField")}`),
+        guardianThirdName: yup
+          .string()
+          .matches(onlyArabicLettersRegex, `${tErrors("invalid")}`)
+          .required(`${tErrors("requiredField")}`),
+        guardianLastName: yup
+          .string()
+          .matches(onlyArabicLettersRegex, `${tErrors("invalid")}`)
+          .required(`${tErrors("requiredField")}`),
+        // guardianFullName: yup.string().required(`${tErrors("requiredField")}`),
         relation: yup.string().required(`${tErrors("requiredField")}`),
         guardianCPR: yup
           .string()
@@ -149,7 +175,11 @@ export default function UpdateParentInfo({ parentInfo }: Props) {
         let updateVars: UpdateParentInfoMutationVariables = {
           input: {
             id: parentInfo.id,
-            guardianFullName: `${values.guardianFirstName} ${values.guardianSecondName} ${values.guardianThirdName} ${values.guardianLastName}`,
+            guardianFirstName: values.guardianFirstName,
+            guardianSecondName: values.guardianSecondName,
+            guardianThirdName: values.guardianThirdName,
+            guardianLastName: values.guardianLastName,
+            // guardianFullName: `${values.guardianFirstName} ${values.guardianSecondName} ${values.guardianThirdName} ${values.guardianLastName}`,
             relation: values.relation,
             guardianCPR: values.guardianCPR,
             primaryMobile: values.primaryMobile,
