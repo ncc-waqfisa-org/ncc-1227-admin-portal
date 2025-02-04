@@ -10,6 +10,7 @@ import { PageComponent } from "../../../components/page-component";
 import { Toaster } from "react-hot-toast";
 import PrimaryButton from "../../../components/primary-button";
 import ViewApplication from "../../../components/application-view-component";
+import ViewMasterApplication from "../../../components/master-application-view-component";
 
 interface Props {
   adminLog: AdminLog;
@@ -19,6 +20,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { locale } = ctx;
 
   let adminLog = await getAdminLogsByLogID(`${id}`);
+
+  console.log(JSON.stringify(adminLog));
   return {
     props: {
       adminLog: adminLog,
@@ -83,8 +86,9 @@ export default function AdminLogHistoryInfo({ adminLog }: Props) {
               <div className="text-xl font-semibold ">
                 {t("applicationDetails")}
               </div>
+              {JSON.stringify(snapshot)}
               {/* {snapshot && (
-                <ViewApplication
+                <ViewMasterApplication
                   application={snapshot}
                   downloadLinks={{
                     schoolCertificate: snapshot.attachment?.schoolCertificate,
@@ -92,7 +96,7 @@ export default function AdminLogHistoryInfo({ adminLog }: Props) {
                     signedContractDoc: snapshot.attachment?.signedContractDoc,
                   }}
                   readOnly={true}
-                ></ViewApplication>
+                ></ViewMasterApplication>
               )} */}
             </div>
             <div>

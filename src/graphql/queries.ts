@@ -215,6 +215,10 @@ export const getApplication = /* GraphQL */ `query GetApplication($id: ID!) {
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -871,6 +875,10 @@ export const getStudentLog = /* GraphQL */ `query GetStudentLog($id: ID!) {
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -1068,6 +1076,10 @@ export const getParentInfo = /* GraphQL */ `query GetParentInfo($id: ID!) {
     motherCPR
     numberOfFamilyMembers
     address
+    guardianFirstName
+    guardianSecondName
+    guardianThirdName
+    guardianLastName
     createdAt
     updatedAt
     _version
@@ -1099,6 +1111,10 @@ export const listParentInfos = /* GraphQL */ `query ListParentInfos(
       motherCPR
       numberOfFamilyMembers
       address
+      guardianFirstName
+      guardianSecondName
+      guardianThirdName
+      guardianLastName
       createdAt
       updatedAt
       _version
@@ -1140,6 +1156,10 @@ export const syncParentInfos = /* GraphQL */ `query SyncParentInfos(
       motherCPR
       numberOfFamilyMembers
       address
+      guardianFirstName
+      guardianSecondName
+      guardianThirdName
+      guardianLastName
       createdAt
       updatedAt
       _version
@@ -1196,6 +1216,10 @@ export const getStudent = /* GraphQL */ `query GetStudent($cpr: String!) {
       motherCPR
       numberOfFamilyMembers
       address
+      guardianFirstName
+      guardianSecondName
+      guardianThirdName
+      guardianLastName
       createdAt
       updatedAt
       _version
@@ -1254,6 +1278,10 @@ export const getStudent = /* GraphQL */ `query GetStudent($cpr: String!) {
       startedAt
       __typename
     }
+    m_guardianFirstName
+    m_guardianSecondName
+    m_guardianThirdName
+    m_guardianLastName
     createdAt
     updatedAt
     _version
@@ -1324,6 +1352,10 @@ export const listStudents = /* GraphQL */ `query ListStudents(
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -1396,6 +1428,10 @@ export const syncStudents = /* GraphQL */ `query SyncStudents(
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -1549,6 +1585,9 @@ export const getScholarship = /* GraphQL */ `query GetScholarship($id: ID!) {
     bankName
     IBAN
     IBANLetterDoc
+    startDate
+    scholarshipPeriod
+    numberOfSemesters
     createdAt
     updatedAt
     _version
@@ -1581,6 +1620,9 @@ export const listScholarships = /* GraphQL */ `query ListScholarships(
       bankName
       IBAN
       IBANLetterDoc
+      startDate
+      scholarshipPeriod
+      numberOfSemesters
       createdAt
       updatedAt
       _version
@@ -1623,6 +1665,9 @@ export const syncScholarships = /* GraphQL */ `query SyncScholarships(
       bankName
       IBAN
       IBANLetterDoc
+      startDate
+      scholarshipPeriod
+      numberOfSemesters
       createdAt
       updatedAt
       _version
@@ -1902,6 +1947,10 @@ export const getMasterLog = /* GraphQL */ `query GetMasterLog($id: ID!) {
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -2185,6 +2234,10 @@ export const getMasterApplication = /* GraphQL */ `query GetMasterApplication($i
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -2656,6 +2709,9 @@ export const getMasterScholarship = /* GraphQL */ `query GetMasterScholarship($i
     bankName
     IBAN
     IBANLetterDoc
+    startDate
+    scholarshipPeriod
+    numberOfSemesters
     createdAt
     updatedAt
     _version
@@ -2692,6 +2748,9 @@ export const listMasterScholarships = /* GraphQL */ `query ListMasterScholarship
       bankName
       IBAN
       IBANLetterDoc
+      startDate
+      scholarshipPeriod
+      numberOfSemesters
       createdAt
       updatedAt
       _version
@@ -2734,6 +2793,9 @@ export const syncMasterScholarships = /* GraphQL */ `query SyncMasterScholarship
       bankName
       IBAN
       IBANLetterDoc
+      startDate
+      scholarshipPeriod
+      numberOfSemesters
       createdAt
       updatedAt
       _version
@@ -3240,6 +3302,10 @@ export const studentsByNationalityCategoryAndGraduationDate = /* GraphQL */ `que
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -3314,6 +3380,10 @@ export const studentsByM_universityID = /* GraphQL */ `query StudentsByM_univers
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -3358,6 +3428,9 @@ export const scholarshipsByApplicationID = /* GraphQL */ `query ScholarshipsByAp
       bankName
       IBAN
       IBANLetterDoc
+      startDate
+      scholarshipPeriod
+      numberOfSemesters
       createdAt
       updatedAt
       _version
@@ -3404,6 +3477,9 @@ export const scholarshipsByBatchAndStatus = /* GraphQL */ `query ScholarshipsByB
       bankName
       IBAN
       IBANLetterDoc
+      startDate
+      scholarshipPeriod
+      numberOfSemesters
       createdAt
       updatedAt
       _version
@@ -3450,6 +3526,9 @@ export const scholarshipsByStudentCPRAndStatus = /* GraphQL */ `query Scholarshi
       bankName
       IBAN
       IBANLetterDoc
+      startDate
+      scholarshipPeriod
+      numberOfSemesters
       createdAt
       updatedAt
       _version
@@ -3914,6 +3993,9 @@ export const masterScholarshipsByApplicationID = /* GraphQL */ `query MasterScho
       bankName
       IBAN
       IBANLetterDoc
+      startDate
+      scholarshipPeriod
+      numberOfSemesters
       createdAt
       updatedAt
       _version
@@ -3960,6 +4042,9 @@ export const masterScholarshipsByBatchAndStatus = /* GraphQL */ `query MasterSch
       bankName
       IBAN
       IBANLetterDoc
+      startDate
+      scholarshipPeriod
+      numberOfSemesters
       createdAt
       updatedAt
       _version
@@ -4006,6 +4091,9 @@ export const masterScholarshipsByStudentCPRAndStatus = /* GraphQL */ `query Mast
       bankName
       IBAN
       IBANLetterDoc
+      startDate
+      scholarshipPeriod
+      numberOfSemesters
       createdAt
       updatedAt
       _version

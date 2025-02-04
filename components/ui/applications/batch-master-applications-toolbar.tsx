@@ -41,6 +41,7 @@ import {
   FormLabel,
   FormMessage,
 } from "../form";
+import { syncMasterApplications } from "../../../src/graphql/queries";
 
 interface ApplicationsStatusFilterProps {
   handleStatusChange: (value: string) => void;
@@ -57,6 +58,7 @@ export const BatchMasterApplicationsToolbar: React.FC<
   selectedStatus,
   handleStatusChange,
   handleBatchChange,
+
   // handleSearchChange,
   masterTable,
   // search,
@@ -66,7 +68,7 @@ export const BatchMasterApplicationsToolbar: React.FC<
     resetApplicationsFilter,
     searchedCpr,
     searchMasterCpr,
-    resetApplications,
+    resetMasterApplications,
   } = useBatchContext();
   const { t } = useTranslation("applications");
   const { t: tErrors } = useTranslation("errors");
@@ -101,6 +103,7 @@ export const BatchMasterApplicationsToolbar: React.FC<
       {
         loading: tCommon("loading"),
         success: () => {
+          resetMasterApplications();
           return tCommon("success");
         },
         error: (error) => {
@@ -205,7 +208,8 @@ export const BatchMasterApplicationsToolbar: React.FC<
             );
 
             // TODO change lamba url
-            const url = `https://a69a50c47l.execute-api.us-east-1.amazonaws.com/default/applications/export?batch=${batch}`;
+            const url = `${process.env.NEXT_PUBLIC_LAMBDA_EXPORT_MASTER_CSV_STATISTICS}?batch=${batch}`;
+            // const url = `https://a69a50c47l.execute-api.us-east-1.amazonaws.com/default/applications/export?batch=${batch}`;
             const test = JSON.stringify({ ids: selectedApplicationsIds });
 
             toast.promise(
@@ -289,8 +293,7 @@ export const BatchMasterApplicationsToolbar: React.FC<
       </Link>
       <Button
         onClick={() => {
-          resetApplications();
-          queryClient.invalidateQueries();
+          resetMasterApplications();
         }}
         size={"icon"}
         variant={"outline"}

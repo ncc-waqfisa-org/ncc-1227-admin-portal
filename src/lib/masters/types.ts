@@ -121,7 +121,7 @@ export type MasterUpdateData = {
 
   // Guardian data
   guardian_cpr: string;
-  guardian_full_name: string;
+  // guardian_full_name: string;
   guardianFirstName: string;
   guardianSecondName: string;
   guardianThirdName: string;

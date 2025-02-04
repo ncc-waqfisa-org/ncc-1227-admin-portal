@@ -203,6 +203,10 @@ export const createApplication = /* GraphQL */ `mutation CreateApplication(
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -360,6 +364,10 @@ export const updateApplication = /* GraphQL */ `mutation UpdateApplication(
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -517,6 +525,10 @@ export const deleteApplication = /* GraphQL */ `mutation DeleteApplication(
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -1218,6 +1230,10 @@ export const createStudentLog = /* GraphQL */ `mutation CreateStudentLog(
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -1295,6 +1311,10 @@ export const updateStudentLog = /* GraphQL */ `mutation UpdateStudentLog(
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -1372,6 +1392,10 @@ export const deleteStudentLog = /* GraphQL */ `mutation DeleteStudentLog(
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -1492,6 +1516,10 @@ export const createParentInfo = /* GraphQL */ `mutation CreateParentInfo(
     motherCPR
     numberOfFamilyMembers
     address
+    guardianFirstName
+    guardianSecondName
+    guardianThirdName
+    guardianLastName
     createdAt
     updatedAt
     _version
@@ -1521,6 +1549,10 @@ export const updateParentInfo = /* GraphQL */ `mutation UpdateParentInfo(
     motherCPR
     numberOfFamilyMembers
     address
+    guardianFirstName
+    guardianSecondName
+    guardianThirdName
+    guardianLastName
     createdAt
     updatedAt
     _version
@@ -1550,6 +1582,10 @@ export const deleteParentInfo = /* GraphQL */ `mutation DeleteParentInfo(
     motherCPR
     numberOfFamilyMembers
     address
+    guardianFirstName
+    guardianSecondName
+    guardianThirdName
+    guardianLastName
     createdAt
     updatedAt
     _version
@@ -1605,6 +1641,10 @@ export const createStudent = /* GraphQL */ `mutation CreateStudent(
       motherCPR
       numberOfFamilyMembers
       address
+      guardianFirstName
+      guardianSecondName
+      guardianThirdName
+      guardianLastName
       createdAt
       updatedAt
       _version
@@ -1663,6 +1703,10 @@ export const createStudent = /* GraphQL */ `mutation CreateStudent(
       startedAt
       __typename
     }
+    m_guardianFirstName
+    m_guardianSecondName
+    m_guardianThirdName
+    m_guardianLastName
     createdAt
     updatedAt
     _version
@@ -1718,6 +1762,10 @@ export const updateStudent = /* GraphQL */ `mutation UpdateStudent(
       motherCPR
       numberOfFamilyMembers
       address
+      guardianFirstName
+      guardianSecondName
+      guardianThirdName
+      guardianLastName
       createdAt
       updatedAt
       _version
@@ -1776,6 +1824,10 @@ export const updateStudent = /* GraphQL */ `mutation UpdateStudent(
       startedAt
       __typename
     }
+    m_guardianFirstName
+    m_guardianSecondName
+    m_guardianThirdName
+    m_guardianLastName
     createdAt
     updatedAt
     _version
@@ -1831,6 +1883,10 @@ export const deleteStudent = /* GraphQL */ `mutation DeleteStudent(
       motherCPR
       numberOfFamilyMembers
       address
+      guardianFirstName
+      guardianSecondName
+      guardianThirdName
+      guardianLastName
       createdAt
       updatedAt
       _version
@@ -1889,6 +1945,10 @@ export const deleteStudent = /* GraphQL */ `mutation DeleteStudent(
       startedAt
       __typename
     }
+    m_guardianFirstName
+    m_guardianSecondName
+    m_guardianThirdName
+    m_guardianLastName
     createdAt
     updatedAt
     _version
@@ -2021,6 +2081,9 @@ export const createScholarship = /* GraphQL */ `mutation CreateScholarship(
     bankName
     IBAN
     IBANLetterDoc
+    startDate
+    scholarshipPeriod
+    numberOfSemesters
     createdAt
     updatedAt
     _version
@@ -2084,6 +2147,9 @@ export const updateScholarship = /* GraphQL */ `mutation UpdateScholarship(
     bankName
     IBAN
     IBANLetterDoc
+    startDate
+    scholarshipPeriod
+    numberOfSemesters
     createdAt
     updatedAt
     _version
@@ -2147,6 +2213,9 @@ export const deleteScholarship = /* GraphQL */ `mutation DeleteScholarship(
     bankName
     IBAN
     IBANLetterDoc
+    startDate
+    scholarshipPeriod
+    numberOfSemesters
     createdAt
     updatedAt
     _version
@@ -2379,6 +2448,10 @@ export const createMasterLog = /* GraphQL */ `mutation CreateMasterLog(
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -2455,6 +2528,10 @@ export const updateMasterLog = /* GraphQL */ `mutation UpdateMasterLog(
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -2531,6 +2608,10 @@ export const deleteMasterLog = /* GraphQL */ `mutation DeleteMasterLog(
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -2736,6 +2817,10 @@ export const createMasterApplication = /* GraphQL */ `mutation CreateMasterAppli
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -2868,6 +2953,10 @@ export const updateMasterApplication = /* GraphQL */ `mutation UpdateMasterAppli
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -3000,6 +3089,10 @@ export const deleteMasterApplication = /* GraphQL */ `mutation DeleteMasterAppli
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -3325,6 +3418,9 @@ export const createMasterScholarship = /* GraphQL */ `mutation CreateMasterSchol
     bankName
     IBAN
     IBANLetterDoc
+    startDate
+    scholarshipPeriod
+    numberOfSemesters
     createdAt
     updatedAt
     _version
@@ -3384,6 +3480,9 @@ export const updateMasterScholarship = /* GraphQL */ `mutation UpdateMasterSchol
     bankName
     IBAN
     IBANLetterDoc
+    startDate
+    scholarshipPeriod
+    numberOfSemesters
     createdAt
     updatedAt
     _version
@@ -3443,6 +3542,9 @@ export const deleteMasterScholarship = /* GraphQL */ `mutation DeleteMasterSchol
     bankName
     IBAN
     IBANLetterDoc
+    startDate
+    scholarshipPeriod
+    numberOfSemesters
     createdAt
     updatedAt
     _version

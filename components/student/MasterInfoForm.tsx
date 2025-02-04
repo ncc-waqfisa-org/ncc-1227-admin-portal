@@ -28,9 +28,12 @@ import {
 } from "../../src/API";
 
 import GetStorageLinkComponent from "../get-storage-link-component";
-import DatePicker from "react-datepicker";
-import { datePickerStylesCss } from "../../styles/datepicker-style";
+import DatePicker from "react-date-picker";
 import { format } from "date-fns";
+import "react-date-picker/dist/DatePicker.css";
+import "react-calendar/dist/Calendar.css";
+import { useAppContext } from "../../context/AppContext";
+import { useStudent } from "../../context/StudentContext";
 
 // Add an optional readOnly that will disable all fields and remove the update button
 export default function MasterInfoForm({
@@ -48,6 +51,7 @@ export default function MasterInfoForm({
   const [isLoading, setIsLoading] = useState(false);
 
   const englishNumberRegex = /^[0-9]*$/;
+  const onlyArabicLettersRegex = /^[\u0621-\u064A ]+$/;
 
   const [docs, setDocs] = useState<{ [key: string]: File | null }>({
     cpr_doc: null,
@@ -111,18 +115,26 @@ export default function MasterInfoForm({
     universityID: student?.m_universityID ?? "",
     guardian_cpr: student?.m_guardianCPR ?? "",
     // guardian_full_name: student?.m_guardianFullName ?? "",
-    guardianFirstName: student?.m_guardianFullName
-      ? getNamePart(student?.m_guardianFullName, "first")
-      : "",
-    guardianSecondName: student?.m_guardianFullName
-      ? getNamePart(student?.m_guardianFullName, "second")
-      : "",
-    guardianThirdName: student?.m_guardianFullName
-      ? getNamePart(student?.m_guardianFullName, "third")
-      : "",
-    guardianLastName: student?.m_guardianFullName
-      ? getNamePart(student?.m_guardianFullName, "last")
-      : "",
+    guardianFirstName:
+      student.m_guardianFirstName ??
+      (student?.m_guardianFullName
+        ? getNamePart(student?.m_guardianFullName, "first")
+        : ""),
+    guardianSecondName:
+      student.m_guardianSecondName ??
+      (student?.m_guardianFullName
+        ? getNamePart(student?.m_guardianFullName, "second")
+        : ""),
+    guardianThirdName:
+      student.m_guardianThirdName ??
+      (student?.m_guardianFullName
+        ? getNamePart(student?.m_guardianFullName, "third")
+        : ""),
+    guardianLastName:
+      student.m_guardianLastName ??
+      (student?.m_guardianFullName
+        ? getNamePart(student?.m_guardianFullName, "last")
+        : ""),
 
     dob: student.dob ?? "",
   };
@@ -131,10 +143,22 @@ export default function MasterInfoForm({
     // Personal data
     cpr_doc: yup.mixed(),
 
-    first_name: yup.string().required(`${tErrors("requiredField")}`),
-    second_name: yup.string().required(`${tErrors("requiredField")}`),
-    third_name: yup.string().required(`${tErrors("requiredField")}`),
-    last_name: yup.string().required(`${tErrors("requiredField")}`),
+    first_name: yup
+      .string()
+      .matches(onlyArabicLettersRegex, `${tErrors("invalidFirstName")}`)
+      .required(`${tErrors("requiredField")}`),
+    second_name: yup
+      .string()
+      .matches(onlyArabicLettersRegex, `${tErrors("invalid")}`)
+      .required(`${tErrors("requiredField")}`),
+    third_name: yup
+      .string()
+      .matches(onlyArabicLettersRegex, `${tErrors("invalid")}`)
+      .required(`${tErrors("requiredField")}`),
+    last_name: yup
+      .string()
+      .matches(onlyArabicLettersRegex, `${tErrors("invalid")}`)
+      .required(`${tErrors("requiredField")}`),
     address: yup.string().required(`${tErrors("requiredField")}`),
 
     phone: yup
@@ -155,6 +179,7 @@ export default function MasterInfoForm({
     graduation_year: yup.string().required(`${tErrors("requiredField")}`),
     universityID: yup.string().required(`${tErrors("requiredField")}`),
     old_program: yup.string().required(`${tErrors("requiredField")}`),
+    dob: yup.string().required(`${tErrors("requiredField")}`),
 
     // Employment info
     isEmployed: yup.boolean().required(`${tErrors("requiredField")}`),
@@ -175,7 +200,23 @@ export default function MasterInfoForm({
       .min(9, `${tErrors("cprShouldBe9")}`)
       .max(9, `${tErrors("cprShouldBe9")}`)
       .required(`${tErrors("requiredField")}`),
-    guardian_full_name: yup.string().required(`${tErrors("requiredField")}`),
+    guardianFirstName: yup
+      .string()
+      .matches(onlyArabicLettersRegex, `${tErrors("invalid")}`)
+      .required(`${tErrors("requiredField")}`),
+    guardianSecondName: yup
+      .string()
+      .matches(onlyArabicLettersRegex, `${tErrors("invalid")}`)
+      .required(`${tErrors("requiredField")}`),
+    guardianThirdName: yup
+      .string()
+      .matches(onlyArabicLettersRegex, `${tErrors("invalid")}`)
+      .required(`${tErrors("requiredField")}`),
+    guardianLastName: yup
+      .string()
+      .matches(onlyArabicLettersRegex, `${tErrors("invalid")}`)
+      .required(`${tErrors("requiredField")}`),
+    // guardian_full_name: yup.string().required(`${tErrors("requiredField")}`),
     guardian_cpr_doc: yup.mixed(),
   });
 
@@ -204,7 +245,11 @@ export default function MasterInfoForm({
           m_graduationYear: values.graduation_year,
           m_guardianCPR: values.guardian_cpr,
           m_guardianCPRDoc: values.guardian_cpr_doc,
-          m_guardianFullName: `${values.guardianFirstName} ${values.guardianSecondName} ${values.guardianThirdName} ${values.guardianLastName}`,
+          // m_guardianFullName: `${values.guardianFirstName} ${values.guardianSecondName} ${values.guardianThirdName} ${values.guardianLastName}`,
+          m_guardianFirstName: values.guardianFirstName,
+          m_guardianSecondName: values.guardianSecondName,
+          m_guardianThirdName: values.guardianThirdName,
+          m_guardianLastName: values.guardianLastName,
           address: values.address,
           m_income: values.income,
           // m_incomeDoc: values.income_doc,
@@ -221,7 +266,6 @@ export default function MasterInfoForm({
     },
     async onSuccess(data) {
       if (data?.updateStudent?.cpr) {
-        // syncStudent();
         // TODO: sync student data
         toast.success(`${tToast("processComplete")}`);
       } else {
@@ -294,19 +338,25 @@ export default function MasterInfoForm({
       );
     }
 
-    let guardian_full_name = `${data.guardianFirstName} ${data.guardianSecondName} ${data.guardianThirdName} ${data.guardianLastName}`;
+    // let guardian_full_name = `${data.guardianFirstName} ${data.guardianSecondName} ${data.guardianThirdName} ${data.guardianLastName}`;
 
     const dataToSend: MasterUpdateData = {
       ...data,
       cpr_doc,
       income_doc,
-      guardian_full_name,
+      // guardian_full_name,
       guardian_cpr_doc,
     };
 
+    console.log(dataToSend);
+
     setMasterUpdateData(data);
 
+    console.log(masterUpdateData);
+
     await updateMutation.mutateAsync(dataToSend);
+
+    console.log(masterUpdateData);
   }
 
   const [dateOfBirth, setDateOfBirth] = React.useState(initialValues.dob);
@@ -318,6 +368,7 @@ export default function MasterInfoForm({
         validationSchema={formValidationSchema}
         validateOnMount
         onSubmit={(values) => {
+          console.log(values);
           updateProcess(values);
         }}
       >
@@ -329,6 +380,7 @@ export default function MasterInfoForm({
           handleBlur,
           isSubmitting,
           setFieldError,
+          setFieldTouched,
           setFieldValue,
           isValid,
           dirty,
@@ -521,7 +573,7 @@ export default function MasterInfoForm({
                     {errors.gender && touched.gender && errors.gender}
                   </label>
                 </div>
-                <TextField
+                {/* <TextField
                   label={t("dateOfBirth")}
                   isRequired={false}
                   isReadOnly={false}
@@ -533,11 +585,42 @@ export default function MasterInfoForm({
                     let { value } = e.target;
                     const date = new Date(value);
                     setDateOfBirth(date.toISOString());
-
+                    dirty = true;
                     handleChange(date.toISOString());
                   }}
                   errorMessage={errors.dob}
-                ></TextField>
+                ></TextField> */}
+                <div>
+                  <div className="flex items-center">
+                    <label className="label">{t("dateOfBirth")}</label>
+                    <label className="text-error label">*</label>{" "}
+                  </div>
+                  <DatePicker
+                    className={cn(
+                      " input input-bordered input-primary",
+                      errors.dob && "!input-error"
+                    )}
+                    onChange={(date) => {
+                      const myDate: Date | null = date as Date | null;
+                      setDateOfBirth(myDate?.toISOString() ?? "");
+                      if (myDate) {
+                        setFieldError("dob", undefined);
+                      } else {
+                        setFieldError("dob", "Invalid date of birth");
+                      }
+                    }}
+                    onTouchStart={(e) => setFieldTouched("dob", true)}
+                    value={
+                      dateOfBirth
+                        ? format(dateOfBirth, "yyyy-MM-dd")
+                        : undefined
+                    }
+                  />
+
+                  <label className="pt-2 label-text-alt text-error">
+                    {errors.dob}
+                  </label>
+                </div>
                 <LabelField
                   title={t("placeOfBirth")}
                   value={values.place_of_birth}
@@ -1242,15 +1325,12 @@ const LabelField: FC<TLabelField> = ({
                     "image/jpeg", // Allow JPEG images
                     "image/png", // Allow PNG images
                     "application/pdf", // Allow PDFs
-                    "application/msword", // Allow old Word documents (.doc)
-                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // Allow modern Word documents (.docx)
+                    // "application/msword", // Allow old Word documents (.doc)
+                    // "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // Allow modern Word documents (.docx)
                   ];
 
                   if (!allowedTypes.includes(file.type)) {
-                    setFieldError(
-                      fieldName,
-                      "File must be an image, PDF or DOC"
-                    );
+                    setFieldError(fieldName, "File must be an image or PDF");
                     return;
                   }
 

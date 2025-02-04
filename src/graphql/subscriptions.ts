@@ -199,6 +199,10 @@ export const onCreateApplication = /* GraphQL */ `subscription OnCreateApplicati
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -355,6 +359,10 @@ export const onUpdateApplication = /* GraphQL */ `subscription OnUpdateApplicati
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -511,6 +519,10 @@ export const onDeleteApplication = /* GraphQL */ `subscription OnDeleteApplicati
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -1187,6 +1199,10 @@ export const onCreateStudentLog = /* GraphQL */ `subscription OnCreateStudentLog
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -1263,6 +1279,10 @@ export const onUpdateStudentLog = /* GraphQL */ `subscription OnUpdateStudentLog
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -1339,6 +1359,10 @@ export const onDeleteStudentLog = /* GraphQL */ `subscription OnDeleteStudentLog
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -1449,6 +1473,10 @@ export const onCreateParentInfo = /* GraphQL */ `subscription OnCreateParentInfo
     motherCPR
     numberOfFamilyMembers
     address
+    guardianFirstName
+    guardianSecondName
+    guardianThirdName
+    guardianLastName
     createdAt
     updatedAt
     _version
@@ -1477,6 +1505,10 @@ export const onUpdateParentInfo = /* GraphQL */ `subscription OnUpdateParentInfo
     motherCPR
     numberOfFamilyMembers
     address
+    guardianFirstName
+    guardianSecondName
+    guardianThirdName
+    guardianLastName
     createdAt
     updatedAt
     _version
@@ -1505,6 +1537,10 @@ export const onDeleteParentInfo = /* GraphQL */ `subscription OnDeleteParentInfo
     motherCPR
     numberOfFamilyMembers
     address
+    guardianFirstName
+    guardianSecondName
+    guardianThirdName
+    guardianLastName
     createdAt
     updatedAt
     _version
@@ -1557,6 +1593,10 @@ export const onCreateStudent = /* GraphQL */ `subscription OnCreateStudent($filt
       motherCPR
       numberOfFamilyMembers
       address
+      guardianFirstName
+      guardianSecondName
+      guardianThirdName
+      guardianLastName
       createdAt
       updatedAt
       _version
@@ -1615,6 +1655,10 @@ export const onCreateStudent = /* GraphQL */ `subscription OnCreateStudent($filt
       startedAt
       __typename
     }
+    m_guardianFirstName
+    m_guardianSecondName
+    m_guardianThirdName
+    m_guardianLastName
     createdAt
     updatedAt
     _version
@@ -1667,6 +1711,10 @@ export const onUpdateStudent = /* GraphQL */ `subscription OnUpdateStudent($filt
       motherCPR
       numberOfFamilyMembers
       address
+      guardianFirstName
+      guardianSecondName
+      guardianThirdName
+      guardianLastName
       createdAt
       updatedAt
       _version
@@ -1725,6 +1773,10 @@ export const onUpdateStudent = /* GraphQL */ `subscription OnUpdateStudent($filt
       startedAt
       __typename
     }
+    m_guardianFirstName
+    m_guardianSecondName
+    m_guardianThirdName
+    m_guardianLastName
     createdAt
     updatedAt
     _version
@@ -1777,6 +1829,10 @@ export const onDeleteStudent = /* GraphQL */ `subscription OnDeleteStudent($filt
       motherCPR
       numberOfFamilyMembers
       address
+      guardianFirstName
+      guardianSecondName
+      guardianThirdName
+      guardianLastName
       createdAt
       updatedAt
       _version
@@ -1835,6 +1891,10 @@ export const onDeleteStudent = /* GraphQL */ `subscription OnDeleteStudent($filt
       startedAt
       __typename
     }
+    m_guardianFirstName
+    m_guardianSecondName
+    m_guardianThirdName
+    m_guardianLastName
     createdAt
     updatedAt
     _version
@@ -1957,6 +2017,9 @@ export const onCreateScholarship = /* GraphQL */ `subscription OnCreateScholarsh
     bankName
     IBAN
     IBANLetterDoc
+    startDate
+    scholarshipPeriod
+    numberOfSemesters
     createdAt
     updatedAt
     _version
@@ -2019,6 +2082,9 @@ export const onUpdateScholarship = /* GraphQL */ `subscription OnUpdateScholarsh
     bankName
     IBAN
     IBANLetterDoc
+    startDate
+    scholarshipPeriod
+    numberOfSemesters
     createdAt
     updatedAt
     _version
@@ -2081,6 +2147,9 @@ export const onDeleteScholarship = /* GraphQL */ `subscription OnDeleteScholarsh
     bankName
     IBAN
     IBANLetterDoc
+    startDate
+    scholarshipPeriod
+    numberOfSemesters
     createdAt
     updatedAt
     _version
@@ -2304,6 +2373,10 @@ export const onCreateMasterLog = /* GraphQL */ `subscription OnCreateMasterLog($
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -2377,6 +2450,10 @@ export const onUpdateMasterLog = /* GraphQL */ `subscription OnUpdateMasterLog($
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -2450,6 +2527,10 @@ export const onDeleteMasterLog = /* GraphQL */ `subscription OnDeleteMasterLog($
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -2651,6 +2732,10 @@ export const onCreateMasterApplication = /* GraphQL */ `subscription OnCreateMas
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -2782,6 +2867,10 @@ export const onUpdateMasterApplication = /* GraphQL */ `subscription OnUpdateMas
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -2913,6 +3002,10 @@ export const onDeleteMasterApplication = /* GraphQL */ `subscription OnDeleteMas
       m_guardianCPR
       m_guardianFullName
       m_guardianCPRDoc
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       createdAt
       updatedAt
       _version
@@ -3228,6 +3321,9 @@ export const onCreateMasterScholarship = /* GraphQL */ `subscription OnCreateMas
     bankName
     IBAN
     IBANLetterDoc
+    startDate
+    scholarshipPeriod
+    numberOfSemesters
     createdAt
     updatedAt
     _version
@@ -3286,6 +3382,9 @@ export const onUpdateMasterScholarship = /* GraphQL */ `subscription OnUpdateMas
     bankName
     IBAN
     IBANLetterDoc
+    startDate
+    scholarshipPeriod
+    numberOfSemesters
     createdAt
     updatedAt
     _version
@@ -3344,6 +3443,9 @@ export const onDeleteMasterScholarship = /* GraphQL */ `subscription OnDeleteMas
     bankName
     IBAN
     IBANLetterDoc
+    startDate
+    scholarshipPeriod
+    numberOfSemesters
     createdAt
     updatedAt
     _version

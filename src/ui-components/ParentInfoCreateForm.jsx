@@ -33,6 +33,10 @@ export default function ParentInfoCreateForm(props) {
     motherCPR: "",
     numberOfFamilyMembers: "",
     address: "",
+    guardianFirstName: "",
+    guardianSecondName: "",
+    guardianThirdName: "",
+    guardianLastName: "",
   };
   const [guardianFullName, setGuardianFullName] = React.useState(
     initialValues.guardianFullName
@@ -59,6 +63,18 @@ export default function ParentInfoCreateForm(props) {
     initialValues.numberOfFamilyMembers
   );
   const [address, setAddress] = React.useState(initialValues.address);
+  const [guardianFirstName, setGuardianFirstName] = React.useState(
+    initialValues.guardianFirstName
+  );
+  const [guardianSecondName, setGuardianSecondName] = React.useState(
+    initialValues.guardianSecondName
+  );
+  const [guardianThirdName, setGuardianThirdName] = React.useState(
+    initialValues.guardianThirdName
+  );
+  const [guardianLastName, setGuardianLastName] = React.useState(
+    initialValues.guardianLastName
+  );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setGuardianFullName(initialValues.guardianFullName);
@@ -72,6 +88,10 @@ export default function ParentInfoCreateForm(props) {
     setMotherCPR(initialValues.motherCPR);
     setNumberOfFamilyMembers(initialValues.numberOfFamilyMembers);
     setAddress(initialValues.address);
+    setGuardianFirstName(initialValues.guardianFirstName);
+    setGuardianSecondName(initialValues.guardianSecondName);
+    setGuardianThirdName(initialValues.guardianThirdName);
+    setGuardianLastName(initialValues.guardianLastName);
     setErrors({});
   };
   const validations = {
@@ -86,6 +106,10 @@ export default function ParentInfoCreateForm(props) {
     motherCPR: [],
     numberOfFamilyMembers: [],
     address: [],
+    guardianFirstName: [],
+    guardianSecondName: [],
+    guardianThirdName: [],
+    guardianLastName: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -124,6 +148,10 @@ export default function ParentInfoCreateForm(props) {
           motherCPR,
           numberOfFamilyMembers,
           address,
+          guardianFirstName,
+          guardianSecondName,
+          guardianThirdName,
+          guardianLastName,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -189,6 +217,10 @@ export default function ParentInfoCreateForm(props) {
               motherCPR,
               numberOfFamilyMembers,
               address,
+              guardianFirstName,
+              guardianSecondName,
+              guardianThirdName,
+              guardianLastName,
             };
             const result = onChange(modelFields);
             value = result?.guardianFullName ?? value;
@@ -223,6 +255,10 @@ export default function ParentInfoCreateForm(props) {
               motherCPR,
               numberOfFamilyMembers,
               address,
+              guardianFirstName,
+              guardianSecondName,
+              guardianThirdName,
+              guardianLastName,
             };
             const result = onChange(modelFields);
             value = result?.relation ?? value;
@@ -257,6 +293,10 @@ export default function ParentInfoCreateForm(props) {
               motherCPR,
               numberOfFamilyMembers,
               address,
+              guardianFirstName,
+              guardianSecondName,
+              guardianThirdName,
+              guardianLastName,
             };
             const result = onChange(modelFields);
             value = result?.guardianCPR ?? value;
@@ -291,6 +331,10 @@ export default function ParentInfoCreateForm(props) {
               motherCPR,
               numberOfFamilyMembers,
               address,
+              guardianFirstName,
+              guardianSecondName,
+              guardianThirdName,
+              guardianLastName,
             };
             const result = onChange(modelFields);
             value = result?.primaryMobile ?? value;
@@ -325,6 +369,10 @@ export default function ParentInfoCreateForm(props) {
               motherCPR,
               numberOfFamilyMembers,
               address,
+              guardianFirstName,
+              guardianSecondName,
+              guardianThirdName,
+              guardianLastName,
             };
             const result = onChange(modelFields);
             value = result?.secondaryMobile ?? value;
@@ -359,6 +407,10 @@ export default function ParentInfoCreateForm(props) {
               motherCPR,
               numberOfFamilyMembers,
               address,
+              guardianFirstName,
+              guardianSecondName,
+              guardianThirdName,
+              guardianLastName,
             };
             const result = onChange(modelFields);
             value = result?.fatherFullName ?? value;
@@ -393,6 +445,10 @@ export default function ParentInfoCreateForm(props) {
               motherCPR,
               numberOfFamilyMembers,
               address,
+              guardianFirstName,
+              guardianSecondName,
+              guardianThirdName,
+              guardianLastName,
             };
             const result = onChange(modelFields);
             value = result?.fatherCPR ?? value;
@@ -427,6 +483,10 @@ export default function ParentInfoCreateForm(props) {
               motherCPR,
               numberOfFamilyMembers,
               address,
+              guardianFirstName,
+              guardianSecondName,
+              guardianThirdName,
+              guardianLastName,
             };
             const result = onChange(modelFields);
             value = result?.motherFullName ?? value;
@@ -461,6 +521,10 @@ export default function ParentInfoCreateForm(props) {
               motherCPR: value,
               numberOfFamilyMembers,
               address,
+              guardianFirstName,
+              guardianSecondName,
+              guardianThirdName,
+              guardianLastName,
             };
             const result = onChange(modelFields);
             value = result?.motherCPR ?? value;
@@ -499,6 +563,10 @@ export default function ParentInfoCreateForm(props) {
               motherCPR,
               numberOfFamilyMembers: value,
               address,
+              guardianFirstName,
+              guardianSecondName,
+              guardianThirdName,
+              guardianLastName,
             };
             const result = onChange(modelFields);
             value = result?.numberOfFamilyMembers ?? value;
@@ -535,6 +603,10 @@ export default function ParentInfoCreateForm(props) {
               motherCPR,
               numberOfFamilyMembers,
               address: value,
+              guardianFirstName,
+              guardianSecondName,
+              guardianThirdName,
+              guardianLastName,
             };
             const result = onChange(modelFields);
             value = result?.address ?? value;
@@ -548,6 +620,164 @@ export default function ParentInfoCreateForm(props) {
         errorMessage={errors.address?.errorMessage}
         hasError={errors.address?.hasError}
         {...getOverrideProps(overrides, "address")}
+      ></TextField>
+      <TextField
+        label="Guardian first name"
+        isRequired={false}
+        isReadOnly={false}
+        value={guardianFirstName}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              guardianFullName,
+              relation,
+              guardianCPR,
+              primaryMobile,
+              secondaryMobile,
+              fatherFullName,
+              fatherCPR,
+              motherFullName,
+              motherCPR,
+              numberOfFamilyMembers,
+              address,
+              guardianFirstName: value,
+              guardianSecondName,
+              guardianThirdName,
+              guardianLastName,
+            };
+            const result = onChange(modelFields);
+            value = result?.guardianFirstName ?? value;
+          }
+          if (errors.guardianFirstName?.hasError) {
+            runValidationTasks("guardianFirstName", value);
+          }
+          setGuardianFirstName(value);
+        }}
+        onBlur={() =>
+          runValidationTasks("guardianFirstName", guardianFirstName)
+        }
+        errorMessage={errors.guardianFirstName?.errorMessage}
+        hasError={errors.guardianFirstName?.hasError}
+        {...getOverrideProps(overrides, "guardianFirstName")}
+      ></TextField>
+      <TextField
+        label="Guardian second name"
+        isRequired={false}
+        isReadOnly={false}
+        value={guardianSecondName}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              guardianFullName,
+              relation,
+              guardianCPR,
+              primaryMobile,
+              secondaryMobile,
+              fatherFullName,
+              fatherCPR,
+              motherFullName,
+              motherCPR,
+              numberOfFamilyMembers,
+              address,
+              guardianFirstName,
+              guardianSecondName: value,
+              guardianThirdName,
+              guardianLastName,
+            };
+            const result = onChange(modelFields);
+            value = result?.guardianSecondName ?? value;
+          }
+          if (errors.guardianSecondName?.hasError) {
+            runValidationTasks("guardianSecondName", value);
+          }
+          setGuardianSecondName(value);
+        }}
+        onBlur={() =>
+          runValidationTasks("guardianSecondName", guardianSecondName)
+        }
+        errorMessage={errors.guardianSecondName?.errorMessage}
+        hasError={errors.guardianSecondName?.hasError}
+        {...getOverrideProps(overrides, "guardianSecondName")}
+      ></TextField>
+      <TextField
+        label="Guardian third name"
+        isRequired={false}
+        isReadOnly={false}
+        value={guardianThirdName}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              guardianFullName,
+              relation,
+              guardianCPR,
+              primaryMobile,
+              secondaryMobile,
+              fatherFullName,
+              fatherCPR,
+              motherFullName,
+              motherCPR,
+              numberOfFamilyMembers,
+              address,
+              guardianFirstName,
+              guardianSecondName,
+              guardianThirdName: value,
+              guardianLastName,
+            };
+            const result = onChange(modelFields);
+            value = result?.guardianThirdName ?? value;
+          }
+          if (errors.guardianThirdName?.hasError) {
+            runValidationTasks("guardianThirdName", value);
+          }
+          setGuardianThirdName(value);
+        }}
+        onBlur={() =>
+          runValidationTasks("guardianThirdName", guardianThirdName)
+        }
+        errorMessage={errors.guardianThirdName?.errorMessage}
+        hasError={errors.guardianThirdName?.hasError}
+        {...getOverrideProps(overrides, "guardianThirdName")}
+      ></TextField>
+      <TextField
+        label="Guardian last name"
+        isRequired={false}
+        isReadOnly={false}
+        value={guardianLastName}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              guardianFullName,
+              relation,
+              guardianCPR,
+              primaryMobile,
+              secondaryMobile,
+              fatherFullName,
+              fatherCPR,
+              motherFullName,
+              motherCPR,
+              numberOfFamilyMembers,
+              address,
+              guardianFirstName,
+              guardianSecondName,
+              guardianThirdName,
+              guardianLastName: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.guardianLastName ?? value;
+          }
+          if (errors.guardianLastName?.hasError) {
+            runValidationTasks("guardianLastName", value);
+          }
+          setGuardianLastName(value);
+        }}
+        onBlur={() => runValidationTasks("guardianLastName", guardianLastName)}
+        errorMessage={errors.guardianLastName?.errorMessage}
+        hasError={errors.guardianLastName?.hasError}
+        {...getOverrideProps(overrides, "guardianLastName")}
       ></TextField>
       <Flex
         justifyContent="space-between"

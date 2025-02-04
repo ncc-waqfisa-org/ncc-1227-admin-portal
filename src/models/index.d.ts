@@ -474,6 +474,10 @@ type EagerParentInfo = {
   readonly motherCPR?: string | null;
   readonly numberOfFamilyMembers?: number | null;
   readonly address?: string | null;
+  readonly guardianFirstName?: string | null;
+  readonly guardianSecondName?: string | null;
+  readonly guardianThirdName?: string | null;
+  readonly guardianLastName?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -495,6 +499,10 @@ type LazyParentInfo = {
   readonly motherCPR?: string | null;
   readonly numberOfFamilyMembers?: number | null;
   readonly address?: string | null;
+  readonly guardianFirstName?: string | null;
+  readonly guardianSecondName?: string | null;
+  readonly guardianThirdName?: string | null;
+  readonly guardianLastName?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -559,6 +567,10 @@ type EagerStudent = {
   readonly m_guardianFullName?: string | null;
   readonly m_guardianCPRDoc?: string | null;
   readonly m_masterApplications?: (MasterApplication | null)[] | null;
+  readonly m_guardianFirstName?: string | null;
+  readonly m_guardianSecondName?: string | null;
+  readonly m_guardianThirdName?: string | null;
+  readonly m_guardianLastName?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -617,6 +629,10 @@ type LazyStudent = {
   readonly m_guardianFullName?: string | null;
   readonly m_guardianCPRDoc?: string | null;
   readonly m_masterApplications: AsyncCollection<MasterApplication>;
+  readonly m_guardianFirstName?: string | null;
+  readonly m_guardianSecondName?: string | null;
+  readonly m_guardianThirdName?: string | null;
+  readonly m_guardianLastName?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -682,6 +698,9 @@ type EagerScholarship = {
   readonly bankName?: string | null;
   readonly IBAN?: string | null;
   readonly IBANLetterDoc?: string | null;
+  readonly startDate?: string | null;
+  readonly scholarshipPeriod?: string | null;
+  readonly numberOfSemesters?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -705,6 +724,9 @@ type LazyScholarship = {
   readonly bankName?: string | null;
   readonly IBAN?: string | null;
   readonly IBANLetterDoc?: string | null;
+  readonly startDate?: string | null;
+  readonly scholarshipPeriod?: string | null;
+  readonly numberOfSemesters?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -1108,6 +1130,9 @@ type EagerMasterScholarship = {
   readonly bankName?: string | null;
   readonly IBAN?: string | null;
   readonly IBANLetterDoc?: string | null;
+  readonly startDate?: string | null;
+  readonly scholarshipPeriod?: string | null;
+  readonly numberOfSemesters?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -1131,6 +1156,9 @@ type LazyMasterScholarship = {
   readonly bankName?: string | null;
   readonly IBAN?: string | null;
   readonly IBANLetterDoc?: string | null;
+  readonly startDate?: string | null;
+  readonly scholarshipPeriod?: string | null;
+  readonly numberOfSemesters?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

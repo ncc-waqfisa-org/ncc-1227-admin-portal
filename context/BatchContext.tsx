@@ -19,7 +19,7 @@ import {
 } from "../components/ui/applications/infinite-applications-type";
 
 import { useAuth } from "../hooks/use-auth";
-import { Scholarship } from "../src/API";
+import { MasterApplication, Scholarship } from "../src/API";
 import { listAllScholarshipsOfBatch } from "../src/CustomAPI";
 import { String } from "aws-sdk/clients/acm";
 
@@ -63,6 +63,7 @@ interface IUseBatchContext {
   >;
   resetMasterApplications: () => void;
   searchMasterCpr: (cpr: string) => void;
+  updateMasterApplication(updatedApplication: InfiniteMasterApplication): void;
 }
 
 // the default state for all the values & functions
@@ -139,6 +140,11 @@ const defaultState: IUseBatchContext = {
     throw new Error("Function not implemented.");
   },
   setMastersBatch: function (value: SetStateAction<number>): void {
+    throw new Error("Function not implemented.");
+  },
+  updateMasterApplication: function (
+    updatedApplication: InfiniteMasterApplication
+  ): void {
     throw new Error("Function not implemented.");
   },
 };
@@ -339,6 +345,21 @@ function useBatchProviderApp() {
     resetMasterApplications(newCpr);
   }
 
+  function updateMasterApplication(
+    updatedApplication: InfiniteMasterApplication
+  ) {
+    const index = masterApplicationsData.findIndex(
+      (app) => app.id === updatedApplication.id
+    );
+
+    if (index !== -1) {
+      masterApplicationsData[index] = updatedApplication;
+      console.log("Application updated successfully:", masterApplicationsData);
+    } else {
+      console.log("Application not found");
+    }
+  }
+
   async function fetchFirstMasterApplicationsPage(newCPR?: string) {
     const batchQuery = mastersBatch ? `batch=${mastersBatch}` : "";
     const statusQuery = selectedApplicationsStatus
@@ -433,7 +454,7 @@ function useBatchProviderApp() {
     resetScholarships,
     searchCpr,
     searchedCpr: cpr,
-
+    updateMasterApplication,
     isMasterInitialFetching,
     setIsMasterInitialFetching,
     mastersBatch,

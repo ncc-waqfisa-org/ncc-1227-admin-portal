@@ -5,6 +5,7 @@ import {
   createContext,
   PropsWithChildren,
   FC,
+  useMemo,
 } from "react";
 import { Auth, CognitoUser } from "@aws-amplify/auth";
 import config from "../src/aws-exports";
@@ -60,9 +61,9 @@ function useProvideAuth() {
     defaultState.user
   );
   const [cpr, setCpr] = useState<string | undefined | null>(defaultState.cpr);
-  const [token, setToken] = useState<string | undefined | null>(
-    defaultState.token
-  );
+  // const [token, setToken] = useState<string | undefined | null>(
+  //   defaultState.token
+  // );
   const [admin, setAdmin] = useState<Admin | undefined>(defaultState.admin);
   const [isSignedIn, setIsSignedIn] = useState(defaultState.isSignedIn);
   const [isSuperAdmin, setIsSuperAdmin] = useState<boolean>(
@@ -78,21 +79,52 @@ function useProvideAuth() {
   const { push } = useRouter();
   const queryClient = useQueryClient();
 
+  const [token, setToken] = useState<string | null>(null);
+
+  async function fetchToken() {
+    try {
+      const session = await Auth.currentSession();
+      const latestToken = session.getAccessToken().getJwtToken();
+      setToken(latestToken);
+    } catch (error) {
+      console.error("Error fetching token", error);
+      setToken(null); // Handle expired or missing session
+    }
+  }
+
+  useEffect(() => {
+    // Initial fetch
+    fetchToken();
+
+    // Refresh token every X minutes (e.g., 10 minutes)
+    const interval = setInterval(fetchToken, 10 * 60 * 1000);
+
+    return () => clearInterval(interval); // Cleanup interval on unmount
+  }, []);
+
+  const memoizedToken = useMemo(() => token, [token]);
+
   useEffect(() => {
     async function getAuthUser(): Promise<void> {
       try {
         const authUser: CognitoUser = await Auth.currentAuthenticatedUser();
         if (authUser) {
-          await checkAuthUser(authUser).then((isAdmin) => {
+          await checkAuthUser(authUser).then(async (isAdmin) => {
             if (isAdmin) {
               setUser(authUser);
               // * Print user auth token
               // console.log(
               //   authUser.getSignInUserSession()?.getAccessToken().getJwtToken()
               // );
-              setToken(
-                authUser.getSignInUserSession()?.getAccessToken().getJwtToken()
-              );
+              // setToken(
+              //   authUser
+              //     .getSignInUserSession()
+              //     ?.getAccessToken()
+              //     .getJwtToken() ?? null
+              // );
+
+              await fetchToken();
+
               setCpr(
                 authUser.getSignInUserSession()?.getAccessToken().payload
                   .username
@@ -157,7 +189,9 @@ function useProvideAuth() {
       setAdmin(tempAdmin);
       setIsSuperAdmin(tempAdmin.role === AdminRole.SUPER_ADMIN);
       setIsSignedIn(true);
-      setToken(user.getSignInUserSession()?.getAccessToken().getJwtToken());
+      setToken(
+        user.getSignInUserSession()?.getAccessToken().getJwtToken() ?? null
+      );
       setCpr(user.getSignInUserSession()?.getAccessToken().payload.cpr);
     }
     return tempAdmin !== undefined;
@@ -258,7 +292,7 @@ function useProvideAuth() {
 
   return {
     user,
-    token,
+    token: memoizedToken,
     cpr,
     admin,
     isSignedIn,

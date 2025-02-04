@@ -33,6 +33,10 @@ export declare type ParentInfoCreateFormInputValues = {
     motherCPR?: string;
     numberOfFamilyMembers?: number;
     address?: string;
+    guardianFirstName?: string;
+    guardianSecondName?: string;
+    guardianThirdName?: string;
+    guardianLastName?: string;
 };
 export declare type ParentInfoCreateFormValidationValues = {
     guardianFullName?: ValidationFunction<string>;
@@ -46,6 +50,10 @@ export declare type ParentInfoCreateFormValidationValues = {
     motherCPR?: ValidationFunction<string>;
     numberOfFamilyMembers?: ValidationFunction<number>;
     address?: ValidationFunction<string>;
+    guardianFirstName?: ValidationFunction<string>;
+    guardianSecondName?: ValidationFunction<string>;
+    guardianThirdName?: ValidationFunction<string>;
+    guardianLastName?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type ParentInfoCreateFormOverridesProps = {
@@ -61,6 +69,10 @@ export declare type ParentInfoCreateFormOverridesProps = {
     motherCPR?: PrimitiveOverrideProps<TextFieldProps>;
     numberOfFamilyMembers?: PrimitiveOverrideProps<TextFieldProps>;
     address?: PrimitiveOverrideProps<TextFieldProps>;
+    guardianFirstName?: PrimitiveOverrideProps<TextFieldProps>;
+    guardianSecondName?: PrimitiveOverrideProps<TextFieldProps>;
+    guardianThirdName?: PrimitiveOverrideProps<TextFieldProps>;
+    guardianLastName?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type ParentInfoCreateFormProps = React.PropsWithChildren<{
     overrides?: ParentInfoCreateFormOverridesProps | undefined | null;

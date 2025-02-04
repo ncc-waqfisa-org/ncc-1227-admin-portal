@@ -18,6 +18,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { locale } = ctx;
 
   let application = await getMasterApplicationByIdAPI(`${id}`);
+
   let applicationHistory = application?.adminLogs?.items;
 
   // sort Application History by dateTime

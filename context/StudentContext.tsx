@@ -617,7 +617,10 @@ export async function getMasterApplicationByIdAPI(
       m_income
       m_incomeDoc
       m_guardianCPR
-      m_guardianFullName
+      m_guardianFirstName
+      m_guardianSecondName
+      m_guardianThirdName
+      m_guardianLastName
       m_guardianCPRDoc
       dob
     }
@@ -657,6 +660,8 @@ export async function getMasterApplicationByIdAPI(
         applicationID
         dateTime
         snapshot
+        reason
+        createdAt
       }
     }
     university {

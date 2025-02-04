@@ -85,7 +85,8 @@ const Home = () => {
 
               <DownloadFileFromUrl
                 fileName={`${batch} Applications`}
-                url={`https://z7pe3akpcz6bazr3djdk4yo7e40yqevt.lambda-url.us-east-1.on.aws/?batch=${batch}`}
+                url={`${process.env.NEXT_PUBLIC_LAMBDA_EXPORT_CSV_STATISTICS}?batch=${batch}`}
+                // url={`https://z7pe3akpcz6bazr3djdk4yo7e40yqevt.lambda-url.us-east-1.on.aws/?batch=${batch}`}
               >
                 {/* */}
                 {t("exportCSV")}
@@ -323,20 +324,24 @@ const Home = () => {
                   {t("exportCSV")}
                 </CSVLink>
               </LargeDonutGraphInfo>
-              <div className="flex flex-col justify-between w-full p-4 border rounded-xl bg-nccGray-50 col-span-2">
-                <div className="">{t("participatingUniversities")}</div>
-                <div className=" py-2">
-                  <ul className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 text-muted-foreground">
-                    {statistics?.participatingUniversities.map((uni, index) => {
-                      return (
-                        <li key={index} className="py-1">
-                          {uni}
-                        </li>
-                      );
-                    })}
-                  </ul>
+              {statistics?.participatingUniversities && (
+                <div className="flex flex-col justify-between w-full p-4 border rounded-xl bg-nccGray-50 col-span-2">
+                  <div className="">{t("participatingUniversities")}</div>
+                  <div className=" py-2">
+                    <ul className=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 text-muted-foreground">
+                      {statistics?.participatingUniversities.map(
+                        (uni, index) => {
+                          return (
+                            <li key={index} className="py-1">
+                              {uni}
+                            </li>
+                          );
+                        }
+                      )}
+                    </ul>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
 
@@ -371,7 +376,8 @@ const Home = () => {
 
               <DownloadFileFromUrl
                 fileName={`${batch} Applications`}
-                url={`https://z7pe3akpcz6bazr3djdk4yo7e40yqevt.lambda-url.us-east-1.on.aws/?batch=${batch}`}
+                url={`${process.env.NEXT_PUBLIC_LAMBDA_EXPORT_MASTER_CSV_STATISTICS}?batch=${batch}`}
+                // url={`https://z7pe3akpcz6bazr3djdk4yo7e40yqevt.lambda-url.us-east-1.on.aws/?batch=${batch}`}
               >
                 {/* */}
                 {t("exportCSV")}

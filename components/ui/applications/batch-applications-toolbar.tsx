@@ -205,7 +205,8 @@ export const BatchApplicationsToolbar: React.FC<
             );
 
             //TODO change lambda url
-            const url = `https://a69a50c47l.execute-api.us-east-1.amazonaws.com/default/applications/export?batch=${batch}`;
+            const url = `${process.env.NEXT_PUBLIC_LAMBDA_EXPORT_CSV_STATISTICS}?batch=${batch}`;
+            // const url = `https://a69a50c47l.execute-api.us-east-1.amazonaws.com/default/applications/export?batch=${batch}`;
             const test = JSON.stringify({ ids: selectedApplicationsIds });
 
             toast.promise(

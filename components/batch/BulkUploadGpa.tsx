@@ -61,7 +61,7 @@ export const BulkUploadGpa: FC<TBulkUploadGpa> = ({ batch }) => {
       formData.append("csv", file);
 
       return fetch(
-        `${process.env.NEXT_PUBLIC_LAMBDA_POST_UPDATE_GPA_CSV}?batch=${batch}`,
+        `${process.env.NEXT_PUBLIC_LAMBDA_POST_UPDATE_MASTERS_GPA_CSV}?batch=${batch}`,
         {
           method: "POST",
           headers: {

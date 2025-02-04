@@ -65,6 +65,10 @@ exports.handler = async (event) => {
       guardian_full_name: "m_guardianFullName",
       guardian_cpr_doc: "m_guardianCPRDoc",
       nationality: "nationalityCategory",
+      guardian_first_name: "m_guardianFirstName",
+      guardian_second_name: "m_guardianSecondName",
+      guardian_third_name: "m_guardianThirdName",
+      guardian_last_name: "m_guardianLastName",
     };
 
     /*******************************************************

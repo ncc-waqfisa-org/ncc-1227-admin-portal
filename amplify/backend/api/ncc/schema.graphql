@@ -140,6 +140,10 @@ type ParentInfo @model @auth(rules: [{ allow: public }]) {
   motherCPR: String
   numberOfFamilyMembers: Int
   address: String
+  guardianFirstName: String
+  guardianSecondName: String
+  guardianThirdName: String
+  guardianLastName: String
 }
 
 enum Language {
@@ -217,6 +221,10 @@ type Student @model @auth(rules: [{ allow: public }]) {
   m_guardianCPRDoc: String
   m_masterApplications: [MasterApplication]
     @hasMany(indexName: "byMasterStudentCPR", fields: ["cpr"])
+  m_guardianFirstName: String
+  m_guardianSecondName: String
+  m_guardianThirdName: String
+  m_guardianLastName: String
 }
 
 type Batch @model @auth(rules: [{ allow: public }]) {
@@ -245,6 +253,10 @@ type Scholarship @model @auth(rules: [{ allow: public }]) {
   bankName: String
   IBAN: String
   IBANLetterDoc: String
+  # number of
+  startDate: String
+  scholarshipPeriod: String
+  numberOfSemesters: String
 }
 
 type Statistics @model @auth(rules: [{ allow: public }]) {
@@ -404,6 +416,9 @@ type MasterScholarship @model @auth(rules: [{ allow: public }]) {
   bankName: String
   IBAN: String
   IBANLetterDoc: String
+  startDate: String
+  scholarshipPeriod: String
+  numberOfSemesters: String
 }
 
 # Master Enum

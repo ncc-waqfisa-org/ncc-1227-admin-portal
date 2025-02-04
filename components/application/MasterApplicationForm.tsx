@@ -1,7 +1,10 @@
 import React, { FC } from "react";
 import {
   CreateAdminLogMutationVariables,
+  Income,
+  Major,
   MasterApplication,
+  Nationality,
   Status,
   UpdateMasterApplicationMutationVariables,
 } from "../../src/API";
@@ -39,6 +42,7 @@ import {
   createAdminLogInDB,
   updateApplicationInDB,
   updateAttachmentInDB,
+  updateMasterApplicationInDB,
   updateMasterAttachmentInDB,
   updateProgramChoiceInDB,
   uploadFile,
@@ -56,6 +60,8 @@ import { useBatchContext } from "../../context/BatchContext";
 import { FiAlertCircle, FiCheckCircle } from "react-icons/fi";
 import { Textarea } from "../ui/textarea";
 import WordCounter from "../ui/word-counter";
+import { values } from "lodash";
+import { InfiniteMasterApplication } from "../ui/applications/infinite-applications-type";
 
 type TMasterApplicationForm = {
   application: MasterApplication;
@@ -66,7 +72,7 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
 }) => {
   const { t } = useTranslation("applications");
   const { t: tL } = useTranslation("applicationLog");
-  const { resetApplications } = useBatchContext();
+  const { resetApplications, updateMasterApplication } = useBatchContext();
   const { locale, push } = useRouter();
   const { cpr } = useAuth();
 
@@ -168,8 +174,6 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
       toeflIELTSCertificateKey,
     ]);
 
-    // TODO test update master application functionality
-
     let updateVariables: UpdateMasterApplicationMutationVariables = {
       input: {
         id: application.id,
@@ -199,10 +203,11 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
               transcriptDoc: transcript,
               universityCertificate: universityCertificate,
               acceptanceLetterDoc: acceptanceLetter,
+              toeflIELTSCertificate: toeflIELTSCertificate,
               _version: application.attachment?._version,
             },
           }),
-          updateApplicationInDB(updateVariables),
+          updateMasterApplicationInDB(updateVariables),
         ]),
         {
           loading: "Updating...",
@@ -210,7 +215,7 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
           error: "Failed to update application",
         }
       )
-      .then(async (value) => {
+      .then(async ([_, updatedApplication]) => {
         const oldData = {
           status: application.status,
           adminPoints: application.adminPoints,
@@ -239,15 +244,59 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
             dateTime: new Date().toISOString(),
             snapshot: snapshot,
             reason: values.adminReason,
-            applicationAdminLogsId: application.id,
+            masterApplicationAdminLogsId: application.id,
+            // applicationAdminLogsId: application.id,
             adminAdminLogsCpr: cpr ?? "",
           },
         };
 
         await createAdminLogInDB(createAdminLogVariables)
           .then(async (logValue) => {
-            resetApplications();
-            push("/applications");
+            let updatedData = updatedApplication?.updateMasterApplication;
+            if (updatedData) {
+              let iMasterApplication: InfiniteMasterApplication = {
+                major: updatedData.major ?? Major.ENGINEERING,
+                nationalityCategory:
+                  updatedData.nationalityCategory ?? Nationality.BAHRAINI,
+                income: updatedData.income ?? Income.LESS_THAN_1500,
+                dateTime: new Date(),
+                studentName:
+                  `${updatedData.student?.m_firstName} ${updatedData.student?.m_secondName} ${updatedData.student?.m_thirdName} ${updatedData.student?.m_lastName}` ??
+                  updatedData.student?.fullName,
+                status: updatedData.status ?? Status.WITHDRAWN,
+                universityName: updatedData.university?.universityName ?? "",
+                universityNameAr:
+                  updatedData.university?.universityNameAr ?? "",
+                score: updatedData.score ?? 0,
+                universityID: updatedData.universityID ?? "",
+                _version: updatedData._version ?? 0,
+                id: updatedData.id ?? "",
+                batch: updatedData.batch ?? 0,
+                verifiedGPA: updatedData.verifiedGPA ?? 0,
+                __typename: updatedData.__typename ?? "MasterApplication",
+                isIncomeVerified: updatedData.isIncomeVerified ?? false,
+                _lastChangedAt: updatedData._lastChangedAt ?? 0,
+                applicationAttachmentId:
+                  updatedData.masterApplicationAttachmentId ?? "",
+                processed: updatedData.processed ?? 0,
+                createdAt: updatedData.createdAt
+                  ? new Date(updatedData.createdAt)
+                  : new Date(),
+                studentCPR: updatedData.studentCPR ?? "",
+                gpa: updatedData.gpa ?? 0,
+                program: updatedData.program ?? "",
+                updatedAt: updatedData.updatedAt
+                  ? new Date(updatedData.updatedAt)
+                  : new Date(),
+                adminPoints: updatedData.adminPoints ?? 0,
+                attachmentID: updatedData.attachment?.id ?? "",
+                isEmailSent: updatedData.isEmailSent ?? false,
+              };
+
+              updateMasterApplication(iMasterApplication);
+            }
+
+            push("/applications?type=masters");
             return logValue;
           })
           .catch((err) => {
@@ -258,16 +307,6 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
   }
 
   function getUniversityName() {
-    // let havePrograms = (application.programs?.items.length ?? 0) > 0;
-    // if (havePrograms) {
-    //   return locale === "ar"
-    //     ? application.programs?.items[0]?.program?.university?.nameAr
-    //     : application.programs?.items[0]?.program?.university?.name;
-    // } else {
-    //   return locale === "ar"
-    //     ? application.program?.university?.nameAr
-    //     : application.program?.university?.name;
-    // }
     return application.university?.universityName;
   }
 

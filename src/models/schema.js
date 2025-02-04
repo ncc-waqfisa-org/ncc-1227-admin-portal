@@ -1406,6 +1406,34 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "guardianFirstName": {
+                    "name": "guardianFirstName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "guardianSecondName": {
+                    "name": "guardianSecondName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "guardianThirdName": {
+                    "name": "guardianThirdName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "guardianLastName": {
+                    "name": "guardianLastName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -1865,6 +1893,34 @@ export const schema = {
                         ]
                     }
                 },
+                "m_guardianFirstName": {
+                    "name": "m_guardianFirstName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "m_guardianSecondName": {
+                    "name": "m_guardianSecondName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "m_guardianThirdName": {
+                    "name": "m_guardianThirdName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "m_guardianLastName": {
+                    "name": "m_guardianLastName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -2138,6 +2194,27 @@ export const schema = {
                 },
                 "IBANLetterDoc": {
                     "name": "IBANLetterDoc",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "startDate": {
+                    "name": "startDate",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "scholarshipPeriod": {
+                    "name": "scholarshipPeriod",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "numberOfSemesters": {
+                    "name": "numberOfSemesters",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -3544,6 +3621,27 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "startDate": {
+                    "name": "startDate",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "scholarshipPeriod": {
+                    "name": "scholarshipPeriod",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "numberOfSemesters": {
+                    "name": "numberOfSemesters",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -3709,5 +3807,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "a9c4f80dffaedb4ad26df0ff2feebfed"
+    "version": "28799616e1505775e4fd513d4fa85816"
 };

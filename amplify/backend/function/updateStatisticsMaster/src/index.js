@@ -214,7 +214,7 @@ async function getUniversityDistribution(applications) {
   });
 
   console.log(`University distribution: ${JSON.stringify(distribution)}`);
-  return distribution;
+  return JSON.stringify(distribution);
 }
 
 async function getFamilyIncomeDistribution(applications, students) {
@@ -248,7 +248,7 @@ async function getFamilyIncomeDistribution(applications, students) {
   }
 
   console.log(`Family income distribution: ${JSON.stringify(distribution)}`);
-  return distribution;
+  return JSON.stringify(distribution);
 }
 
 function getScoreDistribution(applications) {
@@ -261,7 +261,7 @@ function getScoreDistribution(applications) {
   });
 
   console.log(`Score histogram: ${JSON.stringify(distribution)}`);
-  return distribution;
+  return JSON.stringify(distribution);
 }
 
 function getGPADistribution(applications) {
@@ -275,7 +275,7 @@ function getGPADistribution(applications) {
   });
 
   console.log(`GPA histogram: ${JSON.stringify(distribution)}`);
-  return distribution;
+  return JSON.stringify(distribution);
 }
 
 function getStatusDistribution(applications) {
@@ -286,5 +286,5 @@ function getStatusDistribution(applications) {
   });
 
   console.log(`Status distribution: ${JSON.stringify(distribution)}`);
-  return distribution;
+  return JSON.stringify(distribution);
 }

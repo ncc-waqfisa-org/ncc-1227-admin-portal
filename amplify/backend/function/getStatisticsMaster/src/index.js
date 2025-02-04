@@ -25,7 +25,8 @@ exports.handler = async (event) => {
     };
   }
 
-  const batchValue = parseInt(event.queryStringParameters?.batch) || 2024;
+  const batchValue =
+    parseInt(event.queryStringParameters?.batch) || new Date().getFullYear();
 
   try {
     const statistics = await getStatistics(batchValue);
