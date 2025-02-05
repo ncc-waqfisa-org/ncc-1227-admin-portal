@@ -194,6 +194,7 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
         status: values.status,
         major: values.major as Major,
         universityID: values.universityID,
+        program: values.program,
         reason: values.reason,
         adminPoints: values.adminPoints,
         isIncomeVerified: values.isIncomeVerified,
@@ -261,7 +262,6 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
             snapshot: snapshot,
             reason: values.adminReason,
             masterApplicationAdminLogsId: application.id,
-            // applicationAdminLogsId: application.id,
             adminAdminLogsCpr: cpr ?? "",
           },
         };
@@ -832,6 +832,17 @@ function createChangeSnapshot(oldData: any, newData: any): string {
   }
   if (newData.gpa !== oldData.gpa) {
     changes.push(`GPA from "${oldData.gpa}" to "${newData.gpa}"`);
+  }
+  if (newData.major !== oldData.major) {
+    changes.push(`Major from "${oldData.major}" to "${newData.major}"`);
+  }
+  if (newData.universityID !== oldData.universityID) {
+    changes.push(
+      `University ID from "${oldData.universityID}" to "${newData.universityID}"`
+    );
+  }
+  if (newData.program !== oldData.program) {
+    changes.push(`Program from "${oldData.program}" to "${newData.program}"`);
   }
   if (newData.reason !== oldData.reason) {
     changes.push(

@@ -18,29 +18,24 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "../../../components/ui/accordion";
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogTitle,
-  DialogDescription,
-} from "@radix-ui/react-dialog";
+
 import Link from "next/link";
 import { MasterApplicationForm } from "../../../components/application/MasterApplicationForm";
-import { CreateScholarshipForm } from "../../../components/scholarships/NewScholarshipForm";
-import StudentUpdate from "../../../components/student/StudentUpdate";
-import UpdateParentInfo from "../../../components/student/UpdateParentInfo";
-import { DialogHeader } from "../../../components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../../../components/ui/dialog";
 import { Textarea } from "../../../components/ui/textarea";
 
-import {
-  listAllBahrainUniversities,
-  listScholarshipsOfApplicationId,
-} from "../../../src/CustomAPI";
+import { listScholarshipsOfApplicationId } from "../../../src/CustomAPI";
 import { cn } from "../../../src/utils";
 import { getMasterApplicationByIdAPI } from "../../../context/StudentContext";
 import MasterInfoForm from "../../../components/student/MasterInfoForm";
-import { useQuery } from "@tanstack/react-query";
+import { GenerateScholarshipForm } from "../../../components/scholarships/GenerateScholarshipForm";
 
 interface Props {
   application: MasterApplication;
@@ -187,14 +182,22 @@ const MasterApplicationInfo: FC<Props> = (props) => {
               ) : (
                 <p>{t("createScholarshipFor")}</p>
               )}
+
+              <p className="text-gray-500 pt-4">
+                {`${t("major")} - ${props.application.major}`}
+              </p>
               <p className="text-gray-500">
-                {`${props.application.program} - ${
+                {`${t("programName")} - ${props.application.program}`}
+              </p>
+              <p className="text-gray-500">
+                {`${t("university")} - ${
                   locale === "ar"
                     ? props.application.university?.universityNameAr
                     : props.application.university?.universityName
                 }`}
               </p>
             </div>
+
             <Dialog>
               {props.scholarship.scholarshipId ? (
                 <Link
@@ -236,8 +239,10 @@ const MasterApplicationInfo: FC<Props> = (props) => {
                       {`${t("downloadContractTemplateD")}`}
                     </DialogDescription>
                   </div>
-                  {/* TODO create scholarship form application */}
-                  {/* <CreateScholarshipForm application={props.application} /> */}
+                  <GenerateScholarshipForm
+                    type={"masters"}
+                    masterApplication={props.application}
+                  />
                 </div>
               </DialogContent>
             </Dialog>

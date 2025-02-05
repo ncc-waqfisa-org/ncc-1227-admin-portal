@@ -153,11 +153,14 @@
   "applicantCPR": "الرقم الشخصي للمتقدم",
   "searching": "جاري البحث...",
   "exportAllAsCSV": "تصدير الكل CSV",
-  "guardianInformation": "Guardian Information",
-  "isIncomeVerified": "Verified Income",
-  "firstName": "First Name",
-  "secondName": "Second Name",
-  "thirdName": "Third Name",
-  "lastName": "Last Name",
-  "dateOfBirth": "Date of Birth"
+  "guardianInformation": "معلومات الوصي",
+  "isIncomeVerified": "دخل تم التحقق منه",
+  "firstName": "الاسم الأول",
+  "secondName": "الاسم الثاني",
+  "thirdName": "الاسم الثالث",
+  "lastName": "اسم العائلة",
+  "dateOfBirth": "تاريخ الميلاد",
+  "major": "رئيسي",
+  "programName": "برنامج",
+  "university": "جامعة"
 }
