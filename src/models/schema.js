@@ -1822,9 +1822,9 @@ export const schema = {
                     "type": {
                         "enum": "ApplicantType"
                     },
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": [],
-                    "isArrayNullable": false
+                    "isArrayNullable": true
                 },
                 "m_isEmployed": {
                     "name": "m_isEmployed",
@@ -2209,14 +2209,14 @@ export const schema = {
                 "scholarshipPeriod": {
                     "name": "scholarshipPeriod",
                     "isArray": false,
-                    "type": "String",
+                    "type": "Int",
                     "isRequired": false,
                     "attributes": []
                 },
                 "numberOfSemesters": {
                     "name": "numberOfSemesters",
                     "isArray": false,
-                    "type": "String",
+                    "type": "Int",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -3631,14 +3631,14 @@ export const schema = {
                 "scholarshipPeriod": {
                     "name": "scholarshipPeriod",
                     "isArray": false,
-                    "type": "String",
+                    "type": "Int",
                     "isRequired": false,
                     "attributes": []
                 },
                 "numberOfSemesters": {
                     "name": "numberOfSemesters",
                     "isArray": false,
-                    "type": "String",
+                    "type": "Int",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -3807,5 +3807,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "28799616e1505775e4fd513d4fa85816"
+    "version": "0a80051e78a0e2460f1b6e2d2856eb53"
 };

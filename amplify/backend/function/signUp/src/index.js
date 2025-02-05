@@ -13,11 +13,13 @@ const {
   ClientId: CLIENT_ID,
   StudentTable: STUDENT_TABLE,
   ParentTable: PARENT_TABLE,
+  AdminTable: ADMIN_TABLE,
 } = {
   UserPoolId: "us-east-1_79xE8d6FS",
   ClientId: "55hv3u8tffa9qml7krg9n0cfuq",
   StudentTable: "Student-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
   ParentTable: "ParentInfo-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
+  AdminTable: "Admin-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
 };
 
 /**
@@ -36,6 +38,20 @@ exports.handler = async (event) => {
     // Log the extracted data for debugging
     console.log(`studentData: ${JSON.stringify(studentData)}`);
     console.log(`parentInfo: ${JSON.stringify(parentInfo)}`);
+
+    if (username) {
+      const adminExists = await checkIfCprIsAdmin(username);
+      if (adminExists) {
+        return response(
+          400,
+          {
+            message:
+              "This CPR belongs to an admin. Registration is not allowed.",
+          },
+          "application/json"
+        );
+      }
+    }
 
     if (!username || !email || !password) {
       return response(
@@ -115,15 +131,25 @@ const defaultHeaders = () => ({
 // Helper to construct responses
 const response = (statusCode, body, contentType = "application/json") => ({
   statusCode,
-  headers: {
-    "Content-Type": contentType,
-    "Access-Control-Allow-Headers": "*",
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
-  },
+  headers: defaultHeaders(),
   isBase64Encoded: false,
   body: JSON.stringify(body),
 });
+
+// NEW: Helper to check whether the provided CPR belongs to an admin.
+async function checkIfCprIsAdmin(cpr) {
+  const params = {
+    TableName: ADMIN_TABLE,
+    Key: { cpr },
+  };
+  try {
+    const { Item } = await dynamoDB.get(params).promise();
+    return !!Item;
+  } catch (err) {
+    console.error("Error checking admin table for CPR:", err);
+    return false;
+  }
+}
 
 // Handle user re-registration
 const handleReRegistration = async (

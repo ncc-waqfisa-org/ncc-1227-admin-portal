@@ -186,7 +186,6 @@ function getGenderDistribution(items, genderField) {
   console.log(`Gender distribution: ${JSON.stringify(distribution)}`);
   return distribution;
 }
-
 async function getUniversityDistribution(applications) {
   // Get all universities first
   const universities = {};
@@ -214,7 +213,8 @@ async function getUniversityDistribution(applications) {
   });
 
   console.log(`University distribution: ${JSON.stringify(distribution)}`);
-  return JSON.stringify(distribution);
+  // Return the object directly instead of a JSON string.
+  return distribution;
 }
 
 async function getFamilyIncomeDistribution(applications, students) {
@@ -248,7 +248,8 @@ async function getFamilyIncomeDistribution(applications, students) {
   }
 
   console.log(`Family income distribution: ${JSON.stringify(distribution)}`);
-  return JSON.stringify(distribution);
+  // Return the object directly.
+  return distribution;
 }
 
 function getScoreDistribution(applications) {
@@ -261,7 +262,8 @@ function getScoreDistribution(applications) {
   });
 
   console.log(`Score histogram: ${JSON.stringify(distribution)}`);
-  return JSON.stringify(distribution);
+  // Return the object directly.
+  return distribution;
 }
 
 function getGPADistribution(applications) {
@@ -275,7 +277,8 @@ function getGPADistribution(applications) {
   });
 
   console.log(`GPA histogram: ${JSON.stringify(distribution)}`);
-  return JSON.stringify(distribution);
+  // Return the object directly.
+  return distribution;
 }
 
 function getStatusDistribution(applications) {
@@ -286,5 +289,6 @@ function getStatusDistribution(applications) {
   });
 
   console.log(`Status distribution: ${JSON.stringify(distribution)}`);
-  return JSON.stringify(distribution);
+  // Return the object directly.
+  return distribution;
 }

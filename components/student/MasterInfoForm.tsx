@@ -4,9 +4,14 @@ import React, { FC, ReactNode, useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
-import { DocType, updateStudentInDB, uploadFile } from "../../src/CustomAPI";
+import {
+  DocType,
+  listAllBahrainUniversities,
+  updateStudentInDB,
+  uploadFile,
+} from "../../src/CustomAPI";
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   Income,
   MasterUpdateData,
@@ -35,10 +40,10 @@ import "react-calendar/dist/Calendar.css";
 // Add an optional readOnly that will disable all fields and remove the update button
 export default function MasterInfoForm({
   student,
-  universities,
-}: {
+}: // universities,
+{
   student: Student;
-  universities?: BahrainUniversities[];
+  // universities?: BahrainUniversities[];
 }) {
   const router = useRouter();
   const { t: tErrors } = useTranslation("errors");
@@ -46,6 +51,14 @@ export default function MasterInfoForm({
   const { t } = useTranslation("account");
 
   const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    data: bahrainiUniversities,
+    isPending: isBahrainiUniversitiesPending,
+  } = useQuery({
+    queryKey: ["bahrainiUniversities"],
+    queryFn: () => listAllBahrainUniversities(),
+  });
 
   const englishNumberRegex = /^[0-9]*$/;
   const onlyArabicLettersRegex = /^[\u0621-\u064A ]+$/;
@@ -264,6 +277,7 @@ export default function MasterInfoForm({
     async onSuccess(data) {
       if (data?.updateStudent?.cpr) {
         // TODO: sync student data
+
         toast.success(`${tToast("processComplete")}`);
       } else {
         throw new Error(`${tErrors("somethingWentWrong")}`);
@@ -723,6 +737,7 @@ export default function MasterInfoForm({
                   <Field
                     dir="ltr"
                     as="select"
+                    disable={isBahrainiUniversitiesPending}
                     name="universityID"
                     title="universityID"
                     placeholder={t("university")}
@@ -738,7 +753,7 @@ export default function MasterInfoForm({
                     <option disabled selected value={undefined}>
                       {t("select")}
                     </option>
-                    {universities?.map((uni, index) => (
+                    {bahrainiUniversities?.map((uni, index) => (
                       <option key={`uni-${index}`} value={uni.id}>
                         {router.locale === "ar"
                           ? uni.universityNameAr

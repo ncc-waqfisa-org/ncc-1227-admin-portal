@@ -34,6 +34,7 @@ import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 
 import { cn } from "../../src/lib/utils";
+import { useRouter } from "next/router";
 
 interface Props {
   student: Student;
@@ -72,6 +73,7 @@ export default function ViewAccount({ student, applicationId }: Props) {
   const { t } = useTranslation("applications");
   const { t: tErrors } = useTranslation("errors");
   const { cpr: adminCpr } = useAuth();
+  const { back } = useRouter();
 
   const [familyIncomeProofDocsFile, setFamilyIncomeProofDocsFile] = useState<
     File[]
@@ -275,6 +277,7 @@ export default function ViewAccount({ student, applicationId }: Props) {
           ));
 
         actions.setSubmitting(false);
+        back();
       }}
     >
       {({

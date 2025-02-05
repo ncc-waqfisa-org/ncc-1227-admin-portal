@@ -1,6 +1,7 @@
 const AWS = require("aws-sdk");
 const uuid = require("uuid");
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
+const cognito = new AWS.CognitoIdentityServiceProvider();
 
 const {
   MasterApplicationTable: MASTER_APPLICATION_TABLE,
@@ -8,6 +9,7 @@ const {
   MasterAppliedUniversitiesTable: MASTER_UNIVERSITY_TABLE,
   BatchTable: BATCH_TABLE,
   AdminLogTable: ADMIN_LOG_TABLE,
+  AdminTable: ADMIN_TABLE,
 } = {
   MasterApplicationTable:
     "MasterApplication-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
@@ -16,6 +18,7 @@ const {
     "MasterAppliedUniversities-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
   AdminLogTable: "AdminLog-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
   BatchTable: "MasterBatch-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
+  AdminTable: "Admin-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
 };
 
 /**
@@ -23,6 +26,23 @@ const {
  */
 exports.handler = async (event) => {
   console.log(`EVENT: ${JSON.stringify(event)}`);
+
+  if (!event.headers || !event.headers.authorization) {
+    return {
+      statusCode: 401,
+      body: JSON.stringify({ message: "Missing authorization token" }),
+    };
+  }
+
+  const token = event.headers.authorization.slice(7);
+  const isAdmin = await checkIsAdmin(token);
+  if (!isAdmin) {
+    return {
+      statusCode: 403,
+      body: JSON.stringify({ message: "Forbidden: User is not an admin" }),
+    };
+  }
+
   const today = new Date();
   const batchValue = today.getFullYear();
   const batchDetails = await getBatchDetails(batchValue);
@@ -63,6 +83,24 @@ exports.handler = async (event) => {
     body: JSON.stringify({ message: "Applications updated" }),
   };
 };
+
+async function checkIsAdmin(token) {
+  try {
+    const cognitoUser = await cognito.getUser({ AccessToken: token }).promise();
+    const username = cognitoUser.Username;
+    const params = {
+      TableName: ADMIN_TABLE,
+      Key: {
+        cpr: username,
+      },
+    };
+    const { Item } = await dynamoDB.get(params).promise();
+    return Item !== undefined;
+  } catch (error) {
+    console.error("Error checking if user is admin:", error);
+    return false;
+  }
+}
 
 async function getApplications(batch) {
   const params = {

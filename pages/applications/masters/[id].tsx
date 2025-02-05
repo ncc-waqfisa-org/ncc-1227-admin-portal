@@ -92,11 +92,6 @@ const MasterApplicationInfo: FC<Props> = (props) => {
     router.back();
   }
 
-  const { data: bahrainiUniversities } = useQuery({
-    queryKey: ["bahrainiUniversities"],
-    queryFn: () => listAllBahrainUniversities(),
-  });
-
   return (
     <div>
       <PageComponent title={"ApplicationInfo"}>
@@ -275,7 +270,7 @@ const MasterApplicationInfo: FC<Props> = (props) => {
                 /> */}
                 <MasterInfoForm
                   student={props.application.student}
-                  universities={bahrainiUniversities}
+                  // universities={bahrainiUniversities}
                 />
               </AccordionContent>
             </AccordionItem>

@@ -42,5 +42,7 @@
   "emailHasBeenSent": "تم ارسال البريد الالكتروني",
   "yes": "نعم",
   "no": "لا",
-  "noData": "نأسف! لا توجد بيانات للعرض"
+  "noData": "نأسف! لا توجد بيانات للعرض",
+  "major": "Major",
+  "majorD": "The major chose by the student"
 }

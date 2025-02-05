@@ -211,7 +211,7 @@ type Student @model @auth(rules: [{ allow: public }]) {
   m_university: BahrainUniversities @belongsTo(fields: ["m_universityID"])
   m_universityID: ID @index(name: "byBahrianUniversity") # it's not mandetory but if it's provided it to initialize the relationships
   m_oldProgram: String # This is must be removed later
-  m_applicantType: [ApplicantType!]!
+  m_applicantType: [ApplicantType]
   m_isEmployed: Boolean
   m_placeOfEmployment: String
   m_income: Income
@@ -255,8 +255,8 @@ type Scholarship @model @auth(rules: [{ allow: public }]) {
   IBANLetterDoc: String
   # number of
   startDate: String
-  scholarshipPeriod: String
-  numberOfSemesters: String
+  scholarshipPeriod: Int
+  numberOfSemesters: Int
 }
 
 type Statistics @model @auth(rules: [{ allow: public }]) {
@@ -417,8 +417,8 @@ type MasterScholarship @model @auth(rules: [{ allow: public }]) {
   IBAN: String
   IBANLetterDoc: String
   startDate: String
-  scholarshipPeriod: String
-  numberOfSemesters: String
+  scholarshipPeriod: Int
+  numberOfSemesters: Int
 }
 
 # Master Enum

@@ -49,6 +49,7 @@ exports.handler = async (event) => {
 
     // Get applications that match index conditions
     const applications = await getMasterApplications(batchValue);
+    console.log("filtered applications from dynmodDB: ", applications);
 
     // Convert to CSV
     const csv = await convertToCsv(applications);
@@ -91,13 +92,24 @@ async function getMasterApplications(batchValue) {
   let allApplications = [];
   do {
     const result = await dynamoDB.query(params).promise();
+    console.log("results from dynmoDB raw applications: ", result);
     allApplications = allApplications.concat(result.Items);
     params.ExclusiveStartKey = result.LastEvaluatedKey;
   } while (params.ExclusiveStartKey);
 
+  console.log(
+    "all applictions that we have it from the applciation table still raw: ",
+    allApplications
+  );
+
   // Filter out REJECTED, WITHDRAWN, NOT_COMPLETED statuses
   const statusFiltered = allApplications.filter(
     (app) => !["REJECTED", "WITHDRAWN", "NOT_COMPLETED"].includes(app.status)
+  );
+
+  console.log(
+    "This is the status filtered from Rjected, withdraw, not_complemeted: ",
+    statusFiltered
   );
 
   // Fetch student for each application (to check DOB and age)

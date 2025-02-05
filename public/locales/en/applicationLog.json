@@ -42,5 +42,9 @@
   "yes": "Yes",
   "no": "No",
   "noData": "Sorry! There is no data to display",
-  "universityCertificateD": "The University Certificate"
+  "universityCertificateD": "The University Certificate",
+  "major": "Major",
+  "majorD": "The major chosen by the student",
+  "university": "University",
+  "universityD": "The university chosen by the student"
 }

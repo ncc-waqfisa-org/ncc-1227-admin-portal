@@ -438,7 +438,7 @@ export default function StudentCreateForm(props) {
     m_numberOfFamilyMembers: [],
     m_graduationYear: [],
     m_oldProgram: [],
-    m_applicantType: [{ type: "Required" }],
+    m_applicantType: [],
     m_isEmployed: [],
     m_placeOfEmployment: [],
     m_income: [],

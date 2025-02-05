@@ -13,10 +13,12 @@ const {
   UserPoolId: USER_POOL_ID,
   ClientId: CLIENT_ID,
   StudentTable: STUDENT_TABLE,
+  AdminTable: ADMIN_TABLE,
 } = {
   UserPoolId: "us-east-1_79xE8d6FS",
   ClientId: "55hv3u8tffa9qml7krg9n0cfuq",
   StudentTable: "Student-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
+  AdminTable: "Admin-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
 };
 /**
  * @type {import('@types/aws-lambda').APIGatewayProxyHandler}
@@ -41,6 +43,18 @@ exports.handler = async (event) => {
       return {
         statusCode: 400,
         body: JSON.stringify({ message: "Password is required" }),
+      };
+    }
+
+    // NEW: Before processing, check if the provided CPR exists as an admin.
+    const trimmedCpr = requestBody.cpr.trim();
+    const adminExists = await checkIfCprIsAdmin(trimmedCpr);
+    if (adminExists) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({
+          message: "This CPR belongs to an admin. Registration is not allowed.",
+        }),
       };
     }
 
@@ -76,7 +90,7 @@ exports.handler = async (event) => {
      *******************************************************/
     const studentData = {
       // Fields that don't need renaming:
-      cpr: requestBody.cpr?.trim(),
+      cpr: trimmedCpr,
       email: requestBody.email?.trim() || null,
       phone: requestBody.phone?.trim() || null,
       gender: requestBody.gender,
@@ -303,5 +317,20 @@ async function rollback(username) {
         Username: username,
       })
       .promise();
+  }
+}
+
+// NEW: Helper to check whether the provided CPR exists as an admin.
+async function checkIfCprIsAdmin(cpr) {
+  const params = {
+    TableName: ADMIN_TABLE,
+    Key: { cpr },
+  };
+  try {
+    const { Item } = await dynamoDB.get(params).promise();
+    return !!Item;
+  } catch (err) {
+    console.error("Error checking admin table for CPR:", err);
+    return false;
   }
 }

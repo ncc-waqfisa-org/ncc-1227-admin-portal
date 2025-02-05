@@ -493,10 +493,10 @@ async function getApplicationsPerGender(applications, students) {
 }
 
 async function updateStatistics(tableName, batchValue) {
+  // Compute all the new statistics as before:
   const applications = await getAllApplications(tableName, batchValue);
   const allUniversities = await getAllUniversities(tableName, batchValue);
   const scoreHistogram = await getScoreHistograms(applications);
-  // const applicationsPerYearChart = await getApplicationsPerYearChart(tableName, batchValue);
   const statusPieChart = await getStatusPieChart(applications);
   const gpaHistogramChart = await getGpaHistogram(applications);
   const applicationsCount = applications.length;
@@ -523,7 +523,6 @@ async function updateStatistics(tableName, batchValue) {
         )
       : [];
   const totalStudentsToday = studentsToday.length;
-
   const totalFemaleStudentsToday =
     batchValue === new Date().getFullYear()
       ? studentsToday.filter((student) => student.gender === "FEMALE").length
@@ -532,7 +531,6 @@ async function updateStatistics(tableName, batchValue) {
     batchValue === new Date().getFullYear()
       ? studentsToday.filter((student) => student.gender === "MALE").length
       : 0;
-
   const applicationsToday =
     batchValue === new Date().getFullYear()
       ? applications.filter(
@@ -548,50 +546,100 @@ async function updateStatistics(tableName, batchValue) {
   const applicationsTodayPerGender =
     batchValue === new Date().getFullYear()
       ? await getApplicationsPerGender(applicationsToday, students)
-      : {
-          male: 0,
-          female: 0,
-          total: 0,
-        };
+      : { male: 0, female: 0, total: 0 };
 
-  // await updateApplications(applications);
-
-  // const topPrograms = await getTopPrograms(tableName, batchValue);
-
-  // console.log('Top Programs:', topPrograms);
-  console.log("Top Universities:", topUniversities);
-
-  const params = {
-    TableName: STATISTICS_TABLE,
-    Item: {
-      id: batchValue,
-      batch: batchValue,
-      totalApplications: applicationsCount,
-      // totalApplicationsPerBatch: applicationsPerYearChart,
-      totalApplicationsPerStatus: statusPieChart,
-      scoreHistogram: scoreHistogram,
-      gpaHistogram: gpaHistogramChart,
-      totalApplicationsPerUniversity: allUniversities,
-      topUniversities: topUniversities,
-      schoolType: privatePublicRatio,
-      familyIncome: familyIncomeRatio,
+  // Prepare the object with the new statistics
+  const statisticsData = {
+    id: batchValue, // primary key
+    batch: batchValue,
+    totalApplications: applicationsCount,
+    totalApplicationsPerStatus: statusPieChart,
+    scoreHistogram: scoreHistogram,
+    gpaHistogram: gpaHistogramChart,
+    totalApplicationsPerUniversity: allUniversities,
+    topUniversities: topUniversities,
+    schoolType: privatePublicRatio,
+    familyIncome: familyIncomeRatio,
+    students: {
+      total: totalStudents,
+      male: totalMaleStudents,
+      female: totalFemaleStudents,
+    },
+    applications: applicationsPerGender,
+    today: {
       students: {
-        total: totalStudents,
-        male: totalMaleStudents,
-        female: totalFemaleStudents,
+        total: totalStudentsToday,
+        male: totalMaleStudentsToday,
+        female: totalFemaleStudentsToday,
       },
-      applications: applicationsPerGender,
-      today: {
-        students: {
-          total: totalStudentsToday,
-          male: totalMaleStudentsToday,
-          female: totalFemaleStudentsToday,
-        },
-        totalApplications: applicationsToday.length,
-        applications: applicationsTodayPerGender,
-      },
+      totalApplications: applicationsToday.length,
+      applications: applicationsTodayPerGender,
     },
   };
 
-  await dynamoDB.put(params).promise();
+  // First, check if an item with the given batchValue exists in the statistics table.
+  const getParams = {
+    TableName: STATISTICS_TABLE,
+    Key: {
+      id: batchValue,
+    },
+  };
+
+  const existingRecord = await dynamoDB.get(getParams).promise();
+
+  if (existingRecord.Item) {
+    // If the record exists, update it using an update expression.
+    // Use an alias for the reserved attribute "batch".
+    const updateParams = {
+      TableName: STATISTICS_TABLE,
+      Key: { id: batchValue },
+      UpdateExpression: `
+        SET 
+          #batch = :batch,
+          totalApplications = :totalApplications,
+          totalApplicationsPerStatus = :totalApplicationsPerStatus,
+          scoreHistogram = :scoreHistogram,
+          gpaHistogram = :gpaHistogram,
+          totalApplicationsPerUniversity = :totalApplicationsPerUniversity,
+          topUniversities = :topUniversities,
+          schoolType = :schoolType,
+          familyIncome = :familyIncome,
+          students = :students,
+          applications = :applications,
+          today = :today
+      `,
+      ExpressionAttributeNames: {
+        "#batch": "batch", // alias for reserved word "batch"
+      },
+      ExpressionAttributeValues: {
+        ":batch": statisticsData.batch,
+        ":totalApplications": statisticsData.totalApplications,
+        ":totalApplicationsPerStatus":
+          statisticsData.totalApplicationsPerStatus,
+        ":scoreHistogram": statisticsData.scoreHistogram,
+        ":gpaHistogram": statisticsData.gpaHistogram,
+        ":totalApplicationsPerUniversity":
+          statisticsData.totalApplicationsPerUniversity,
+        ":topUniversities": statisticsData.topUniversities,
+        ":schoolType": statisticsData.schoolType,
+        ":familyIncome": statisticsData.familyIncome,
+        ":students": statisticsData.students,
+        ":applications": statisticsData.applications,
+        ":today": statisticsData.today,
+      },
+      ReturnValues: "UPDATED_NEW",
+    };
+
+    await dynamoDB.update(updateParams).promise();
+    console.log(`Statistics for batch ${batchValue} updated.`);
+  } else {
+    // If the record does not exist, create a new item using put.
+    const putParams = {
+      TableName: STATISTICS_TABLE,
+      Item: statisticsData,
+    };
+
+    await dynamoDB.put(putParams).promise();
+    console.log(`Statistics for batch ${batchValue} created.`);
+  }
 }

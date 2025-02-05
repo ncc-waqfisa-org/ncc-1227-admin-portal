@@ -40,6 +40,7 @@ import toast from "react-hot-toast";
 import {
   DocType,
   createAdminLogInDB,
+  listAllMasterUniversities,
   updateApplicationInDB,
   updateAttachmentInDB,
   updateMasterApplicationInDB,
@@ -62,6 +63,7 @@ import { Textarea } from "../ui/textarea";
 import WordCounter from "../ui/word-counter";
 import { values } from "lodash";
 import { InfiniteMasterApplication } from "../ui/applications/infinite-applications-type";
+import { useQuery } from "@tanstack/react-query";
 
 type TMasterApplicationForm = {
   application: MasterApplication;
@@ -75,6 +77,12 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
   const { resetApplications, updateMasterApplication } = useBatchContext();
   const { locale, push } = useRouter();
   const { cpr } = useAuth();
+
+  const { data: masterUniversities, isPending: isMasterUniversitiesPending } =
+    useQuery({
+      queryKey: ["masterUniversities"],
+      queryFn: () => listAllMasterUniversities(),
+    });
 
   const formSchema = z.object({
     adminPoints: z.number().min(0).max(10).optional(),
@@ -102,6 +110,9 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
         }
       ),
     adminReason: z.string().min(1),
+    major: z.string().min(0).optional(),
+    universityID: z.string().min(0).optional(),
+    program: z.string().min(0).optional(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -124,6 +135,9 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
         application.attachment?.universityCertificate ?? undefined,
       toeflIELTSCertificate:
         application.attachment?.toeflIELTSCertificate ?? undefined,
+      major: application.major ?? undefined,
+      universityID: application.university?.id ?? undefined,
+      program: application.program ?? undefined,
     },
   });
 
@@ -178,6 +192,8 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
       input: {
         id: application.id,
         status: values.status,
+        major: values.major as Major,
+        universityID: values.universityID,
         reason: values.reason,
         adminPoints: values.adminPoints,
         isIncomeVerified: values.isIncomeVerified,
@@ -306,13 +322,13 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
       });
   }
 
-  function getUniversityName() {
-    return application.university?.universityName;
-  }
+  // function getUniversityName() {
+  //   return application.university?.universityName;
+  // }
 
-  function getProgramName() {
-    return application.program ?? "";
-  }
+  // function getProgramName() {
+  //   return application.program ?? "";
+  // }
 
   return (
     <div className="flex flex-col gap-4 max-w-4xl mx-auto">
@@ -523,26 +539,109 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
             )}
           />
           <FormItem>
+            <FormField
+              control={form.control}
+              name="major"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{tL("major")}</FormLabel>
+                  <FormControl>
+                    <Select
+                      value={field.value as Major}
+                      onValueChange={(val) => field.onChange(val as Major)}
+                    >
+                      <SelectTrigger className="overflow-visible focus:ring-1 focus:ring-blue-800">
+                        <SelectValue placeholder="Major" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {Object.values(Major).map((value, i) => (
+                          <SelectItem key={i} value={value}>
+                            {t(value)}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormDescription>{tL("majorD")}</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </FormItem>
+          {/* TODO pull the univeristies and the program inputted by applicant */}
+          <FormItem>
+            <FormField
+              control={form.control}
+              name="universityID"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{tL("university")}</FormLabel>
+                  <FormControl>
+                    <Select
+                      value={field.value}
+                      onValueChange={(val) => field.onChange(val)}
+                    >
+                      <SelectTrigger className="overflow-visible focus:ring-1 focus:ring-blue-800">
+                        <SelectValue placeholder="Select University" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {masterUniversities &&
+                          masterUniversities.map((uni, i) => (
+                            <SelectItem key={i} value={uni.id}>
+                              {locale === "ar"
+                                ? uni.universityNameAr
+                                : uni.universityName}
+                            </SelectItem>
+                          ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormDescription>{tL("universityD")}</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </FormItem>
+          {/* <FormItem>
             <FormLabel>{t("searchProgram")}</FormLabel>
             <FormControl>
               <Input
-                disabled
+                // disabled
                 type="text"
-                value={getProgramName() ?? "undefined"}
+                value={ ?? "undefined"}
               />
             </FormControl>
-            <FormDescription>
+            {/* <FormDescription>
               <p>{getUniversityName() ?? t("programNameNotFound")}</p>
-              {/* <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
                 <p>{t("minimumGPA")}</p>
                 <p>
                   {application.programs?.items[0]?.program?.minimumGPA ??
                     minimumGPA}
                 </p> 
-              </div> */}
-            </FormDescription>
+              </div> 
+            </FormDescription> 
             <FormMessage />
-          </FormItem>
+          </FormItem> */}
+          <FormField
+            control={form.control}
+            name="program"
+            render={({ field }) => (
+              <FormItem className="">
+                <FormLabel>
+                  {t("searchProgram")} <span className="text-error">*</span>{" "}
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    onChange={(e) => field.onChange(e.target.value)}
+                  />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="reason"

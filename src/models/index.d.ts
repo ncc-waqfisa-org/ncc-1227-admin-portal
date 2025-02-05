@@ -558,7 +558,7 @@ type EagerStudent = {
   readonly m_university?: BahrainUniversities | null;
   readonly m_universityID?: string | null;
   readonly m_oldProgram?: string | null;
-  readonly m_applicantType: ApplicantType[] | Array<keyof typeof ApplicantType>;
+  readonly m_applicantType?: (ApplicantType | null)[] | Array<keyof typeof ApplicantType> | null;
   readonly m_isEmployed?: boolean | null;
   readonly m_placeOfEmployment?: string | null;
   readonly m_income?: Income | keyof typeof Income | null;
@@ -620,7 +620,7 @@ type LazyStudent = {
   readonly m_university: AsyncItem<BahrainUniversities | undefined>;
   readonly m_universityID?: string | null;
   readonly m_oldProgram?: string | null;
-  readonly m_applicantType: ApplicantType[] | Array<keyof typeof ApplicantType>;
+  readonly m_applicantType?: (ApplicantType | null)[] | Array<keyof typeof ApplicantType> | null;
   readonly m_isEmployed?: boolean | null;
   readonly m_placeOfEmployment?: string | null;
   readonly m_income?: Income | keyof typeof Income | null;
@@ -699,8 +699,8 @@ type EagerScholarship = {
   readonly IBAN?: string | null;
   readonly IBANLetterDoc?: string | null;
   readonly startDate?: string | null;
-  readonly scholarshipPeriod?: string | null;
-  readonly numberOfSemesters?: string | null;
+  readonly scholarshipPeriod?: number | null;
+  readonly numberOfSemesters?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -725,8 +725,8 @@ type LazyScholarship = {
   readonly IBAN?: string | null;
   readonly IBANLetterDoc?: string | null;
   readonly startDate?: string | null;
-  readonly scholarshipPeriod?: string | null;
-  readonly numberOfSemesters?: string | null;
+  readonly scholarshipPeriod?: number | null;
+  readonly numberOfSemesters?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -1131,8 +1131,8 @@ type EagerMasterScholarship = {
   readonly IBAN?: string | null;
   readonly IBANLetterDoc?: string | null;
   readonly startDate?: string | null;
-  readonly scholarshipPeriod?: string | null;
-  readonly numberOfSemesters?: string | null;
+  readonly scholarshipPeriod?: number | null;
+  readonly numberOfSemesters?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -1157,8 +1157,8 @@ type LazyMasterScholarship = {
   readonly IBAN?: string | null;
   readonly IBANLetterDoc?: string | null;
   readonly startDate?: string | null;
-  readonly scholarshipPeriod?: string | null;
-  readonly numberOfSemesters?: string | null;
+  readonly scholarshipPeriod?: number | null;
+  readonly numberOfSemesters?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
