@@ -54,7 +54,8 @@ exports.handler = async (event) => {
     };
   }
 
-  const key = "public/" + scholarship.unsignedContractDoc;
+  //this will access the full path
+  const key = scholarship.unsignedContractDoc;
   const link = s3.getSignedUrl("getObject", {
     Bucket: S3_BUCKET,
     Key: key,

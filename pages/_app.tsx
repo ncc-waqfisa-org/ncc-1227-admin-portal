@@ -1,6 +1,6 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import { Amplify, DataStore } from "aws-amplify";
+import { Amplify, DataStore, Storage } from "aws-amplify";
 import awsExports from "../src/aws-exports";
 import "@aws-amplify/ui-react/styles.css";
 import {
@@ -28,6 +28,7 @@ import { BatchProvider } from "../context/BatchContext";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 Amplify.configure({ ...awsExports, ssr: true });
+Storage.configure({ ...awsExports, ssr: true });
 
 //register chart js imports
 ChartJS.register(

@@ -137,7 +137,7 @@ export default function BatchUpdateForm(props) {
       {...rest}
     >
       <TextField
-        label={t("batch")}
+        label={t("batchCurrent")}
         isRequired={false}
         isReadOnly={false}
         disabled

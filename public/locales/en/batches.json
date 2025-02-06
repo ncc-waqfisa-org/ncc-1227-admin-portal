@@ -33,5 +33,6 @@
   "submit": "Submit",
   "clear": "Clear",
   "reset": "Reset",
-  "loading": "Loading"
+  "loading": "Loading",
+  "batchCurrent": "Batch Year"
 }

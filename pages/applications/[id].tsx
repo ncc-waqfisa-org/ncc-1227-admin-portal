@@ -1,5 +1,5 @@
-import React, { FC } from "react";
-import { Toaster } from "react-hot-toast";
+import React, { FC, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import { PageComponent } from "../../components/page-component";
 import { getApplicationByIdAPI } from "../../context/StudentContext";
 import { GetServerSideProps } from "next";
@@ -36,6 +36,11 @@ import { Textarea } from "../../components/ui/textarea";
 import { Divider } from "@aws-amplify/ui-react";
 
 import { IoMdArrowRoundBack } from "react-icons/io";
+import {
+  GenerateScholarshipForm,
+  TGeneratedScholarship,
+} from "../../components/scholarships/GenerateScholarshipForm";
+import { useAuth } from "../../hooks/use-auth";
 
 interface Props {
   application: Application;
@@ -79,7 +84,46 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 const ApplicationInfo: FC<Props> = (props) => {
   const { t } = useTranslation("applications");
   const { t: tCommon } = useTranslation("common");
-  const { locale, back } = useRouter();
+  const { locale, back, push } = useRouter();
+
+  const [isGenerateDialogOpen, setIsGenerateDialogOpen] = useState(false);
+  const [generatedContractData, setGeneratedContractData] =
+    useState<TGeneratedScholarship>();
+  const [isAttachingPending, setIsAttachingPending] = useState(false);
+  const { token } = useAuth();
+
+  async function attachAndCreate(): Promise<void> {
+    setIsAttachingPending(true);
+
+    await toast.promise(
+      fetch(
+        `${process.env.NEXT_PUBLIC_LAMBDA_POST_CREATE_SCHOLARSHIP_BACHELOR}`,
+        {
+          method: "POST",
+          headers: {
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+          body: JSON.stringify(generatedContractData),
+        }
+      ),
+      {
+        loading: t("creatingScholarship"),
+        success: (res) => {
+          res.json().then((data) => {
+            const id: string | null = data?.scholarship?.id;
+            if (id) {
+              push(`/${locale}/scholarships/${id}`);
+            }
+          });
+          setGeneratedContractData(undefined);
+          return t("createdSuccessfully");
+        },
+        error: t("failedToCreate"),
+      }
+    );
+
+    setIsAttachingPending(false);
+  }
 
   return (
     <div>
@@ -167,74 +211,147 @@ const ApplicationInfo: FC<Props> = (props) => {
         </div>
 
         {props.scholarship.canCreateNewScholarship && (
-          <div className="grid p-6 mt-6 border rounded-md sm:grid-cols-2">
-            <div>
-              <p className="font-medium">{t("thisApplicationIsApproved")}</p>
-              {props.scholarship.scholarshipId ? (
-                <p>{t("scholarshipHasBeenCreated")}</p>
-              ) : (
-                <p>{t("createScholarshipFor")}</p>
-              )}
-              <p className="text-gray-500">
-                {`${
-                  locale === "ar"
-                    ? props.application.programs?.items?.[0]?.program?.nameAr
-                    : props.application.programs?.items?.[0]?.program?.name
-                } - ${
-                  locale === "ar"
-                    ? props.application.programs?.items?.[0]?.program
-                        ?.university?.nameAr
-                    : props.application.programs?.items?.[0]?.program
-                        ?.university?.name
-                }`}
-              </p>
-            </div>
-            <Dialog>
-              {props.scholarship.scholarshipId ? (
-                <Link
-                  className={cn(
-                    buttonVariants({ variant: "outline" }),
-                    "mt-auto"
-                  )}
-                  href={`/scholarships/${props.scholarship.scholarshipId}`}
-                >
-                  {t("goToScholarship")}
-                </Link>
-              ) : (
-                <DialogTrigger asChild>
-                  <Button variant="default" className="mt-auto">
-                    {t("createScholarship")}
-                  </Button>
-                </DialogTrigger>
-              )}
-              <DialogContent className="">
-                <DialogHeader>
-                  <DialogTitle>{t("createScholarship")}</DialogTitle>
-                  <DialogDescription>
-                    {`${t("thisWillCreateScholarship")} ${
-                      props.application.studentCPR
-                    }`}
-                  </DialogDescription>
-                  {/* Download Condtract template */}
-                </DialogHeader>
-                <div className="flex flex-col gap-3">
-                  <div className="flex flex-col gap-1">
-                    <DownloadFileFromUrl
-                      isFromLocal
-                      url={`/Waqfisa-scholarship.pdf`}
-                      fileName={`Scholarship-Contract-${props.application.studentCPR}`}
-                    >
-                      {t("downloadContractTemplate")}
-                    </DownloadFileFromUrl>
+          <div className="p-6 border mt-6 rounded-md grid gap-4">
+            <div className="grid sm:grid-cols-2">
+              <div>
+                <p className="font-medium">{t("thisApplicationIsApproved")}</p>
+                {props.scholarship.scholarshipId ? (
+                  <p>{t("scholarshipHasBeenCreated")}</p>
+                ) : (
+                  <p>{t("createScholarshipFor")}</p>
+                )}
+                <p className="text-gray-500">
+                  {`${
+                    locale === "ar"
+                      ? props.application.programs?.items?.[0]?.program?.nameAr
+                      : props.application.programs?.items?.[0]?.program?.name
+                  } - ${
+                    locale === "ar"
+                      ? props.application.programs?.items?.[0]?.program
+                          ?.university?.nameAr
+                      : props.application.programs?.items?.[0]?.program
+                          ?.university?.name
+                  }`}
+                </p>
+              </div>
+              {/* <Dialog>
+                {props.scholarship.scholarshipId ? (
+                  <Link
+                    className={cn(
+                      buttonVariants({ variant: "outline" }),
+                      "mt-auto"
+                    )}
+                    href={`/scholarships/${props.scholarship.scholarshipId}`}
+                  >
+                    {t("goToScholarship")}
+                  </Link>
+                ) : (
+                  <DialogTrigger asChild>
+                    <Button variant="default" className="mt-auto">
+                      {t("createScholarship")}
+                    </Button>
+                  </DialogTrigger>
+                )}
+                <DialogContent className="">
+                  <DialogHeader>
+                    <DialogTitle>{t("createScholarship")}</DialogTitle>
                     <DialogDescription>
-                      {`${t("downloadContractTemplateD")}`}
-                    </DialogDescription>
+                      {`${t("thisWillCreateScholarship")} ${
+                        props.application.studentCPR
+                      }`}
+                    </DialogDescription> */}
+              {/* Download Condtract template */}
+              {/* </DialogHeader>
+                  <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-1">
+                      <DownloadFileFromUrl
+                        isFromLocal
+                        url={`/Waqfisa-scholarship.pdf`}
+                        fileName={`Scholarship-Contract-${props.application.studentCPR}`}
+                      >
+                        {t("downloadContractTemplate")}
+                      </DownloadFileFromUrl>
+                      <DialogDescription>
+                        {`${t("downloadContractTemplateD")}`}
+                      </DialogDescription>
+                    </div>
+  
+                    <CreateScholarshipForm application={props.application} />
                   </div>
-
-                  <CreateScholarshipForm application={props.application} />
-                </div>
-              </DialogContent>
-            </Dialog>
+                </DialogContent>
+              </Dialog> */}
+              <Dialog
+                open={isGenerateDialogOpen}
+                onOpenChange={setIsGenerateDialogOpen}
+              >
+                {props.scholarship.scholarshipId ? (
+                  <Link
+                    className={cn(
+                      buttonVariants({ variant: "outline" }),
+                      "mt-auto"
+                    )}
+                    href={`/scholarships/${props.scholarship.scholarshipId}`}
+                  >
+                    {t("goToScholarship")}
+                  </Link>
+                ) : (
+                  <DialogTrigger asChild>
+                    <button
+                      type="button"
+                      className={cn(
+                        "mt-auto btn btn-sm",
+                        generatedContractData ? "" : "btn-primary"
+                      )}
+                    >
+                      {t("generateScholarship")}
+                      {/* {t("createScholarship")} */}
+                    </button>
+                  </DialogTrigger>
+                )}
+                <DialogContent className="">
+                  <DialogHeader>
+                    <DialogTitle>{t("generateScholarship")}</DialogTitle>
+                    <DialogDescription>
+                      {`${t("thisWillGenerateAScholarshipFor")} ${
+                        props.application.studentCPR
+                      }`}
+                    </DialogDescription>
+                    {/* Download Contract template */}
+                  </DialogHeader>
+                  <div className="flex flex-col gap-3">
+                    <GenerateScholarshipForm
+                      type={"bachelor"}
+                      applicationId={props.application.id}
+                      onGenerate={(generatedData) => {
+                        if (generatedData) {
+                          setGeneratedContractData(generatedData);
+                          setIsGenerateDialogOpen(!isGenerateDialogOpen);
+                        }
+                      }}
+                    />
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </div>
+            {generatedContractData?.pdfUrl && (
+              <div className="flex items-center justify-between">
+                <Link
+                  className="btn btn-info btn-sm"
+                  target="_blank"
+                  href={generatedContractData.pdfUrl}
+                >
+                  {t("previewContract")}
+                </Link>
+                <button
+                  type="button"
+                  className="btn-primary btn btn-sm"
+                  disabled={isAttachingPending}
+                  onClick={attachAndCreate}
+                >
+                  {t("attachAndCreateScholarship")}
+                </button>
+              </div>
+            )}
           </div>
         )}
 

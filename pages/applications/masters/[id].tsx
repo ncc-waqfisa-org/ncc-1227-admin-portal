@@ -218,16 +218,16 @@ const MasterApplicationInfo: FC<Props> = (props) => {
               )}
               <DialogContent className="">
                 <DialogHeader>
-                  <DialogTitle>{t("createScholarship")}</DialogTitle>
+                  <DialogTitle>{t("generateScholarship")}</DialogTitle>
                   <DialogDescription>
-                    {`${t("thisWillCreateScholarship")} ${
+                    {`${t("thisWillGenerateAScholarshipFor")} ${
                       props.application.studentCPR
                     }`}
                   </DialogDescription>
                   {/* Download Contract template */}
                 </DialogHeader>
                 <div className="flex flex-col gap-3">
-                  <div className="flex flex-col gap-1">
+                  {/* <div className="flex flex-col gap-1">
                     <DownloadFileFromUrl
                       isFromLocal
                       url={`/Waqfisa-scholarship.pdf`}
@@ -238,10 +238,20 @@ const MasterApplicationInfo: FC<Props> = (props) => {
                     <DialogDescription>
                       {`${t("downloadContractTemplateD")}`}
                     </DialogDescription>
-                  </div>
+                  </div> */}
                   <GenerateScholarshipForm
                     type={"masters"}
-                    masterApplication={props.application}
+                    masterApplicationId={props.application.id}
+                    onGenerate={function (
+                      data: {
+                        applicationID: string;
+                        startDate: string;
+                        scholarshipPeriod: number;
+                        numberOfSemesters: number;
+                      } & { contract: string }
+                    ): void {
+                      throw new Error("Function not implemented.");
+                    }}
                   />
                 </div>
               </DialogContent>

@@ -12,37 +12,35 @@ const s3 = new AWS.S3();
 const cognito = new AWS.CognitoIdentityServiceProvider();
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
-// Define table names using constants (ParentInfoTable added)
+// Define table names using constants
 const {
-  ApplicationTable: APPLICATION_TABLE,
+  MasterApplicationTable: MASTER_APPLICATION_TABLE,
   StudentTable: STUDENT_TABLE,
-  UniversityTable: UNIVERSITY_TABLE,
-  ProgramTable: PROGRAM_TABLE,
+  MasterUniversityTable: MASTER_UNIVERSITY_TABLE,
   AdminTable: ADMIN_TABLE,
   S3Bucket: S3_BUCKET,
-  ParentInfoTable: PARENT_INFO_TABLE,
 } = {
-  ApplicationTable: "Application-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
+  MasterApplicationTable:
+    "MasterApplication-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
   StudentTable: "Student-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
-  UniversityTable: "University-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
-  ProgramTable: "Program-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
+  MasterUniversityTable:
+    "MasterAppliedUniversities-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
   AdminTable: "Admin-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
   S3Bucket: "ncc1227bucket2e2e0-masterdev",
-  ParentInfoTable: "ParentInfo-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
 };
 
 // Define constants for the HTML template location in S3
 const TEMPLATE_BUCKET = "ncc1227bucket65406-staging";
-const TEMPLATE_KEY = "contract.html";
+const TEMPLATE_KEY = "contract-master.html";
 
 /**
- * Lambda handler for generating the contract PDF.
+ * Lambda handler for generating the contract PDF for masters.
  */
 exports.handler = async (event) => {
   try {
     console.log(`EVENT: ${JSON.stringify(event)}`);
 
-    // --- ADMIN CHECK (commented out for now) ---
+    // --- ADMIN CHECK ---
     if (!event.headers || !event.headers.authorization) {
       return {
         statusCode: 401,
@@ -72,17 +70,19 @@ exports.handler = async (event) => {
       };
     }
 
-    // Retrieve the application record from DynamoDB
-    const application = await getApplicationByID(applicationID);
-    if (!application) {
+    // Retrieve the master application record from DynamoDB
+    const masterApplication = await getMasterApplicationByID(applicationID);
+    if (!masterApplication) {
       return {
         statusCode: 404,
-        body: JSON.stringify({ message: "Error: Application not found" }),
+        body: JSON.stringify({
+          message: "Error: Master application not found",
+        }),
       };
     }
 
-    // Fetch the student record using the student's CPR
-    const student = await getStudentByCPR(application.studentCPR);
+    // Fetch the student record using the student's CPR from the master application
+    const student = await getStudentByCPR(masterApplication.studentCPR);
     if (!student) {
       return {
         statusCode: 404,
@@ -90,64 +90,37 @@ exports.handler = async (event) => {
       };
     }
 
-    // Parallelize the retrieval of parent info, program, and university records.
-    const parentInfoPromise = getParentInfoByID(student.parentInfoID);
-    const programPromise = application.programID
-      ? getProgramByID(application.programID)
-      : Promise.resolve(null);
-    const universityPromise = application.universityID
-      ? getUniversityByID(application.universityID)
-      : Promise.resolve(null);
-    const [parentinfo, program, university] = await Promise.all([
-      parentInfoPromise,
-      programPromise,
-      universityPromise,
-    ]);
+    // Fetch the master university record using the universityID from masterApplication
+    const masterUniversity = await getMasterUniversityByID(
+      masterApplication.universityID
+    );
 
-    if (!parentinfo) {
-      return {
-        statusCode: 404,
-        body: JSON.stringify({ message: "Error: ParentInfo not found" }),
-      };
-    }
-
-    // Build the PDFFormat object using the student record and parent info
+    // Build the PDFFormat object using master application data and student record with master fields
     const PDFFormat = {
-      studentFirstName: student.firstName || "",
-      studentSecondName: student.secondName || "",
-      studentThirdName: student.thirdName || "",
-      studentLastName: student.lastName || "",
-      guardianFirstName: parentinfo.guardianFirstName || "",
-      guardianSecondName: parentinfo.guardianSecondName || "",
-      guardianThirdName: parentinfo.guardianThirdName || "",
-      guardianLastName: parentinfo.guardianLastName || "",
-      guardianAddress: parentinfo.address || "",
-      guardianEmail: parentinfo.email || "",
+      studentFirstName: student.m_firstName || "",
+      studentSecondName: student.m_secondName || "",
+      studentThirdName: student.m_thirdName || "",
+      studentLastName: student.m_lastName || "",
+      guardianFirstName: student.m_guardianFirstName || "",
+      guardianSecondName: student.m_guardianSecondName || "",
+      guardianThirdName: student.m_guardianThirdName || "",
+      guardianLastName: student.m_guardianLastName || "",
+      guardianAddress: student.m_guardianAddress || "",
+      guardianEmail: student.m_guardianEmail || "",
       studentCPR: student.cpr || "",
       studentAddress: student.address || "",
       studentEmail: student.email || "",
-      studentProgram: "", // To be determined below
+      // For masters, use the master application's allProgramsTextOption
+      studentProgram: masterApplication.allProgramsTextOption || "",
       startDate,
       scholarshipPeriod,
       numberOfSemesters,
     };
 
-    // Determine the student program value based on the application's programID
-    if (program) {
-      if (program.name === "All Programs") {
-        PDFFormat.studentProgram = application.allProgramsTextOption || "";
-      } else {
-        PDFFormat.studentProgram = program.nameAr || "";
-      }
-    } else {
-      PDFFormat.studentProgram = application.allProgramsTextOption || "";
-    }
-    console.log("PDFFormat:", JSON.stringify(PDFFormat));
-
-    // Determine university name via the University table using the concurrently fetched record
+    // Determine university name via the MasterAppliedUniversities table
     let universityName = "الجامعة";
-    if (university && university.nameAr) {
-      universityName = university.nameAr;
+    if (masterUniversity && masterUniversity.universityNameAr) {
+      universityName = masterUniversity.universityNameAr;
     }
 
     // Build the items object with data for dynamic HTML generation
@@ -157,24 +130,24 @@ exports.handler = async (event) => {
         month: "long",
         day: "numeric",
       }).format(new Date()),
-      name: `${student.firstName} ${student.secondName} ${student.thirdName} ${student.lastName}`,
+      name: `${student.m_firstName} ${student.m_secondName} ${student.m_thirdName} ${student.m_lastName}`,
       cpr: student.cpr,
       address: student.address,
       email: student.email,
-      guardianName: `${parentinfo.guardianFirstName} ${parentinfo.guardianSecondName} ${parentinfo.guardianThirdName} ${parentinfo.guardianLastName}`,
-      guardianCPR: parentinfo.guardianCPR || "",
-      guardianAddress: parentinfo.address || "",
-      guardianEmail: PDFFormat.guardianEmail,
+      guardianName: `${student.m_guardianFirstName} ${student.m_guardianSecondName} ${student.m_guardianThirdName} ${student.m_guardianLastName}`,
+      guardianCPR: student.m_guardianCPR, // optionally, if available in student record
+      guardianAddress: student.m_guardianAddress || "",
+      guardianEmail: student.m_guardianEmail || "",
       universityName,
-      programName: PDFFormat.studentProgram || "",
+      programName: masterApplication.allProgramsTextOption || "",
       startDate,
       scholarshipPeriod,
       numberOfSemesters,
     };
 
     // Format additional values
-    const semestersCount = PDFFormat.numberOfSemesters || "٨";
-    const scholarshipPeriodFormat = PDFFormat.scholarshipPeriod || "٤ سنوات";
+    const semestersCount = numberOfSemesters || "٣";
+    const scholarshipPeriodFormat = scholarshipPeriod || "٩";
 
     // Prepare dynamic data for the Handlebars template
     const templateData = {
@@ -214,12 +187,12 @@ exports.handler = async (event) => {
     const pdfBuffer = await page.pdf({ format: "A4", printBackground: true });
     await browser.close();
 
-    // Upload the generated PDF to S3
-    const key = `contracts/bacholar/contract-${
-      application.id
+    // Upload the generated PDF to S3 and generate presigned URL
+    const key = `contracts/master/contract-${
+      masterApplication.id
     }-${Date.now()}.pdf`;
-    const pdfKey = "public/" + key;
 
+    const pdfKey = "public/" + key;
     await s3
       .putObject({
         Bucket: S3_BUCKET,
@@ -236,7 +209,7 @@ exports.handler = async (event) => {
       Expires: 300, // 300 seconds = 5 minutes
     });
 
-    // Return the presigned URL to the frontend
+    // Return the presigned URL and key to the frontend
     return {
       statusCode: 200,
       body: JSON.stringify({
@@ -276,28 +249,14 @@ async function checkIsAdmin(token) {
 }
 
 /**
- * Retrieves an application record by the provided applicationID.
+ * Retrieves a master application record by the provided applicationID.
  * @param {string} applicationID
  * @returns {Promise<Object|null>}
  */
-async function getApplicationByID(applicationID) {
+async function getMasterApplicationByID(applicationID) {
   const params = {
-    TableName: APPLICATION_TABLE,
+    TableName: MASTER_APPLICATION_TABLE,
     Key: { id: applicationID },
-  };
-  const result = await dynamoDB.get(params).promise();
-  return result.Item || null;
-}
-
-/**
- * Retrieves a program record by the provided programID.
- * @param {string} programID
- * @returns {Promise<Object|null>}
- */
-async function getProgramByID(programID) {
-  const params = {
-    TableName: PROGRAM_TABLE,
-    Key: { id: programID },
   };
   const result = await dynamoDB.get(params).promise();
   return result.Item || null;
@@ -318,28 +277,14 @@ async function getStudentByCPR(cpr) {
 }
 
 /**
- * Retrieves a university record by the provided universityID.
+ * Retrieves a master university record by the provided universityID.
  * @param {string} universityID
  * @returns {Promise<Object|null>}
  */
-async function getUniversityByID(universityID) {
+async function getMasterUniversityByID(universityID) {
   const params = {
-    TableName: UNIVERSITY_TABLE,
+    TableName: MASTER_UNIVERSITY_TABLE,
     Key: { id: universityID },
-  };
-  const result = await dynamoDB.get(params).promise();
-  return result.Item || null;
-}
-
-/**
- * Retrieves parent information by the provided parentInfoID.
- * @param {string} parentInfoID
- * @returns {Promise<Object|null>}
- */
-async function getParentInfoByID(parentInfoID) {
-  const params = {
-    TableName: PARENT_INFO_TABLE,
-    Key: { id: parentInfoID },
   };
   const result = await dynamoDB.get(params).promise();
   return result.Item || null;

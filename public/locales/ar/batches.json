@@ -31,5 +31,6 @@
   "csvFormat": "(cpr, verified gpa) على التوالى",
   "uploadedSuccessfully": "تم الرفع بنجاح",
   "failedToUpload": "فشل الرفع",
-  "loading": "يرجى الإنتظار"
+  "loading": "يرجى الإنتظار",
+  "batchCurrent": "سنة الدفعة"
 }

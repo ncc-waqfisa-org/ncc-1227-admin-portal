@@ -160,6 +160,7 @@ async function convertToJsonMaster(applications, students) {
       "Chosen Program": application.program, // Taken directly from master application
       Reason: reason,
       "Total Score": application.score,
+      "Number of Family members": student.m_numberOfFamilyMembers,
       isIncomeVerified: application.isIncomeVerified ? "Yes" : "",
     });
   }

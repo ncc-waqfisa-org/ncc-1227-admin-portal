@@ -122,7 +122,7 @@ export default function BatchCreateForm(props) {
       {...rest}
     >
       <TextField
-        label={t("batch")}
+        label={t("batchCurrent")}
         isRequired={false}
         isReadOnly={false}
         type="number"
