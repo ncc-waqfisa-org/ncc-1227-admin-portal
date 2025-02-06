@@ -1,6 +1,8 @@
 {
   "Dashboard": "الصفحة الرئيسية",
   "Applications": "الطلبات",
+  "MApplication": "طلب ماستر",
+  "BApplication": "طلب باكلوريوس",
   "Students": "الطلاب",
   "Education": "الجامعات",
   "Universities": "الجامعات",
