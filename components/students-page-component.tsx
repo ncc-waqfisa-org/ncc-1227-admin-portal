@@ -310,7 +310,7 @@ export default function StudentsPageComponent({
                     <div className="flex flex-col w-full max-w-3xl">
                       <MasterInfoForm
                         student={student}
-                        universities={universities}
+                        // universities={universities}
                       />
 
                       <div className={"flex flex-col gap-10 w-full"}>

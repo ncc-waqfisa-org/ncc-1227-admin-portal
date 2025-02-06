@@ -277,8 +277,8 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
                 income: updatedData.income ?? Income.LESS_THAN_1500,
                 dateTime: new Date(),
                 studentName:
-                  `${updatedData.student?.m_firstName} ${updatedData.student?.m_secondName} ${updatedData.student?.m_thirdName} ${updatedData.student?.m_lastName}` ??
-                  updatedData.student?.fullName,
+                  (updatedData.student?.m_firstName ? `${updatedData.student?.m_firstName} ${updatedData.student?.m_secondName} ${updatedData.student?.m_thirdName} ${updatedData.student?.m_lastName}` : 
+                  updatedData.student?.fullName ) ?? "-",
                 status: updatedData.status ?? Status.WITHDRAWN,
                 universityName: updatedData.university?.universityName ?? "",
                 universityNameAr:
@@ -331,13 +331,13 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
   // }
 
   return (
-    <div className="flex flex-col gap-4 max-w-4xl mx-auto">
+    <div className="flex flex-col gap-4 mx-auto max-w-4xl">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="grid gap-4 sm:grid-cols-2"
         >
-          <div className="grid w-full gap-2">
+          <div className="grid gap-2 w-full">
             <Label>{tL("studentLog")}</Label>
             <div className="grid gap-4">
               <Link
@@ -348,7 +348,7 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
               </Link>
             </div>
           </div>
-          <div className="grid w-full gap-2">
+          <div className="grid gap-2 w-full">
             <Label>{tL("adminLogs")}</Label>
             <div className="grid gap-4">
               <Link
@@ -392,8 +392,8 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
             name="verifiedGPA"
             render={({ field }) => (
               <FormItem>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 py-1">
+                <div className="flex justify-between items-center">
+                  <div className="flex gap-2 items-center py-1">
                     <FormLabel>{tL("verifiedGPA")}</FormLabel>
                     {application.verifiedGPA ? (
                       <FiCheckCircle className="text-success" />
@@ -443,7 +443,7 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
             name="adminPoints"
             render={({ field }) => (
               <FormItem>
-                <div className="flex items-center gap-2 py-1">
+                <div className="flex gap-2 items-center py-1">
                   <FormLabel>{t("adminPoints")}</FormLabel>
                   {application.adminPoints ? (
                     <FiCheckCircle className="text-success" />
@@ -502,9 +502,9 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
             control={form.control}
             name="isIncomeVerified"
             render={({ field }) => (
-              <FormItem className="flex flex-row items-center justify-between gap-2 p-4 border rounded-lg">
+              <FormItem className="flex flex-row gap-2 justify-between items-center p-4 rounded-lg border">
                 <div className="space-y-0.5">
-                  <div className="flex items-center gap-2">
+                  <div className="flex gap-2 items-center">
                     <FormLabel className="text-base">
                       {t("isIncomeVerified")}
                     </FormLabel>
@@ -519,21 +519,25 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
                       `${application.income}`
                     )}`}
                   </FormDescription>
-                  <div className="flex items-center gap-1 py-1 border rounded-md w-fit ps-3 pe-2">
+                  <div className="flex gap-1 items-center py-1 rounded-md border w-fit ps-3 pe-2">
                     <FileIcon />
+
                     <GetStorageLinkComponent
-                      storageKey={
-                        application.student?.familyIncomeProofDocs?.[0]
-                      }
+                      storageKey={application.incomeDoc ?? application.student?.m_incomeDoc}
                       showName
                     />
                   </div>
                 </div>
+                
                 <FormControl>
+                  {(application.incomeDoc ?? application.student?.m_incomeDoc) &&<div className="flex flex-col gap-1 items-center">
                   <Switch
                     checked={field.value}
                     onCheckedChange={field.onChange}
+                    className="data-[state=checked]:bg-success"
                   />
+                  <p>{t("verified")}</p>
+                  </div>}
                 </FormControl>
               </FormItem>
             )}
@@ -613,7 +617,7 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
             </FormControl>
             {/* <FormDescription>
               <p>{getUniversityName() ?? t("programNameNotFound")}</p>
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap gap-2 items-center">
                 <p>{t("minimumGPA")}</p>
                 <p>
                   {application.programs?.items[0]?.program?.minimumGPA ??
@@ -664,7 +668,7 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
             )}
           />
 
-          <div className="flex items-center gap-4 sm:col-span-2">
+          <div className="flex gap-4 items-center sm:col-span-2">
             <span className="w-full h-[1px] bg-border "></span>{" "}
             <p>{t("documents")}</p>
             <span className="w-full h-[1px] bg-border "></span>

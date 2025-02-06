@@ -3,7 +3,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { PageComponent } from "../../components/page-component";
 import { getApplicationByIdAPI } from "../../context/StudentContext";
 import { GetServerSideProps } from "next";
-import { Application, Status } from "../../src/API";
+import { Application, Program, Status, University } from "../../src/API";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "react-i18next";
 import {
@@ -15,7 +15,7 @@ import {
 import StudentUpdate from "../../components/student/StudentUpdate";
 import UpdateParentInfo from "../../components/student/UpdateParentInfo";
 import { ApplicationForm } from "../../components/application/ApplicationForm";
-import { listScholarshipsOfApplicationId } from "../../src/CustomAPI";
+import { listAllPrograms, listScholarshipsOfApplicationId } from "../../src/CustomAPI";
 import {
   Dialog,
   DialogContent,
@@ -33,7 +33,7 @@ import { PhoneNumberInput } from "../../components/phone";
 import { FiAlertCircle, FiCheckCircle, FiPrinter } from "react-icons/fi";
 import { DownloadFileFromUrl } from "../../components/download-file-from-url";
 import { Textarea } from "../../components/ui/textarea";
-import { Divider } from "@aws-amplify/ui-react";
+
 
 import { IoMdArrowRoundBack } from "react-icons/io";
 import {
@@ -43,6 +43,7 @@ import {
 import { useAuth } from "../../hooks/use-auth";
 
 interface Props {
+  programs: Program[];
   application: Application;
   scholarship: {
     canCreateNewScholarship: boolean;
@@ -61,8 +62,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     applicationId: `${id}`,
   });
 
+  const programs = await listAllPrograms();
+
   return {
     props: {
+      programs,
       application: res,
       scholarship: {
         canCreateNewScholarship: res?.status === Status.APPROVED,
@@ -81,8 +85,39 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   };
 };
 
+  const sortUniversities = (locale: string = "en") => (a: Program, b: Program) => {
+    const aUniversityName = a.university?.name ?? "";
+    const bUniversityName = b.university?.name ?? "";
+
+    const aUniversityNameAr = a.university?.nameAr ?? "";
+    const bUniversityNameAr = b.university?.nameAr ?? "";
+
+    if (locale === "ar") {
+      return aUniversityNameAr.localeCompare(bUniversityNameAr);
+    } else {
+      return aUniversityName.localeCompare(bUniversityName);
+    }
+  };
+  const sortPrograms = (locale: string = "en") => (a: Program, b: Program) => {
+    const aProgramName = a.name ?? "";
+    const bProgramName = b.name ?? "";
+
+    const aProgramNameAr = a.nameAr ?? "";
+    const bProgramNameAr = b.nameAr ?? "";
+
+    if (locale === "ar") {
+      return aProgramNameAr.localeCompare(bProgramNameAr);
+    } else {
+      return aProgramName.localeCompare(bProgramName);
+    }
+  };
+
+
+
+
 const ApplicationInfo: FC<Props> = (props) => {
   const { t } = useTranslation("applications");
+  const { t: tPageTitle } = useTranslation("pageTitles");
   const { t: tCommon } = useTranslation("common");
   const { locale, back, push } = useRouter();
 
@@ -127,22 +162,22 @@ const ApplicationInfo: FC<Props> = (props) => {
 
   return (
     <div>
-      <PageComponent title={"ApplicationInfo"}>
+      <PageComponent title={"BApplication"}>
         <button className="flex-1 btn btn-ghost" onClick={back}>
           <IoMdArrowRoundBack />
 
           {tCommon("back")}
         </button>
         <Toaster />
-        <div className="flex items-center justify-between">
-          <div className="text-2xl font-semibold ">{t("application")}</div>
+        <div className="flex justify-between items-center">
+          <div className="text-2xl font-semibold">{tPageTitle("BApplication")}</div>
           <DownloadFileFromUrl
             url={`https://a69a50c47l.execute-api.us-east-1.amazonaws.com/default/applications/pdf?applicationId=${
               props.application.id
             }&lang=${locale ?? "en"}`}
             fileName={`${props.application.student?.cpr} Application`}
           >
-            <div className="flex items-center gap-2">
+            <div className="flex gap-2 items-center">
               <FiPrinter />
               {t("print")}
             </div>
@@ -150,10 +185,10 @@ const ApplicationInfo: FC<Props> = (props) => {
         </div>
 
         {/*  */}
-        <div className="grid gap-3 p-4 mt-4 border rounded-lg sm:grid-cols-2">
+        <div className="grid gap-3 p-4 mt-4 rounded-lg border sm:grid-cols-2">
           <div className="flex flex-col gap-3">
             <p className="w-fit">{props.application.student?.fullName}</p>
-            <p className="p-1 border rounded-md w-fit">
+            <p className="p-1 rounded-md border w-fit">
               {props.application.student?.cpr}
             </p>
             <p className="w-fit">{props.application.student?.email}</p>
@@ -171,7 +206,7 @@ const ApplicationInfo: FC<Props> = (props) => {
             <p>{`${t("tableTitleGpa")} ${
               props.application?.verifiedGPA ?? props.application?.gpa ?? 0
             }`}</p>
-            <div className="flex items-center gap-4">
+            <div className="flex gap-4 items-center">
               <p>{t("tableTitleVerifiedGpa")}</p>
 
               {props.application.verifiedGPA ? (
@@ -180,7 +215,7 @@ const ApplicationInfo: FC<Props> = (props) => {
                 <FiAlertCircle className="text-warning" />
               )}
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex gap-4 items-center">
               <p>{t("adminPoints")}</p>
 
               {props.application.adminPoints ? (
@@ -189,7 +224,7 @@ const ApplicationInfo: FC<Props> = (props) => {
                 <FiAlertCircle className="text-warning" />
               )}
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex gap-4 items-center">
               <p>{t("isFamilyIncomeVerified")}</p>
 
               {props.application.isFamilyIncomeVerified ? (
@@ -368,7 +403,7 @@ const ApplicationInfo: FC<Props> = (props) => {
               </AccordionTrigger>
 
               <AccordionContent>
-                <ApplicationForm application={props.application} />
+                <ApplicationForm application={props.application} programs={props.programs.sort(sortPrograms(locale)).sort(sortUniversities(locale))} />
               </AccordionContent>
             </AccordionItem>
 

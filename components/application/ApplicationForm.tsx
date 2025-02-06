@@ -1,9 +1,10 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import {
   Application,
   CreateAdminLogMutationVariables,
   Status,
   UpdateApplicationMutationVariables,
+  Program,
 } from "../../src/API";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,6 +25,7 @@ import { Button, buttonVariants } from "../ui/button";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -54,18 +56,25 @@ import WordCounter from "../ui/word-counter";
 
 type TApplicationForm = {
   application: Application;
+  programs: Program[];
 };
 
-export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
+export const ApplicationForm: FC<TApplicationForm> = ({
+  application,
+  programs,
+}) => {
   const { t } = useTranslation("applications");
   const { t: tL } = useTranslation("applicationLog");
   const { resetApplications } = useBatchContext();
   const { locale, push } = useRouter();
   const { cpr } = useAuth();
+  const [loading, setLoading] = useState(false);
 
   const formSchema = z.object({
     adminPoints: z.number().min(0).max(10).optional(),
     gpa: z.number().min(0).max(100),
+    programId: z.string().min(1),
+    allProgramsTextOption: z.string().min(0).optional(),
     verifiedGPA: z.number().min(0).max(100).optional().nullable(),
     isFamilyIncomeVerified: z.boolean().default(false),
     status: z.enum(Object.values(Status) as [Status]),
@@ -89,24 +98,32 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
     adminReason: z.string().min(1),
   });
 
+  const programChoice = application.programs?.items[0];
+
+  const defaultProgram =
+    programChoice?.program ?? application.program;
+  const defaultProgramId = defaultProgram?.id;
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       reason: application.reason ?? undefined,
-      adminReason: "",
+      programId: defaultProgramId,
       adminPoints: application.adminPoints ?? undefined,
       isFamilyIncomeVerified: application.isFamilyIncomeVerified ?? false,
       gpa: application.gpa ?? 0,
       verifiedGPA: application.verifiedGPA ?? undefined,
       status: application.status ?? undefined,
       acceptanceLetter:
-        application.programs?.items[0]?.acceptanceLetterDoc ?? undefined,
+        programChoice?.acceptanceLetterDoc ?? undefined,
       schoolCertificate: application.attachment?.schoolCertificate ?? undefined,
       transcript: application.attachment?.transcriptDoc ?? undefined,
+      allProgramsTextOption: application.allProgramsTextOption ?? undefined,
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setLoading(true);
     // upload new docs if selected
     const acceptanceLetterKey = values.acceptanceLetterFile
       ? uploadFile(
@@ -114,7 +131,7 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
           DocType.PRIMARY_PROGRAM_ACCEPTANCE,
           application.studentCPR
         )
-      : Promise.resolve(application.programs?.items[0]?.acceptanceLetterDoc);
+      : Promise.resolve(programChoice?.acceptanceLetterDoc);
     const transcriptKey = values.transcriptFile
       ? uploadFile(
           values.transcriptFile,
@@ -141,6 +158,7 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
         reason: values.reason,
         adminPoints: values.adminPoints,
         isFamilyIncomeVerified: values.isFamilyIncomeVerified,
+        allProgramsTextOption: values.allProgramsTextOption,
         gpa: values.gpa,
         score: calculateScore({
           familyIncome: application.familyIncome,
@@ -165,9 +183,11 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
           }),
           updateProgramChoiceInDB({
             input: {
-              id: application.programs?.items[0]?.id ?? "",
+              id: programChoice?.id ?? "",
+              programApplicationsId: values.programId,
+              programID: values.programId,
               acceptanceLetterDoc: acceptanceLetter,
-              _version: application.programs?.items[0]?._version,
+              _version: programChoice?._version,
             },
           }),
           updateApplicationInDB(updateVariables),
@@ -178,7 +198,7 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
           error: "Failed to update application",
         }
       )
-      .then(async (value) => {
+      .then(async (_) => {
         const oldData = {
           status: application.status,
           adminPoints: application.adminPoints,
@@ -186,6 +206,9 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
           verifiedGPA: application.verifiedGPA,
           gpa: application.gpa,
           reason: application.reason,
+          programId: defaultProgramId,
+          program: defaultProgram,
+          allProgramsTextOption: application.allProgramsTextOption,
         };
 
         const newData = {
@@ -195,9 +218,11 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
           verifiedGPA: values.verifiedGPA,
           gpa: values.gpa,
           reason: values.reason,
+          programId: values.programId,
+          program: programs.find((p) => p.id === values.programId),
+          allProgramsTextOption: values.allProgramsTextOption,
         };
 
-        // Calculate changes
         const snapshot = createChangeSnapshot(oldData, newData);
 
         let createAdminLogVariables: CreateAdminLogMutationVariables = {
@@ -222,42 +247,32 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
             console.log(err);
             throw err;
           });
+          setLoading(false);
       });
   }
 
-  function getUniversityName() {
-    let havePrograms = (application.programs?.items.length ?? 0) > 0;
-    if (havePrograms) {
-      return locale === "ar"
-        ? application.programs?.items[0]?.program?.university?.nameAr
-        : application.programs?.items[0]?.program?.university?.name;
-    } else {
-      return locale === "ar"
-        ? application.program?.university?.nameAr
-        : application.program?.university?.name;
-    }
+  function getUniversityName(selectedProgram?: Program) {
+    const program = selectedProgram ?? defaultProgram;
+    const university = program?.university;
+    if (!university) return "-";
+
+    return locale === "ar" ? university?.nameAr : university?.name;
   }
-  function getProgramName() {
-    let havePrograms = (application.programs?.items.length ?? 0) > 0;
-    if (havePrograms) {
-      return locale === "ar"
-        ? application.programs?.items[0]?.program?.nameAr
-        : application.programs?.items[0]?.program?.name;
-    } else {
-      return locale === "ar"
-        ? application.program?.nameAr
-        : application.program?.name;
-    }
+  function getProgramName(selectedProgram?: Program) {
+    const program = selectedProgram ?? defaultProgram;
+    if (!program) return "-";
+
+    return locale === "ar" ? program?.nameAr : program?.name;
   }
 
   return (
-    <div className="flex flex-col gap-4 max-w-4xl mx-auto">
+    <div className="flex flex-col gap-4 mx-auto max-w-4xl">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="grid gap-4 sm:grid-cols-2"
         >
-          <div className="grid w-full gap-2">
+          <div className="grid gap-2 w-full">
             <Label>{tL("studentLog")}</Label>
             <div className="grid gap-4">
               <Link
@@ -268,7 +283,7 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
               </Link>
             </div>
           </div>
-          <div className="grid w-full gap-2">
+          <div className="grid gap-2 w-full">
             <Label>{tL("adminLogs")}</Label>
             <div className="grid gap-4">
               <Link
@@ -312,8 +327,8 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
             name="verifiedGPA"
             render={({ field }) => (
               <FormItem>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2 py-1">
+                <div className="flex justify-between items-center">
+                  <div className="flex gap-2 items-center py-1">
                     <FormLabel>{tL("verifiedGPA")}</FormLabel>
                     {application.verifiedGPA ? (
                       <FiCheckCircle className="text-success" />
@@ -363,7 +378,7 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
             name="adminPoints"
             render={({ field }) => (
               <FormItem>
-                <div className="flex items-center gap-2 py-1">
+                <div className="flex gap-2 items-center py-1">
                   <FormLabel>{t("adminPoints")}</FormLabel>
                   {application.adminPoints ? (
                     <FiCheckCircle className="text-success" />
@@ -422,9 +437,9 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
             control={form.control}
             name="isFamilyIncomeVerified"
             render={({ field }) => (
-              <FormItem className="flex flex-row items-center justify-between gap-2 p-4 border rounded-lg">
+              <FormItem className="flex flex-row gap-2 justify-between items-center p-4 rounded-lg border sm:col-span-2">
                 <div className="space-y-0.5">
-                  <div className="flex items-center gap-2">
+                  <div className="flex gap-2 items-center">
                     <FormLabel className="text-base">
                       {t("isFamilyIncomeVerified")}
                     </FormLabel>
@@ -439,7 +454,7 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
                       `${application.familyIncome}`
                     )}`}
                   </FormDescription>
-                  <div className="flex items-center gap-1 py-1 border rounded-md w-fit ps-3 pe-2">
+                  <div className="flex gap-1 items-center py-1 rounded-md border w-fit ps-3 pe-2">
                     <FileIcon />
                     <GetStorageLinkComponent
                       storageKey={
@@ -450,15 +465,99 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
                   </div>
                 </div>
                 <FormControl>
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
+                  {application.student?.familyIncomeProofDocs && <div className="flex flex-col gap-1 items-center">
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      className="data-[state=checked]:bg-success"
+                    />
+                    <p>{t("verified")}</p>
+                  </div>}
                 </FormControl>
               </FormItem>
             )}
           />
-          <FormItem>
+          {/* TODO: add program selector */}
+          <div className="grid gap-2 p-4 rounded-lg border sm:col-span-2 sm:grid-cols-2">
+            <FormField
+              control={form.control}
+              name="programId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("searchProgram")}</FormLabel>
+                  <FormControl>
+                    <Select
+                      value={field.value as string}
+                      onValueChange={(val) => field.onChange(val as string)}
+                    >
+                      <SelectTrigger className="overflow-visible focus:ring-1 focus:ring-blue-800">
+                        <SelectValue placeholder={t("searchProgram")} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+
+                        {programs
+                          .sort((a, b) =>
+                            a.university?.name && b.university?.name
+                              ? a.university!.name!.localeCompare(
+                                  b.university!.name!
+                                )
+                              : 0
+                          )
+                          .map((program) => (
+                            <SelectItem key={program.id} value={program.id}>
+                              {`${getUniversityName(
+                                program
+                              )} - ${getProgramName(program)}`}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormDescription>
+                    <p>
+                      {getUniversityName(
+                        programs.find((p) => p.id === field.value)
+                      ) ?? t("programNameNotFound")}
+                    </p>
+                    <div className="flex flex-wrap gap-2 items-center">
+                      <p>{t("minimumGPA")}</p>
+                      <p>
+                        {programs.find((p) => p.id === field.value)
+                          ?.minimumGPA ?? minimumGPA}
+                      </p>
+                    </div>
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="allProgramsTextOption"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("allProgramsTextOption")}</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      {...field}
+                      placeholder="-"
+                      // value={field.value}
+                      // onChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            
+          </div>
+
+          {/* <FormItem>
             <FormLabel>{t("searchProgram")}</FormLabel>
             <FormControl>
               <Input
@@ -469,7 +568,7 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
             </FormControl>
             <FormDescription>
               <p>{getUniversityName() ?? t("programNameNotFound")}</p>
-              <div className="flex flex-wrap items-center gap-2">
+              <div className="flex flex-wrap gap-2 items-center">
                 <p>{t("minimumGPA")}</p>
                 <p>
                   {application.programs?.items[0]?.program?.minimumGPA ??
@@ -478,7 +577,7 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
               </div>
             </FormDescription>
             <FormMessage />
-          </FormItem>
+          </FormItem> */}
           <FormField
             control={form.control}
             name="reason"
@@ -501,7 +600,7 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
             )}
           />
 
-          <div className="flex items-center gap-4 sm:col-span-2">
+          <div className="flex gap-4 items-center sm:col-span-2">
             <span className="w-full h-[1px] bg-border "></span>{" "}
             <p>{t("documents")}</p>
             <span className="w-full h-[1px] bg-border "></span>
@@ -641,7 +740,7 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
             )}
           />
           <div className="flex justify-end sm:col-span-2">
-            <Button type="submit">{t("update")}</Button>
+            <Button disabled={loading} type="submit">{t("update")}</Button>
           </div>
         </form>
       </Form>
@@ -655,33 +754,35 @@ export const ApplicationForm: FC<TApplicationForm> = ({ application }) => {
 
 function createChangeSnapshot(oldData: any, newData: any): string {
   const changes = [];
-  if (newData.status !== oldData.status) {
-    changes.push(`status from "${oldData.status}" to "${newData.status}"`);
+  const compareValues = (oldVal: any, newVal: any) => 
+    (oldVal === null || oldVal === undefined) ? 
+    (newVal === null || newVal === undefined) : 
+    oldVal === newVal;
+
+  if (!compareValues(oldData.status, newData.status)) {
+    changes.push(`Status from "${oldData.status ?? ''}" to "${newData.status ?? ''}"`);
   }
-  if (newData.adminPoints !== oldData.adminPoints) {
-    changes.push(
-      `admin points from "${oldData.adminPoints}" to "${newData.adminPoints}"`
-    );
+  if (!compareValues(oldData.adminPoints, newData.adminPoints)) {
+    changes.push(`Admin points from "${oldData.adminPoints ?? ''}" to "${newData.adminPoints ?? ''}"`);
   }
-  if (newData.isFamilyIncomeVerified !== oldData.isFamilyIncomeVerified) {
-    changes.push(
-      `family income verification from "${
-        oldData.isFamilyIncomeVerified ? "yes" : "no"
-      }" to "${newData.isFamilyIncomeVerified ? "yes" : "no"}"`
-    );
+  if (!compareValues(oldData.isFamilyIncomeVerified, newData.isFamilyIncomeVerified)) {
+    changes.push(`Family income verification from "${oldData.isFamilyIncomeVerified ? 'yes' : 'no'}" to "${newData.isFamilyIncomeVerified ? 'yes' : 'no'}"`);
   }
-  if (newData.verifiedGPA !== oldData.verifiedGPA) {
-    changes.push(
-      `verified GPA from "${oldData.verifiedGPA}" to "${newData.verifiedGPA}"`
-    );
+  if (!compareValues(oldData.verifiedGPA, newData.verifiedGPA)) {
+    changes.push(`Verified GPA from "${oldData.verifiedGPA ?? ''}" to "${newData.verifiedGPA ?? ''}"`);
   }
-  if (newData.gpa !== oldData.gpa) {
-    changes.push(`GPA from "${oldData.gpa}" to "${newData.gpa}"`);
+  if (!compareValues(oldData.gpa, newData.gpa)) {
+    changes.push(`GPA from "${oldData.gpa ?? ''}" to "${newData.gpa ?? ''}"`);
   }
-  if (newData.reason !== oldData.reason) {
-    changes.push(
-      `Student reason from "${oldData.reason}" to "${newData.reason}"`
-    );
+  if (!compareValues(oldData.reason, newData.reason)) {
+    changes.push(`Student reason from "${oldData.reason ?? ''}" to "${newData.reason ?? ''}"`);
+  }
+  if (!compareValues(oldData.programId, newData.programId)) {
+    changes.push(`Program from "${oldData.program?.name ?? oldData.programId ?? ''}" to "${newData.program?.name ?? newData.programId ?? ''}"`);
+  }
+
+  if (!compareValues(oldData.allProgramsTextOption, newData.allProgramsTextOption)) {
+    changes.push(`All programs from "${oldData.allProgramsTextOption ?? '-'}" to "${newData.allProgramsTextOption ?? '-'}"`);
   }
 
   return changes.join(", ");

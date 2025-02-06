@@ -79,6 +79,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 const MasterApplicationInfo: FC<Props> = (props) => {
   const { t } = useTranslation("applications");
+  const { t: tPageTitle } = useTranslation("pageTitles");
   const { t: tCommon } = useTranslation("common");
 
   const { locale } = useRouter();
@@ -89,15 +90,15 @@ const MasterApplicationInfo: FC<Props> = (props) => {
 
   return (
     <div>
-      <PageComponent title={"ApplicationInfo"}>
+      <PageComponent title={"MApplicationInfo"}>
         <button className="flex-1 btn btn-ghost" onClick={goBack}>
           <IoMdArrowRoundBack />
 
           {tCommon("back")}
         </button>
         <Toaster />
-        <div className="flex items-center justify-between">
-          <div className="text-2xl font-semibold ">{t("application")}</div>
+        <div className="flex justify-between items-center">
+          <div className="text-2xl font-semibold">{tPageTitle("MApplication")}</div>
           {/* TODO add this url to env */}
           <DownloadFileFromUrl
             url={`https://a69a50c47l.execute-api.us-east-1.amazonaws.com/default/applications/pdf?applicationId=${
@@ -105,7 +106,7 @@ const MasterApplicationInfo: FC<Props> = (props) => {
             }&lang=${locale ?? "en"}`}
             fileName={`${props.application.student?.cpr} Application`}
           >
-            <div className="flex items-center gap-2">
+            <div className="flex gap-2 items-center">
               <FiPrinter />
               {t("print")}
             </div>
@@ -113,10 +114,10 @@ const MasterApplicationInfo: FC<Props> = (props) => {
         </div>
 
         {/*  */}
-        <div className="grid gap-3 p-4 my-4 border rounded-lg sm:grid-cols-2">
+        <div className="grid gap-3 p-4 my-4 rounded-lg border sm:grid-cols-2">
           <div className="flex flex-col gap-3">
             <p className="w-fit">{props.application.student?.fullName}</p>
-            <p className="p-1 border rounded-md w-fit">
+            <p className="p-1 rounded-md border w-fit">
               {props.application.student?.cpr}
             </p>
             <p className="w-fit">{props.application.student?.email}</p>
@@ -134,7 +135,7 @@ const MasterApplicationInfo: FC<Props> = (props) => {
             <p>{`${t("tableTitleGpa")} ${
               props.application?.verifiedGPA ?? props.application?.gpa ?? 0
             }`}</p>
-            <div className="flex items-center gap-4">
+            <div className="flex gap-4 items-center">
               <p>{t("tableTitleVerifiedGpa")}</p>
 
               {props.application.verifiedGPA ? (
@@ -143,7 +144,7 @@ const MasterApplicationInfo: FC<Props> = (props) => {
                 <FiAlertCircle className="text-warning" />
               )}
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex gap-4 items-center">
               <p>{t("adminPoints")}</p>
 
               {props.application.adminPoints ? (
@@ -152,7 +153,7 @@ const MasterApplicationInfo: FC<Props> = (props) => {
                 <FiAlertCircle className="text-warning" />
               )}
             </div>
-            <div className="flex items-center gap-4">
+            <div className="flex gap-4 items-center">
               <p>{t("isIncomeVerified")}</p>
 
               {props.application.isIncomeVerified ? (
@@ -174,7 +175,7 @@ const MasterApplicationInfo: FC<Props> = (props) => {
         </div>
 
         {props.scholarship.canCreateNewScholarship && (
-          <div className="grid p-6 mt-6 border rounded-md sm:grid-cols-2">
+          <div className="grid p-6 mt-6 rounded-md border sm:grid-cols-2">
             <div>
               <p className="font-medium">{t("thisApplicationIsApproved")}</p>
               {props.scholarship.scholarshipId ? (
@@ -183,7 +184,7 @@ const MasterApplicationInfo: FC<Props> = (props) => {
                 <p>{t("createScholarshipFor")}</p>
               )}
 
-              <p className="text-gray-500 pt-4">
+              <p className="pt-4 text-gray-500">
                 {`${t("major")} - ${props.application.major}`}
               </p>
               <p className="text-gray-500">

@@ -367,10 +367,10 @@ function useProviderStudent() {
       : undefined;
 
     if (student) {
-      const isMaster = student.m_applicantType.includes(ApplicantType.MASTER);
-      const isBachelor = student.m_applicantType.includes(
+      const isMaster = student.m_applicantType?.includes(ApplicantType.MASTER) ?? false;
+      const isBachelor = student.m_applicantType?.includes(
         ApplicantType.STUDENT
-      );
+      ) ?? false;
       const isBoth = isMaster && isBachelor;
 
       setApplicantType({ isMaster, isBachelor, isBoth });
@@ -415,6 +415,7 @@ export async function getApplicationByIdAPI(
       batch
       familyIncome
       studentName
+      allProgramsTextOption
       nationalityCategory
       isFamilyIncomeVerified
       adminPoints
@@ -450,6 +451,7 @@ export async function getApplicationByIdAPI(
           programID
           acceptanceLetterDoc
           program {
+          id
             name
             nameAr
             minimumGPA

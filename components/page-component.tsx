@@ -31,9 +31,9 @@ export const PageComponent: FC<PropsWithChildren<Props>> = (props) => {
         <div className="flex-none">
           <label
             htmlFor="my-drawer-2"
-            className="btn btn-primary drawer-button rounded-xl lg:hidden"
+            className="rounded-xl btn btn-primary drawer-button lg:hidden"
           >
-            <GiHamburgerMenu className=" fill-white" />
+            <GiHamburgerMenu className="fill-white" />
           </label>
         </div>
         <div className="flex-1">
@@ -45,7 +45,7 @@ export const PageComponent: FC<PropsWithChildren<Props>> = (props) => {
             height={100}
           />
         </div>
-        <div className="flex flex-col items-center justify-center p-3 text-center rounded-lg bg-zinc-100">
+        <div className="flex flex-col justify-center items-center p-3 text-center rounded-lg bg-zinc-100">
           <p className="text-zinc-500">{user?.getUsername()}</p>
         </div>
       </div>
@@ -60,7 +60,7 @@ export const PageComponent: FC<PropsWithChildren<Props>> = (props) => {
         <div className="drawer-content">
           {isInitializing ? (
             <div className="flex items-center justify-center flex-col w-full h-[100svh] bg-gray-200 animate-pulse">
-              <div className="flex items-center gap-2">
+              <div className="flex gap-2 items-center">
                 <span className="loading"></span>
                 {` ${tCommon("loading")} `}
               </div>
@@ -72,7 +72,7 @@ export const PageComponent: FC<PropsWithChildren<Props>> = (props) => {
               ) : (
                 user?.challengeName !== "NEW_PASSWORD_REQUIRED" && (
                   <div className="m-4">
-                    <div className="container px-6 mx-auto mt-24 md:px-10 lg:px-16 ">
+                    <div className="container px-6 mx-auto mt-24 md:px-10 lg:px-16">
                       {props.children}
                     </div>
                   </div>

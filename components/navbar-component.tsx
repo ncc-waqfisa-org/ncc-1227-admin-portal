@@ -39,7 +39,7 @@ export default function NavbarComponent() {
             height={100}
           />
         </Link>
-        <div className="flex items-center gap-3">
+        <div className="flex gap-3 items-center">
           {!isHomePage && (
             <button className="flex-1 btn btn-ghost" onClick={goBack}>
               {t("Back")}
@@ -148,7 +148,7 @@ export default function NavbarComponent() {
         <></>
       ) : (
         <div className="flex flex-col">
-          <div className="flex justify-start px-4 py-2 text-sm w-52 text-gray rounded-xl hover:cursor-pointer">
+          <div className="flex justify-start px-4 py-2 w-52 text-sm rounded-xl text-gray hover:cursor-pointer">
             <Image
               src={"/logout_icon.svg"}
               alt={"Log out icon"}
