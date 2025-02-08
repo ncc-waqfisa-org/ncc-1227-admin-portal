@@ -396,12 +396,6 @@ const Education = () => {
                         />
                       </DialogContent>
                     </Dialog>
-                    // <SecondaryButton
-                    //   name=c}
-                    //   buttonClick={() =>
-                    //     setIsAddMasterUniDialogOpen(!isAddMasterUniDialogOpen)
-                    //   }
-                    // ></SecondaryButton>
                   )}
                 </div>
               )}

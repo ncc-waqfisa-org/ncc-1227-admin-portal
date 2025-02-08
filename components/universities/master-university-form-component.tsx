@@ -36,6 +36,7 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
+import { syncBahrainUniversities } from "../../src/graphql/queries";
 
 interface Props {
   type: "bahrainiUni" | "masterUni";
@@ -46,7 +47,7 @@ export default function MasterUniversityFormComponent({
   type,
   university,
 }: Props) {
-  const { push } = useRouter();
+  const { push, back } = useRouter();
 
   const { syncUniList } = useEducation();
   const { t } = useTranslation("education");
@@ -114,56 +115,65 @@ export default function MasterUniversityFormComponent({
 
       //TODO add await updateBahrainUniversityById
       type === "masterUni"
-        ? await toast.promise(
-            updateMasterUniversityById(updatedBahrainiUniDetails)
-              // .then(() => {})
-              .catch((err) => {
-                throw err;
-              }),
+        ? await toast
+            .promise(
+              updateMasterUniversityById(updatedBahrainiUniDetails)
+                // .then(() => {})
+                .catch((err) => {
+                  throw err;
+                }),
 
-            // updateUniversityById(updatedUniDetails)
-            //   .then(() => {
-            //     university?.Programs?.items.map(async (uniProgram) => {
-            //       if (uniProgram) {
-            //         let updateProgram: UpdateProgramMutationVariables = {
-            //           input: {
-            //             id: uniProgram.id,
-            //             isDeactivated: values.isDeactivated,
-            //             _version: uniProgram?._version,
-            //           },
-            //         };
-            //         await updateProgramById(updateProgram)
-            //           .catch((err) => {
-            //             throw err;
-            //           })
-            //           .finally(async () => {
-            //             await syncUniList();
-            //             push("/education");
-            //           });
-            //       }
-            //     });
-            //   })
-            //   .catch((err) => {
-            //     throw err;
-            //   }),
-            {
+              // updateUniversityById(updatedUniDetails)
+              //   .then(() => {
+              //     university?.Programs?.items.map(async (uniProgram) => {
+              //       if (uniProgram) {
+              //         let updateProgram: UpdateProgramMutationVariables = {
+              //           input: {
+              //             id: uniProgram.id,
+              //             isDeactivated: values.isDeactivated,
+              //             _version: uniProgram?._version,
+              //           },
+              //         };
+              //         await updateProgramById(updateProgram)
+              //           .catch((err) => {
+              //             throw err;
+              //           })
+              //           .finally(async () => {
+              //             await syncUniList();
+              //             push("/education");
+              //           });
+              //       }
+              //     });
+              //   })
+              //   .catch((err) => {
+              //     throw err;
+              //   }),
+              {
+                loading: "Loading...",
+                success: `${values.universityName} updated successfully`,
+                error: (error: any) => {
+                  return `${error?.message}`;
+                },
+              }
+            )
+            .then((res) => {
+              if (res) {
+                back();
+              }
+            })
+        : await toast
+            .promise(updateBahrainUniversityById(updatedMasterUniDetails), {
               loading: "Loading...",
               success: `${values.universityName} updated successfully`,
               error: (error: any) => {
                 return `${error?.message}`;
               },
-            }
-          )
-        : await toast.promise(
-            updateBahrainUniversityById(updatedMasterUniDetails),
-            {
-              loading: "Loading...",
-              success: `${values.universityName} updated successfully`,
-              error: (error: any) => {
-                return `${error?.message}`;
-              },
-            }
-          );
+            })
+            .then((res) => {
+              if (res) {
+                back();
+              }
+            });
     }
     setIsLoading(false);
   }
