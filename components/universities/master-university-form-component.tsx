@@ -194,7 +194,7 @@ export default function MasterUniversityFormComponent({
                           />
                         </div>
                       </FormControl>
-                      <FormDescription>{t("tableUniNameD")}</FormDescription>
+                      {/* <FormDescription>{t("tableUniNameD")}</FormDescription> */}
                       <FormMessage />
                     </FormItem>
                   )}
@@ -217,7 +217,7 @@ export default function MasterUniversityFormComponent({
                           />
                         </div>
                       </FormControl>
-                      <FormDescription>{t("tableUniArNameD")}</FormDescription>
+                      {/* <FormDescription>{t("tableUniArNameD")}</FormDescription> */}
                       <FormMessage />
                     </FormItem>
                   )}

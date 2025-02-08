@@ -33,6 +33,11 @@ import { BMTabs } from "../../components/BMTabs";
 import { MasterUniTabs } from "../../components/MasterUniTabs";
 import MasterUniversitiesTable from "../../components/universities/MasterUniversitiesTable";
 import AddMasterUniversityDialog from "../../components/universities/AddMasterUniversityDialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from "../../components/ui/dialog";
 
 interface InitialFilterValues {
   search: string;
@@ -84,7 +89,9 @@ const Education = () => {
     "bahrainiUni"
   );
 
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  // const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isAddMasterUniDialogOpen, setIsAddMasterUniDialogOpen] =
+    useState<boolean>(false);
 
   const initialFilterValues: InitialFilterValues = {
     search: "",
@@ -365,10 +372,36 @@ const Education = () => {
                     </div>
                   )}
                   {type === "masters" && (
-                    <SecondaryButton
-                      name={t("addUniversityButton")}
-                      buttonClick={() => setIsDialogOpen(!isDialogOpen)}
-                    ></SecondaryButton>
+                    <Dialog
+                      open={isAddMasterUniDialogOpen}
+                      onOpenChange={setIsAddMasterUniDialogOpen}
+                    >
+                      <DialogTrigger asChild>
+                        <button
+                          type="button"
+                          className=" bg-transparent min-w-[8rem] px-4 py-2 border-2 border-anzac-500 rounded-xl text-anzac-500 text-xs font-bold hover:cursor-pointer"
+                        >
+                          {t("addUniversityButton")}
+                        </button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <AddMasterUniversityDialog
+                          masterUniversities={masterUniversities}
+                          bahrainiUniversities={bahrainiUniversities}
+                          onCreateUniversity={(res) => {
+                            if (res) {
+                              setIsAddMasterUniDialogOpen(false);
+                            }
+                          }}
+                        />
+                      </DialogContent>
+                    </Dialog>
+                    // <SecondaryButton
+                    //   name=c}
+                    //   buttonClick={() =>
+                    //     setIsAddMasterUniDialogOpen(!isAddMasterUniDialogOpen)
+                    //   }
+                    // ></SecondaryButton>
                   )}
                 </div>
               )}
@@ -602,13 +635,6 @@ const Education = () => {
           </div>
         </div>
       </div>
-
-      <AddMasterUniversityDialog
-        masterUniversities={masterUniversities}
-        bahrainiUniversities={bahrainiUniversities}
-        isOpen={isDialogOpen}
-        onClose={(isDialogOpen: boolean) => setIsDialogOpen(!isDialogOpen)}
-      />
 
       {/* Education Table */}
       {type === "bachelor" && (
