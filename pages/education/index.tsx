@@ -282,8 +282,8 @@ const Education = () => {
   return (
     <PageComponent title={"Education"}>
       <Toaster />
-      <div className="mb-8 ">
-        <div className="text-2xl font-semibold ">
+      <div className="mb-8">
+        <div className="text-2xl font-semibold">
           {t(type === "masters" ? "m_educationTitle" : "educationTitle")}
         </div>
       </div>
@@ -315,7 +315,7 @@ const Education = () => {
       >
         {({ values, handleChange, isSubmitting, isValid }) => (
           <Form>
-            <div className="flex flex-wrap items-center justify-between w-full gap-4 p-4 my-8 border md:flex-row border-nccGray-100 rounded-xl bg-nccGray-100">
+            <div className="flex flex-wrap gap-4 justify-between items-center p-4 my-8 w-full rounded-xl border md:flex-row border-nccGray-100 bg-nccGray-100">
               <div className="grow">
                 <Field
                   className="w-full input input-bordered"
@@ -409,11 +409,11 @@ const Education = () => {
         <div className="relative modal-box">
           <label
             onClick={() => setIsSubmitted(!isSubmitted)}
-            className="absolute btn btn-sm btn-circle right-2 top-2"
+            className="absolute top-2 right-2 btn btn-sm btn-circle"
           >
             ✕
           </label>
-          <div className="p-4 mb-4 ">
+          <div className="p-4 mb-4">
             <div className="text-lg font-bold">{t("addUniversityButton")}</div>
             <div>
               <Formik
@@ -633,12 +633,12 @@ const Education = () => {
       {/* Education Table */}
       {type === "bachelor" && (
         <div>
-          <div className="w-full overflow-x-auto border rounded-xl">
+          <div className="overflow-x-auto w-full rounded-xl border">
             <table className="table w-full border-b table-auto">
               <thead className="">
                 <tr>
                   {EducationTableHeaders.map((title, index) => (
-                    <th className=" bg-nccGray-100" key={index}>
+                    <th className="bg-nccGray-100" key={index}>
                       {t(title)}
                     </th>
                   ))}
@@ -668,7 +668,7 @@ const Education = () => {
                             datum.isDeactivated && "text-gray-400"
                           }`}
                           onClick={() =>
-                            push(`education/universities/${datum.id}`)
+                            push(`/education/universities/${datum.id}`)
                           }
                         >{`${
                           locale == "ar" ? datum.nameAr ?? "-" : datum.name
@@ -708,7 +708,7 @@ const Education = () => {
                       >
                         {`${datum.extensionDuration ?? 0} ${t("days")}`}
                       </td>
-                      <td className="flex flex-wrap gap-3 overflow-x-scroll bg-transparent ">
+                      <td className="flex overflow-x-scroll flex-wrap gap-3 bg-transparent">
                         {datum.Programs?.items
                           ?.sort((a: any, b: any) => {
                             let bD = b.isDeactivated === true ? -1 : 1;
@@ -748,7 +748,7 @@ const Education = () => {
               </tbody>
             </table>
             {/* fake pagination */}
-            <div className="flex justify-center my-4 ">
+            <div className="flex justify-center my-4">
               <div className="join">
                 <button
                   className="btn btn-accent join-item text-anzac-500"
@@ -778,7 +778,7 @@ const Education = () => {
 
       {type === "masters" && (
         <>
-          <div className=" pb-4">
+          <div className="pb-4">
             <MasterUniTabs type={uniType} onChange={setUniType} />
           </div>
           <MasterUniversitiesTable

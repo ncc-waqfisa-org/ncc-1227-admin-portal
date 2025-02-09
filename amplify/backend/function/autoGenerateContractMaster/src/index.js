@@ -26,7 +26,7 @@ const {
   MasterUniversityTable:
     "MasterAppliedUniversities-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
   AdminTable: "Admin-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
-  S3Bucket: "ncc1227bucket2e2e0-masterdev",
+  S3Bucket: "ncc1227bucket65406-staging",
 };
 
 // Define constants for the HTML template location in S3

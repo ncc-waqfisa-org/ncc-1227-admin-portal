@@ -3,7 +3,7 @@ import { Auth as atAuth } from "@aws-amplify/auth";
 import atAPIG from "@aws-amplify/api-graphql";
 import config from "../src/aws-exports";
 
-const awsConfig = {
+export const awsConfig = {
   ...config,
   ssr: true,
   aws_cognito_identity_pool_id:

@@ -14,8 +14,9 @@ import { Admin, AdminRole } from "../src/API";
 import { useRouter } from "next/router";
 import { getAdminByCPR } from "../src/CustomAPI";
 import { useQueryClient } from "@tanstack/react-query";
+import { awsConfig } from "../src/aws_config";
 
-Auth.configure({ ...config, ssr: true });
+Auth.configure(awsConfig);
 
 interface IUseAuthContext {
   user: CognitoUser | undefined | null;

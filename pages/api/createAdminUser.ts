@@ -17,6 +17,7 @@ import {
 } from "@aws-sdk/client-cognito-identity-provider";
 import { AwsCredentialIdentity } from "@aws-sdk/types";
 import awsExports from "../../src/aws-exports";
+import { awsConfig } from "../../src/aws_config";
 require("dotenv").config({ path: ".env" });
 
 const credentials: AwsCredentialIdentity = {
@@ -24,7 +25,7 @@ const credentials: AwsCredentialIdentity = {
   secretAccessKey: process.env.CONFIG_SECRET_ACCESS_KEY ?? "",
 };
 
-Amplify.configure({ ...awsExports, ssr: true });
+Amplify.configure(awsConfig);
 
 const aws_cognito = new CognitoIdentityProvider({
   credentials: credentials,

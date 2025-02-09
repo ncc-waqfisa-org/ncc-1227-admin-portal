@@ -65,8 +65,7 @@ const Income = {
 const Major = {
   "SCIENCE": "SCIENCE",
   "TECHNOLOGY": "TECHNOLOGY",
-  "ENGINEERING": "ENGINEERING",
-  "MATH": "MATH"
+  "ENGINEERING": "ENGINEERING"
 };
 
 const { Attachment, Application, ProgramChoice, Program, University, AdminLog, StudentLog, Admin, ParentInfo, Student, Batch, Scholarship, Statistics, MasterBatch, MasterLog, BahrainUniversities, MasterApplication, MasterStatistics, MasterAttachment, MasterAppliedUniversities, MasterScholarship } = initSchema(schema);
