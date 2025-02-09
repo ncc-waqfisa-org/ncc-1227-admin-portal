@@ -614,7 +614,6 @@ export enum Major {
   SCIENCE = "SCIENCE",
   TECHNOLOGY = "TECHNOLOGY",
   ENGINEERING = "ENGINEERING",
-  MATH = "MATH",
 }
 
 

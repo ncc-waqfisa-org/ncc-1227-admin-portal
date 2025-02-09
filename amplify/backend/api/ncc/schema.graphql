@@ -439,5 +439,4 @@ enum Major {
   SCIENCE
   TECHNOLOGY
   ENGINEERING
-  MATH
 }

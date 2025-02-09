@@ -83,6 +83,8 @@ exports.handler = async (event) => {
       guardian_second_name: "m_guardianSecondName",
       guardian_third_name: "m_guardianThirdName",
       guardian_last_name: "m_guardianLastName",
+      guardian_email: "m_guardianEmail",
+      guardian_address: "m_guardianAddress",
     };
 
     /*******************************************************

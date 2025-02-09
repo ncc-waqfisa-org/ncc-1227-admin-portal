@@ -27,7 +27,7 @@ const {
   UniversityTable: "University-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
   ProgramTable: "Program-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
   AdminTable: "Admin-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
-  S3Bucket: "ncc1227bucket2e2e0-masterdev",
+  S3Bucket: "ncc1227bucket65406-staging",
   ParentInfoTable: "ParentInfo-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
 };
 

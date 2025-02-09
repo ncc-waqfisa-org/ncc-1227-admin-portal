@@ -3828,8 +3828,7 @@ export const schema = {
             "values": [
                 "SCIENCE",
                 "TECHNOLOGY",
-                "ENGINEERING",
-                "MATH"
+                "ENGINEERING"
             ]
         }
     },

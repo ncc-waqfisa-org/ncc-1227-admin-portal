@@ -8,7 +8,7 @@ const cognito = new AWS.CognitoIdentityServiceProvider();
 
 const { ScholarshipTable: SCHOLARSHIP_TABLE, S3Bucket: S3_BUCKET } = {
   ScholarshipTable: "Scholarship-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
-  S3Bucket: "ncc1227bucket2e2e0-masterdev",
+  S3Bucket: "ncc1227bucket65406-staging",
 };
 
 /**

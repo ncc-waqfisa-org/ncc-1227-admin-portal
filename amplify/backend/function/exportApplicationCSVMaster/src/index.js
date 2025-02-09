@@ -20,7 +20,7 @@ const {
   MASTER_APPLIED_UNIVERSITIES:
     "MasterAppliedUniversities-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
   AdminTable: "Admin-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
-  S3Bucket: "amplify-ncc-masterdev-2e2e0-deployment",
+  S3Bucket: "ncc1227bucket65406-staging",
 };
 
 /**
