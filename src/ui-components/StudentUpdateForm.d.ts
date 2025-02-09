@@ -68,6 +68,8 @@ export declare type StudentUpdateFormInputValues = {
     m_guardianSecondName?: string;
     m_guardianThirdName?: string;
     m_guardianLastName?: string;
+    m_guardianEmail?: string;
+    m_guardianAddress?: string;
 };
 export declare type StudentUpdateFormValidationValues = {
     cpr?: ValidationFunction<string>;
@@ -115,6 +117,8 @@ export declare type StudentUpdateFormValidationValues = {
     m_guardianSecondName?: ValidationFunction<string>;
     m_guardianThirdName?: ValidationFunction<string>;
     m_guardianLastName?: ValidationFunction<string>;
+    m_guardianEmail?: ValidationFunction<string>;
+    m_guardianAddress?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type StudentUpdateFormOverridesProps = {
@@ -164,6 +168,8 @@ export declare type StudentUpdateFormOverridesProps = {
     m_guardianSecondName?: PrimitiveOverrideProps<TextFieldProps>;
     m_guardianThirdName?: PrimitiveOverrideProps<TextFieldProps>;
     m_guardianLastName?: PrimitiveOverrideProps<TextFieldProps>;
+    m_guardianEmail?: PrimitiveOverrideProps<TextFieldProps>;
+    m_guardianAddress?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type StudentUpdateFormProps = React.PropsWithChildren<{
     overrides?: StudentUpdateFormOverridesProps | undefined | null;

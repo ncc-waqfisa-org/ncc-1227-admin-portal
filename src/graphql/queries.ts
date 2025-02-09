@@ -219,6 +219,8 @@ export const getApplication = /* GraphQL */ `query GetApplication($id: ID!) {
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -879,6 +881,8 @@ export const getStudentLog = /* GraphQL */ `query GetStudentLog($id: ID!) {
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -1080,6 +1084,7 @@ export const getParentInfo = /* GraphQL */ `query GetParentInfo($id: ID!) {
     guardianSecondName
     guardianThirdName
     guardianLastName
+    guardianEmail
     createdAt
     updatedAt
     _version
@@ -1115,6 +1120,7 @@ export const listParentInfos = /* GraphQL */ `query ListParentInfos(
       guardianSecondName
       guardianThirdName
       guardianLastName
+      guardianEmail
       createdAt
       updatedAt
       _version
@@ -1160,6 +1166,7 @@ export const syncParentInfos = /* GraphQL */ `query SyncParentInfos(
       guardianSecondName
       guardianThirdName
       guardianLastName
+      guardianEmail
       createdAt
       updatedAt
       _version
@@ -1220,6 +1227,7 @@ export const getStudent = /* GraphQL */ `query GetStudent($cpr: String!) {
       guardianSecondName
       guardianThirdName
       guardianLastName
+      guardianEmail
       createdAt
       updatedAt
       _version
@@ -1282,6 +1290,8 @@ export const getStudent = /* GraphQL */ `query GetStudent($cpr: String!) {
     m_guardianSecondName
     m_guardianThirdName
     m_guardianLastName
+    m_guardianEmail
+    m_guardianAddress
     createdAt
     updatedAt
     _version
@@ -1356,6 +1366,8 @@ export const listStudents = /* GraphQL */ `query ListStudents(
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -1432,6 +1444,8 @@ export const syncStudents = /* GraphQL */ `query SyncStudents(
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -1951,6 +1965,8 @@ export const getMasterLog = /* GraphQL */ `query GetMasterLog($id: ID!) {
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -2238,6 +2254,8 @@ export const getMasterApplication = /* GraphQL */ `query GetMasterApplication($i
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -2254,6 +2272,7 @@ export const getMasterApplication = /* GraphQL */ `query GetMasterApplication($i
     reason
     income
     incomeDoc
+    toeflIELTSScore
     createdAt
     updatedAt
     _version
@@ -2298,6 +2317,7 @@ export const listMasterApplications = /* GraphQL */ `query ListMasterApplication
       reason
       income
       incomeDoc
+      toeflIELTSScore
       createdAt
       updatedAt
       _version
@@ -2348,6 +2368,7 @@ export const syncMasterApplications = /* GraphQL */ `query SyncMasterApplication
       reason
       income
       incomeDoc
+      toeflIELTSScore
       createdAt
       updatedAt
       _version
@@ -2693,6 +2714,7 @@ export const getMasterScholarship = /* GraphQL */ `query GetMasterScholarship($i
       reason
       income
       incomeDoc
+      toeflIELTSScore
       createdAt
       updatedAt
       _version
@@ -3306,6 +3328,8 @@ export const studentsByNationalityCategoryAndGraduationDate = /* GraphQL */ `que
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -3384,6 +3408,8 @@ export const studentsByM_universityID = /* GraphQL */ `query StudentsByM_univers
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -3630,6 +3656,7 @@ export const masterApplicationsByIdAndDateTime = /* GraphQL */ `query MasterAppl
       reason
       income
       incomeDoc
+      toeflIELTSScore
       createdAt
       updatedAt
       _version
@@ -3684,6 +3711,7 @@ export const masterApplicationsByNationalityCategoryAndBatch = /* GraphQL */ `qu
       reason
       income
       incomeDoc
+      toeflIELTSScore
       createdAt
       updatedAt
       _version
@@ -3738,6 +3766,7 @@ export const masterApplicationsByStudentCPRAndGpa = /* GraphQL */ `query MasterA
       reason
       income
       incomeDoc
+      toeflIELTSScore
       createdAt
       updatedAt
       _version
@@ -3792,6 +3821,7 @@ export const masterApplicationsByBatchAndStatus = /* GraphQL */ `query MasterApp
       reason
       income
       incomeDoc
+      toeflIELTSScore
       createdAt
       updatedAt
       _version
@@ -3846,6 +3876,7 @@ export const masterApplicationsByScoreAndStatus = /* GraphQL */ `query MasterApp
       reason
       income
       incomeDoc
+      toeflIELTSScore
       createdAt
       updatedAt
       _version
@@ -3900,6 +3931,7 @@ export const masterApplicationsByProcessedAndBatch = /* GraphQL */ `query Master
       reason
       income
       incomeDoc
+      toeflIELTSScore
       createdAt
       updatedAt
       _version

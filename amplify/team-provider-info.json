@@ -74,7 +74,7 @@
         },
         "signScholarship": {
           "deploymentBucketName": "amplify-ncc-masterdev-2e2e0-deployment",
-          "s3Key": "amplify-builds/signScholarship-5363617a387746486149-build.zip"
+          "s3Key": "amplify-builds/signScholarship-4b75635433586f2b7549-build.zip"
         },
         "signUp": {
           "deploymentBucketName": "amplify-ncc-masterdev-2e2e0-deployment",
@@ -118,7 +118,7 @@
         },
         "SignUpMaster": {
           "deploymentBucketName": "amplify-ncc-masterdev-2e2e0-deployment",
-          "s3Key": "amplify-builds/SignUpMaster-515248794e45356a4d31-build.zip"
+          "s3Key": "amplify-builds/SignUpMaster-614b466d625432357045-build.zip"
         },
         "exportEligibleCsvMaster": {
           "deploymentBucketName": "amplify-ncc-masterdev-2e2e0-deployment",

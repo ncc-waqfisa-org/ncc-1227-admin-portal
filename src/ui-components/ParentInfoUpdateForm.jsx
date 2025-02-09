@@ -38,6 +38,7 @@ export default function ParentInfoUpdateForm(props) {
     guardianSecondName: "",
     guardianThirdName: "",
     guardianLastName: "",
+    guardianEmail: "",
   };
   const [guardianFullName, setGuardianFullName] = React.useState(
     initialValues.guardianFullName
@@ -76,6 +77,9 @@ export default function ParentInfoUpdateForm(props) {
   const [guardianLastName, setGuardianLastName] = React.useState(
     initialValues.guardianLastName
   );
+  const [guardianEmail, setGuardianEmail] = React.useState(
+    initialValues.guardianEmail
+  );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = parentInfoRecord
@@ -96,6 +100,7 @@ export default function ParentInfoUpdateForm(props) {
     setGuardianSecondName(cleanValues.guardianSecondName);
     setGuardianThirdName(cleanValues.guardianThirdName);
     setGuardianLastName(cleanValues.guardianLastName);
+    setGuardianEmail(cleanValues.guardianEmail);
     setErrors({});
   };
   const [parentInfoRecord, setParentInfoRecord] =
@@ -126,6 +131,7 @@ export default function ParentInfoUpdateForm(props) {
     guardianSecondName: [],
     guardianThirdName: [],
     guardianLastName: [],
+    guardianEmail: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -168,6 +174,7 @@ export default function ParentInfoUpdateForm(props) {
           guardianSecondName,
           guardianThirdName,
           guardianLastName,
+          guardianEmail,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -238,6 +245,7 @@ export default function ParentInfoUpdateForm(props) {
               guardianSecondName,
               guardianThirdName,
               guardianLastName,
+              guardianEmail,
             };
             const result = onChange(modelFields);
             value = result?.guardianFullName ?? value;
@@ -276,6 +284,7 @@ export default function ParentInfoUpdateForm(props) {
               guardianSecondName,
               guardianThirdName,
               guardianLastName,
+              guardianEmail,
             };
             const result = onChange(modelFields);
             value = result?.relation ?? value;
@@ -314,6 +323,7 @@ export default function ParentInfoUpdateForm(props) {
               guardianSecondName,
               guardianThirdName,
               guardianLastName,
+              guardianEmail,
             };
             const result = onChange(modelFields);
             value = result?.guardianCPR ?? value;
@@ -352,6 +362,7 @@ export default function ParentInfoUpdateForm(props) {
               guardianSecondName,
               guardianThirdName,
               guardianLastName,
+              guardianEmail,
             };
             const result = onChange(modelFields);
             value = result?.primaryMobile ?? value;
@@ -390,6 +401,7 @@ export default function ParentInfoUpdateForm(props) {
               guardianSecondName,
               guardianThirdName,
               guardianLastName,
+              guardianEmail,
             };
             const result = onChange(modelFields);
             value = result?.secondaryMobile ?? value;
@@ -428,6 +440,7 @@ export default function ParentInfoUpdateForm(props) {
               guardianSecondName,
               guardianThirdName,
               guardianLastName,
+              guardianEmail,
             };
             const result = onChange(modelFields);
             value = result?.fatherFullName ?? value;
@@ -466,6 +479,7 @@ export default function ParentInfoUpdateForm(props) {
               guardianSecondName,
               guardianThirdName,
               guardianLastName,
+              guardianEmail,
             };
             const result = onChange(modelFields);
             value = result?.fatherCPR ?? value;
@@ -504,6 +518,7 @@ export default function ParentInfoUpdateForm(props) {
               guardianSecondName,
               guardianThirdName,
               guardianLastName,
+              guardianEmail,
             };
             const result = onChange(modelFields);
             value = result?.motherFullName ?? value;
@@ -542,6 +557,7 @@ export default function ParentInfoUpdateForm(props) {
               guardianSecondName,
               guardianThirdName,
               guardianLastName,
+              guardianEmail,
             };
             const result = onChange(modelFields);
             value = result?.motherCPR ?? value;
@@ -584,6 +600,7 @@ export default function ParentInfoUpdateForm(props) {
               guardianSecondName,
               guardianThirdName,
               guardianLastName,
+              guardianEmail,
             };
             const result = onChange(modelFields);
             value = result?.numberOfFamilyMembers ?? value;
@@ -624,6 +641,7 @@ export default function ParentInfoUpdateForm(props) {
               guardianSecondName,
               guardianThirdName,
               guardianLastName,
+              guardianEmail,
             };
             const result = onChange(modelFields);
             value = result?.address ?? value;
@@ -662,6 +680,7 @@ export default function ParentInfoUpdateForm(props) {
               guardianSecondName,
               guardianThirdName,
               guardianLastName,
+              guardianEmail,
             };
             const result = onChange(modelFields);
             value = result?.guardianFirstName ?? value;
@@ -702,6 +721,7 @@ export default function ParentInfoUpdateForm(props) {
               guardianSecondName: value,
               guardianThirdName,
               guardianLastName,
+              guardianEmail,
             };
             const result = onChange(modelFields);
             value = result?.guardianSecondName ?? value;
@@ -742,6 +762,7 @@ export default function ParentInfoUpdateForm(props) {
               guardianSecondName,
               guardianThirdName: value,
               guardianLastName,
+              guardianEmail,
             };
             const result = onChange(modelFields);
             value = result?.guardianThirdName ?? value;
@@ -782,6 +803,7 @@ export default function ParentInfoUpdateForm(props) {
               guardianSecondName,
               guardianThirdName,
               guardianLastName: value,
+              guardianEmail,
             };
             const result = onChange(modelFields);
             value = result?.guardianLastName ?? value;
@@ -795,6 +817,45 @@ export default function ParentInfoUpdateForm(props) {
         errorMessage={errors.guardianLastName?.errorMessage}
         hasError={errors.guardianLastName?.hasError}
         {...getOverrideProps(overrides, "guardianLastName")}
+      ></TextField>
+      <TextField
+        label="Guardian email"
+        isRequired={false}
+        isReadOnly={false}
+        value={guardianEmail}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              guardianFullName,
+              relation,
+              guardianCPR,
+              primaryMobile,
+              secondaryMobile,
+              fatherFullName,
+              fatherCPR,
+              motherFullName,
+              motherCPR,
+              numberOfFamilyMembers,
+              address,
+              guardianFirstName,
+              guardianSecondName,
+              guardianThirdName,
+              guardianLastName,
+              guardianEmail: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.guardianEmail ?? value;
+          }
+          if (errors.guardianEmail?.hasError) {
+            runValidationTasks("guardianEmail", value);
+          }
+          setGuardianEmail(value);
+        }}
+        onBlur={() => runValidationTasks("guardianEmail", guardianEmail)}
+        errorMessage={errors.guardianEmail?.errorMessage}
+        hasError={errors.guardianEmail?.hasError}
+        {...getOverrideProps(overrides, "guardianEmail")}
       ></TextField>
       <Flex
         justifyContent="space-between"

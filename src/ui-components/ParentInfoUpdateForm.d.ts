@@ -38,6 +38,7 @@ export declare type ParentInfoUpdateFormInputValues = {
     guardianSecondName?: string;
     guardianThirdName?: string;
     guardianLastName?: string;
+    guardianEmail?: string;
 };
 export declare type ParentInfoUpdateFormValidationValues = {
     guardianFullName?: ValidationFunction<string>;
@@ -55,6 +56,7 @@ export declare type ParentInfoUpdateFormValidationValues = {
     guardianSecondName?: ValidationFunction<string>;
     guardianThirdName?: ValidationFunction<string>;
     guardianLastName?: ValidationFunction<string>;
+    guardianEmail?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type ParentInfoUpdateFormOverridesProps = {
@@ -74,6 +76,7 @@ export declare type ParentInfoUpdateFormOverridesProps = {
     guardianSecondName?: PrimitiveOverrideProps<TextFieldProps>;
     guardianThirdName?: PrimitiveOverrideProps<TextFieldProps>;
     guardianLastName?: PrimitiveOverrideProps<TextFieldProps>;
+    guardianEmail?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type ParentInfoUpdateFormProps = React.PropsWithChildren<{
     overrides?: ParentInfoUpdateFormOverridesProps | undefined | null;

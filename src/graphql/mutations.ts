@@ -207,6 +207,8 @@ export const createApplication = /* GraphQL */ `mutation CreateApplication(
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -368,6 +370,8 @@ export const updateApplication = /* GraphQL */ `mutation UpdateApplication(
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -529,6 +533,8 @@ export const deleteApplication = /* GraphQL */ `mutation DeleteApplication(
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -1234,6 +1240,8 @@ export const createStudentLog = /* GraphQL */ `mutation CreateStudentLog(
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -1315,6 +1323,8 @@ export const updateStudentLog = /* GraphQL */ `mutation UpdateStudentLog(
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -1396,6 +1406,8 @@ export const deleteStudentLog = /* GraphQL */ `mutation DeleteStudentLog(
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -1520,6 +1532,7 @@ export const createParentInfo = /* GraphQL */ `mutation CreateParentInfo(
     guardianSecondName
     guardianThirdName
     guardianLastName
+    guardianEmail
     createdAt
     updatedAt
     _version
@@ -1553,6 +1566,7 @@ export const updateParentInfo = /* GraphQL */ `mutation UpdateParentInfo(
     guardianSecondName
     guardianThirdName
     guardianLastName
+    guardianEmail
     createdAt
     updatedAt
     _version
@@ -1586,6 +1600,7 @@ export const deleteParentInfo = /* GraphQL */ `mutation DeleteParentInfo(
     guardianSecondName
     guardianThirdName
     guardianLastName
+    guardianEmail
     createdAt
     updatedAt
     _version
@@ -1645,6 +1660,7 @@ export const createStudent = /* GraphQL */ `mutation CreateStudent(
       guardianSecondName
       guardianThirdName
       guardianLastName
+      guardianEmail
       createdAt
       updatedAt
       _version
@@ -1707,6 +1723,8 @@ export const createStudent = /* GraphQL */ `mutation CreateStudent(
     m_guardianSecondName
     m_guardianThirdName
     m_guardianLastName
+    m_guardianEmail
+    m_guardianAddress
     createdAt
     updatedAt
     _version
@@ -1766,6 +1784,7 @@ export const updateStudent = /* GraphQL */ `mutation UpdateStudent(
       guardianSecondName
       guardianThirdName
       guardianLastName
+      guardianEmail
       createdAt
       updatedAt
       _version
@@ -1828,6 +1847,8 @@ export const updateStudent = /* GraphQL */ `mutation UpdateStudent(
     m_guardianSecondName
     m_guardianThirdName
     m_guardianLastName
+    m_guardianEmail
+    m_guardianAddress
     createdAt
     updatedAt
     _version
@@ -1887,6 +1908,7 @@ export const deleteStudent = /* GraphQL */ `mutation DeleteStudent(
       guardianSecondName
       guardianThirdName
       guardianLastName
+      guardianEmail
       createdAt
       updatedAt
       _version
@@ -1949,6 +1971,8 @@ export const deleteStudent = /* GraphQL */ `mutation DeleteStudent(
     m_guardianSecondName
     m_guardianThirdName
     m_guardianLastName
+    m_guardianEmail
+    m_guardianAddress
     createdAt
     updatedAt
     _version
@@ -2452,6 +2476,8 @@ export const createMasterLog = /* GraphQL */ `mutation CreateMasterLog(
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -2532,6 +2558,8 @@ export const updateMasterLog = /* GraphQL */ `mutation UpdateMasterLog(
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -2612,6 +2640,8 @@ export const deleteMasterLog = /* GraphQL */ `mutation DeleteMasterLog(
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -2821,6 +2851,8 @@ export const createMasterApplication = /* GraphQL */ `mutation CreateMasterAppli
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -2837,6 +2869,7 @@ export const createMasterApplication = /* GraphQL */ `mutation CreateMasterAppli
     reason
     income
     incomeDoc
+    toeflIELTSScore
     createdAt
     updatedAt
     _version
@@ -2957,6 +2990,8 @@ export const updateMasterApplication = /* GraphQL */ `mutation UpdateMasterAppli
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -2973,6 +3008,7 @@ export const updateMasterApplication = /* GraphQL */ `mutation UpdateMasterAppli
     reason
     income
     incomeDoc
+    toeflIELTSScore
     createdAt
     updatedAt
     _version
@@ -3093,6 +3129,8 @@ export const deleteMasterApplication = /* GraphQL */ `mutation DeleteMasterAppli
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -3109,6 +3147,7 @@ export const deleteMasterApplication = /* GraphQL */ `mutation DeleteMasterAppli
     reason
     income
     incomeDoc
+    toeflIELTSScore
     createdAt
     updatedAt
     _version
@@ -3402,6 +3441,7 @@ export const createMasterScholarship = /* GraphQL */ `mutation CreateMasterSchol
       reason
       income
       incomeDoc
+      toeflIELTSScore
       createdAt
       updatedAt
       _version
@@ -3464,6 +3504,7 @@ export const updateMasterScholarship = /* GraphQL */ `mutation UpdateMasterSchol
       reason
       income
       incomeDoc
+      toeflIELTSScore
       createdAt
       updatedAt
       _version
@@ -3526,6 +3567,7 @@ export const deleteMasterScholarship = /* GraphQL */ `mutation DeleteMasterSchol
       reason
       income
       incomeDoc
+      toeflIELTSScore
       createdAt
       updatedAt
       _version

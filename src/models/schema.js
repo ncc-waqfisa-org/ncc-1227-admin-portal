@@ -1434,6 +1434,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "guardianEmail": {
+                    "name": "guardianEmail",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -1916,6 +1923,20 @@ export const schema = {
                 },
                 "m_guardianLastName": {
                     "name": "m_guardianLastName",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "m_guardianEmail": {
+                    "name": "m_guardianEmail",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "m_guardianAddress": {
+                    "name": "m_guardianAddress",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -3031,6 +3052,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "toeflIELTSScore": {
+                    "name": "toeflIELTSScore",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -3807,5 +3835,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "0a80051e78a0e2460f1b6e2d2856eb53"
+    "version": "5babf3b49991ee6a2a1753c58618ba2e"
 };

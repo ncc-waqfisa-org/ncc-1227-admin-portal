@@ -236,6 +236,8 @@ export default function StudentUpdateForm(props) {
     m_guardianSecondName: "",
     m_guardianThirdName: "",
     m_guardianLastName: "",
+    m_guardianEmail: "",
+    m_guardianAddress: "",
   };
   const [cpr, setCpr] = React.useState(initialValues.cpr);
   const [cprDoc, setCprDoc] = React.useState(initialValues.cprDoc);
@@ -337,6 +339,12 @@ export default function StudentUpdateForm(props) {
   const [m_guardianLastName, setM_guardianLastName] = React.useState(
     initialValues.m_guardianLastName
   );
+  const [m_guardianEmail, setM_guardianEmail] = React.useState(
+    initialValues.m_guardianEmail
+  );
+  const [m_guardianAddress, setM_guardianAddress] = React.useState(
+    initialValues.m_guardianAddress
+  );
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = studentRecord
@@ -389,6 +397,8 @@ export default function StudentUpdateForm(props) {
     setM_guardianSecondName(cleanValues.m_guardianSecondName);
     setM_guardianThirdName(cleanValues.m_guardianThirdName);
     setM_guardianLastName(cleanValues.m_guardianLastName);
+    setM_guardianEmail(cleanValues.m_guardianEmail);
+    setM_guardianAddress(cleanValues.m_guardianAddress);
     setErrors({});
   };
   const [studentRecord, setStudentRecord] = React.useState(studentModelProp);
@@ -465,6 +475,8 @@ export default function StudentUpdateForm(props) {
     m_guardianSecondName: [],
     m_guardianThirdName: [],
     m_guardianLastName: [],
+    m_guardianEmail: [],
+    m_guardianAddress: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -537,6 +549,8 @@ export default function StudentUpdateForm(props) {
           m_guardianSecondName,
           m_guardianThirdName,
           m_guardianLastName,
+          m_guardianEmail,
+          m_guardianAddress,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -637,6 +651,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.cpr ?? value;
@@ -705,6 +721,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.cprDoc ?? value;
@@ -773,6 +791,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.fullName ?? value;
@@ -845,6 +865,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.batch ?? value;
@@ -913,6 +935,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.email ?? value;
@@ -981,6 +1005,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.phone ?? value;
@@ -1049,6 +1075,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.gender ?? value;
@@ -1128,6 +1156,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.nationalityCategory ?? value;
@@ -1209,6 +1239,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.nationality ?? value;
@@ -1277,6 +1309,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.schoolName ?? value;
@@ -1345,6 +1379,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.schoolType ?? value;
@@ -1424,6 +1460,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.specialization ?? value;
@@ -1492,6 +1530,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.placeOfBirth ?? value;
@@ -1564,6 +1604,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.studentOrderAmongSiblings ?? value;
@@ -1637,6 +1679,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.familyIncome ?? value;
@@ -1736,6 +1780,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.familyIncomeProofDoc ?? value;
@@ -1802,6 +1848,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             values = result?.familyIncomeProofDocs ?? values;
@@ -1903,6 +1951,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.preferredLanguage ?? value;
@@ -1985,6 +2035,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.graduationDate ?? value;
@@ -2053,6 +2105,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.address ?? value;
@@ -2121,6 +2175,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.firstName ?? value;
@@ -2189,6 +2245,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.secondName ?? value;
@@ -2257,6 +2315,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.thirdName ?? value;
@@ -2325,6 +2385,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.lastName ?? value;
@@ -2393,6 +2455,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.dob ?? value;
@@ -2461,6 +2525,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.schoolMajor ?? value;
@@ -2529,6 +2595,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.m_firstName ?? value;
@@ -2597,6 +2665,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.m_secondName ?? value;
@@ -2665,6 +2735,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.m_thirdName ?? value;
@@ -2733,6 +2805,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.m_lastName ?? value;
@@ -2805,6 +2879,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.m_numberOfFamilyMembers ?? value;
@@ -2875,6 +2951,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.m_graduationYear ?? value;
@@ -2943,6 +3021,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.m_oldProgram ?? value;
@@ -3007,6 +3087,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             values = result?.m_applicantType ?? values;
@@ -3117,6 +3199,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.m_isEmployed ?? value;
@@ -3185,6 +3269,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.m_placeOfEmployment ?? value;
@@ -3255,6 +3341,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.m_income ?? value;
@@ -3334,6 +3422,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.m_incomeDoc ?? value;
@@ -3402,6 +3492,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.m_guardianCPR ?? value;
@@ -3470,6 +3562,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.m_guardianFullName ?? value;
@@ -3540,6 +3634,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.m_guardianCPRDoc ?? value;
@@ -3608,6 +3704,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.m_guardianFirstName ?? value;
@@ -3678,6 +3776,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName: value,
               m_guardianThirdName,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.m_guardianSecondName ?? value;
@@ -3748,6 +3848,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName: value,
               m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.m_guardianThirdName ?? value;
@@ -3818,6 +3920,8 @@ export default function StudentUpdateForm(props) {
               m_guardianSecondName,
               m_guardianThirdName,
               m_guardianLastName: value,
+              m_guardianEmail,
+              m_guardianAddress,
             };
             const result = onChange(modelFields);
             value = result?.m_guardianLastName ?? value;
@@ -3833,6 +3937,148 @@ export default function StudentUpdateForm(props) {
         errorMessage={errors.m_guardianLastName?.errorMessage}
         hasError={errors.m_guardianLastName?.hasError}
         {...getOverrideProps(overrides, "m_guardianLastName")}
+      ></TextField>
+      <TextField
+        label="M guardian email"
+        isRequired={false}
+        isReadOnly={false}
+        value={m_guardianEmail}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              cpr,
+              cprDoc,
+              fullName,
+              batch,
+              email,
+              phone,
+              gender,
+              nationalityCategory,
+              nationality,
+              schoolName,
+              schoolType,
+              specialization,
+              placeOfBirth,
+              studentOrderAmongSiblings,
+              familyIncome,
+              familyIncomeProofDoc,
+              familyIncomeProofDocs,
+              preferredLanguage,
+              graduationDate,
+              address,
+              firstName,
+              secondName,
+              thirdName,
+              lastName,
+              dob,
+              schoolMajor,
+              m_firstName,
+              m_secondName,
+              m_thirdName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
+              m_guardianFirstName,
+              m_guardianSecondName,
+              m_guardianThirdName,
+              m_guardianLastName,
+              m_guardianEmail: value,
+              m_guardianAddress,
+            };
+            const result = onChange(modelFields);
+            value = result?.m_guardianEmail ?? value;
+          }
+          if (errors.m_guardianEmail?.hasError) {
+            runValidationTasks("m_guardianEmail", value);
+          }
+          setM_guardianEmail(value);
+        }}
+        onBlur={() => runValidationTasks("m_guardianEmail", m_guardianEmail)}
+        errorMessage={errors.m_guardianEmail?.errorMessage}
+        hasError={errors.m_guardianEmail?.hasError}
+        {...getOverrideProps(overrides, "m_guardianEmail")}
+      ></TextField>
+      <TextField
+        label="M guardian address"
+        isRequired={false}
+        isReadOnly={false}
+        value={m_guardianAddress}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              cpr,
+              cprDoc,
+              fullName,
+              batch,
+              email,
+              phone,
+              gender,
+              nationalityCategory,
+              nationality,
+              schoolName,
+              schoolType,
+              specialization,
+              placeOfBirth,
+              studentOrderAmongSiblings,
+              familyIncome,
+              familyIncomeProofDoc,
+              familyIncomeProofDocs,
+              preferredLanguage,
+              graduationDate,
+              address,
+              firstName,
+              secondName,
+              thirdName,
+              lastName,
+              dob,
+              schoolMajor,
+              m_firstName,
+              m_secondName,
+              m_thirdName,
+              m_lastName,
+              m_numberOfFamilyMembers,
+              m_graduationYear,
+              m_oldProgram,
+              m_applicantType,
+              m_isEmployed,
+              m_placeOfEmployment,
+              m_income,
+              m_incomeDoc,
+              m_guardianCPR,
+              m_guardianFullName,
+              m_guardianCPRDoc,
+              m_guardianFirstName,
+              m_guardianSecondName,
+              m_guardianThirdName,
+              m_guardianLastName,
+              m_guardianEmail,
+              m_guardianAddress: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.m_guardianAddress ?? value;
+          }
+          if (errors.m_guardianAddress?.hasError) {
+            runValidationTasks("m_guardianAddress", value);
+          }
+          setM_guardianAddress(value);
+        }}
+        onBlur={() =>
+          runValidationTasks("m_guardianAddress", m_guardianAddress)
+        }
+        errorMessage={errors.m_guardianAddress?.errorMessage}
+        hasError={errors.m_guardianAddress?.hasError}
+        {...getOverrideProps(overrides, "m_guardianAddress")}
       ></TextField>
       <Flex
         justifyContent="space-between"
