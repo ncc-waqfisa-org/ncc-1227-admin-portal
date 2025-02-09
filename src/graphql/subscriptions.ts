@@ -203,6 +203,8 @@ export const onCreateApplication = /* GraphQL */ `subscription OnCreateApplicati
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -363,6 +365,8 @@ export const onUpdateApplication = /* GraphQL */ `subscription OnUpdateApplicati
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -523,6 +527,8 @@ export const onDeleteApplication = /* GraphQL */ `subscription OnDeleteApplicati
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -1203,6 +1209,8 @@ export const onCreateStudentLog = /* GraphQL */ `subscription OnCreateStudentLog
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -1283,6 +1291,8 @@ export const onUpdateStudentLog = /* GraphQL */ `subscription OnUpdateStudentLog
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -1363,6 +1373,8 @@ export const onDeleteStudentLog = /* GraphQL */ `subscription OnDeleteStudentLog
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -1477,6 +1489,7 @@ export const onCreateParentInfo = /* GraphQL */ `subscription OnCreateParentInfo
     guardianSecondName
     guardianThirdName
     guardianLastName
+    guardianEmail
     createdAt
     updatedAt
     _version
@@ -1509,6 +1522,7 @@ export const onUpdateParentInfo = /* GraphQL */ `subscription OnUpdateParentInfo
     guardianSecondName
     guardianThirdName
     guardianLastName
+    guardianEmail
     createdAt
     updatedAt
     _version
@@ -1541,6 +1555,7 @@ export const onDeleteParentInfo = /* GraphQL */ `subscription OnDeleteParentInfo
     guardianSecondName
     guardianThirdName
     guardianLastName
+    guardianEmail
     createdAt
     updatedAt
     _version
@@ -1597,6 +1612,7 @@ export const onCreateStudent = /* GraphQL */ `subscription OnCreateStudent($filt
       guardianSecondName
       guardianThirdName
       guardianLastName
+      guardianEmail
       createdAt
       updatedAt
       _version
@@ -1659,6 +1675,8 @@ export const onCreateStudent = /* GraphQL */ `subscription OnCreateStudent($filt
     m_guardianSecondName
     m_guardianThirdName
     m_guardianLastName
+    m_guardianEmail
+    m_guardianAddress
     createdAt
     updatedAt
     _version
@@ -1715,6 +1733,7 @@ export const onUpdateStudent = /* GraphQL */ `subscription OnUpdateStudent($filt
       guardianSecondName
       guardianThirdName
       guardianLastName
+      guardianEmail
       createdAt
       updatedAt
       _version
@@ -1777,6 +1796,8 @@ export const onUpdateStudent = /* GraphQL */ `subscription OnUpdateStudent($filt
     m_guardianSecondName
     m_guardianThirdName
     m_guardianLastName
+    m_guardianEmail
+    m_guardianAddress
     createdAt
     updatedAt
     _version
@@ -1833,6 +1854,7 @@ export const onDeleteStudent = /* GraphQL */ `subscription OnDeleteStudent($filt
       guardianSecondName
       guardianThirdName
       guardianLastName
+      guardianEmail
       createdAt
       updatedAt
       _version
@@ -1895,6 +1917,8 @@ export const onDeleteStudent = /* GraphQL */ `subscription OnDeleteStudent($filt
     m_guardianSecondName
     m_guardianThirdName
     m_guardianLastName
+    m_guardianEmail
+    m_guardianAddress
     createdAt
     updatedAt
     _version
@@ -2377,6 +2401,8 @@ export const onCreateMasterLog = /* GraphQL */ `subscription OnCreateMasterLog($
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -2454,6 +2480,8 @@ export const onUpdateMasterLog = /* GraphQL */ `subscription OnUpdateMasterLog($
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -2531,6 +2559,8 @@ export const onDeleteMasterLog = /* GraphQL */ `subscription OnDeleteMasterLog($
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -2736,6 +2766,8 @@ export const onCreateMasterApplication = /* GraphQL */ `subscription OnCreateMas
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -2752,6 +2784,7 @@ export const onCreateMasterApplication = /* GraphQL */ `subscription OnCreateMas
     reason
     income
     incomeDoc
+    toeflIELTSScore
     createdAt
     updatedAt
     _version
@@ -2871,6 +2904,8 @@ export const onUpdateMasterApplication = /* GraphQL */ `subscription OnUpdateMas
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -2887,6 +2922,7 @@ export const onUpdateMasterApplication = /* GraphQL */ `subscription OnUpdateMas
     reason
     income
     incomeDoc
+    toeflIELTSScore
     createdAt
     updatedAt
     _version
@@ -3006,6 +3042,8 @@ export const onDeleteMasterApplication = /* GraphQL */ `subscription OnDeleteMas
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       createdAt
       updatedAt
       _version
@@ -3022,6 +3060,7 @@ export const onDeleteMasterApplication = /* GraphQL */ `subscription OnDeleteMas
     reason
     income
     incomeDoc
+    toeflIELTSScore
     createdAt
     updatedAt
     _version
@@ -3305,6 +3344,7 @@ export const onCreateMasterScholarship = /* GraphQL */ `subscription OnCreateMas
       reason
       income
       incomeDoc
+      toeflIELTSScore
       createdAt
       updatedAt
       _version
@@ -3366,6 +3406,7 @@ export const onUpdateMasterScholarship = /* GraphQL */ `subscription OnUpdateMas
       reason
       income
       incomeDoc
+      toeflIELTSScore
       createdAt
       updatedAt
       _version
@@ -3427,6 +3468,7 @@ export const onDeleteMasterScholarship = /* GraphQL */ `subscription OnDeleteMas
       reason
       income
       incomeDoc
+      toeflIELTSScore
       createdAt
       updatedAt
       _version

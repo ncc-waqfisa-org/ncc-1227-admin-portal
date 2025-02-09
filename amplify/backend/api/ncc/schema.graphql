@@ -144,6 +144,7 @@ type ParentInfo @model @auth(rules: [{ allow: public }]) {
   guardianSecondName: String
   guardianThirdName: String
   guardianLastName: String
+  guardianEmail: String
 }
 
 enum Language {
@@ -225,6 +226,8 @@ type Student @model @auth(rules: [{ allow: public }]) {
   m_guardianSecondName: String
   m_guardianThirdName: String
   m_guardianLastName: String
+  m_guardianEmail: String
+  m_guardianAddress: String
 }
 
 type Batch @model @auth(rules: [{ allow: public }]) {
@@ -253,7 +256,6 @@ type Scholarship @model @auth(rules: [{ allow: public }]) {
   bankName: String
   IBAN: String
   IBANLetterDoc: String
-  # number of
   startDate: String
   scholarshipPeriod: Int
   numberOfSemesters: Int
@@ -355,7 +357,8 @@ type MasterApplication @model @auth(rules: [{ allow: public }]) {
   major: Major
   reason: String
   income: Income
-  incomeDoc: String # not used
+  incomeDoc: String
+  toeflIELTSScore: Float
 }
 
 type MasterStatistics @model @auth(rules: [{ allow: public }]) {

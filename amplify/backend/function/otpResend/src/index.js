@@ -1,14 +1,5 @@
 const AWS = require("aws-sdk");
 
-// Configuration Constants
-const {
-  UserPoolId: USER_POOL_ID,
-  ClientId: CLIENT_ID, // Ensure to add your Cognito App Client ID here
-} = {
-  UserPoolId: "us-east-1_79xE8d6FS",
-  ClientId: "55hv3u8tffa9qml7krg9n0cfuq",
-};
-
 // Initialize AWS Services
 const cognito = new AWS.CognitoIdentityServiceProvider();
 

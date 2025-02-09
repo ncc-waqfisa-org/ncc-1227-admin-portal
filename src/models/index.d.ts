@@ -478,6 +478,7 @@ type EagerParentInfo = {
   readonly guardianSecondName?: string | null;
   readonly guardianThirdName?: string | null;
   readonly guardianLastName?: string | null;
+  readonly guardianEmail?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -503,6 +504,7 @@ type LazyParentInfo = {
   readonly guardianSecondName?: string | null;
   readonly guardianThirdName?: string | null;
   readonly guardianLastName?: string | null;
+  readonly guardianEmail?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -571,6 +573,8 @@ type EagerStudent = {
   readonly m_guardianSecondName?: string | null;
   readonly m_guardianThirdName?: string | null;
   readonly m_guardianLastName?: string | null;
+  readonly m_guardianEmail?: string | null;
+  readonly m_guardianAddress?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -633,6 +637,8 @@ type LazyStudent = {
   readonly m_guardianSecondName?: string | null;
   readonly m_guardianThirdName?: string | null;
   readonly m_guardianLastName?: string | null;
+  readonly m_guardianEmail?: string | null;
+  readonly m_guardianAddress?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -936,6 +942,7 @@ type EagerMasterApplication = {
   readonly reason?: string | null;
   readonly income?: Income | keyof typeof Income | null;
   readonly incomeDoc?: string | null;
+  readonly toeflIELTSScore?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly masterApplicationAttachmentId?: string | null;
@@ -972,6 +979,7 @@ type LazyMasterApplication = {
   readonly reason?: string | null;
   readonly income?: Income | keyof typeof Income | null;
   readonly incomeDoc?: string | null;
+  readonly toeflIELTSScore?: number | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly masterApplicationAttachmentId?: string | null;

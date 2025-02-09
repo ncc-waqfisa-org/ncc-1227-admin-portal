@@ -101,9 +101,11 @@
   "income": "الدخل",
   "incomeDoc": "مستند الدخل",
   "formErrors": "حقول غير صالحة",
-  "guardianFirstName": "Guardian First Name",
-  "guardianSecondName": "Guardian Second Name",
-  "guardianThirdName": "Guardian Third Name",
-  "guardianLastName": "Guardian Last Name",
-  "dateOfBirth": "Date of Birth"
+  "guardianFirstName": "الوصي الاسم الأول",
+  "guardianSecondName": "الوصي الاسم الثاني",
+  "guardianThirdName": "الوصي الاسم الثالث",
+  "guardianLastName": "الوصي الاسم الأخير",
+  "dateOfBirth": "تاريخ الميلاد",
+  "guardianEmail": "تاريخ الميلاد",
+  "guardianAddress": "البريد الإلكتروني الوصي"
 }

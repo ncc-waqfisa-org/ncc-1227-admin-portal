@@ -15,8 +15,8 @@ const {
   StudentTable: STUDENT_TABLE,
   AdminTable: ADMIN_TABLE,
 } = {
-  UserPoolId: "us-east-1_79xE8d6FS",
-  ClientId: "55hv3u8tffa9qml7krg9n0cfuq",
+  UserPoolId: "us-east-1_ovqLD9Axf",
+  ClientId: "1q8g817vj439ucaig2uon92q86",
   StudentTable: "Student-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
   AdminTable: "Admin-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
 };
