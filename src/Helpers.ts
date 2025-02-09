@@ -104,11 +104,13 @@ export function calculateMasterScore({
   const gpaAs100 = (gpa / 4) * 100;
 
   let score = gpaAs100 * 0.7 + adminScore;
+
   if (income === Income.LESS_THAN_1500) {
     score += 20;
   } else if (income === Income.MORE_THAN_1500) {
     score += 10;
   }
+
   return round(score, 2);
 }
 

@@ -303,6 +303,7 @@ function useProviderStudent() {
       primaryMobile
       relation
       secondaryMobile
+      guardianEmail
     }
     applications {
       items {
@@ -317,6 +318,7 @@ function useProviderStudent() {
     }
     m_firstName
     m_secondName
+    m_thirdName
     m_lastName
     m_numberOfFamilyMembers
     m_graduationYear
@@ -336,6 +338,12 @@ function useProviderStudent() {
     m_incomeDoc
     m_guardianCPR
     m_guardianFullName
+    m_guardianFirstName
+    m_guardianSecondName
+    m_guardianThirdName
+    m_guardianLastName
+    m_guardianEmail
+    m_guardianAddress
     m_guardianCPRDoc
     m_masterApplications {
        items {
@@ -367,10 +375,10 @@ function useProviderStudent() {
       : undefined;
 
     if (student) {
-      const isMaster = student.m_applicantType?.includes(ApplicantType.MASTER) ?? false;
-      const isBachelor = student.m_applicantType?.includes(
-        ApplicantType.STUDENT
-      ) ?? false;
+      const isMaster =
+        student.m_applicantType?.includes(ApplicantType.MASTER) ?? false;
+      const isBachelor =
+        student.m_applicantType?.includes(ApplicantType.STUDENT) ?? false;
       const isBoth = isMaster && isBachelor;
 
       setApplicantType({ isMaster, isBachelor, isBoth });
@@ -575,6 +583,7 @@ export async function getMasterApplicationByIdAPI(
     _deleted
     id
     gpa
+    toeflIELTSScore
     dateTime
     batch
     createdAt
@@ -626,6 +635,8 @@ export async function getMasterApplicationByIdAPI(
       m_guardianSecondName
       m_guardianThirdName
       m_guardianLastName
+      m_guardianEmail
+      m_guardianAddress
       m_guardianCPRDoc
       dob
     }

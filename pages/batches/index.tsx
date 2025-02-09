@@ -99,7 +99,7 @@ const BatchesPage = () => {
                             className={` hover:bg-anzac-50 cursor-pointer hover:text-anzac-500 ${
                               datum.batch === dayjs().year() && "  bg-blue-50"
                             }`}
-                            onClick={() => push(`batches/${datum.batch}`)}
+                            onClick={() => push(`/batches/${datum.batch}`)}
                           >
                             <td
                               key={`${datum?.batch}-current`}
@@ -181,7 +181,7 @@ const BatchesPage = () => {
                               datum.batch === dayjs().year() && "  bg-blue-50"
                             }`}
                             onClick={() =>
-                              push(`batches/masters/${datum.batch}`)
+                              push(`/batches/masters/${datum.batch}`)
                             }
                           >
                             <td

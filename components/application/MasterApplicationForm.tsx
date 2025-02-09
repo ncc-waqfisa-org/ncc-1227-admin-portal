@@ -87,6 +87,7 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
   const formSchema = z.object({
     adminPoints: z.number().min(0).max(10).optional(),
     gpa: z.number().min(0).max(100),
+    toelfIELTSScore: z.number().min(0),
     verifiedGPA: z.number().min(0).max(100).optional().nullable(),
     isIncomeVerified: z.boolean().default(false),
     status: z.enum(Object.values(Status) as [Status]),
@@ -123,6 +124,7 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
       adminPoints: application.adminPoints ?? undefined,
       isIncomeVerified: application.isIncomeVerified ?? false,
       gpa: application.gpa ?? 0,
+      toelfIELTSScore: application.toeflIELTSScore ?? 0,
       verifiedGPA: application.verifiedGPA ?? undefined,
       status: application.status ?? undefined,
       acceptanceLetter:
@@ -199,6 +201,7 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
         adminPoints: values.adminPoints,
         isIncomeVerified: values.isIncomeVerified,
         gpa: values.gpa,
+        toeflIELTSScore: values.toelfIELTSScore,
         score: calculateMasterScore({
           income: application.income,
           gpa: values.verifiedGPA ?? values.gpa,
@@ -239,6 +242,7 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
           isIncomeVerified: application.isIncomeVerified,
           verifiedGPA: application.verifiedGPA,
           gpa: application.gpa,
+          toelfIELTSScore: application.toeflIELTSScore,
           reason: application.reason,
         };
 
@@ -248,6 +252,7 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
           isIncomeVerified: values.isIncomeVerified,
           verifiedGPA: values.verifiedGPA,
           gpa: values.gpa,
+          toelfIELTSScore: values.toelfIELTSScore,
           reason: values.reason,
         };
 
@@ -277,8 +282,9 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
                 income: updatedData.income ?? Income.LESS_THAN_1500,
                 dateTime: new Date(),
                 studentName:
-                  (updatedData.student?.m_firstName ? `${updatedData.student?.m_firstName} ${updatedData.student?.m_secondName} ${updatedData.student?.m_thirdName} ${updatedData.student?.m_lastName}` : 
-                  updatedData.student?.fullName ) ?? "-",
+                  (updatedData.student?.m_firstName
+                    ? `${updatedData.student?.m_firstName} ${updatedData.student?.m_secondName} ${updatedData.student?.m_thirdName} ${updatedData.student?.m_lastName}`
+                    : updatedData.student?.fullName) ?? "-",
                 status: updatedData.status ?? Status.WITHDRAWN,
                 universityName: updatedData.university?.universityName ?? "",
                 universityNameAr:
@@ -300,6 +306,7 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
                   : new Date(),
                 studentCPR: updatedData.studentCPR ?? "",
                 gpa: updatedData.gpa ?? 0,
+                toeflIELTSScore: updatedData.toeflIELTSScore ?? 0,
                 program: updatedData.program ?? "",
                 updatedAt: updatedData.updatedAt
                   ? new Date(updatedData.updatedAt)
@@ -502,7 +509,7 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
             control={form.control}
             name="isIncomeVerified"
             render={({ field }) => (
-              <FormItem className="flex flex-row gap-2 justify-between items-center p-4 rounded-lg border">
+              <FormItem className="flex flex-row gap-2 justify-between items-center p-4 rounded-lg border col-span-2">
                 <div className="space-y-0.5">
                   <div className="flex gap-2 items-center">
                     <FormLabel className="text-base">
@@ -523,21 +530,27 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
                     <FileIcon />
 
                     <GetStorageLinkComponent
-                      storageKey={application.incomeDoc ?? application.student?.m_incomeDoc}
+                      storageKey={
+                        application.incomeDoc ??
+                        application.student?.m_incomeDoc
+                      }
                       showName
                     />
                   </div>
                 </div>
-                
+
                 <FormControl>
-                  {(application.incomeDoc ?? application.student?.m_incomeDoc) &&<div className="flex flex-col gap-1 items-center">
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                    className="data-[state=checked]:bg-success"
-                  />
-                  <p>{t("verified")}</p>
-                  </div>}
+                  {(application.incomeDoc ??
+                    application.student?.m_incomeDoc) && (
+                    <div className="flex flex-col gap-1 items-center">
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        className="data-[state=checked]:bg-success"
+                      />
+                      <p>{t("verified")}</p>
+                    </div>
+                  )}
                 </FormControl>
               </FormItem>
             )}
@@ -642,6 +655,33 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
                   />
                 </FormControl>
 
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="toelfIELTSScore"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{tL("toelfIELTSScore")}</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    {...field}
+                    min={0}
+                    step={"0.01"}
+                    value={field.value ?? ""}
+                    onWheel={(event) => {
+                      event.currentTarget.blur();
+                    }}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      field.onChange(Number(value));
+                    }}
+                  />
+                </FormControl>
+                {/* <FormDescription>{tL("gpaD")}</FormDescription> */}
                 <FormMessage />
               </FormItem>
             )}

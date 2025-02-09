@@ -36,7 +36,7 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { syncBahrainUniversities } from "../../src/graphql/queries";
+// import { syncBahrainUniversities } from "../../src/graphql/queries";
 
 interface Props {
   type: "bahrainiUni" | "masterUni";
@@ -49,12 +49,10 @@ export default function MasterUniversityFormComponent({
 }: Props) {
   const { push, back } = useRouter();
 
-  const { syncUniList } = useEducation();
+  // const { syncUniList } = useEducation();
   const { t } = useTranslation("education");
 
   const [isLoading, setIsLoading] = useState(false);
-
-  console.log(university?.availability);
 
   const formSchema = z.object({
     universityName: z.string(),

@@ -67,6 +67,7 @@ export type InfiniteMasterApplication = {
   createdAt: Date;
   studentCPR: string;
   gpa: number;
+  toeflIELTSScore: number;
   program: string;
   updatedAt: Date;
   adminPoints: number;

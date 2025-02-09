@@ -35,6 +35,7 @@ interface FormValues {
   motherCPR: string | null | undefined;
   numberOfFamilyMembers: number | null | undefined;
   address: string | null | undefined;
+  guardianEmail: string | null | undefined;
 }
 
 interface Props {
@@ -103,6 +104,7 @@ export default function UpdateParentInfo({ parentInfo }: Props) {
     motherCPR: parentInfo.motherCPR,
     numberOfFamilyMembers: parentInfo.numberOfFamilyMembers,
     address: parentInfo.address,
+    guardianEmail: parentInfo.guardianEmail,
   };
 
   async function updateProcess(inputs: UpdateParentInfoMutationVariables) {
@@ -145,6 +147,7 @@ export default function UpdateParentInfo({ parentInfo }: Props) {
           .max(9, `${tErrors("cprShouldBe9")}`)
           .required(`${tErrors("requiredField")}`),
         address: yup.string().required(`${tErrors("requiredField")}`),
+        guardianEmail: yup.string().email(`${tErrors("invalidEmail")}`),
 
         primaryMobile: yup
           .string()
@@ -179,6 +182,7 @@ export default function UpdateParentInfo({ parentInfo }: Props) {
             guardianSecondName: values.guardianSecondName,
             guardianThirdName: values.guardianThirdName,
             guardianLastName: values.guardianLastName,
+            guardianEmail: values.guardianEmail,
             // guardianFullName: `${values.guardianFirstName} ${values.guardianSecondName} ${values.guardianThirdName} ${values.guardianLastName}`,
             relation: values.relation,
             guardianCPR: values.guardianCPR,
@@ -433,6 +437,27 @@ export default function UpdateParentInfo({ parentInfo }: Props) {
               {errors.secondaryMobile &&
                 touched.secondaryMobile &&
                 errors.secondaryMobile}
+            </label>
+          </div>
+
+          <div className="flex flex-col justify-start w-full">
+            <label className="label">{t("guardianEmail")}</label>
+            <Field
+              dir="ltr"
+              type="text"
+              name="guardianEmail"
+              title="guardianEmail"
+              className={`input input-bordered input-primary ${
+                errors.guardianEmail && "input-error"
+              }`}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.guardianEmail}
+            />
+            <label className="label-text-alt text-error">
+              {errors.guardianEmail &&
+                touched.guardianEmail &&
+                errors.guardianEmail}
             </label>
           </div>
 

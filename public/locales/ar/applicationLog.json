@@ -43,6 +43,7 @@
   "yes": "نعم",
   "no": "لا",
   "noData": "نأسف! لا توجد بيانات للعرض",
-  "major": "Major",
-  "majorD": "The major chose by the student"
+  "major": "رئيسي",
+  "majorD": "اختار الرائد الطالب",
+  "toelfIELTSScore": "TOEFL/IELTS النتيجة"
 }

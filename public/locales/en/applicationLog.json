@@ -46,5 +46,6 @@
   "major": "Major",
   "majorD": "The major chosen by the student",
   "university": "University",
-  "universityD": "The university chosen by the student"
+  "universityD": "The university chosen by the student",
+  "toelfIELTSScore": "TOEFL/IELTS Score"
 }
