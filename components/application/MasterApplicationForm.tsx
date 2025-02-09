@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import {
   CreateAdminLogMutationVariables,
   Income,
@@ -78,6 +78,8 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
   const { locale, push } = useRouter();
   const { cpr } = useAuth();
 
+  const [loading, setLoading] = useState(false);
+
   const { data: masterUniversities, isPending: isMasterUniversitiesPending } =
     useQuery({
       queryKey: ["masterUniversities"],
@@ -144,6 +146,7 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setLoading(true);
     // upload new docs if selected
     const acceptanceLetterKey = values.acceptanceLetterFile
       ? uploadFile(
@@ -327,6 +330,8 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
             throw err;
           });
       });
+
+    setLoading(false);
   }
 
   // function getUniversityName() {
@@ -820,27 +825,36 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="adminReason"
-            render={({ field }) => (
-              <FormItem className="sm:col-span-2">
-                <FormLabel>
-                  {tL("reasonD")} <span className="text-error">*</span>{" "}
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    onChange={(e) => field.onChange(e.target.value)}
-                  />
-                </FormControl>
-                {/* <FormDescription>{tL("reasonD")}</FormDescription> */}
-                <FormMessage />
-              </FormItem>
+          {form.formState.isDirty && (
+            <FormField
+              control={form.control}
+              name="adminReason"
+              render={({ field }) => (
+                <FormItem className="sm:col-span-2">
+                  <FormLabel>
+                    {tL("reasonD")} <span className="text-error">*</span>{" "}
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      onChange={(e) => field.onChange(e.target.value)}
+                    />
+                  </FormControl>
+                  {/* <FormDescription>{tL("reasonD")}</FormDescription> */}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
+          <div
+            className={cn(
+              "flex justify-end sm:col-span-2",
+              !form.formState.isDirty && "hidden"
             )}
-          />
-          <div className="flex justify-end sm:col-span-2">
-            <Button type="submit">{t("update")}</Button>
+          >
+            <Button disabled={loading || !form.formState.isDirty} type="submit">
+              {t("update")}
+            </Button>
           </div>
         </form>
       </Form>

@@ -100,8 +100,7 @@ export const ApplicationForm: FC<TApplicationForm> = ({
 
   const programChoice = application.programs?.items[0];
 
-  const defaultProgram =
-    programChoice?.program ?? application.program;
+  const defaultProgram = programChoice?.program ?? application.program;
   const defaultProgramId = defaultProgram?.id;
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -114,8 +113,7 @@ export const ApplicationForm: FC<TApplicationForm> = ({
       gpa: application.gpa ?? 0,
       verifiedGPA: application.verifiedGPA ?? undefined,
       status: application.status ?? undefined,
-      acceptanceLetter:
-        programChoice?.acceptanceLetterDoc ?? undefined,
+      acceptanceLetter: programChoice?.acceptanceLetterDoc ?? undefined,
       schoolCertificate: application.attachment?.schoolCertificate ?? undefined,
       transcript: application.attachment?.transcriptDoc ?? undefined,
       allProgramsTextOption: application.allProgramsTextOption ?? undefined,
@@ -247,7 +245,7 @@ export const ApplicationForm: FC<TApplicationForm> = ({
             console.log(err);
             throw err;
           });
-          setLoading(false);
+        setLoading(false);
       });
   }
 
@@ -465,14 +463,16 @@ export const ApplicationForm: FC<TApplicationForm> = ({
                   </div>
                 </div>
                 <FormControl>
-                  {application.student?.familyIncomeProofDocs && <div className="flex flex-col gap-1 items-center">
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                      className="data-[state=checked]:bg-success"
-                    />
-                    <p>{t("verified")}</p>
-                  </div>}
+                  {application.student?.familyIncomeProofDocs && (
+                    <div className="flex flex-col gap-1 items-center">
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        className="data-[state=checked]:bg-success"
+                      />
+                      <p>{t("verified")}</p>
+                    </div>
+                  )}
                 </FormControl>
               </FormItem>
             )}
@@ -495,22 +495,21 @@ export const ApplicationForm: FC<TApplicationForm> = ({
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-
-                        {programs
-                          .sort((a, b) =>
-                            a.university?.name && b.university?.name
-                              ? a.university!.name!.localeCompare(
-                                  b.university!.name!
-                                )
-                              : 0
-                          )
-                          .map((program) => (
-                            <SelectItem key={program.id} value={program.id}>
-                              {`${getUniversityName(
-                                program
-                              )} - ${getProgramName(program)}`}
-                            </SelectItem>
-                          ))}
+                          {programs
+                            .sort((a, b) =>
+                              a.university?.name && b.university?.name
+                                ? a.university!.name!.localeCompare(
+                                    b.university!.name!
+                                  )
+                                : 0
+                            )
+                            .map((program) => (
+                              <SelectItem key={program.id} value={program.id}>
+                                {`${getUniversityName(
+                                  program
+                                )} - ${getProgramName(program)}`}
+                              </SelectItem>
+                            ))}
                         </SelectGroup>
                       </SelectContent>
                     </Select>
@@ -553,8 +552,6 @@ export const ApplicationForm: FC<TApplicationForm> = ({
                 </FormItem>
               )}
             />
-
-            
           </div>
 
           {/* <FormItem>
@@ -720,27 +717,36 @@ export const ApplicationForm: FC<TApplicationForm> = ({
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="adminReason"
-            render={({ field }) => (
-              <FormItem className="sm:col-span-2">
-                <FormLabel>
-                  {tL("reasonD")} <span className="text-error">*</span>{" "}
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    {...field}
-                    onChange={(e) => field.onChange(e.target.value)}
-                  />
-                </FormControl>
-                {/* <FormDescription>{tL("reasonD")}</FormDescription> */}
-                <FormMessage />
-              </FormItem>
+          {form.formState.isDirty && (
+            <FormField
+              control={form.control}
+              name="adminReason"
+              render={({ field }) => (
+                <FormItem className="sm:col-span-2">
+                  <FormLabel>
+                    {tL("reasonD")} <span className="text-error">*</span>{" "}
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      onChange={(e) => field.onChange(e.target.value)}
+                    />
+                  </FormControl>
+                  {/* <FormDescription>{tL("reasonD")}</FormDescription> */}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
+          <div
+            className={cn(
+              "flex justify-end sm:col-span-2",
+              !form.formState.isDirty && "hidden"
             )}
-          />
-          <div className="flex justify-end sm:col-span-2">
-            <Button disabled={loading} type="submit">{t("update")}</Button>
+          >
+            <Button disabled={loading || !form.formState.isDirty} type="submit">
+              {t("update")}
+            </Button>
           </div>
         </form>
       </Form>
@@ -754,35 +760,68 @@ export const ApplicationForm: FC<TApplicationForm> = ({
 
 function createChangeSnapshot(oldData: any, newData: any): string {
   const changes = [];
-  const compareValues = (oldVal: any, newVal: any) => 
-    (oldVal === null || oldVal === undefined) ? 
-    (newVal === null || newVal === undefined) : 
-    oldVal === newVal;
+  const compareValues = (oldVal: any, newVal: any) =>
+    oldVal === null || oldVal === undefined
+      ? newVal === null || newVal === undefined
+      : oldVal === newVal;
 
   if (!compareValues(oldData.status, newData.status)) {
-    changes.push(`Status from "${oldData.status ?? ''}" to "${newData.status ?? ''}"`);
+    changes.push(
+      `Status from "${oldData.status ?? ""}" to "${newData.status ?? ""}"`
+    );
   }
   if (!compareValues(oldData.adminPoints, newData.adminPoints)) {
-    changes.push(`Admin points from "${oldData.adminPoints ?? ''}" to "${newData.adminPoints ?? ''}"`);
+    changes.push(
+      `Admin points from "${oldData.adminPoints ?? ""}" to "${
+        newData.adminPoints ?? ""
+      }"`
+    );
   }
-  if (!compareValues(oldData.isFamilyIncomeVerified, newData.isFamilyIncomeVerified)) {
-    changes.push(`Family income verification from "${oldData.isFamilyIncomeVerified ? 'yes' : 'no'}" to "${newData.isFamilyIncomeVerified ? 'yes' : 'no'}"`);
+  if (
+    !compareValues(
+      oldData.isFamilyIncomeVerified,
+      newData.isFamilyIncomeVerified
+    )
+  ) {
+    changes.push(
+      `Family income verification from "${
+        oldData.isFamilyIncomeVerified ? "yes" : "no"
+      }" to "${newData.isFamilyIncomeVerified ? "yes" : "no"}"`
+    );
   }
   if (!compareValues(oldData.verifiedGPA, newData.verifiedGPA)) {
-    changes.push(`Verified GPA from "${oldData.verifiedGPA ?? ''}" to "${newData.verifiedGPA ?? ''}"`);
+    changes.push(
+      `Verified GPA from "${oldData.verifiedGPA ?? ""}" to "${
+        newData.verifiedGPA ?? ""
+      }"`
+    );
   }
   if (!compareValues(oldData.gpa, newData.gpa)) {
-    changes.push(`GPA from "${oldData.gpa ?? ''}" to "${newData.gpa ?? ''}"`);
+    changes.push(`GPA from "${oldData.gpa ?? ""}" to "${newData.gpa ?? ""}"`);
   }
   if (!compareValues(oldData.reason, newData.reason)) {
-    changes.push(`Student reason from "${oldData.reason ?? ''}" to "${newData.reason ?? ''}"`);
+    changes.push(
+      `Student reason from "${oldData.reason ?? ""}" to "${
+        newData.reason ?? ""
+      }"`
+    );
   }
   if (!compareValues(oldData.programId, newData.programId)) {
-    changes.push(`Program from "${oldData.program?.name ?? oldData.programId ?? ''}" to "${newData.program?.name ?? newData.programId ?? ''}"`);
+    changes.push(
+      `Program from "${oldData.program?.name ?? oldData.programId ?? ""}" to "${
+        newData.program?.name ?? newData.programId ?? ""
+      }"`
+    );
   }
 
-  if (!compareValues(oldData.allProgramsTextOption, newData.allProgramsTextOption)) {
-    changes.push(`All programs from "${oldData.allProgramsTextOption ?? '-'}" to "${newData.allProgramsTextOption ?? '-'}"`);
+  if (
+    !compareValues(oldData.allProgramsTextOption, newData.allProgramsTextOption)
+  ) {
+    changes.push(
+      `All programs from "${oldData.allProgramsTextOption ?? "-"}" to "${
+        newData.allProgramsTextOption ?? "-"
+      }"`
+    );
   }
 
   return changes.join(", ");

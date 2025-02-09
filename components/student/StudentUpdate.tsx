@@ -865,42 +865,47 @@ export default function ViewAccount({ student, applicationId }: Props) {
           </div>
 
           {/* adminReason */}
-          <div className="flex flex-col md:col-span-2 justify-start w-full">
-            <label className="label">{t("adminReason")}</label>
-            <Field
-              dir="ltr"
-              type="text"
-              name="adminReason"
-              title="adminReason"
-              placeholder={
-                t("adminReasonD") ??
-                "Enter your reason for updating the student."
-              }
-              className={`input input-bordered input-primary`}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.adminReason}
-            />
-            <label className="label-text-alt text-error">
-              {errors.adminReason && touched.adminReason && errors.adminReason}
-            </label>
-          </div>
+          {dirty && (
+            <div className="flex flex-col md:col-span-2 justify-start w-full">
+              <label className="label">{t("adminReason")}</label>
+              <Field
+                dir="ltr"
+                type="text"
+                name="adminReason"
+                title="adminReason"
+                placeholder={
+                  t("adminReasonD") ??
+                  "Enter your reason for updating the student."
+                }
+                className={`input input-bordered input-primary`}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.adminReason}
+              />
+              <label className="label-text-alt text-error">
+                {errors.adminReason &&
+                  touched.adminReason &&
+                  errors.adminReason}
+              </label>
+            </div>
+          )}
 
           {/* Submit */}
-          {
-            <button
-              className="my-3 text-white md:col-span-2 btn btn-primary"
-              type="submit"
-              disabled={
-                isSubmitting || !isValid || !dirty
-                // familyIncomeProofInvalid ||
-                // (familyIncomeProofDocsFile.length === 0 &&
-                //   (student.familyIncomeProofDocs ?? []).length === 0)
-              }
-            >
-              {t("update")}
-            </button>
-          }
+          <button
+            className={cn(
+              "my-3 text-white md:col-span-2 btn btn-primary",
+              !dirty && "hidden"
+            )}
+            type="submit"
+            disabled={
+              isSubmitting || !isValid || !dirty
+              // familyIncomeProofInvalid ||
+              // (familyIncomeProofDocsFile.length === 0 &&
+              //   (student.familyIncomeProofDocs ?? []).length === 0)
+            }
+          >
+            {t("update")}
+          </button>
         </Form>
       )}
     </Formik>
