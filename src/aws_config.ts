@@ -12,6 +12,7 @@ const awsConfig = {
   aws_user_pools_id: process.env.NEXT_PUBLIC_AWS_USER_POOLS_ID,
   aws_user_pools_web_client_id:
     process.env.NEXT_PUBLIC_AWS_USER_POOLS_WEB_CLIENT_ID,
+  aws_user_files_s3_bucket: process.env.NEXT_PUBLIC_AWS_USER_FILES_S3_BUCKET,
 };
 
 export const initializeAwsConfig = () => {
