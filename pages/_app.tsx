@@ -1,7 +1,7 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import { Amplify, DataStore, Storage } from "aws-amplify";
-import awsExports from "../src/aws-exports";
+// import { Amplify, DataStore, Storage } from "aws-amplify";
+// import awsExports from "../src/aws-exports";
 import "@aws-amplify/ui-react/styles.css";
 import {
   Chart as ChartJS,
@@ -26,18 +26,10 @@ import { appWithTranslation } from "next-i18next";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BatchProvider } from "../context/BatchContext";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { awsConfig } from "../src/aws_config";
+import { initializeAwsConfig } from "../src/aws_config";
 
-Amplify.configure({
-  ...awsExports,
-  ssr: true,
-  ...awsConfig,
-});
-Storage.configure({
-  ...awsExports,
-  ssr: true,
-  ...awsConfig,
-});
+// initialize aws config
+initializeAwsConfig();
 
 //register chart js imports
 ChartJS.register(
