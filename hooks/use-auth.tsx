@@ -29,6 +29,7 @@ interface IUseAuthContext {
   signIn: (cpr: string, password: string) => Promise<CognitoUser | undefined>;
   signOut: () => Promise<void>;
   checkIfCprExist: (cpr: string) => Promise<boolean>;
+  refreshToken: () => Promise<void>;
 }
 
 const defaultState: IUseAuthContext = {
@@ -43,6 +44,7 @@ const defaultState: IUseAuthContext = {
   signIn: async () => undefined,
   signOut: async () => {},
   checkIfCprExist: async () => false,
+  refreshToken: async () => {},
 };
 
 const AuthContext = createContext<IUseAuthContext>(defaultState);
@@ -81,7 +83,7 @@ function useProvideAuth() {
 
   const [token, setToken] = useState<string | null>(null);
 
-  async function fetchToken() {
+  async function refreshToken() {
     try {
       const session = await Auth.currentSession();
       const latestToken = session.getAccessToken().getJwtToken();
@@ -94,10 +96,10 @@ function useProvideAuth() {
 
   useEffect(() => {
     // Initial fetch
-    fetchToken();
+    refreshToken();
 
     // Refresh token every X minutes (e.g., 10 minutes)
-    const interval = setInterval(fetchToken, 10 * 60 * 1000);
+    const interval = setInterval(refreshToken, 10 * 60 * 1000);
 
     return () => clearInterval(interval); // Cleanup interval on unmount
   }, []);
@@ -123,7 +125,7 @@ function useProvideAuth() {
               //     .getJwtToken() ?? null
               // );
 
-              await fetchToken();
+              await refreshToken();
 
               setCpr(
                 authUser.getSignInUserSession()?.getAccessToken().payload
@@ -302,6 +304,7 @@ function useProvideAuth() {
     checkIfCprExist,
     isChangePasswordRequired,
     isInitializing,
+    refreshToken,
   };
 }
 
