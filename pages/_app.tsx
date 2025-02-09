@@ -26,9 +26,18 @@ import { appWithTranslation } from "next-i18next";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BatchProvider } from "../context/BatchContext";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { awsConfig } from "../src/aws_config";
 
-Amplify.configure({ ...awsExports, ssr: true });
-Storage.configure({ ...awsExports, ssr: true });
+Amplify.configure({
+  ...awsExports,
+  ssr: true,
+  ...awsConfig,
+});
+Storage.configure({
+  ...awsExports,
+  ssr: true,
+  ...awsConfig,
+});
 
 //register chart js imports
 ChartJS.register(
