@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren } from "react";
+import { FC, PropsWithChildren, useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useAuth } from "../hooks/use-auth";
@@ -13,7 +13,13 @@ interface Props {
 }
 
 export const PageComponent: FC<PropsWithChildren<Props>> = (props) => {
-  const { isSignedIn, user, isInitializing: init } = useAuth();
+  const { isSignedIn, user, isInitializing: init, refreshToken } = useAuth();
+
+  useEffect(() => {
+    refreshToken();
+
+    return () => {};
+  }, []);
 
   const { t: tCommon } = useTranslation("common");
 
