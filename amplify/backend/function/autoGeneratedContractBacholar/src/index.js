@@ -32,8 +32,8 @@ const {
 };
 
 // Define constants for the HTML template location in S3
-const TEMPLATE_BUCKET = "ncc1227bucket65406-staging";
-const TEMPLATE_KEY = "contract.html";
+const TEMPLATE_BUCKET = "ncc1227bucket2e2e0-masterdev";
+const TEMPLATE_KEY = "private/contract.html";
 
 /**
  * Lambda handler for generating the contract PDF.

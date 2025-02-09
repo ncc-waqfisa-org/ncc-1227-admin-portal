@@ -369,7 +369,7 @@ type MasterStatistics @model @auth(rules: [{ allow: public }]) {
   totalApplicationsPerStatus: AWSJSON
   scoreHistogram: AWSJSON
   gpaHistogram: AWSJSON
-  # This should reference master universities application (master applications) table but it's depending on the number of universities.
+  # This should reference master uniiversites application (master applications) table but it's depending on the number of universities.
   totalApplicationsPerUniversity: AWSJSON
   # This should reference the master universities that students applied to it.
   topUniversities: AWSJSON

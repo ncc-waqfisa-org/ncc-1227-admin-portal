@@ -147,6 +147,8 @@ export default function MasterInfoForm({
         : ""),
 
     dob: student.dob ?? "",
+    guardianEmail: student.m_guardianEmail ?? "",
+    guardianAddress: student.m_guardianAddress ?? "",
   };
 
   const formValidationSchema = yup.object({
@@ -228,6 +230,8 @@ export default function MasterInfoForm({
       .required(`${tErrors("requiredField")}`),
     // guardian_full_name: yup.string().required(`${tErrors("requiredField")}`),
     guardian_cpr_doc: yup.mixed(),
+    guardianEmail: yup.string().required(`${tErrors("requiredField")}`),
+    guardianAddress: yup.string().required(`${tErrors("requiredField")}`),
   });
 
   const [masterUpdateData, setMasterUpdateData] =
@@ -260,6 +264,8 @@ export default function MasterInfoForm({
           m_guardianSecondName: values.guardianSecondName,
           m_guardianThirdName: values.guardianThirdName,
           m_guardianLastName: values.guardianLastName,
+          m_guardianEmail: values.guardian_email,
+          m_guardianAddress: values.guardian_address,
           address: values.address,
           m_income: values.income,
           // m_incomeDoc: values.income_doc,
@@ -991,6 +997,28 @@ export default function MasterInfoForm({
                       storageKey={student?.m_guardianCPRDoc}
                     ></GetStorageLinkComponent>
                   }
+                />
+                <LabelField
+                  title={t("guardianEmail")}
+                  fieldName={"guardian_email"}
+                  value={values.guardianEmail}
+                  errors={errors.guardianEmail}
+                  touched={touched.guardianEmail}
+                  handleChange={handleChange}
+                  handleBlur={handleBlur}
+                  setFieldError={setFieldError}
+                  setFieldValue={setFieldValue}
+                />
+                <LabelField
+                  title={t("guardianAddress")}
+                  fieldName={"guardian_address"}
+                  value={values.guardianAddress}
+                  errors={errors.guardianAddress}
+                  touched={touched.guardianAddress}
+                  handleChange={handleChange}
+                  handleBlur={handleBlur}
+                  setFieldError={setFieldError}
+                  setFieldValue={setFieldValue}
                 />
                 {!values.isEmployed && (
                   <>

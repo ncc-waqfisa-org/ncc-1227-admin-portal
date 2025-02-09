@@ -105,5 +105,7 @@
   "guardianSecondName": "Guardian Second Name",
   "guardianThirdName": "Guardian Third Name",
   "guardianLastName": "Guardian Last Name",
-  "dateOfBirth": "Date of Birth"
+  "dateOfBirth": "Date of Birth",
+  "guardianEmail": "Guardian Email",
+  "guardianAddress": "Guardian Address"
 }

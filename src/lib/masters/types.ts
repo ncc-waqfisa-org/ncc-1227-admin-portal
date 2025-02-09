@@ -37,6 +37,9 @@ export type MasterSignUpData = {
   guardian_full_name: string;
   guardian_cpr_doc: string;
 
+  guardian_email?: string;
+  guardian_address?: string;
+
   // Should be added from backend
   // applicant_type: ApplicantType[];
   password: string;
@@ -80,6 +83,9 @@ export type MasterSignUpFormSchema = {
   guardian_cpr: string;
   guardian_full_name: string;
   guardian_cpr_doc?: File;
+
+  guardian_email?: string;
+  guardian_address?: string;
 
   password: string;
   confirm_password: string;
@@ -127,6 +133,8 @@ export type MasterUpdateData = {
   guardianThirdName: string;
   guardianLastName: string;
   guardian_cpr_doc?: string;
+  guardian_email?: string;
+  guardian_address?: string;
 };
 
 export type MasterUpdateFormSchema = {
@@ -167,6 +175,8 @@ export type MasterUpdateFormSchema = {
   guardianSecondName: string;
   guardianThirdName: string;
   guardianLastName: string;
+  guardianEmail: string;
+  guardianAddress: string;
   guardian_cpr_doc?: File;
 };
 
@@ -205,6 +215,9 @@ export type MasterEnrollData = {
   guardian_full_name: string;
 
   guardian_cpr_doc: string;
+
+  guardian_email?: string;
+  guardian_address?: string;
 };
 export type MasterEnrollFormSchema = {
   // Personal data
@@ -241,6 +254,9 @@ export type MasterEnrollFormSchema = {
   guardian_full_name: string;
 
   guardian_cpr_doc?: File;
+
+  guardian_email?: string;
+  guardian_address?: string;
 
   // Terms
   accepted: boolean;

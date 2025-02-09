@@ -54,6 +54,8 @@ exports.handler = async (event) => {
     };
   }
 
+  //get the signature from s3
+
   //this will access the full path
   const key = scholarship.unsignedContractDoc;
   const link = s3.getSignedUrl("getObject", {
@@ -86,6 +88,11 @@ exports.handler = async (event) => {
 
   return {
     statusCode: 200,
+    //  Uncomment below to enable CORS requests
+    //  headers: {
+    //      "Access-Control-Allow-Origin": "*",
+    //      "Access-Control-Allow-Headers": "*"
+    //  },
     body: JSON.stringify({
       message: "Scholarship signed",
       signedPdfUrl: signedPdfUrl,
@@ -101,7 +108,7 @@ async function signPDF(link, studentSignature, guardianSignature) {
   // Load the pdf
   const pdfDoc = await PDFDocument.load(pdfBufferUint8Array);
 
-  // Load the signatures
+  // Load the signatures (from the request data)
   const signatureImage = await pdfDoc.embedPng(studentSignature);
   const secondSignatureImage = await pdfDoc.embedPng(guardianSignature);
 
@@ -131,12 +138,34 @@ async function signPDF(link, studentSignature, guardianSignature) {
     height: signatureHeight,
   });
 
+  // *** New block to load and draw the main signature from S3 ***
+  // Define the S3 parameters to fetch your main signature image
+  const mainSignatureParams = {
+    Bucket: S3_BUCKET, // "ncc1227bucket2e2e0-masterdev"
+    Key: "private/Sigcropped.png",
+  };
+
+  // Fetch the image from S3
+  const mainSignatureObj = await s3.getObject(mainSignatureParams).promise();
+  // Use the Buffer (or Uint8Array) for the embedded image
+  const mainSignatureBuffer = mainSignatureObj.Body;
+  // Embed the main signature PNG into the PDF document
+  const mainSignatureImage = await pdfDoc.embedPng(mainSignatureBuffer);
+
+  // Draw the main signature at the specified position (yPosition + 180)
+  lastPage.drawImage(mainSignatureImage, {
+    x: xPosition,
+    y: yPosition + 180,
+    width: signatureWidth,
+    height: signatureHeight,
+  });
+
   // Get the pdf as Uint8Array
   const signedPdfBytes = await pdfDoc.save();
 
-  // Save the signed PDF
+  // Save the signed PDF:
   const blob = new Blob([signedPdfBytes], { type: "application/pdf" });
-  // convert the blob to a buffer
+  // Convert the blob to a buffer
   const buffer = Buffer.from(await blob.arrayBuffer());
   return buffer;
 }
