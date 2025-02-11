@@ -1,5 +1,5 @@
-import React, { FC } from "react";
-import { Toaster } from "react-hot-toast";
+import React, { FC, useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import { MasterApplication, Status } from "../../../src/API";
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -11,6 +11,7 @@ import { FiAlertCircle, FiCheckCircle, FiPrinter } from "react-icons/fi";
 import { PhoneNumberInput } from "../../../components/phone";
 import { Button, buttonVariants } from "../../../components/ui/button";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import { FaCheck } from "react-icons/fa";
 
 import {
   Accordion,
@@ -35,7 +36,13 @@ import { listScholarshipsOfApplicationId } from "../../../src/CustomAPI";
 import { cn } from "../../../src/utils";
 import { getMasterApplicationByIdAPI } from "../../../context/StudentContext";
 import MasterInfoForm from "../../../components/student/MasterInfoForm";
-import { GenerateScholarshipForm } from "../../../components/scholarships/GenerateScholarshipForm";
+import {
+  GenerateScholarshipForm,
+  TGeneratedScholarship,
+} from "../../../components/scholarships/GenerateScholarshipForm";
+import { useAuth } from "../../../hooks/use-auth";
+import { Divider } from "@aws-amplify/ui-react";
+import { DividerHorizontalIcon } from "@radix-ui/react-icons";
 
 interface Props {
   application: MasterApplication;
@@ -81,24 +88,63 @@ const MasterApplicationInfo: FC<Props> = (props) => {
   const { t } = useTranslation("applications");
   const { t: tPageTitle } = useTranslation("pageTitles");
   const { t: tCommon } = useTranslation("common");
+  const { token } = useAuth();
 
-  const { locale } = useRouter();
+  const { locale, back, push } = useRouter();
 
-  function goBack() {
-    router.back();
+  const [isAttachingPending, setIsAttachingPending] = useState(false);
+  const [isGenerateDialogOpen, setIsGenerateDialogOpen] = useState(false);
+  const [generatedContractData, setGeneratedContractData] =
+    useState<TGeneratedScholarship>();
+
+  async function attachAndCreate(): Promise<void> {
+    setIsAttachingPending(true);
+
+    await toast.promise(
+      fetch(
+        `${process.env.NEXT_PUBLIC_LAMBDA_POST_CREATE_SCHOLARSHIP_MASTERS}`,
+        {
+          method: "POST",
+          headers: {
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+          body: JSON.stringify(generatedContractData),
+        }
+      ),
+      {
+        loading: t("creatingScholarship"),
+        success: (res) => {
+          res.json().then((data) => {
+            const id: string | null = data?.scholarship?.id;
+            if (id) {
+              push(`/${locale}/scholarships/${id}`); //TODO redirect to master scholarships
+            }
+          });
+          setGeneratedContractData(undefined);
+          return t("createdSuccessfully");
+        },
+        error: t("failedToCreate"),
+      }
+    );
+
+    setIsAttachingPending(false);
   }
+
+  let studentName = `${props.application.student?.m_firstName} ${props.application.student?.m_secondName} ${props.application.student?.m_thirdName} ${props.application.student?.m_lastName}`;
 
   return (
     <div>
       <PageComponent title={"MApplicationInfo"}>
-        <button className="flex-1 btn btn-ghost" onClick={goBack}>
+        <button className="flex-1 btn btn-ghost" onClick={() => back()}>
           <IoMdArrowRoundBack />
 
           {tCommon("back")}
         </button>
         <Toaster />
         <div className="flex justify-between items-center">
-          <div className="text-2xl font-semibold">{tPageTitle("MApplication")}</div>
+          <div className="text-2xl font-semibold">
+            {tPageTitle("MApplication")}
+          </div>
           {/* TODO add this url to env */}
           <DownloadFileFromUrl
             url={`https://a69a50c47l.execute-api.us-east-1.amazonaws.com/default/applications/pdf?applicationId=${
@@ -175,7 +221,7 @@ const MasterApplicationInfo: FC<Props> = (props) => {
         </div>
 
         {props.scholarship.canCreateNewScholarship && (
-          <div className="grid p-6 mt-6 rounded-md border sm:grid-cols-2">
+          <div className="grid p-6 my-6 rounded-md border sm:grid-cols-2 ">
             <div>
               <p className="font-medium">{t("thisApplicationIsApproved")}</p>
               {props.scholarship.scholarshipId ? (
@@ -199,64 +245,120 @@ const MasterApplicationInfo: FC<Props> = (props) => {
               </p>
             </div>
 
-            <Dialog>
-              {props.scholarship.scholarshipId ? (
-                <Link
-                  className={cn(
-                    buttonVariants({ variant: "outline" }),
-                    "mt-auto"
-                  )}
-                  href={`/scholarships/${props.scholarship.scholarshipId}`}
-                >
-                  {t("goToScholarship")}
-                </Link>
-              ) : (
-                <DialogTrigger asChild>
-                  <Button variant="default" className="mt-auto">
-                    {t("createScholarship")}
-                  </Button>
-                </DialogTrigger>
-              )}
-              <DialogContent className="">
-                <DialogHeader>
-                  <DialogTitle>{t("generateScholarship")}</DialogTitle>
-                  <DialogDescription>
-                    {`${t("thisWillGenerateAScholarshipFor")} ${
-                      props.application.studentCPR
-                    }`}
-                  </DialogDescription>
-                  {/* Download Contract template */}
-                </DialogHeader>
-                <div className="flex flex-col gap-3">
-                  {/* <div className="flex flex-col gap-1">
-                    <DownloadFileFromUrl
-                      isFromLocal
-                      url={`/Waqfisa-scholarship.pdf`}
-                      fileName={`Scholarship-Contract-${props.application.studentCPR}`}
+            <div className=" flex flex-col justify-end">
+              <Dialog
+                open={isGenerateDialogOpen}
+                onOpenChange={setIsGenerateDialogOpen}
+              >
+                {props.scholarship.scholarshipId ? (
+                  <Link
+                    className={cn(
+                      buttonVariants({ variant: "outline" }),
+                      "mt-auto"
+                    )}
+                    href={`/scholarships/${props.scholarship.scholarshipId}`}
+                  >
+                    {t("goToScholarship")}
+                  </Link>
+                ) : (
+                  <DialogTrigger asChild>
+                    <Button
+                      variant="default"
+                      // className="mt-auto"
+                      disabled={generatedContractData !== undefined}
                     >
-                      {t("downloadContractTemplate")}
-                    </DownloadFileFromUrl>
-                    <DialogDescription>
-                      {`${t("downloadContractTemplateD")}`}
-                    </DialogDescription>
-                  </div> */}
-                  <GenerateScholarshipForm
-                    type={"masters"}
-                    masterApplicationId={props.application.id}
-                    onGenerate={function (
-                      data: {
-                        applicationID: string;
-                        startDate: string;
-                        scholarshipPeriod: number;
-                        numberOfSemesters: number;
-                      } & { contract: string }
-                    ): void {
-                      throw new Error("Function not implemented.");
-                    }}
-                  />
+                      {t("generateScholarship")}
+                    </Button>
+                  </DialogTrigger>
+                )}
+                <DialogContent className="">
+                  <DialogHeader>
+                    <DialogTitle>{t("generateScholarship")}</DialogTitle>
+                    {/* <DialogDescription>
+                      {`${t("thisWillGenerateAScholarshipFor")}`}
+                    </DialogDescription> */}
+                    {/* Download Contract template */}
+                  </DialogHeader>
+                  <div className="flex flex-col gap-3">
+                    <div className="flex gap-4 items-center sm:col-span-2">
+                      <span className="w-full h-[1px] bg-border "></span>{" "}
+                      <p className="text-center">{t("applicantInfo")}</p>
+                      <span className="w-full h-[1px] bg-border "></span>
+                    </div>
+                    <div className="grid grid-cols-1 gap-2 py-4">
+                      <p>
+                        {`${t("cpr")}`} - {props.application.studentCPR}
+                      </p>
+                      <p>
+                        {`${t("fullName")}`} - {studentName}
+                      </p>
+                    </div>
+                    <div className="flex gap-4 items-center sm:col-span-2">
+                      <span className="w-full h-[1px] bg-border "></span>{" "}
+                      <p className="text-center">{t("scholarshipInfo")}</p>
+                      <span className="w-full h-[1px] bg-border "></span>
+                    </div>
+                    {/* <div className="flex flex-col gap-1">
+                      <DownloadFileFromUrl
+                        isFromLocal
+                        url={`/Waqfisa-scholarship.pdf`}
+                        fileName={`Scholarship-Contract-${props.application.studentCPR}`}
+                      >
+                        {t("downloadContractTemplate")}
+                      </DownloadFileFromUrl>
+                      <DialogDescription>
+                        {`${t("downloadContractTemplateD")}`}
+                      </DialogDescription>
+                    </div> */}
+                    <GenerateScholarshipForm
+                      type={"masters"}
+                      masterApplicationId={props.application.id}
+                      onGenerate={(generatedData) => {
+                        if (generatedData) {
+                          setGeneratedContractData(generatedData);
+                          setIsGenerateDialogOpen(!isGenerateDialogOpen);
+                        }
+                      }}
+                    />
+                  </div>
+                </DialogContent>
+              </Dialog>
+              {generatedContractData?.pdfUrl && (
+                <div className="flex items-center justify-end mt-auto flex-col gap-6 xl:flex-row">
+                  <Link
+                    className=" underline underline-offset-2"
+                    // className="btn btn-info btn-sm"
+                    target="_blank"
+                    href={generatedContractData.pdfUrl}
+                  >
+                    {t("previewContract")}
+                  </Link>
+                  <div>
+                    <button
+                      type="button"
+                      className="btn-primary btn btn-sm"
+                      disabled={
+                        isAttachingPending ||
+                        props.scholarship.scholarshipId !== undefined
+                      }
+                      onClick={attachAndCreate}
+                    >
+                      {props.scholarship.scholarshipId ? (
+                        <div className=" flex gap-2">
+                          <FaCheck />
+                          {t("scholarshipSent")}
+                        </div>
+                      ) : (
+                        t("sendToApplicant")
+                      )}
+                    </button>
+                    {!props.scholarship.scholarshipId && (
+                      <p>{t("sendToApplicantD")}</p>
+                    )}
+                  </div>
                 </div>
-              </DialogContent>
-            </Dialog>
+              )}
+            </div>
           </div>
         )}
 
@@ -286,6 +388,7 @@ const MasterApplicationInfo: FC<Props> = (props) => {
                 /> */}
                 <MasterInfoForm
                   student={props.application.student}
+                  applicationId={props.application.id}
                   // universities={bahrainiUniversities}
                 />
               </AccordionContent>

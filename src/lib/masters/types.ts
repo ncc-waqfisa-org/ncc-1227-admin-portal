@@ -97,19 +97,19 @@ export type MasterSignUpFormSchema = {
 export type MasterUpdateData = {
   // Personal data
 
-  cpr_doc?: string;
+  cpr_doc: string;
 
   first_name: string;
   second_name: string;
   third_name: string;
   last_name: string;
   address: string;
-  dob: string;
 
   phone: string;
-  gender: string;
+  dob?: string | null;
   place_of_birth: string;
   nationality: string;
+  gender: string;
   number_of_family_member: number;
 
   // Graduated from
@@ -128,13 +128,15 @@ export type MasterUpdateData = {
   // Guardian data
   guardian_cpr: string;
   // guardian_full_name: string;
-  guardianFirstName: string;
-  guardianSecondName: string;
-  guardianThirdName: string;
-  guardianLastName: string;
+  guardian_first_name: string;
+  guardian_second_name: string;
+  guardian_third_name: string;
+  guardian_last_name: string;
   guardian_cpr_doc?: string;
   guardian_email?: string;
   guardian_address?: string;
+
+  adminReason?: string;
 };
 
 export type MasterUpdateFormSchema = {
@@ -147,7 +149,7 @@ export type MasterUpdateFormSchema = {
   third_name: string;
   last_name: string;
   address: string;
-  dob: string;
+  dob?: string | undefined;
 
   phone: string;
   gender: string;
@@ -171,13 +173,14 @@ export type MasterUpdateFormSchema = {
   // Guardian data
   guardian_cpr: string;
   // guardian_full_name: string;
-  guardianFirstName: string;
-  guardianSecondName: string;
-  guardianThirdName: string;
-  guardianLastName: string;
-  guardianEmail: string;
-  guardianAddress: string;
+  guardian_first_name: string;
+  guardian_second_name: string;
+  guardian_third_name: string;
+  guardian_last_name: string;
   guardian_cpr_doc?: File;
+  guardian_email?: string;
+  guardian_address?: string;
+  adminReason?: string;
 };
 
 export type MasterEnrollData = {

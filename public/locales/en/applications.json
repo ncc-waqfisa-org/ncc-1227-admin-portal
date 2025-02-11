@@ -166,5 +166,17 @@
   "dateOfBirth": "Date of Birth",
   "major": "Major",
   "programName": "Program",
-  "university": "University"
+  "university": "University",
+  "generateScholarship": "Generate Contract",
+  "thisWillGenerateAScholarshipFor": "This will generate a scholarship for applicant:",
+  "previewContract": "Preview Generated Contract",
+  "sendToApplicant": "Send to applicant",
+  "sendToApplicantD": "This will send the generated scholarship to the applicant",
+  "scholarshipSent": "Scholarship sent",
+  "applicantInfo": "Applicant Information",
+  "scholarshipInfo": "Scholarship Information",
+  "scholarshipInfoD": "These details will be added to the relevant fields inside the generated contract",
+  "creatingScholarship": "Creating scholarship",
+  "createdSuccessfully": "Created scholarship successfully",
+  "failedToCreate": "Failed to create scholarship"
 }

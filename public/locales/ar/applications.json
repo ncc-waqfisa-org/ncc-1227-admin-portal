@@ -164,5 +164,16 @@
   "dateOfBirth": "تاريخ الميلاد",
   "major": "رئيسي",
   "programName": "برنامج",
-  "university": "جامعة"
+  "university": "جامعة",
+  "generateScholarship": "توليد العقد",
+  "thisWillGenerateAScholarshipFor": "هذا سيولد منحة دراسية لمقدم الطلب:",
+  "previewContract": "معاينة عقد تم إنشاؤها",
+  "sendToApplicant": "أرسل إلى مقدم الطلب",
+  "sendToApplicantD": "هذا سوف يرسل المنحة التي تم إنشاؤها إلى مقدم الطلب",
+  "applicantInfo": "معلومات مقدم الطلب",
+  "scholarshipInfo": "معلومات المنح الدراسية",
+  "scholarshipInfoD": "سيتم إضافة هذه التفاصيل إلى الحقول ذات الصلة داخل العقد الذي تم إنشاؤه",
+  "creatingScholarship": "إنشاء منحة دراسية",
+  "createdSuccessfully": "أنشأت منحة دراسية بنجاح",
+  "failedToCreate": "فشل في إنشاء منحة دراسية"
 }

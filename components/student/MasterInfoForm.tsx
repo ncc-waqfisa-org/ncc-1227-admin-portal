@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import {
+  createAdminLogInDB,
   DocType,
   listAllBahrainUniversities,
   updateStudentInDB,
@@ -25,6 +26,7 @@ import { cn } from "../../src/lib/utils";
 import { PhoneNumberInput } from "../phone";
 import {
   BahrainUniversities,
+  CreateAdminLogMutationVariables,
   Gender,
   Nationality,
   Student,
@@ -36,20 +38,26 @@ import DatePicker from "react-date-picker";
 import { format } from "date-fns";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
+import { createStudentInfoChangeSnapshot } from "./studentAdminLog";
+import { useAuth } from "../../hooks/use-auth";
+import { createMasterStudentInfoChangeSnapshot } from "./studentMasterAdminLog";
+import { Button } from "../ui/button";
 
 // Add an optional readOnly that will disable all fields and remove the update button
 export default function MasterInfoForm({
   student,
+  applicationId,
 }: // universities,
 {
   student: Student;
+  applicationId?: string;
   // universities?: BahrainUniversities[];
 }) {
   const router = useRouter();
   const { t: tErrors } = useTranslation("errors");
   const { t: tToast } = useTranslation("toast");
   const { t } = useTranslation("account");
-
+  const { cpr: adminCpr, token } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -125,30 +133,30 @@ export default function MasterInfoForm({
     universityID: student?.m_universityID ?? "",
     guardian_cpr: student?.m_guardianCPR ?? "",
     // guardian_full_name: student?.m_guardianFullName ?? "",
-    guardianFirstName:
+    guardian_first_name:
       student.m_guardianFirstName ??
       (student?.m_guardianFullName
         ? getNamePart(student?.m_guardianFullName, "first")
         : ""),
-    guardianSecondName:
+    guardian_second_name:
       student.m_guardianSecondName ??
       (student?.m_guardianFullName
         ? getNamePart(student?.m_guardianFullName, "second")
         : ""),
-    guardianThirdName:
+    guardian_third_name:
       student.m_guardianThirdName ??
       (student?.m_guardianFullName
         ? getNamePart(student?.m_guardianFullName, "third")
         : ""),
-    guardianLastName:
+    guardian_last_name:
       student.m_guardianLastName ??
       (student?.m_guardianFullName
         ? getNamePart(student?.m_guardianFullName, "last")
         : ""),
 
     dob: student.dob ?? "",
-    guardianEmail: student.m_guardianEmail ?? "",
-    guardianAddress: student.m_guardianAddress ?? "",
+    guardian_email: student.m_guardianEmail ?? "",
+    guardian_address: student.m_guardianAddress ?? "",
   };
 
   const formValidationSchema = yup.object({
@@ -212,78 +220,110 @@ export default function MasterInfoForm({
       .min(9, `${tErrors("cprShouldBe9")}`)
       .max(9, `${tErrors("cprShouldBe9")}`)
       .required(`${tErrors("requiredField")}`),
-    guardianFirstName: yup
+    guardian_first_name: yup
       .string()
       .matches(onlyArabicLettersRegex, `${tErrors("invalid")}`)
       .required(`${tErrors("requiredField")}`),
-    guardianSecondName: yup
+    guardian_second_name: yup
       .string()
       .matches(onlyArabicLettersRegex, `${tErrors("invalid")}`)
       .required(`${tErrors("requiredField")}`),
-    guardianThirdName: yup
+    guardian_third_name: yup
       .string()
       .matches(onlyArabicLettersRegex, `${tErrors("invalid")}`)
       .required(`${tErrors("requiredField")}`),
-    guardianLastName: yup
+    guardian_last_name: yup
       .string()
       .matches(onlyArabicLettersRegex, `${tErrors("invalid")}`)
       .required(`${tErrors("requiredField")}`),
     // guardian_full_name: yup.string().required(`${tErrors("requiredField")}`),
     guardian_cpr_doc: yup.mixed(),
-    guardianEmail: yup.string().required(`${tErrors("requiredField")}`),
-    guardianAddress: yup.string().required(`${tErrors("requiredField")}`),
+    guardian_email: yup.string().required(`${tErrors("requiredField")}`),
+    guardian_address: yup.string().required(`${tErrors("requiredField")}`),
+    adminReason: yup.string().required(`${tErrors("requiredField")}`),
   });
+
+  async function newAdminLog(
+    applicationId: string,
+    oldData: any,
+    newData: any,
+    adminReason: string | null | undefined
+  ) {
+    const snapshot = createMasterStudentInfoChangeSnapshot(oldData, newData);
+
+    let createAdminLogVariables: CreateAdminLogMutationVariables = {
+      input: {
+        applicationID: applicationId,
+        adminCPR: adminCpr ?? "",
+        dateTime: new Date().toISOString(),
+        snapshot: snapshot,
+        reason: adminReason ?? "No reason provided.",
+        applicationAdminLogsId: applicationId,
+        adminAdminLogsCpr: adminCpr ?? "",
+      },
+    };
+
+    await createAdminLogInDB(createAdminLogVariables)
+      .then(async (logValue) => {
+        // TODO: refresh()?
+        return logValue;
+      })
+      .catch((err) => {
+        console.log(err);
+        throw err;
+      });
+  }
 
   const [masterUpdateData, setMasterUpdateData] =
     useState<MasterUpdateFormSchema>(initialValues);
 
   const updateMutation = useMutation({
-    mutationFn: (values: MasterUpdateData) => {
-      //   TODO: update with graphql
+    mutationFn: async (values: MasterUpdateData) => {
       let studentData: UpdateStudentMutationVariables = {
         input: {
           // prefilled
           cpr: student?.cpr ?? "",
           _version: student?._version,
 
-          gender: values.gender as Gender,
-          placeOfBirth: values.place_of_birth,
-          nationalityCategory: values.nationality as Nationality,
-          dob: dateOfBirth,
-
+          cprDoc: values.cpr_doc,
           m_firstName: values.first_name,
           m_secondName: values.second_name,
           m_thirdName: values.third_name,
           m_lastName: values.last_name,
-          m_isEmployed: values.isEmployed,
+          address: values.address,
+          phone: values.phone,
+          gender: values.gender as Gender,
+          placeOfBirth: values.place_of_birth,
+          nationality: values.nationality,
+          dob: values.dob,
+          m_numberOfFamilyMembers: values.number_of_family_member,
+          m_universityID: values.universityID,
           m_graduationYear: values.graduation_year,
+          m_oldProgram: values.old_program,
+          m_isEmployed: values.isEmployed,
+          m_placeOfEmployment: values.place_of_employment,
+          m_income: values.income,
+          m_incomeDoc: values.income_doc,
+          m_guardianFirstName: values.guardian_first_name,
+          m_guardianSecondName: values.guardian_second_name,
+          m_guardianThirdName: values.guardian_third_name,
+          m_guardianLastName: values.guardian_last_name,
+          // m_guardianFullName: values.guardian_full_name,
           m_guardianCPR: values.guardian_cpr,
           m_guardianCPRDoc: values.guardian_cpr_doc,
-          // m_guardianFullName: `${values.guardianFirstName} ${values.guardianSecondName} ${values.guardianThirdName} ${values.guardianLastName}`,
-          m_guardianFirstName: values.guardianFirstName,
-          m_guardianSecondName: values.guardianSecondName,
-          m_guardianThirdName: values.guardianThirdName,
-          m_guardianLastName: values.guardianLastName,
           m_guardianEmail: values.guardian_email,
           m_guardianAddress: values.guardian_address,
-          address: values.address,
-          m_income: values.income,
-          // m_incomeDoc: values.income_doc,
-          m_numberOfFamilyMembers: values.number_of_family_member,
-          m_oldProgram: values.old_program,
-          m_placeOfEmployment: values.place_of_employment,
-          m_universityID: values.universityID,
         },
       };
 
-      let res = updateStudentInDB(studentData);
+      console.log(JSON.stringify(studentData));
 
+      let res = await updateStudentInDB(studentData);
+      console.log(JSON.stringify(res));
       return res;
     },
     async onSuccess(data) {
       if (data?.updateStudent?.cpr) {
-        // TODO: sync student data
-
         toast.success(`${tToast("processComplete")}`);
       } else {
         throw new Error(`${tErrors("somethingWentWrong")}`);
@@ -359,24 +399,20 @@ export default function MasterInfoForm({
 
     const dataToSend: MasterUpdateData = {
       ...data,
+      // guardian_full_name,
       cpr_doc,
       income_doc,
-      // guardian_full_name,
       guardian_cpr_doc,
     };
 
-    console.log(dataToSend);
-
     setMasterUpdateData(data);
 
-    console.log(masterUpdateData);
-
-    await updateMutation.mutateAsync(dataToSend);
-
-    console.log(masterUpdateData);
+    await updateMutation.mutateAsync(dataToSend).then((res) => {
+      if (res) {
+        router.back();
+      }
+    });
   }
-
-  const [dateOfBirth, setDateOfBirth] = React.useState(initialValues.dob);
 
   return (
     <div className="flex flex-col items-center">
@@ -385,7 +421,6 @@ export default function MasterInfoForm({
         validationSchema={formValidationSchema}
         validateOnMount
         onSubmit={(values) => {
-          console.log(values);
           updateProcess(values);
         }}
       >
@@ -418,10 +453,12 @@ export default function MasterInfoForm({
             (values.isEmployed ? !!errors.place_of_employment : false) ||
             (values.isEmployed ? !!errors.income : false) ||
             (values.isEmployed ? !!errors.income_doc : false);
-          !!errors.guardianFirstName ||
-            !!errors.guardianSecondName ||
-            !!errors.guardianThirdName ||
-            !!errors.guardianLastName ||
+          !!errors.guardian_first_name ||
+            !!errors.guardian_second_name ||
+            !!errors.guardian_third_name ||
+            !!errors.guardian_last_name ||
+            !!errors.guardian_email ||
+            !!errors.guardian_address ||
             // !!errors.guardian_full_name ||
             !!errors.guardian_cpr ||
             (!values.isEmployed ? !!errors.income : false) ||
@@ -445,7 +482,7 @@ export default function MasterInfoForm({
 
           return (
             <Form className="flex flex-col justify-center max-w-4xl mx-auto">
-              <div className={cn("grid grid-cols-1 gap-4 md:grid-cols-2")}>
+              <div className=" grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div className="flex flex-col justify-start w-full">
                   <div className="flex items-center">
                     <label className="label">{t("cpr")}</label>
@@ -590,23 +627,7 @@ export default function MasterInfoForm({
                     {errors.gender && touched.gender && errors.gender}
                   </label>
                 </div>
-                {/* <TextField
-                  label={t("dateOfBirth")}
-                  isRequired={false}
-                  isReadOnly={false}
-                  type="date"
-                  value={
-                    dateOfBirth ? format(dateOfBirth, "yyyy-MM-dd") : undefined
-                  }
-                  onChange={(e) => {
-                    let { value } = e.target;
-                    const date = new Date(value);
-                    setDateOfBirth(date.toISOString());
-                    dirty = true;
-                    handleChange(date.toISOString());
-                  }}
-                  errorMessage={errors.dob}
-                ></TextField> */}
+
                 <div>
                   <div className="flex items-center">
                     <label className="label">{t("dateOfBirth")}</label>
@@ -617,21 +638,23 @@ export default function MasterInfoForm({
                       " input input-bordered input-primary",
                       errors.dob && "!input-error"
                     )}
+                    dayPlaceholder="dd"
+                    monthPlaceholder="mm"
+                    yearPlaceholder="yyyy"
+                    format="dd/MM/yyyy"
                     onChange={(date) => {
                       const myDate: Date | null = date as Date | null;
-                      setDateOfBirth(myDate?.toISOString() ?? "");
                       if (myDate) {
+                        setFieldValue("dob", myDate.toISOString());
                         setFieldError("dob", undefined);
                       } else {
                         setFieldError("dob", "Invalid date of birth");
                       }
+
+                      setFieldValue("dob", myDate?.toISOString());
                     }}
                     onTouchStart={(e) => setFieldTouched("dob", true)}
-                    value={
-                      dateOfBirth
-                        ? format(dateOfBirth, "yyyy-MM-dd")
-                        : undefined
-                    }
+                    value={values.dob}
                   />
 
                   <label className="pt-2 label-text-alt text-error">
@@ -649,17 +672,6 @@ export default function MasterInfoForm({
                   setFieldError={setFieldError}
                   setFieldValue={setFieldValue}
                 />
-                {/* <div className="flex flex-col justify-start w-full">
-                  <div className="flex items-center">
-                    <label className="label">{t("placeOfBirth")}</label>
-                  </div>
-                  <Field
-                    dir="ltr"
-                    disabled
-                    className={`input disabled input-bordered input-primary`}
-                    value={student?.placeOfBirth}
-                  />
-                </div> */}
                 <div className="flex flex-col justify-start w-full">
                   <div className="flex items-center">
                     <label className="label">{t("nationality")}</label>
@@ -921,10 +933,10 @@ export default function MasterInfoForm({
                 <div className="md:col-span-2 grid grid-cols-1 gap-4 md:grid-cols-4">
                   <LabelField
                     title={t("firstName")}
-                    value={values.guardianFirstName}
-                    errors={errors.guardianFirstName}
-                    touched={touched.guardianFirstName}
-                    fieldName={"guardianFirstName"}
+                    value={values.guardian_first_name}
+                    errors={errors.guardian_first_name}
+                    touched={touched.guardian_first_name}
+                    fieldName={"guardian_first_name"}
                     handleChange={handleChange}
                     handleBlur={handleBlur}
                     setFieldError={setFieldError}
@@ -932,10 +944,10 @@ export default function MasterInfoForm({
                   />
                   <LabelField
                     title={t("secondName")}
-                    value={values.guardianSecondName}
-                    errors={errors.guardianSecondName}
-                    touched={touched.guardianSecondName}
-                    fieldName={"guardianSecondName"}
+                    value={values.guardian_second_name}
+                    errors={errors.guardian_second_name}
+                    touched={touched.guardian_second_name}
+                    fieldName={"guardian_second_name"}
                     handleChange={handleChange}
                     handleBlur={handleBlur}
                     setFieldError={setFieldError}
@@ -943,10 +955,10 @@ export default function MasterInfoForm({
                   />
                   <LabelField
                     title={t("thirdName")}
-                    value={values.guardianThirdName}
-                    errors={errors.guardianThirdName}
-                    touched={touched.guardianThirdName}
-                    fieldName={"guardianThirdName"}
+                    value={values.guardian_third_name}
+                    errors={errors.guardian_third_name}
+                    touched={touched.guardian_third_name}
+                    fieldName={"guardian_third_name"}
                     handleChange={handleChange}
                     handleBlur={handleBlur}
                     setFieldError={setFieldError}
@@ -954,10 +966,10 @@ export default function MasterInfoForm({
                   />
                   <LabelField
                     title={t("lastName")}
-                    value={values.guardianLastName}
-                    errors={errors.guardianLastName}
-                    touched={touched.guardianLastName}
-                    fieldName={"guardianLastName"}
+                    value={values.guardian_last_name}
+                    errors={errors.guardian_last_name}
+                    touched={touched.guardian_last_name}
+                    fieldName={"guardian_last_name"}
                     handleChange={handleChange}
                     handleBlur={handleBlur}
                     setFieldError={setFieldError}
@@ -1001,9 +1013,9 @@ export default function MasterInfoForm({
                 <LabelField
                   title={t("guardianEmail")}
                   fieldName={"guardian_email"}
-                  value={values.guardianEmail}
-                  errors={errors.guardianEmail}
-                  touched={touched.guardianEmail}
+                  value={values.guardian_email}
+                  errors={errors.guardian_email}
+                  touched={touched.guardian_email}
                   handleChange={handleChange}
                   handleBlur={handleBlur}
                   setFieldError={setFieldError}
@@ -1012,9 +1024,9 @@ export default function MasterInfoForm({
                 <LabelField
                   title={t("guardianAddress")}
                   fieldName={"guardian_address"}
-                  value={values.guardianAddress}
-                  errors={errors.guardianAddress}
-                  touched={touched.guardianAddress}
+                  value={values.guardian_address}
+                  errors={errors.guardian_address}
+                  touched={touched.guardian_address}
                   handleChange={handleChange}
                   handleBlur={handleBlur}
                   setFieldError={setFieldError}
@@ -1080,16 +1092,33 @@ export default function MasterInfoForm({
                     />
                   </>
                 )}
+                {dirty && (
+                  <div className=" col-span-2">
+                    <LabelField
+                      title={t("reason")}
+                      fieldName={"adminReason"}
+                      value={values.adminReason}
+                      errors={errors.adminReason}
+                      touched={touched.adminReason}
+                      handleChange={handleChange}
+                      handleBlur={handleBlur}
+                      setFieldError={setFieldError}
+                      setFieldValue={setFieldValue}
+                    />
+                  </div>
+                )}
+                {JSON.stringify(errors)}
                 {/* Submit */}
-                <button
-                  // TODO enable update when a field is changed
-                  className={`my-3 text-white btn btn-primary md:col-span-2`}
-                  type="submit"
-                  disabled={updateMutation.isPending || isLoading || !dirty}
-                >
-                  {isLoading && <span className="loading"></span>}
-                  {t("update")}
-                </button>
+                {dirty && (
+                  <button
+                    className={` w-full my-3 text-white btn btn-primary md:col-span-2`}
+                    type="submit"
+                    disabled={updateMutation.isPending || isLoading || !dirty}
+                  >
+                    {isLoading && <span className="loading"></span>}
+                    {t("update")}
+                  </button>
+                )}
               </div>
 
               {formErrors && (
@@ -1204,16 +1233,16 @@ export default function MasterInfoForm({
                             )}
                           </>
                         )}
-                        {(errors.guardianFirstName ||
-                          errors.guardianSecondName ||
-                          errors.guardianThirdName ||
-                          errors.guardianLastName) && (
+                        {(errors.guardian_first_name ||
+                          errors.guardian_second_name ||
+                          errors.guardian_third_name ||
+                          errors.guardian_last_name) && (
                           <li className="text-error">
                             <strong>{t("guardianFullName")}:</strong>{" "}
-                            {errors.guardianFirstName ||
-                              errors.guardianSecondName ||
-                              errors.guardianThirdName ||
-                              errors.guardianLastName}
+                            {errors.guardian_first_name ||
+                              errors.guardian_second_name ||
+                              errors.guardian_third_name ||
+                              errors.guardian_last_name}
                           </li>
                         )}
                         {errors.guardian_cpr && (

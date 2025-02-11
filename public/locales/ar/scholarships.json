@@ -37,5 +37,17 @@
   "bankNameD": "اسم البنك للطالب",
   "isConfirmed": "مؤكد",
   "isConfirmedD": "تأكيد المدير على إكمال المنحة",
-  "loading": "جاري التحميل"
+  "loading": "جاري التحميل",
+  "generatingScholarship": "توليد منحة دراسية ...",
+  "generatedSuccessfully": "تم توليد منحة بنجاح",
+  "failedToGenerate": "تم توليد منحة بنجاح",
+  "applicationID": "معرف التطبيق",
+  "applicationIDD": "وصف معرف التطبيق",
+  "startDate": "وصف معرف التطبيق",
+  "startDateD": "تاريخ تصبح المنحة صالحة.",
+  "scholarshipPeriod": "وصف معرف التطبيق",
+  "months": "وصف معرف التطبيق",
+  "scholarshipPeriodD": "وصف معرف التطبيق",
+  "numberOfSemesters": "عدد الفصول الدراسية",
+  "generate": "توليد العقد"
 }

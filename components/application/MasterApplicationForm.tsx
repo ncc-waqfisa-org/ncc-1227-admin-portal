@@ -722,7 +722,7 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
             control={form.control}
             name="acceptanceLetterFile"
             render={({ field }) => (
-              <FormItem className="sm:col-span-2">
+              <FormItem className="">
                 <FormControl>
                   <MultiUpload
                     single
@@ -751,6 +751,46 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
                       : application.university?.universityName
                   }`}</p>
                 </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="toeflIELTSCertificateFile"
+            render={({ field }) => (
+              <FormItem className="">
+                <FormControl>
+                  <MultiUpload
+                    single
+                    required={false}
+                    storageKeys={[
+                      application.attachment?.toeflIELTSCertificate ?? null,
+                    ]}
+                    onFiles={(files) => {
+                      field.onChange(files.length > 0 ? files[0] : undefined);
+                    }}
+                    isInvalid={(isInvalid) =>
+                      isInvalid &&
+                      form.setError(
+                        "toeflIELTSCertificateFile",
+                        Error("invalid")
+                      )
+                    }
+                    handleOnClear={() => {
+                      field.onChange(undefined);
+                    }}
+                    filedName={tL("toeflIELTSCertificate")}
+                    title={`${tL("toeflIELTSCertificate")}`}
+                  ></MultiUpload>
+                </FormControl>
+                {/* <FormDescription>
+                  <p>{`${tL("toeflIELTSCertificateD")} ${application.program}-${
+                    locale === "ar"
+                      ? application.university?.universityNameAr
+                      : application.university?.universityName
+                  }`}</p>
+                </FormDescription> */}
                 <FormMessage />
               </FormItem>
             )}

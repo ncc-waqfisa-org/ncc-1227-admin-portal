@@ -23,6 +23,7 @@ import { format } from "date-fns";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import { useAuth } from "../../hooks/use-auth";
+import { values } from "lodash";
 
 type TGenerateScholarshipForm = {
   applicationId?: string;
@@ -65,13 +66,13 @@ export const GenerateScholarshipForm: FC<TGenerateScholarshipForm> = ({
     applicationID: z.string(),
   });
 
-  const [startDate, setStartDate] = useState("");
+  // const [startDate, setStartDate] = useState("");
   const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      startDate: startDate,
+      startDate: undefined,
       scholarshipPeriod: undefined,
       numberOfSemesters: undefined,
       applicationID:
@@ -81,12 +82,21 @@ export const GenerateScholarshipForm: FC<TGenerateScholarshipForm> = ({
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
-    let generateVariables: TGenerateScholarshipMutationVariables = values;
+
+    let generateVariables: TGenerateScholarshipMutationVariables = {
+      applicationID:
+        type === "bachelor" ? applicationId ?? "" : masterApplicationId ?? "",
+      startDate: values.startDate,
+      scholarshipPeriod: values.scholarshipPeriod,
+      numberOfSemesters: values.numberOfSemesters,
+    };
 
     await toast
       .promise(
         fetch(
-          `${process.env.NEXT_PUBLIC_LAMBDA_POST_GENERATE_SCHOLARSHIP_BACHELOR}`,
+          type === "bachelor"
+            ? `${process.env.NEXT_PUBLIC_LAMBDA_POST_GENERATE_SCHOLARSHIP_BACHELOR}`
+            : `${process.env.NEXT_PUBLIC_LAMBDA_POST_GENERATE_SCHOLARSHIP_MASTERS}`,
           {
             method: "POST",
             headers: {
@@ -122,6 +132,7 @@ export const GenerateScholarshipForm: FC<TGenerateScholarshipForm> = ({
           toast.error("Could not generate contract");
         }
       });
+
     setLoading(false);
   }
 
@@ -134,32 +145,6 @@ export const GenerateScholarshipForm: FC<TGenerateScholarshipForm> = ({
         >
           <FormField
             control={form.control}
-            name="applicationID"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel htmlFor="applicationID">
-                  {t("applicationID")}
-                </FormLabel>
-                <FormControl>
-                  <div className="">
-                    <Input
-                      disabled
-                      id="applicationID"
-                      placeholder="Application ID"
-                      {...field}
-                      value={
-                        type === "masters" ? masterApplicationId : applicationId
-                      }
-                    />
-                  </div>
-                </FormControl>
-                <FormDescription>{t("applicationIDD")}</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
             name="startDate"
             render={({ field }) => (
               <FormItem>
@@ -167,17 +152,18 @@ export const GenerateScholarshipForm: FC<TGenerateScholarshipForm> = ({
                 <FormControl>
                   <DatePicker
                     className={cn(" input input-bordered input-primary")}
+                    dayPlaceholder="dd"
+                    monthPlaceholder="mm"
+                    yearPlaceholder="yyyy"
                     onChange={(date) => {
-                      const startDate: Date | null = date as Date | null;
-                      if (startDate) {
-                        const value = format(startDate, "yyyy-MM-dd") ?? "";
-                        setStartDate(value);
-                        field.onChange(value);
+                      const myDate: Date | null = date as Date | null;
+
+                      if (myDate) {
+                        field.onChange(myDate.toISOString());
                       }
                     }}
-                    value={
-                      startDate ? format(startDate, "yyyy-MM-dd") : undefined
-                    }
+                    value={field.value}
+                    format="dd/MM/yyyy"
                   />
                 </FormControl>
                 <FormDescription>{t("startDateD")}</FormDescription>
@@ -235,7 +221,7 @@ export const GenerateScholarshipForm: FC<TGenerateScholarshipForm> = ({
                     />
                   </div>
                 </FormControl>
-                <FormDescription>{t("numberOfSemestersD")}</FormDescription>
+                {/* <FormDescription>{t("numberOfSemestersD")}</FormDescription> */}
                 <FormMessage />
               </FormItem>
             )}

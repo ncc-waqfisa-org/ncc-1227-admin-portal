@@ -37,5 +37,17 @@
   "bankNameD": "The bank name of the student.",
   "isConfirmed": "Confirmed",
   "isConfirmedD": "Admin confirmation of the completion of the scholarship.",
-  "loading": "Loading"
+  "loading": "Loading",
+  "generatingScholarship": "Generating Scholarship...",
+  "generatedSuccessfully": "Scholarship generated successfully",
+  "failedToGenerate": "Failed to generate scholarship",
+  "applicationID": "Application ID",
+  "applicationIDD": "Application ID description",
+  "startDate": "Start Date",
+  "startDateD": "The date from which the scholarship becomes valid.",
+  "scholarshipPeriod": "Scholarship Period",
+  "months": "months",
+  "scholarshipPeriodD": "The period the scholarship will be valid for (in months)",
+  "numberOfSemesters": "Number of Semesters",
+  "generate": "Generate contract"
 }
