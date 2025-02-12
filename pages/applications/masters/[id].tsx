@@ -244,7 +244,7 @@ const MasterApplicationInfo: FC<Props> = (props) => {
                 }`}
               </p>
             </div>
-
+            {/*  */}
             <div className="flex flex-col justify-end">
               <Dialog
                 open={isGenerateDialogOpen}
@@ -326,7 +326,7 @@ const MasterApplicationInfo: FC<Props> = (props) => {
               {generatedContractData?.pdfUrl && (
                 <div className="flex flex-col gap-6 justify-end items-center mt-auto xl:flex-row">
                   <Link
-                    className="underline  underline-offset-2"
+                    className="underline underline-offset-2"
                     // className="btn btn-info btn-sm"
                     target="_blank"
                     href={generatedContractData.pdfUrl}
