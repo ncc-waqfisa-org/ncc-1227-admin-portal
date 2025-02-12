@@ -221,7 +221,7 @@ const MasterApplicationInfo: FC<Props> = (props) => {
         </div>
 
         {props.scholarship.canCreateNewScholarship && (
-          <div className="grid p-6 my-6 rounded-md border sm:grid-cols-2 ">
+          <div className="grid p-6 my-6 rounded-md border sm:grid-cols-2">
             <div>
               <p className="font-medium">{t("thisApplicationIsApproved")}</p>
               {props.scholarship.scholarshipId ? (
@@ -245,7 +245,7 @@ const MasterApplicationInfo: FC<Props> = (props) => {
               </p>
             </div>
 
-            <div className=" flex flex-col justify-end">
+            <div className="flex flex-col justify-end">
               <Dialog
                 open={isGenerateDialogOpen}
                 onOpenChange={setIsGenerateDialogOpen}
@@ -256,7 +256,7 @@ const MasterApplicationInfo: FC<Props> = (props) => {
                       buttonVariants({ variant: "outline" }),
                       "mt-auto"
                     )}
-                    href={`/scholarships/${props.scholarship.scholarshipId}`}
+                    href={`/scholarships/masters/${props.scholarship.scholarshipId}`}
                   >
                     {t("goToScholarship")}
                   </Link>
@@ -324,9 +324,9 @@ const MasterApplicationInfo: FC<Props> = (props) => {
                 </DialogContent>
               </Dialog>
               {generatedContractData?.pdfUrl && (
-                <div className="flex items-center justify-end mt-auto flex-col gap-6 xl:flex-row">
+                <div className="flex flex-col gap-6 justify-end items-center mt-auto xl:flex-row">
                   <Link
-                    className=" underline underline-offset-2"
+                    className="underline  underline-offset-2"
                     // className="btn btn-info btn-sm"
                     target="_blank"
                     href={generatedContractData.pdfUrl}
@@ -341,7 +341,7 @@ const MasterApplicationInfo: FC<Props> = (props) => {
                       onClick={attachAndCreate}
                     >
                       {props.scholarship.scholarshipId ? (
-                        <div className=" flex gap-2">
+                        <div className="flex gap-2">
                           <FaCheck />
                           {t("scholarshipSent")}
                         </div>
