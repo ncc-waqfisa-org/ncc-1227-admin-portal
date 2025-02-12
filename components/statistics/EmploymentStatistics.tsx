@@ -12,16 +12,17 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
+import { useRouter } from "next/router";
 
 const formatTableData = ({
   data,
   employmentStatus,
+  locale,
 }: {
   data: TMoreStatisticsIncomePerEmploymentStatus;
   employmentStatus: "Employed" | "Unemployed";
+  locale: string;
 }) => {
-  const { t } = useTranslation("common");
-
   return Object.entries(data[employmentStatus])
     .map(([key, value]) => {
       if (key !== "total") {
@@ -29,8 +30,12 @@ const formatTableData = ({
         return {
           incomeRange:
             key === "LESS_THAN_1500"
-              ? `${t("bellow1500")}`
-              : `${t("above1500")}`,
+              ? locale === "ar"
+                ? "اقل من BD1500"
+                : "Below BD1500"
+              : locale === "ar"
+              ? "اكثر من BD1500"
+              : "Above BD1500",
           female: histogram.female,
           male: histogram.male,
           total: histogram.total,
@@ -47,6 +52,7 @@ export default function EmploymentStatistics({
   data: TMoreStatisticsIncomePerEmploymentStatus;
 }) {
   const { t } = useTranslation("common");
+  const { locale } = useRouter();
 
   return (
     <div className="py-4 mx-auto">
@@ -70,36 +76,38 @@ export default function EmploymentStatistics({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {formatTableData({ data, employmentStatus: "Employed" }).map(
-                (row, index) => (
-                  <TableRow key={index}>
-                    <TableCell>{row?.incomeRange}</TableCell>
-                    <TableCell>
-                      {row?.female} (
-                      {row?.incomeRange === "Less than 1500"
-                        ? `+${data.Employed.LESS_THAN_1500.todayFemale} ${t(
-                            "today"
-                          )}`
-                        : `+${data.Employed.MORE_THAN_1500.todayFemale} ${t(
-                            "today"
-                          )}`}
-                      )
-                    </TableCell>
-                    <TableCell>
-                      {row?.male} (
-                      {row?.incomeRange === "Less than 1500"
-                        ? `+${data.Employed.LESS_THAN_1500.todayMale} ${t(
-                            "today"
-                          )}`
-                        : `+${data.Employed.MORE_THAN_1500.todayMale} ${t(
-                            "today"
-                          )}`}
-                      )
-                    </TableCell>
-                    <TableCell>{row?.total}</TableCell>
-                  </TableRow>
-                )
-              )}
+              {formatTableData({
+                data,
+                employmentStatus: "Employed",
+                locale: locale ?? "en",
+              }).map((row, index) => (
+                <TableRow key={index}>
+                  <TableCell>{row?.incomeRange}</TableCell>
+                  <TableCell>
+                    {row?.female} (
+                    {row?.incomeRange === "Less than 1500"
+                      ? `+${data.Employed.LESS_THAN_1500.todayFemale} ${t(
+                          "today"
+                        )}`
+                      : `+${data.Employed.MORE_THAN_1500.todayFemale} ${t(
+                          "today"
+                        )}`}
+                    )
+                  </TableCell>
+                  <TableCell>
+                    {row?.male} (
+                    {row?.incomeRange === "Less than 1500"
+                      ? `+${data.Employed.LESS_THAN_1500.todayMale} ${t(
+                          "today"
+                        )}`
+                      : `+${data.Employed.MORE_THAN_1500.todayMale} ${t(
+                          "today"
+                        )}`}
+                    )
+                  </TableCell>
+                  <TableCell>{row?.total}</TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </CardContent>
@@ -125,36 +133,38 @@ export default function EmploymentStatistics({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {formatTableData({ data, employmentStatus: "Unemployed" }).map(
-                (row, index) => (
-                  <TableRow key={index}>
-                    <TableCell>{row?.incomeRange}</TableCell>
-                    <TableCell>
-                      {row?.female} (
-                      {row?.incomeRange === "Less than 1500"
-                        ? `+${data.Unemployed.LESS_THAN_1500.todayFemale} ${t(
-                            "today"
-                          )}`
-                        : `+${data.Unemployed.MORE_THAN_1500.todayFemale} ${t(
-                            "today"
-                          )}`}
-                      )
-                    </TableCell>
-                    <TableCell>
-                      {row?.male} (
-                      {row?.incomeRange === "Less than 1500"
-                        ? `+${data.Unemployed.LESS_THAN_1500.todayMale} ${t(
-                            "today"
-                          )}`
-                        : `+${data.Unemployed.MORE_THAN_1500.todayMale} ${t(
-                            "today"
-                          )}`}
-                      )
-                    </TableCell>
-                    <TableCell>{row?.total}</TableCell>
-                  </TableRow>
-                )
-              )}
+              {formatTableData({
+                data,
+                employmentStatus: "Unemployed",
+                locale: locale ?? "en",
+              }).map((row, index) => (
+                <TableRow key={index}>
+                  <TableCell>{row?.incomeRange}</TableCell>
+                  <TableCell>
+                    {row?.female} (
+                    {row?.incomeRange === "Less than 1500"
+                      ? `+${data.Unemployed.LESS_THAN_1500.todayFemale} ${t(
+                          "today"
+                        )}`
+                      : `+${data.Unemployed.MORE_THAN_1500.todayFemale} ${t(
+                          "today"
+                        )}`}
+                    )
+                  </TableCell>
+                  <TableCell>
+                    {row?.male} (
+                    {row?.incomeRange === "Less than 1500"
+                      ? `+${data.Unemployed.LESS_THAN_1500.todayMale} ${t(
+                          "today"
+                        )}`
+                      : `+${data.Unemployed.MORE_THAN_1500.todayMale} ${t(
+                          "today"
+                        )}`}
+                    )
+                  </TableCell>
+                  <TableCell>{row?.total}</TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </CardContent>
