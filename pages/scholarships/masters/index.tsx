@@ -27,10 +27,6 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 const ScholarshipsPage = () => {
   const { t } = useTranslation("scholarships");
 
-  const { locale, push } = useRouter();
-
-  const { t: common } = useTranslation("common");
-  const { t: tErrors } = useTranslation("errors");
   const { batch } = useBatchContext();
 
   return (
