@@ -74,6 +74,9 @@ import {
   MasterLog,
   UpdateMasterApplicationMutationVariables,
   UpdateMasterApplicationMutation,
+  MasterScholarship,
+  UpdateMasterScholarshipMutationVariables,
+  UpdateMasterScholarshipMutation,
 } from "./API";
 import {
   createAttachment,
@@ -102,6 +105,7 @@ import {
   createBahrainUniversities,
   updateMasterAttachment,
   updateMasterApplication,
+  updateMasterScholarship,
 } from "./graphql/mutations";
 import {
   getBatch,
@@ -1588,6 +1592,17 @@ export async function updateSingleScholarship(
   return res.data;
 }
 
+export async function updateSingleMasterScholarship(
+  variables: UpdateMasterScholarshipMutationVariables
+): Promise<UpdateMasterScholarshipMutation | undefined> {
+  let res = (await API.graphql({
+    query: updateMasterScholarship,
+    variables: variables,
+  })) as GraphQLResult<UpdateMasterScholarshipMutation>;
+
+  return res.data;
+}
+
 export async function createSingleScholarship(
   variables: CreateScholarshipMutationVariables
 ): Promise<CreateScholarshipMutation | undefined> {
@@ -1641,6 +1656,49 @@ export async function listAllScholarshipsOfBatch({
 
   return tempScholarshipList;
 }
+
+export async function listAllMastersScholarshipsOfBatch({
+  nextToken,
+  batch,
+}: {
+  batch: number;
+  nextToken?: string | null;
+}): Promise<{ nextToken: string | null; items: MasterScholarship[] }> {
+  let query = `query listAllScholarshipsByBatch {
+  masterScholarshipsByBatchAndStatus(batch: ${batch}, nextToken: ${`${nextToken}`}) {
+    nextToken
+    items {
+      id
+      _version
+      createdAt
+      IBANLetterDoc
+      signedContractDoc
+      isConfirmed
+      status
+      studentCPR
+      IBAN
+      bankName
+      guardianSignature
+      studentSignature
+      unsignedContractDoc
+      application {
+        studentName
+      }
+    }
+  }
+}
+  `;
+
+  let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;
+
+  if (res.data === null) {
+    throw new Error("Failed to get all scholarships");
+  }
+
+  let tempScholarshipList = res.data?.masterScholarshipsByBatchAndStatus;
+
+  return tempScholarshipList;
+}
 export async function listScholarshipsOfApplicationId({
   applicationId,
 }: {
@@ -1665,6 +1723,34 @@ export async function listScholarshipsOfApplicationId({
   }
 
   let tempScholarshipList = res.data?.scholarshipsByApplicationID?.items;
+
+  return tempScholarshipList ?? [];
+}
+
+export async function listMastersScholarshipsOfApplicationId({
+  applicationId,
+}: {
+  applicationId: string;
+}): Promise<MasterScholarship[]> {
+  let query = `query ListScholarshipsByApplicationID {
+    masterScholarshipsByApplicationID(applicationID: "${applicationId}") {
+      items {
+        id
+        signedContractDoc
+        IBANLetterDoc
+        isConfirmed
+      }
+    }
+  }  
+  `;
+
+  let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;
+
+  if (res.data === null) {
+    throw new Error("Failed to get all scholarships");
+  }
+
+  let tempScholarshipList = res.data?.masterScholarshipsByApplicationID?.items;
 
   return tempScholarshipList ?? [];
 }
@@ -1742,6 +1828,110 @@ export async function getScholarshipsWithId({
   let scholarship = res.data?.getScholarship;
 
   return scholarship;
+}
+
+export async function getMastersScholarshipsWithId({
+  id,
+}: {
+  id: string;
+}): Promise<MasterScholarship | null> {
+  let query = `query GetMastersScholarshipById {
+  getMasterScholarship(id: "${id}") {
+    _version
+    _lastChangedAt
+    _deleted
+    id
+    createdAt
+    updatedAt
+    applicationID
+    batch
+    bankName
+    IBAN
+    IBANLetterDoc
+    guardianSignature
+    isConfirmed
+    numberOfSemesters
+    scholarshipPeriod
+    signedContractDoc
+    startDate
+    status
+    studentCPR
+    studentSignature
+    unsignedContractDoc
+    application {
+      _version
+      id
+      adminPoints
+      batch
+      createdAt
+      dateTime
+      gpa
+      income
+      incomeDoc
+      isEmailSent
+      isIncomeVerified
+      isToeflIELTSScoreVerified
+      major
+      masterApplicationAttachmentId
+      nationalityCategory
+      program
+      reason
+      score
+      status
+      studentCPR
+      studentName
+      toeflIELTSScore
+      universityID
+      university {
+        universityName
+      }
+      updatedAt
+      verifiedGPA
+      student {
+        _version
+        cpr
+        batch
+        email
+        m_applicantType
+        m_firstName
+        m_graduationYear
+        m_guardianAddress
+        m_guardianCPR
+        m_guardianCPRDoc
+        m_guardianEmail
+        m_guardianFirstName
+        m_guardianFullName
+        m_guardianLastName
+        m_guardianSecondName
+        m_guardianThirdName
+        m_income
+        m_incomeDoc
+        m_isEmployed
+        m_lastName
+        m_numberOfFamilyMembers
+        m_oldProgram
+        m_placeOfEmployment
+        m_secondName
+        m_thirdName
+        m_universityID
+        phone
+        nationalityCategory
+        gender
+      }
+    }
+  }
+}
+  `;
+
+  let res = (await API.graphql(graphqlOperation(query))) as GraphQLResult<any>;
+
+  if (res.data === null) {
+    throw new Error(`Failed to get the masters scholarship with id: ${id}`);
+  }
+
+  let mastersScholarship = res.data?.getMasterScholarship;
+
+  return mastersScholarship;
 }
 
 export async function createSingleBatch(

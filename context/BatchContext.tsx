@@ -19,8 +19,11 @@ import {
 } from "../components/ui/applications/infinite-applications-type";
 
 import { useAuth } from "../hooks/use-auth";
-import { MasterApplication, Scholarship } from "../src/API";
-import { listAllScholarshipsOfBatch } from "../src/CustomAPI";
+import { MasterApplication, MasterScholarship, Scholarship } from "../src/API";
+import {
+  listAllMastersScholarshipsOfBatch,
+  listAllScholarshipsOfBatch,
+} from "../src/CustomAPI";
 import { String } from "aws-sdk/clients/acm";
 
 // interface for all the values & functions
@@ -64,6 +67,14 @@ interface IUseBatchContext {
   resetMasterApplications: () => void;
   searchMasterCpr: (cpr: string) => void;
   updateMasterApplication(updatedApplication: InfiniteMasterApplication): void;
+
+  // ? Masters scholarship
+  masterScholarshipsData: MasterScholarship[];
+  setMasterScholarshipsData: Dispatch<SetStateAction<MasterScholarship[]>>;
+  nextMasterScholarshipsKey: string | null;
+  setNextMasterScholarshipsKey: Dispatch<SetStateAction<string | null>>;
+  resetMasterScholarships: () => void;
+  isMasterScholarshipsInitialFetching: boolean;
 }
 
 // the default state for all the values & functions
@@ -147,6 +158,22 @@ const defaultState: IUseBatchContext = {
   ): void {
     throw new Error("Function not implemented.");
   },
+  masterScholarshipsData: [],
+  setMasterScholarshipsData: function (
+    value: SetStateAction<MasterScholarship[]>
+  ): void {
+    throw new Error("Function not implemented.");
+  },
+  nextMasterScholarshipsKey: null,
+  setNextMasterScholarshipsKey: function (
+    value: SetStateAction<string | null>
+  ): void {
+    throw new Error("Function not implemented.");
+  },
+  resetMasterScholarships: function (): void {
+    throw new Error("Function not implemented.");
+  },
+  isMasterScholarshipsInitialFetching: false,
 };
 
 // creating the app contexts
@@ -172,6 +199,11 @@ function useBatchProviderApp() {
   const [isScholarshipsInitialFetching, setIsScholarshipsInitialFetching] =
     useState(defaultState.isScholarshipsInitialFetching);
 
+  const [
+    isMasterScholarshipsInitialFetching,
+    setIsMasterScholarshipsInitialFetching,
+  ] = useState(defaultState.isMasterScholarshipsInitialFetching);
+
   const [batch, setBatch] = useState<number>(defaultState.batch);
 
   const [nextApplicationsKey, setNextApplicationsKey] = useState<
@@ -182,6 +214,10 @@ function useBatchProviderApp() {
     defaultState.nextScholarshipsKey
   );
 
+  const [nextMasterScholarshipsKey, setNextMasterScholarshipsKey] = useState<
+    string | null
+  >(defaultState.nextMasterScholarshipsKey);
+
   const [selectedApplicationsStatus, setSelectedApplicationsStatus] = useState<
     string | undefined
   >(defaultState.selectedApplicationsStatus);
@@ -191,6 +227,10 @@ function useBatchProviderApp() {
   );
   const [scholarshipsData, setScholarshipsData] = useState(
     defaultState.scholarshipsData
+  );
+
+  const [masterScholarshipsData, setMasterScholarshipsData] = useState(
+    defaultState.masterScholarshipsData
   );
 
   const [cpr, setCpr] = useState("");
@@ -220,6 +260,12 @@ function useBatchProviderApp() {
     setNextScholarshipsKey(null);
     setScholarshipsData([]);
     fetchFirstScholarshipsPage();
+  }
+
+  function resetMasterScholarships() {
+    setNextMasterScholarshipsKey(null);
+    setMasterScholarshipsData([]);
+    fetchFirstMasterScholarshipsPage();
   }
 
   function resetApplications(newCPR?: string) {
@@ -266,6 +312,19 @@ function useBatchProviderApp() {
     return fetchedData;
   }
 
+  async function fetchFirstMasterScholarshipsPage() {
+    setIsMasterInitialFetching(true);
+    const fetchedData = await listAllMastersScholarshipsOfBatch({
+      batch,
+      nextToken: nextMasterScholarshipsKey,
+    }).finally(() => {
+      setIsMasterInitialFetching(false);
+    });
+    setMasterScholarshipsData(fetchedData.items);
+    setNextMasterScholarshipsKey(fetchedData.nextToken);
+    return fetchedData;
+  }
+
   function resetApplicationsFilter() {
     setNextApplicationsKey(undefined);
     setApplicationsData([]);
@@ -299,6 +358,27 @@ function useBatchProviderApp() {
 
     return () => {};
   }, [batch, nextScholarshipsKey, token]);
+
+  useEffect(() => {
+    if (token) {
+      fetchFirstMasterScholarshipsPage();
+    }
+
+    async function fetchFirstMasterScholarshipsPage() {
+      setIsMasterInitialFetching(true);
+      const fetchedData = await listAllMastersScholarshipsOfBatch({
+        batch,
+        nextToken: nextMasterScholarshipsKey,
+      }).finally(() => {
+        setIsMasterInitialFetching(false);
+      });
+      setMasterScholarshipsData(fetchedData.items);
+      setNextMasterScholarshipsKey(fetchedData.nextToken);
+      return fetchedData;
+    }
+
+    return () => {};
+  }, [batch, nextMasterScholarshipsKey, token]);
 
   useEffect(() => {
     if (token) {
@@ -419,20 +499,6 @@ function useBatchProviderApp() {
     return () => {};
   }, [mastersBatch, selectedApplicationsStatus, token]);
 
-  //TODO fetch first master scholarships page
-  async function fetchFirstMasterScholarshipsPage() {
-    // setIsInitialFetching(true);
-    // const fetchedData = await listAllScholarshipsOfBatch({
-    //   batch,
-    //   nextToken: nextScholarshipsKey,
-    // }).finally(() => {
-    //   setIsInitialFetching(false);
-    // });
-    // setScholarshipsData(fetchedData.items);
-    // setNextScholarshipsKey(fetchedData.nextToken);
-    // return fetchedData;
-  }
-
   // NOTE: return all the values & functions you want to export
   return {
     batch,
@@ -465,5 +531,11 @@ function useBatchProviderApp() {
     setNextMasterApplicationsKey,
     resetMasterApplications,
     searchMasterCpr,
+    masterScholarshipsData,
+    setMasterScholarshipsData,
+    nextMasterScholarshipsKey,
+    setNextMasterScholarshipsKey,
+    resetMasterScholarships,
+    isMasterScholarshipsInitialFetching,
   };
 }
