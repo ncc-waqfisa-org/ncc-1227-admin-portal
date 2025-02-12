@@ -7,6 +7,8 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { InfiniteScholarships } from "../../components/scholarships/infinite-scholarships";
 import { BatchSelector } from "../../components/batch/BatchSelector";
 import { useBatchContext } from "../../context/BatchContext";
+import { InfiniteMastersScholarships } from "../../components/scholarships/infinite-masters-scholarships";
+import { useAppContext } from "../../context/AppContext";
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const { locale } = ctx;
@@ -27,27 +29,40 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 const ScholarshipsPage = () => {
   const { t } = useTranslation("scholarships");
 
-  const { locale, push } = useRouter();
-
-  const { t: common } = useTranslation("common");
-  const { t: tErrors } = useTranslation("errors");
   const { batch } = useBatchContext();
+  const { type } = useAppContext();
 
   return (
-    <PageComponent title={"Scholarships"}>
+    <PageComponent
+      title={type === "bachelor" ? "BScholarships" : "MScholarships"}
+    >
       {/* header */}
       <div className="flex flex-col gap-6">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div className="">
-            <div className="text-2xl font-semibold ">{t("scholarships")}</div>
+            <div className="text-2xl font-semibold ">
+              {t(
+                type === "bachelor"
+                  ? "bachelorScholarships"
+                  : "masterScholarships"
+              )}
+            </div>
             <div className="text-base font-medium text-gray-500 ">
-              {`${t("scholarshipsSubtitle")} ${batch}`}
+              {`${t(
+                type === "bachelor"
+                  ? "bachelorScholarshipsSubtitle"
+                  : "masterScholarshipsSubtitle"
+              )} ${batch}`}
             </div>
           </div>
           <BatchSelector />
         </div>
         {/* table */}
-        <InfiniteScholarships />
+        {type === "bachelor" ? (
+          <InfiniteScholarships />
+        ) : (
+          <InfiniteMastersScholarships />
+        )}
       </div>
     </PageComponent>
   );

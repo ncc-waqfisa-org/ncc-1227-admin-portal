@@ -57,5 +57,9 @@
   "cpr": "CPR",
   "applicant": "Applicant",
   "program": "Program",
-  "university": "University"
+  "university": "University",
+  "APPROVED": "Approved",
+  "REJECTED": "Rejected",
+  "PENDING": "Pending",
+  "WITHDRAWN": "Withdrawn"
 }

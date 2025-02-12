@@ -15,6 +15,10 @@
   "clear": "مسح",
   "reset": "إعادة تعيين",
   "scholarship": "منحة دراسية",
+  "masterScholarships": "المنح الدراسية للماجيستير",
+  "bachelorScholarships": "المنح الدراسية للبكالوريوس",
+  "masterScholarshipsSubtitle": "منح الماجيستير الدراسية لدفعة",
+  "bachelorScholarshipsSubtitle": "منح البكالوريوس الدراسية لدفعة",
   "scholarships": "المنح الدراسية",
   "scholarshipsSubtitle": "المنح الدراسية لدفعة",
   "status": "الحالة",
@@ -53,5 +57,9 @@
   "cpr": "الرقم الشخصي",
   "applicant": "المقدم للمنحة",
   "program": "البرنامج",
-  "university": "الجامعة"
+  "university": "الجامعة",
+  "APPROVED": "موافق",
+  "REJECTED": "مرفوض",
+  "PENDING": "قيد الانتظار",
+  "WITHDRAWN": "منسحب"
 }
