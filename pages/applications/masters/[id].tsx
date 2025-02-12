@@ -4,7 +4,7 @@ import { MasterApplication, Status } from "../../../src/API";
 import { GetServerSideProps } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "react-i18next";
-import router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { PageComponent } from "../../../components/page-component";
 import { DownloadFileFromUrl } from "../../../components/download-file-from-url";
 import { FiAlertCircle, FiCheckCircle, FiPrinter } from "react-icons/fi";
@@ -25,14 +25,16 @@ import { MasterApplicationForm } from "../../../components/application/MasterApp
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "../../../components/ui/dialog";
 import { Textarea } from "../../../components/ui/textarea";
 
-import { listScholarshipsOfApplicationId } from "../../../src/CustomAPI";
+import {
+  listMastersScholarshipsOfApplicationId,
+  listScholarshipsOfApplicationId,
+} from "../../../src/CustomAPI";
 import { cn } from "../../../src/utils";
 import { getMasterApplicationByIdAPI } from "../../../context/StudentContext";
 import MasterInfoForm from "../../../components/student/MasterInfoForm";
@@ -41,8 +43,6 @@ import {
   TGeneratedScholarship,
 } from "../../../components/scholarships/GenerateScholarshipForm";
 import { useAuth } from "../../../hooks/use-auth";
-import { Divider } from "@aws-amplify/ui-react";
-import { DividerHorizontalIcon } from "@radix-ui/react-icons";
 
 interface Props {
   application: MasterApplication;
@@ -59,7 +59,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const res = await getMasterApplicationByIdAPI(`${id}`);
 
   // check if application have scholarship
-  const scholarships = await listScholarshipsOfApplicationId({
+  const scholarships = await listMastersScholarshipsOfApplicationId({
     applicationId: `${id}`,
   });
 
@@ -117,7 +117,7 @@ const MasterApplicationInfo: FC<Props> = (props) => {
           res.json().then((data) => {
             const id: string | null = data?.scholarship?.id;
             if (id) {
-              push(`/${locale}/scholarships/${id}`); //TODO redirect to master scholarships
+              push(`/${locale}/scholarships/masters/${id}`);
             }
           });
           setGeneratedContractData(undefined);
@@ -337,10 +337,7 @@ const MasterApplicationInfo: FC<Props> = (props) => {
                     <button
                       type="button"
                       className="btn-primary btn btn-sm"
-                      disabled={
-                        isAttachingPending ||
-                        props.scholarship.scholarshipId !== undefined
-                      }
+                      disabled={isAttachingPending}
                       onClick={attachAndCreate}
                     >
                       {props.scholarship.scholarshipId ? (

@@ -16,7 +16,11 @@
   "reset": "Reset",
   "scholarship": "Scholarship",
   "scholarships": "Scholarships",
+  "masterScholarships": "Master Scholarships",
+  "bachelorScholarships": "Bachelor Scholarships",
   "scholarshipsSubtitle": "Scholarships of Batch",
+  "masterScholarshipsSubtitle": "Master Scholarships of Batch",
+  "bachelorScholarshipsSubtitle": "Bachelor Scholarships of Batch",
   "status": "Status",
   "statusD": "Status of the scholarship",
   "notAddedYet": "Not added yet",
@@ -49,5 +53,9 @@
   "months": "months",
   "scholarshipPeriodD": "The period the scholarship will be valid for (in months)",
   "numberOfSemesters": "Number of Semesters",
-  "generate": "Generate contract"
+  "generate": "Generate contract",
+  "cpr": "CPR",
+  "applicant": "Applicant",
+  "program": "Program",
+  "university": "University"
 }

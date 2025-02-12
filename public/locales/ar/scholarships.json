@@ -49,5 +49,9 @@
   "months": "وصف معرف التطبيق",
   "scholarshipPeriodD": "وصف معرف التطبيق",
   "numberOfSemesters": "عدد الفصول الدراسية",
-  "generate": "توليد العقد"
+  "generate": "توليد العقد",
+  "cpr": "الرقم الشخصي",
+  "applicant": "المقدم للمنحة",
+  "program": "البرنامج",
+  "university": "الجامعة"
 }
