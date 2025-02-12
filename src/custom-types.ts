@@ -15,6 +15,28 @@ export type TStatistics = {
   participatingUniversities: string[];
 };
 
+export type TMastersStatistics = {
+  scoreHistogram: { [key: string]: number };
+  totalApplicationsPerUniversity: { [key: string]: number };
+  totalApplicationsPerStatus: { [key: string]: number };
+  gpaHistogram: { [key: string]: THistogram };
+  totalApplications: number;
+  applications: TMoreStatisticsTotalApplications;
+  id: number;
+  batch: number;
+  topUniversities: { [key: string]: number };
+  students: TMoreStatisticsStudents;
+  today: TMoreStatisticsToday;
+  participatingUniversities: string[];
+  majorsPerGenderHistogram: TMoreStatisticsMajorHistogram;
+  registerAccountsPerGender: THistogram;
+  familyIncome: TMoreStatisticsFamilyIncome;
+  universitiesBahrain: { [key: string]: number };
+  incomePerEmploymentStatus: TMoreStatisticsIncomePerEmploymentStatus;
+  topBahrainUniversities: { [key: string]: number }; //TODO fix this
+  applicationPerGenderHistogram: THistogram;
+};
+
 export type TotalApplicationsPerStatus = {
   ELIGIBLE: number | undefined;
   WITHDRAWN: number | undefined;
@@ -63,4 +85,30 @@ export type TMoreStatisticsFamilyIncome = {
 export type TMoreStatisticsGenderRatio = {
   female: number;
   male: number;
+};
+
+export type TMoreStatisticsIncomePerEmploymentStatus = {
+  Employed: TMoreIncomeStatus;
+  Unemployed: TMoreIncomeStatus;
+};
+
+export type TMoreIncomeStatus = {
+  LESS_THAN_1500: THistogram;
+  MORE_THAN_1500: THistogram;
+  total: number;
+};
+
+export type TMoreStatisticsMajorHistogram = {
+  Science: THistogram;
+  Technology: THistogram;
+  Engineering: THistogram;
+};
+
+export type THistogram = {
+  todayFemale?: number;
+  todayTotal?: number;
+  todayMale?: number;
+  total?: number;
+  female?: number;
+  male?: number;
 };

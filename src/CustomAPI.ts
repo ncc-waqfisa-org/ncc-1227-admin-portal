@@ -111,7 +111,7 @@ import {
   getScholarship,
 } from "./graphql/queries";
 
-import { TStatistics } from "./custom-types";
+import { TMastersStatistics, TStatistics } from "./custom-types";
 
 /* -------------------------------------------------------------------------- */
 /*                                 INTERFACES                                 */
@@ -1900,5 +1900,7 @@ export async function getMastersStatistics({
         "Accept-Language": locale ? locale : "en",
       },
     }
-  ).then((res) => res.json().then((data) => data.statistics as TStatistics));
+  ).then((res) =>
+    res.json().then((data) => data.statistics as TMastersStatistics)
+  );
 }

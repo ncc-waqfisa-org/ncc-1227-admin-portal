@@ -21,7 +21,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   let adminLog = await getAdminLogsByLogID(`${id}`);
 
-  console.log(JSON.stringify(adminLog));
   return {
     props: {
       adminLog: adminLog,
@@ -56,14 +55,12 @@ export default function AdminLogHistoryInfo({ adminLog }: Props) {
   return (
     <PageComponent title={"AdminLogHistory"}>
       <Toaster />
-      <div className="flex flex-col justify-between p-4 ">
-        <div className="p-4 ">
-          <div className="flex items-center justify-between mb-8 ">
+      <div className="flex flex-col justify-between p-4">
+        <div className="p-4">
+          <div className="flex justify-between items-center mb-8">
             <div>
-              <div className="text-2xl font-semibold ">
-                {t("adminLogTitle")}
-              </div>
-              <div className="text-base font-medium text-gray-500 ">{id}</div>
+              <div className="text-2xl font-semibold">{t("adminLogTitle")}</div>
+              <div className="text-base font-medium text-gray-500">{id}</div>
             </div>
             <PrimaryButton
               name={t("backButton")}
@@ -73,9 +70,9 @@ export default function AdminLogHistoryInfo({ adminLog }: Props) {
             ></PrimaryButton>
           </div>
           {/* body */}
-          <div className="flex flex-col justify-between gap-4 ">
+          <div className="flex flex-col gap-4 justify-between">
             <div>
-              <div className="text-xl font-semibold ">
+              <div className="text-xl font-semibold">
                 {t("adminInformation")}
               </div>
               <div>{adminLog.admin?.fullName}</div>
@@ -83,7 +80,7 @@ export default function AdminLogHistoryInfo({ adminLog }: Props) {
               <div>{adminLog.admin?.cpr}</div>
             </div>
             <div className="">
-              <div className="text-xl font-semibold ">
+              <div className="text-xl font-semibold">
                 {t("applicationDetails")}
               </div>
               {JSON.stringify(snapshot)}
@@ -100,13 +97,13 @@ export default function AdminLogHistoryInfo({ adminLog }: Props) {
               )} */}
             </div>
             <div>
-              <div className="text-xl font-semibold ">
+              <div className="text-xl font-semibold">
                 {t("reasonForChange")}
               </div>
               <div>{adminLog.reason}</div>
             </div>
             <div>
-              <div className="text-xl font-semibold ">{t("updatedAt")}</div>
+              <div className="text-xl font-semibold">{t("updatedAt")}</div>
               <div>{`${Intl.DateTimeFormat("en", {
                 timeStyle: "short",
                 dateStyle: "medium",

@@ -1,8 +1,5 @@
 import React, { FC } from "react";
 import { PageComponent } from "../../components/page-component";
-import BatchUpdateForm, {
-  BatchUpdateFormInputValues,
-} from "../../components/batch/BatchUpdateForm";
 import { GetServerSideProps } from "next";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getSingleBatch, updateSingleBatch } from "../../src/CustomAPI";
@@ -16,6 +13,8 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { cn } from "../../src/utils";
 import { DownloadFileFromUrl } from "../../components/download-file-from-url";
 import { BulkUploadGpa } from "../../components/batch/BulkUploadGpa";
+import BatchUpdateForm from "../../components/batch/BatchUpdateForm";
+import { BatchUpdateFormInputValues } from "../../src/ui-components/BatchUpdateForm";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { batch } = ctx.query;
@@ -99,18 +98,18 @@ const SingleBatchPage: FC<PageType> = ({ batchYear }) => {
 
   return (
     <PageComponent title="Batch">
-      <div className="relative flex flex-col w-full max-w-3xl gap-4 mx-auto">
+      <div className="flex relative flex-col gap-4 mx-auto w-full max-w-3xl">
         {/* header */}
-        <div className="p-6 ">
-          <div className="text-2xl font-semibold ">{t("batch")}</div>
-          <div className="text-base font-medium text-gray-500 ">
+        <div className="p-6">
+          <div className="text-2xl font-semibold">{t("batch")}</div>
+          <div className="text-base font-medium text-gray-500">
             {`${t("editBatch")} ${batch?.getBatch?.batch}`}
           </div>
         </div>
 
         <div className="grid gap-2 px-4">
           <p className="font-medium">{t("toolbar")}</p>
-          <div className="flex flex-wrap gap-3 p-3 border rounded-lg">
+          <div className="flex flex-wrap gap-3 p-3 rounded-lg border">
             <DownloadFileFromUrl
               fileName={"Unverified-CPR's"}
               url={`${process.env.NEXT_PUBLIC_ELIGIBLE_CPRS_ENDPOINT}?batch=${batchYear}`}
@@ -123,29 +122,30 @@ const SingleBatchPage: FC<PageType> = ({ batchYear }) => {
         </div>
 
         {batch?.getBatch && (
-          <BatchUpdateForm
-            batch={
-              new Batch({
-                batch: batchYear ?? 0,
-                createApplicationStartDate:
-                  batch.getBatch.createApplicationStartDate,
-                createApplicationEndDate:
-                  batch.getBatch.createApplicationEndDate,
-                updateApplicationEndDate:
-                  batch.getBatch.updateApplicationEndDate,
-                signUpStartDate: batch.getBatch.signUpStartDate,
-                signUpEndDate: batch.getBatch.signUpEndDate,
-              })
-            }
-            onSubmit={(values) => {
-              handleUpdate(values);
-              return values;
-            }}
-            onError={(values, error) => {
-              console.log("error", error);
-              console.log("onError:", values);
-            }}
-          ></BatchUpdateForm>
+          // <BatchUpdateForm
+          //   batch={
+          //     new Batch({
+          //       batch: batchYear ?? 0,
+          //       createApplicationStartDate:
+          //         batch.getBatch.createApplicationStartDate,
+          //       createApplicationEndDate:
+          //         batch.getBatch.createApplicationEndDate,
+          //       updateApplicationEndDate:
+          //         batch.getBatch.updateApplicationEndDate,
+          //       signUpStartDate: batch.getBatch.signUpStartDate,
+          //       signUpEndDate: batch.getBatch.signUpEndDate,
+          //     })
+          //   }
+          //   onSubmit={(values) => {
+          //     handleUpdate(values);
+          //     return values;
+          //   }}
+          //   onError={(values, error) => {
+          //     console.log("error", error);
+          //     console.log("onError:", values);
+          //   }}
+          // ></BatchUpdateForm>
+          <BatchUpdateForm batch={batch.getBatch} />
         )}
 
         <div
@@ -155,7 +155,7 @@ const SingleBatchPage: FC<PageType> = ({ batchYear }) => {
               "opacity-100  pointer-events-auto"
           )}
         >
-          <div className="flex items-center gap-2">
+          <div className="flex gap-2 items-center">
             <span className="loading"></span>
             <p>{t("loading")}...</p>
           </div>

@@ -55,5 +55,17 @@
   "back": "Back",
   "success": "Success",
   "participatingUniversities": "Participating Universities",
-  "applicantIncome": "Applicant/Guardian familyIncome"
+  "applicantIncome": "Applicant Income",
+  "majorScience": "Science",
+  "majorTechnology": "Technology",
+  "majorEngineering": "Engineering",
+  "majorPerGenderHistogram": "Gender Per Major",
+  "unemployed": "Unemployed",
+  "employed": "Employed",
+  "guardianIncome": "Guardian Income",
+  "totalEmployed": "Total Employed",
+  "totalUnemployed": "Total Unemployed",
+  "statisticsRefreshedSuccessfully": "Statistics refreshed successfully",
+  "failedToRefreshStatistics": "Failed to refresh statistics",
+  "exportApplicationsCSV": "Export Applications CSV"
 }

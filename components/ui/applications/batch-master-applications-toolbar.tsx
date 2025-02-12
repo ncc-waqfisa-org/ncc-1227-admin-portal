@@ -119,11 +119,11 @@ export const BatchMasterApplicationsToolbar: React.FC<
   }
 
   return (
-    <div className="flex flex-wrap items-start gap-3">
+    <div className="flex flex-wrap gap-3 items-start">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex items-start gap-2"
+          className="flex gap-2 items-start"
         >
           <FormField
             control={form.control}
@@ -140,7 +140,7 @@ export const BatchMasterApplicationsToolbar: React.FC<
                     {field.value && (
                       <Button
                         type="button"
-                        className={cn("absolute top-0 ltr:right-0 rtl:left-0 ")}
+                        className={cn("absolute top-0 ltr:right-0 rtl:left-0")}
                         onClick={() => {
                           field.onChange("");
                           submitButton.current?.click();
@@ -168,7 +168,7 @@ export const BatchMasterApplicationsToolbar: React.FC<
         </form>
       </Form>
 
-      <div className="flex items-center gap-2">
+      <div className="flex gap-2 items-center">
         <Select onValueChange={handleStatusChange} value={selectedStatus}>
           <SelectTrigger className="w-[160px]">
             <SelectValue placeholder="Select status" />
@@ -252,7 +252,7 @@ export const BatchMasterApplicationsToolbar: React.FC<
         onClick={() => {
           toast.promise(
             fetch(
-              `https://z7pe3akpcz6bazr3djdk4yo7e40yqevt.lambda-url.us-east-1.on.aws/?batch=${batch}`,
+              `${process.env.NEXT_PUBLIC_LAMBDA_EXPORT_MASTER_CSV_STATISTICS}?batch=${batch}`,
               {
                 headers: {
                   Authorization: `Bearer ${token}`,

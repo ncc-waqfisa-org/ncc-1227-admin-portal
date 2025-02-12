@@ -24,6 +24,7 @@ import BatchCreateForm, {
 import MasterBatchCreateForm, {
   MasterBatchCreateFormInputValues,
 } from "../../../src/ui-components/MasterBatchCreateForm";
+import MasterBatchForm from "../../../components/batch/MasterBatchForm";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { locale } = ctx;
@@ -79,16 +80,16 @@ const CreateSingleMasterBatchPage: FC<PageType> = ({}) => {
 
   return (
     <PageComponent title="Batch">
-      <div className="relative flex flex-col w-full max-w-3xl mx-auto">
+      <div className="flex relative flex-col mx-auto w-full max-w-3xl">
         {/* header */}
-        <div className="p-6 ">
-          <div className="text-2xl font-semibold ">{t("batch")}</div>
-          <div className="text-base font-medium text-gray-500 ">
+        <div className="py-6">
+          <div className="text-2xl font-semibold">{t("MBatch")}</div>
+          <div className="text-base font-medium text-gray-500">
             {`${t("createNewMBatch")}`}
           </div>
         </div>
 
-        <MasterBatchCreateForm
+        {/* <MasterBatchCreateForm
           onSubmit={(values) => {
             handleCreate(values);
             return values;
@@ -97,7 +98,9 @@ const CreateSingleMasterBatchPage: FC<PageType> = ({}) => {
             console.log("error", error);
             console.log("onError:", values);
           }}
-        ></MasterBatchCreateForm>
+        ></MasterBatchCreateForm> */}
+
+        <MasterBatchForm />
 
         <div
           className={cn(
@@ -106,7 +109,7 @@ const CreateSingleMasterBatchPage: FC<PageType> = ({}) => {
               "opacity-100  pointer-events-auto"
           )}
         >
-          <div className="flex items-center gap-2">
+          <div className="flex gap-2 items-center">
             <span className="loading"></span>
             <p>{t("loading")}...</p>
           </div>

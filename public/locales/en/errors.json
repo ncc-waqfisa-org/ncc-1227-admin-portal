@@ -7,5 +7,6 @@
   "cprShouldBe9": "CPR should be 9 numbers",
   "min8": "At least 8 characters",
   "minimumGPA": "Minimum GPA is",
-  "maximumGPA": "Maximum GPA is"
+  "maximumGPA": "Maximum GPA is",
+  "invalidDate": "Invalid date"
 }

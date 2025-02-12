@@ -1,10 +1,15 @@
 import React, { FC, useMemo } from "react";
-import { TStatistics } from "../src/custom-types";
+import {
+  TMastersStatistics,
+  TMoreStatisticsIncomePerEmploymentStatus,
+  TStatistics,
+} from "../src/custom-types";
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import EmploymentStatistics from "./statistics/EmploymentStatistics";
 
 type TMoreStatistics = {
-  statistics: TStatistics;
+  statistics: TMastersStatistics;
 };
 
 export const MoreMasterStatistics: FC<TMoreStatistics> = ({ statistics }) => {
@@ -32,87 +37,110 @@ export const MoreMasterStatistics: FC<TMoreStatistics> = ({ statistics }) => {
   );
 
   return (
-    // <div className="flex flex-col gap-4 ">{JSON.stringify(statistics)}</div>
-
-    <div className="flex flex-col gap-4 ">
-      <div className="flex flex-wrap items-center gap-4">
-        {/* {JSON.stringify(statistics)} */}
-        <p className="text-3xl font-semibold ">{t("moreStatistics")}</p>
+    <div className="flex flex-col gap-4">
+      <div className="flex flex-wrap gap-4 items-center">
+        <p className="text-3xl font-semibold">{t("moreStatistics")}</p>
         <div className="flex flex-wrap gap-10 w-fit">
-          <div className="flex items-center gap-2">
+          <div className="flex gap-2 items-center">
             <div className="bg-[#D8D4BA] w-5 aspect-square rounded-sm"></div>
             <p>{t("males")}</p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex gap-2 items-center">
             <div className="bg-[#D9D9D9] w-5 aspect-square rounded-sm"></div>
             <p>{t("females")}</p>
           </div>
         </div>
       </div>
-      {/* <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 2xl:grid-cols-3 "> */}
-      <div className="space-y-4 columns-1 xl:columns-2 2xl:columns-3">
+      {/* <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 2xl:grid-cols-3"> */}
+      <div className="space-y-4 columns-1 xl:columns-2">
         {/* School type */}
 
-        {/* Family Income  */}
-        <Card className="break-inside-avoid-column">
-          <CardHeader>
-            <CardTitle>{t("applicantIncome")}</CardTitle>
-          </CardHeader>
-          <CardContent className="flex flex-col items-end gap-4">
-            <div className="flex flex-col flex-1 w-full gap-2 p-2 text-center border rounded-xl">
-              <div className="grid grid-cols-5 gap-2 ">
-                <p className="text-start">{t("above1500")}</p>
-                <div className="flex items-end w-full col-span-4 gap-4">
-                  <p className="flex-1 px-2 py-1 bg-[#D8D4BA] rounded-lg">
-                    {statistics.familyIncome.above1500.male}
-                  </p>
-                  <p className="flex-1 px-2 py-1 bg-[#D9D9D9] rounded-lg">
-                    {statistics.familyIncome.above1500.female}
-                  </p>
-                </div>
-              </div>
-              <div className="grid grid-cols-5 gap-2 ">
-                <p className="text-destructive text-start">{t("today")}</p>
-                <div className="flex items-end w-full col-span-4 gap-4">
-                  <p className="flex-1 px-2 py-1 bg-[#D8D4BA]/50 rounded-lg">
-                    {statistics.familyIncome.above1500Today.male}
-                  </p>
-                  <p className="flex-1 px-2 py-1 bg-[#D9D9D9]/50 rounded-lg">
-                    {statistics.familyIncome.above1500Today.female}
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col flex-1 w-full gap-2 p-2 text-center border rounded-xl">
-              <div className="grid grid-cols-5 gap-2 ">
-                <p className="text-start">{t("bellow1500")}</p>
-                <div className="flex items-end w-full col-span-4 gap-4">
-                  <p className="flex-1 px-2 py-1 bg-[#D8D4BA] rounded-lg">
-                    {statistics.familyIncome.below1500.male}
-                  </p>
-                  <p className="flex-1 px-2 py-1 bg-[#D9D9D9] rounded-lg">
-                    {statistics.familyIncome.below1500.female}
-                  </p>
-                </div>
-              </div>
-              <div className="grid grid-cols-5 gap-2 ">
-                <p className="text-destructive text-start">{t("today")}</p>
-                <div className="flex items-end w-full col-span-4 gap-4">
-                  <p className="flex-1 px-2 py-1 bg-[#D8D4BA]/50 rounded-lg">
-                    {statistics.familyIncome.below1500Today.male}
-                  </p>
-                  <p className="flex-1 px-2 py-1 bg-[#D9D9D9]/50 rounded-lg">
-                    {statistics.familyIncome.below1500Today.female}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        {/* Masters Applicant Income */}
+        {statistics.incomePerEmploymentStatus && (
+          <EmploymentStatistics data={statistics.incomePerEmploymentStatus} />
+        )}
 
         {/* Total Students */}
 
         {/* Total Applications */}
+        {statistics.applicationPerGenderHistogram && (
+          <Card className="break-inside-avoid-column">
+            <CardHeader>
+              <CardTitle>{t("totalApplications")}</CardTitle>
+            </CardHeader>
+            <CardContent className="flex gap-2 justify-between items-center">
+              <div>
+                <div className="text-4xl font-bold">
+                  {statistics.applicationPerGenderHistogram?.total}
+                </div>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  +{statistics.applicationPerGenderHistogram.todayTotal}{" "}
+                  {t("today")}
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <div className="bg-[#D8D4BA] p-2 rounded-lg">
+                  <div className="text-2xl font-bold">
+                    {statistics.applicationPerGenderHistogram?.male}
+                  </div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    +{statistics.applicationPerGenderHistogram.todayMale}{" "}
+                    {t("today")}
+                  </p>
+                </div>
+                <div className="bg-[#D9D9D9] p-2 rounded-lg">
+                  <div className="text-2xl font-bold">
+                    {statistics.applicationPerGenderHistogram?.female}
+                  </div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    +{statistics.applicationPerGenderHistogram.todayFemale}{" "}
+                    {t("today")}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Register Account Per Gender */}
+        {statistics.registerAccountsPerGender && (
+          <Card className="break-inside-avoid-column">
+            <CardHeader>
+              <CardTitle>{t("totalRegisteredAccounts")}</CardTitle>
+            </CardHeader>
+            <CardContent className="flex gap-2 justify-between items-center">
+              <div>
+                <div className="text-4xl font-bold">
+                  {statistics.registerAccountsPerGender?.total}
+                </div>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  +{statistics.registerAccountsPerGender.todayTotal ?? 0}{" "}
+                  {t("today")}
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <div className="bg-[#D8D4BA] p-2 rounded-lg">
+                  <div className="text-2xl font-bold">
+                    {statistics.registerAccountsPerGender?.male}
+                  </div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    +{statistics.registerAccountsPerGender.todayMale ?? 0}{" "}
+                    {t("today")}
+                  </p>
+                </div>
+                <div className="bg-[#D9D9D9] p-2 rounded-lg">
+                  <div className="text-2xl font-bold">
+                    {statistics.registerAccountsPerGender?.female}
+                  </div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    +{statistics.registerAccountsPerGender.todayFemale ?? 0}{" "}
+                    {t("today")}
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Total applications per status */}
         <Card className="break-inside-avoid-column">
@@ -122,7 +150,7 @@ export const MoreMasterStatistics: FC<TMoreStatistics> = ({ statistics }) => {
           {/* totalApplicationsPerStatus */}
           <CardContent className="flex flex-col gap-2">
             {statusApplications.map((item, i) => (
-              <div className="flex items-baseline gap-2" key={i}>
+              <div className="flex gap-2 items-baseline" key={i}>
                 <p className="flex-1">{item.status}</p>
                 <p className="">{item.value}</p>
               </div>
@@ -137,12 +165,98 @@ export const MoreMasterStatistics: FC<TMoreStatistics> = ({ statistics }) => {
           </CardHeader>
           {/* totalApplicationsPerStatus */}
           <CardContent className="flex flex-col gap-2">
-            {uniApplications.map((item, i) => (
-              <div className="flex items-baseline gap-2" key={i}>
-                <p className="flex-1">{item.uni}</p>
-                <p className="">{item.value}</p>
+            {uniApplications
+              .sort((a, b) => a.uni.localeCompare(b.uni))
+              .map((item, i) => (
+                <div className="flex gap-2 items-baseline" key={i}>
+                  <p className="flex-1">{item.uni}</p>
+                  <p className="">{item.value}</p>
+                </div>
+              ))}
+          </CardContent>
+        </Card>
+
+        {/* Majors per gender histogram */}
+        <Card className="break-inside-avoid-column">
+          <CardHeader>
+            <CardTitle>{t("majorPerGenderHistogram")}</CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4 items-end">
+            <div className="flex flex-col flex-1 gap-2 p-2 w-full text-center rounded-xl border">
+              <div className="grid grid-cols-5 gap-2">
+                <p className="text-start">{t("majorScience")}</p>
+                <div className="flex col-span-4 gap-4 items-end w-full">
+                  <p className="flex-1 px-2 py-1 bg-[#D8D4BA] rounded-lg">
+                    {statistics.majorsPerGenderHistogram.Science.male}
+                  </p>
+                  <p className="flex-1 px-2 py-1 bg-[#D9D9D9] rounded-lg">
+                    {statistics.majorsPerGenderHistogram.Science.female}
+                  </p>
+                </div>
               </div>
-            ))}
+              <div className="grid grid-cols-5 gap-2">
+                <p className="text-destructive text-start">{t("today")}</p>
+                <div className="flex col-span-4 gap-4 items-end w-full">
+                  <p className="flex-1 px-2 py-1 bg-[#D8D4BA]/50 rounded-lg">
+                    {statistics.majorsPerGenderHistogram.Science.todayMale}
+                  </p>
+                  <p className="flex-1 px-2 py-1 bg-[#D9D9D9]/50 rounded-lg">
+                    {statistics.majorsPerGenderHistogram.Science.todayFemale}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col flex-1 gap-2 p-2 w-full text-center rounded-xl border">
+              <div className="grid grid-cols-5 gap-2">
+                <p className="text-start">{t("majorTechnology")}</p>
+                <div className="flex col-span-4 gap-4 items-end w-full">
+                  <p className="flex-1 px-2 py-1 bg-[#D8D4BA] rounded-lg">
+                    {statistics.majorsPerGenderHistogram.Technology.male}
+                  </p>
+                  <p className="flex-1 px-2 py-1 bg-[#D9D9D9] rounded-lg">
+                    {statistics.majorsPerGenderHistogram.Technology.female}
+                  </p>
+                </div>
+              </div>
+              <div className="grid grid-cols-5 gap-2">
+                <p className="text-destructive text-start">{t("today")}</p>
+                <div className="flex col-span-4 gap-4 items-end w-full">
+                  <p className="flex-1 px-2 py-1 bg-[#D8D4BA]/50 rounded-lg">
+                    {statistics.majorsPerGenderHistogram.Technology.todayMale}
+                  </p>
+                  <p className="flex-1 px-2 py-1 bg-[#D9D9D9]/50 rounded-lg">
+                    {statistics.majorsPerGenderHistogram.Technology.todayFemale}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col flex-1 gap-2 p-2 w-full text-center rounded-xl border">
+              <div className="grid grid-cols-5 gap-2">
+                <p className="text-start">{t("majorEngineering")}</p>
+                <div className="flex col-span-4 gap-4 items-end w-full">
+                  <p className="flex-1 px-2 py-1 bg-[#D8D4BA] rounded-lg">
+                    {statistics.majorsPerGenderHistogram.Engineering.male}
+                  </p>
+                  <p className="flex-1 px-2 py-1 bg-[#D9D9D9] rounded-lg">
+                    {statistics.majorsPerGenderHistogram.Engineering.female}
+                  </p>
+                </div>
+              </div>
+              <div className="grid grid-cols-5 gap-2">
+                <p className="text-destructive text-start">{t("today")}</p>
+                <div className="flex col-span-4 gap-4 items-end w-full">
+                  <p className="flex-1 px-2 py-1 bg-[#D8D4BA]/50 rounded-lg">
+                    {statistics.majorsPerGenderHistogram.Engineering.todayMale}
+                  </p>
+                  <p className="flex-1 px-2 py-1 bg-[#D9D9D9]/50 rounded-lg">
+                    {
+                      statistics.majorsPerGenderHistogram.Engineering
+                        .todayFemale
+                    }
+                  </p>
+                </div>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>

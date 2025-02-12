@@ -7,7 +7,6 @@ import {
   updateSingleMasterBatch,
 } from "../../../src/CustomAPI";
 
-import { MasterBatch } from "../../../src/models";
 import { UpdateMasterBatchMutationVariables } from "../../../src/API";
 import toast from "react-hot-toast";
 
@@ -16,9 +15,8 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { cn } from "../../../src/utils";
 import { DownloadFileFromUrl } from "../../../components/download-file-from-url";
 import { BulkUploadGpa } from "../../../components/batch/BulkUploadGpa";
-import MasterBatchUpdateForm, {
-  MasterBatchUpdateFormInputValues,
-} from "../../../src/ui-components/MasterBatchUpdateForm";
+import { MasterBatchUpdateFormInputValues } from "../../../src/ui-components/MasterBatchUpdateForm";
+import MasterBatchForm from "../../../components/batch/MasterBatchForm";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { batch } = ctx.query;
@@ -102,18 +100,18 @@ const SingleMasterBatchPage: FC<PageType> = ({ batchYear }) => {
 
   return (
     <PageComponent title="Batch">
-      <div className="relative flex flex-col w-full max-w-3xl gap-4 mx-auto">
+      <div className="flex relative flex-col gap-4 mx-auto w-full max-w-3xl">
         {/* header */}
-        <div className="p-6 ">
-          <div className="text-2xl font-semibold ">{t("MBatch")}</div>
-          <div className="text-base font-medium text-gray-500 ">
+        <div className="p-6">
+          <div className="text-2xl font-semibold">{t("MBatch")}</div>
+          <div className="text-base font-medium text-gray-500">
             {`${t("editBatch")} ${batch?.getMasterBatch?.batch}`}
           </div>
         </div>
 
         <div className="grid gap-2 px-4">
           <p className="font-medium">{t("toolbar")}</p>
-          <div className="flex flex-wrap gap-3 p-3 border rounded-lg">
+          <div className="flex flex-wrap gap-3 p-3 rounded-lg border">
             <DownloadFileFromUrl
               fileName={"Eligible-CPR's"}
               url={`${process.env.NEXT_PUBLIC_ELIGIBLE_MASTERS_CPRS_ENDPOINT}?batch=${batchYear}`}
@@ -126,29 +124,30 @@ const SingleMasterBatchPage: FC<PageType> = ({ batchYear }) => {
         </div>
 
         {batch?.getMasterBatch && (
-          <MasterBatchUpdateForm
-            masterBatch={
-              new MasterBatch({
-                batch: batchYear ?? 0,
-                createApplicationStartDate:
-                  batch.getMasterBatch.createApplicationStartDate,
-                createApplicationEndDate:
-                  batch.getMasterBatch.createApplicationEndDate,
-                updateApplicationEndDate:
-                  batch.getMasterBatch.updateApplicationEndDate,
-                signUpStartDate: batch.getMasterBatch.signUpStartDate,
-                signUpEndDate: batch.getMasterBatch.signUpEndDate,
-              })
-            }
-            onSubmit={(values) => {
-              handleUpdate(values);
-              return values;
-            }}
-            onError={(values, error) => {
-              console.log("error", error);
-              console.log("onError:", values);
-            }}
-          ></MasterBatchUpdateForm>
+          // <MasterBatchUpdateForm
+          //   masterBatch={
+          //     new MasterBatch({
+          //       batch: batchYear ?? 0,
+          //       createApplicationStartDate:
+          //         batch.getMasterBatch.createApplicationStartDate,
+          //       createApplicationEndDate:
+          //         batch.getMasterBatch.createApplicationEndDate,
+          //       updateApplicationEndDate:
+          //         batch.getMasterBatch.updateApplicationEndDate,
+          //       signUpStartDate: batch.getMasterBatch.signUpStartDate,
+          //       signUpEndDate: batch.getMasterBatch.signUpEndDate,
+          //     })
+          //   }
+          //   onSubmit={(values) => {
+          //     handleUpdate(values);
+          //     return values;
+          //   }}
+          //   onError={(values, error) => {
+          //     console.log("error", error);
+          //     console.log("onError:", values);
+          //   }}
+          // ></MasterBatchUpdateForm>
+          <MasterBatchForm masterBatch={batch.getMasterBatch} />
         )}
 
         <div
@@ -158,7 +157,7 @@ const SingleMasterBatchPage: FC<PageType> = ({ batchYear }) => {
               "opacity-100  pointer-events-auto"
           )}
         >
-          <div className="flex items-center gap-2">
+          <div className="flex gap-2 items-center">
             <span className="loading"></span>
             <p>{t("loading")}...</p>
           </div>
