@@ -36,6 +36,7 @@ interface Props {
 }
 
 export default function MasterBatchForm({ masterBatch }: Props) {
+  [];
   const { back, locale } = useRouter();
 
   const { t } = useTranslation("batches");
@@ -175,16 +176,26 @@ export default function MasterBatchForm({ masterBatch }: Props) {
               name="batch"
               render={({ field, fieldState }) => (
                 <FormItem>
-                  <FormLabel htmlFor="name">{t("tableBatchYear")}</FormLabel>
+                  <FormLabel htmlFor="name">{t("batchCurrent")}</FormLabel>
                   <FormControl>
                     <div>
                       <Input
                         disabled={masterBatch?.batch !== undefined}
                         type="text"
-                        placeholder="Batch Year (eg. 2025)"
+                        placeholder={
+                          t("batchYearExample") ?? "Batch Year (eg. 2025)"
+                        }
                         {...field}
                         value={field.value}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        onChange={(e) => {
+                          const value = e.target.value.replace(/[^0-9]/g, "");
+                          field.onChange(Number(value));
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === "e" || e.key === "+" || e.key === "-") {
+                            e.preventDefault();
+                          }
+                        }}
                       />
                     </div>
                   </FormControl>

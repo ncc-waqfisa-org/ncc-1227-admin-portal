@@ -13,6 +13,7 @@ import { cn } from "../../src/utils";
 import BatchCreateForm, {
   BatchCreateFormInputValues,
 } from "../../components/batch/BatchCreateForm";
+import BatchForm from "../../components/batch/BatchForm";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { locale } = ctx;
@@ -37,47 +38,47 @@ const CreateSingleBatchPage: FC<PageType> = ({}) => {
   const { t } = useTranslation("batches");
   const queryClient = useQueryClient();
 
-  async function handleCreate(values: BatchCreateFormInputValues) {
-    const input: CreateBatchInput = {
-      ...values,
-      batch: values.batch ?? 0,
-    };
-    createBatchMutation.mutate({
-      input,
-    });
-  }
+  // async function handleCreate(values: BatchCreateFormInputValues) {
+  //   const input: CreateBatchInput = {
+  //     ...values,
+  //     batch: values.batch ?? 0,
+  //   };
+  //   createBatchMutation.mutate({
+  //     input,
+  //   });
+  // }
 
-  const createBatchMutation = useMutation({
-    mutationFn: (values: CreateBatchMutationVariables) => {
-      return createSingleBatch(values);
-    },
-    async onSuccess(data) {
-      if (data?.createBatch) {
-        queryClient.invalidateQueries({ queryKey: ["batches"] });
+  // const createBatchMutation = useMutation({
+  //   mutationFn: (values: CreateBatchMutationVariables) => {
+  //     return createSingleBatch(values);
+  //   },
+  //   async onSuccess(data) {
+  //     if (data?.createBatch) {
+  //       queryClient.invalidateQueries({ queryKey: ["batches"] });
 
-        toast.success(t("createdSuccessfully"));
-        push("/batches");
-      } else {
-        toast.error(t("failedToCreate"));
-      }
-    },
-    async onError(error) {
-      toast.error(error.message, { duration: 6000 });
-    },
-  });
+  //       toast.success(t("createdSuccessfully"));
+  //       push("/batches");
+  //     } else {
+  //       toast.error(t("failedToCreate"));
+  //     }
+  //   },
+  //   async onError(error) {
+  //     toast.error(error.message, { duration: 6000 });
+  //   },
+  // });
 
   return (
     <PageComponent title="Batch">
       <div className="relative flex flex-col w-full max-w-3xl mx-auto">
         {/* header */}
-        <div className="p-6 ">
+        <div className="py-6 ">
           <div className="text-2xl font-semibold ">{t("batch")}</div>
           <div className="text-base font-medium text-gray-500 ">
             {`${t("createNewBatch")}`}
           </div>
         </div>
 
-        <BatchCreateForm
+        {/* <BatchCreateForm
           onSubmit={(values) => {
             handleCreate(values);
             return values;
@@ -86,9 +87,11 @@ const CreateSingleBatchPage: FC<PageType> = ({}) => {
             console.log("error", error);
             console.log("onError:", values);
           }}
-        ></BatchCreateForm>
+        ></BatchCreateForm> */}
 
-        <div
+        <BatchForm />
+
+        {/* <div
           className={cn(
             "absolute justify-center flex bg-white/20 backdrop-blur-sm duration-200 pointer-events-none items-center opacity-0 z-50 inset-0",
             createBatchMutation.isPending && "opacity-100  pointer-events-auto"
@@ -98,7 +101,7 @@ const CreateSingleBatchPage: FC<PageType> = ({}) => {
             <span className="loading"></span>
             <p>{t("loading")}...</p>
           </div>
-        </div>
+        </div> */}
       </div>
     </PageComponent>
   );

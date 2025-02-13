@@ -102,7 +102,7 @@ const SingleMasterBatchPage: FC<PageType> = ({ batchYear }) => {
     <PageComponent title="Batch">
       <div className="flex relative flex-col gap-4 mx-auto w-full max-w-3xl">
         {/* header */}
-        <div className="p-6">
+        <div className="py-6">
           <div className="text-2xl font-semibold">{t("MBatch")}</div>
           <div className="text-base font-medium text-gray-500">
             {`${t("editBatch")} ${batch?.getMasterBatch?.batch}`}
@@ -123,30 +123,15 @@ const SingleMasterBatchPage: FC<PageType> = ({ batchYear }) => {
           </div>
         </div>
 
+        {!batch?.getMasterBatch && (
+          <div>
+            <div className="max-w-4xl bg-gray-100 w-full rounded-sm p-8">
+              <p className=" text-center text-gray-500">{t("noBatchFound")}</p>
+            </div>
+          </div>
+        )}
+
         {batch?.getMasterBatch && (
-          // <MasterBatchUpdateForm
-          //   masterBatch={
-          //     new MasterBatch({
-          //       batch: batchYear ?? 0,
-          //       createApplicationStartDate:
-          //         batch.getMasterBatch.createApplicationStartDate,
-          //       createApplicationEndDate:
-          //         batch.getMasterBatch.createApplicationEndDate,
-          //       updateApplicationEndDate:
-          //         batch.getMasterBatch.updateApplicationEndDate,
-          //       signUpStartDate: batch.getMasterBatch.signUpStartDate,
-          //       signUpEndDate: batch.getMasterBatch.signUpEndDate,
-          //     })
-          //   }
-          //   onSubmit={(values) => {
-          //     handleUpdate(values);
-          //     return values;
-          //   }}
-          //   onError={(values, error) => {
-          //     console.log("error", error);
-          //     console.log("onError:", values);
-          //   }}
-          // ></MasterBatchUpdateForm>
           <MasterBatchForm masterBatch={batch.getMasterBatch} />
         )}
 
