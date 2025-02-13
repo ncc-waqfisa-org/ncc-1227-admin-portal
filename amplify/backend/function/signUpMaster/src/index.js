@@ -113,7 +113,7 @@ exports.handler = async (event) => {
     // Hardcode applicant type as "MASTER" in your data:
     studentData.m_applicantType = ["MASTER"];
 
-    // Store password separately (not in DynamoDB)
+    // Store password separately (not in camoDB)
     const password = requestBody.password?.trim();
 
     /*******************************************************
@@ -176,6 +176,7 @@ exports.handler = async (event) => {
     studentData._lastChangedAt = now.getTime();
     studentData.createdAt = now.toISOString();
     studentData.updatedAt = now.toISOString();
+    studentData.batch = now.getFullYear();
 
     await saveStudentToDynamoDB(studentData);
 

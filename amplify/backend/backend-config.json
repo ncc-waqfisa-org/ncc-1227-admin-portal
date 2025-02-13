@@ -125,6 +125,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "generateProgramListCSVMaster": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "getApplications": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -171,6 +176,11 @@
       "service": "Lambda"
     },
     "sendSubmissionEmail": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "sendSubmissionEmailMaster": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
@@ -490,6 +500,22 @@
         }
       ]
     },
+    "AMPLIFY_function_generateProgramListCSVMaster_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "generateProgramListCSVMaster"
+        }
+      ]
+    },
+    "AMPLIFY_function_generateProgramListCSVMaster_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "generateProgramListCSVMaster"
+        }
+      ]
+    },
     "AMPLIFY_function_getApplicationsMaster_deploymentBucketName": {
       "usedBy": [
         {
@@ -631,6 +657,22 @@
         {
           "category": "function",
           "resourceName": "revertAutoReject"
+        }
+      ]
+    },
+    "AMPLIFY_function_sendSubmissionEmailMaster_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sendSubmissionEmailMaster"
+        }
+      ]
+    },
+    "AMPLIFY_function_sendSubmissionEmailMaster_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "sendSubmissionEmailMaster"
         }
       ]
     },

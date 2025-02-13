@@ -13,8 +13,12 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { Batch, UpdateBatchMutationVariables } from "../../src/API";
-import { updateSingleBatch } from "../../src/CustomAPI";
+import {
+  Batch,
+  CreateBatchMutationVariables,
+  UpdateBatchMutationVariables,
+} from "../../src/API";
+import { createSingleBatch, updateSingleBatch } from "../../src/CustomAPI";
 import DatePicker from "react-date-picker";
 import { cn } from "../../src/lib/utils";
 import { Button } from "../ui/button";
@@ -25,10 +29,10 @@ import { format } from "date-fns";
 import { Input } from "../ui/input";
 
 interface Props {
-  batch: Batch;
+  batch?: Batch;
 }
 
-export default function BatchUpdateFormComponent({ batch }: Props) {
+export default function BatchForm({ batch }: Props) {
   const { locale, back } = useRouter();
 
   const { t } = useTranslation("batches");
@@ -69,41 +73,80 @@ export default function BatchUpdateFormComponent({ batch }: Props) {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsLoading(true);
+    try {
+      setIsLoading(true);
 
-    let updatedBatchDetails: UpdateBatchMutationVariables = {
-      input: {
-        batch: batch?.batch,
-        _version: batch?._version,
-        signUpStartDate: values.signUpStartDate,
-        signUpEndDate: values.signUpEndDate,
-        createApplicationStartDate: values.createApplicationStartDate,
-        createApplicationEndDate: values.createApplicationEndDate,
-        updateApplicationEndDate: values.updateApplicationEndDate,
-      },
-    };
+      if (batch) {
+        let updatedBatchDetails: UpdateBatchMutationVariables = {
+          input: {
+            batch: batch?.batch,
+            _version: batch?._version,
+            signUpStartDate: values.signUpStartDate,
+            signUpEndDate: values.signUpEndDate,
+            createApplicationStartDate: values.createApplicationStartDate,
+            createApplicationEndDate: values.createApplicationEndDate,
+            updateApplicationEndDate: values.updateApplicationEndDate,
+          },
+        };
 
-    await toast.promise(
-      updateSingleBatch(updatedBatchDetails)
-        .then((res) => {
-          if (res) {
-            setIsLoading(false);
-            // push(`/batches?type=bachelor`);
-            back();
+        await toast.promise(
+          updateSingleBatch(updatedBatchDetails)
+            .then((res) => {
+              if (res) {
+                setIsLoading(false);
+                back();
+              }
+            })
+            .catch((err) => {
+              throw err;
+            }),
+          {
+            loading: "Loading...",
+            success: "Batch updated successfully",
+            error: (error: any) => {
+              return `${error?.message}`;
+            },
           }
-        })
-        .catch((err) => {
-          throw err;
-        }),
-      {
-        loading: "Loading...",
-        success: "Batch updated successfully",
-        error: (error: any) => {
-          return `${error?.message}`;
-        },
+        );
+      } else {
+        let createBatchDetails: CreateBatchMutationVariables = {
+          input: {
+            batch: values?.batch,
+            signUpStartDate: values.signUpStartDate,
+            signUpEndDate: values.signUpEndDate,
+            createApplicationStartDate: values.createApplicationStartDate,
+            createApplicationEndDate: values.createApplicationEndDate,
+            updateApplicationEndDate: values.updateApplicationEndDate,
+          },
+        };
+
+        await toast.promise(
+          createSingleBatch(createBatchDetails)
+            .then((res) => {
+              if (res) {
+                setIsLoading(false);
+                back();
+              }
+            })
+            .catch((err) => {
+              throw err;
+            }),
+          {
+            loading: "Loading...",
+            success: "Batch created successfully",
+            error: (error: any) => {
+              return `${error?.message}`;
+            },
+          }
+        );
       }
-    );
-    setIsLoading(false);
+
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+      toast.error(`${error}`);
+    }
   }
 
   return (
@@ -116,12 +159,27 @@ export default function BatchUpdateFormComponent({ batch }: Props) {
               name="batch"
               render={({ field, fieldState }) => (
                 <FormItem>
-                  <FormLabel htmlFor="name">
-                    {t("tableBatchSignUpStartDate")}
-                  </FormLabel>
+                  <FormLabel htmlFor="name">{t("batchCurrent")}</FormLabel>
                   <FormControl>
                     <div>
-                      <Input {...field} />
+                      <Input
+                        disabled={batch?.batch !== undefined}
+                        type="text"
+                        placeholder={
+                          t("batchYearExample") ?? "Batch Year (eg. 2025)"
+                        }
+                        {...field}
+                        value={field.value}
+                        onChange={(e) => {
+                          const value = e.target.value.replace(/[^0-9]/g, "");
+                          field.onChange(Number(value));
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === "e" || e.key === "+" || e.key === "-") {
+                            e.preventDefault();
+                          }
+                        }}
+                      />
                     </div>
                   </FormControl>
 
@@ -348,7 +406,7 @@ export default function BatchUpdateFormComponent({ batch }: Props) {
           </div>
 
           <Button
-            className="flex gap-2 items-center w-fit"
+            className="flex gap-2 items-center w-fit mt-4"
             disabled={isLoading}
             type="submit"
           >

@@ -34,5 +34,6 @@
   "clear": "Clear",
   "reset": "Reset",
   "loading": "Loading",
-  "batchCurrent": "Batch Year"
+  "batchCurrent": "Batch Year",
+  "noBatchFound": "No batch found. Please try again later"
 }

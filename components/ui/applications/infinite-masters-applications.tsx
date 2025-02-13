@@ -10,10 +10,8 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 
 import React, { useCallback, useState } from "react";
 import {
-  InfiniteApplication,
   InfiniteMasterApplication,
   NextStartKey,
-  TInfiniteApplications,
   TInfiniteMasterApplications,
 } from "./infinite-applications-type";
 import { Checkbox } from "../checkbox";
@@ -30,14 +28,11 @@ import {
   TableHeader,
   TableRow,
 } from "../table";
-import { BatchApplicationsToolbar } from "./batch-applications-toolbar";
 import { Badge } from "../badge";
 import { useBatchContext } from "../../../context/BatchContext";
-import { schoolTypes, statuses } from "./data/data";
+import { statuses } from "./data/data";
 import { Status } from "../../../src/API";
 import { FiAlertCircle, FiCircle } from "react-icons/fi";
-import { Program } from "../../../src/models";
-import { DataTableToolbar } from "./data-table-toolbar";
 import { BatchMasterApplicationsToolbar } from "./batch-master-applications-toolbar";
 
 export const InfiniteMasterApplications = () => {

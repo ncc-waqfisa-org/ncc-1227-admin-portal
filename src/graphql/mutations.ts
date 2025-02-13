@@ -2870,6 +2870,7 @@ export const createMasterApplication = /* GraphQL */ `mutation CreateMasterAppli
     income
     incomeDoc
     toeflIELTSScore
+    isToeflIELTSScoreVerified
     createdAt
     updatedAt
     _version
@@ -3009,6 +3010,7 @@ export const updateMasterApplication = /* GraphQL */ `mutation UpdateMasterAppli
     income
     incomeDoc
     toeflIELTSScore
+    isToeflIELTSScoreVerified
     createdAt
     updatedAt
     _version
@@ -3148,6 +3150,7 @@ export const deleteMasterApplication = /* GraphQL */ `mutation DeleteMasterAppli
     income
     incomeDoc
     toeflIELTSScore
+    isToeflIELTSScoreVerified
     createdAt
     updatedAt
     _version
@@ -3181,6 +3184,10 @@ export const createMasterStatistics = /* GraphQL */ `mutation CreateMasterStatis
     applications
     today
     participatingUniversities
+    applicationPerGenderHistogram
+    registerAccountsPerGender
+    majorsPerGenderHistogram
+    incomePerEmploymentStatus
     createdAt
     updatedAt
     _version
@@ -3213,6 +3220,10 @@ export const updateMasterStatistics = /* GraphQL */ `mutation UpdateMasterStatis
     applications
     today
     participatingUniversities
+    applicationPerGenderHistogram
+    registerAccountsPerGender
+    majorsPerGenderHistogram
+    incomePerEmploymentStatus
     createdAt
     updatedAt
     _version
@@ -3245,6 +3256,10 @@ export const deleteMasterStatistics = /* GraphQL */ `mutation DeleteMasterStatis
     applications
     today
     participatingUniversities
+    applicationPerGenderHistogram
+    registerAccountsPerGender
+    majorsPerGenderHistogram
+    incomePerEmploymentStatus
     createdAt
     updatedAt
     _version
@@ -3442,6 +3457,7 @@ export const createMasterScholarship = /* GraphQL */ `mutation CreateMasterSchol
       income
       incomeDoc
       toeflIELTSScore
+      isToeflIELTSScoreVerified
       createdAt
       updatedAt
       _version
@@ -3505,6 +3521,7 @@ export const updateMasterScholarship = /* GraphQL */ `mutation UpdateMasterSchol
       income
       incomeDoc
       toeflIELTSScore
+      isToeflIELTSScoreVerified
       createdAt
       updatedAt
       _version
@@ -3568,6 +3585,7 @@ export const deleteMasterScholarship = /* GraphQL */ `mutation DeleteMasterSchol
       income
       incomeDoc
       toeflIELTSScore
+      isToeflIELTSScoreVerified
       createdAt
       updatedAt
       _version

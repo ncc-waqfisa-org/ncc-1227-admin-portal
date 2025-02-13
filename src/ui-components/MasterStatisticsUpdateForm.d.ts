@@ -38,6 +38,10 @@ export declare type MasterStatisticsUpdateFormInputValues = {
     applications?: string;
     today?: string;
     participatingUniversities?: string[];
+    applicationPerGenderHistogram?: string;
+    registerAccountsPerGender?: string;
+    majorsPerGenderHistogram?: string;
+    incomePerEmploymentStatus?: string;
 };
 export declare type MasterStatisticsUpdateFormValidationValues = {
     id?: ValidationFunction<number>;
@@ -55,6 +59,10 @@ export declare type MasterStatisticsUpdateFormValidationValues = {
     applications?: ValidationFunction<string>;
     today?: ValidationFunction<string>;
     participatingUniversities?: ValidationFunction<string>;
+    applicationPerGenderHistogram?: ValidationFunction<string>;
+    registerAccountsPerGender?: ValidationFunction<string>;
+    majorsPerGenderHistogram?: ValidationFunction<string>;
+    incomePerEmploymentStatus?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type MasterStatisticsUpdateFormOverridesProps = {
@@ -74,6 +82,10 @@ export declare type MasterStatisticsUpdateFormOverridesProps = {
     applications?: PrimitiveOverrideProps<TextAreaFieldProps>;
     today?: PrimitiveOverrideProps<TextAreaFieldProps>;
     participatingUniversities?: PrimitiveOverrideProps<TextFieldProps>;
+    applicationPerGenderHistogram?: PrimitiveOverrideProps<TextAreaFieldProps>;
+    registerAccountsPerGender?: PrimitiveOverrideProps<TextAreaFieldProps>;
+    majorsPerGenderHistogram?: PrimitiveOverrideProps<TextAreaFieldProps>;
+    incomePerEmploymentStatus?: PrimitiveOverrideProps<TextAreaFieldProps>;
 } & EscapeHatchProps;
 export declare type MasterStatisticsUpdateFormProps = React.PropsWithChildren<{
     overrides?: MasterStatisticsUpdateFormOverridesProps | undefined | null;

@@ -3059,6 +3059,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "isToeflIELTSScoreVerified": {
+                    "name": "isToeflIELTSScoreVerified",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -3276,6 +3283,34 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isArrayNullable": true
+                },
+                "applicationPerGenderHistogram": {
+                    "name": "applicationPerGenderHistogram",
+                    "isArray": false,
+                    "type": "AWSJSON",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "registerAccountsPerGender": {
+                    "name": "registerAccountsPerGender",
+                    "isArray": false,
+                    "type": "AWSJSON",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "majorsPerGenderHistogram": {
+                    "name": "majorsPerGenderHistogram",
+                    "isArray": false,
+                    "type": "AWSJSON",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "incomePerEmploymentStatus": {
+                    "name": "incomePerEmploymentStatus",
+                    "isArray": false,
+                    "type": "AWSJSON",
+                    "isRequired": false,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -3834,5 +3869,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.4.4",
-    "version": "5babf3b49991ee6a2a1753c58618ba2e"
+    "version": "273aecb2c8c371c1952e67eaa14adf1b"
 };

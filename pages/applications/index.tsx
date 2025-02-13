@@ -37,12 +37,14 @@ const Applications = () => {
         <div className="flex flex-col items-start gap-3 ">
           <div className="">
             <div className="text-2xl font-semibold ">
-              {t("applicationTitle")}
+              {type === "masters"
+                ? t("mApplicationTitle")
+                : t("applicationTitle")}
             </div>
           </div>
           <Link
             href="/applications/archive"
-            className="btn btn-ghost btn-sm text-primary hover:bg-primary/30"
+            className="btdn btn-ghost btn-sm text-primary hover:bg-primary/30"
           >
             {t("archives")}
           </Link>

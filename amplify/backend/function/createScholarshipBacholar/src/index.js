@@ -20,7 +20,7 @@ const {
 
 /**
  * Lambda handler for creating a scholarship.
- *
+ * this will create scholarship for bacholar
  * Expected JSON input:
  * {
  *   "applicationID": "app12345",
@@ -111,11 +111,14 @@ exports.handler = async (event) => {
       scholarshipPeriod,
       numberOfSemesters,
       unsignedContractDoc: contract,
-      status: "APPROVED",
+      status: "PENDING",
       createdAt: new Date().toISOString(),
       // Optionally include additional details from the application if needed
       programID: application.programID || null,
       universityID: application.universityID || null,
+      updatedAt: new Date().toISOString(),
+      _version: 1, // initial version
+      _lastChangedAt: Date.now(), // AWSTimestamp (non-nullable)
     };
 
     await dynamoDB
