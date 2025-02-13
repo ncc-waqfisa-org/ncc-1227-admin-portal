@@ -1,0 +1,113 @@
+{
+  "applicationPerGenderHistogram": {
+    "male": 120,
+    "female": 180,
+    "total": 300,
+    "todayFemale": 25,
+    "todayTotal": 50
+  },
+  "registerAccountsPerGender": {
+    "male": 100,
+    "female": 150,
+    "total": 250,
+    "todayFemale": 25,
+    "todayTotal": 50
+  },
+  "majorsPerGenderHistogram": {
+    "Technology": {
+      "male": 80,
+      "female": 40,
+      "total": 120,
+      "todayFemale": 25,
+      "todayTotal": 50
+    },
+    "Science": {
+      "male": 60,
+      "female": 60,
+      "total": 120,
+      "todayFemale": 25,
+      "todayTotal": 50
+    },
+    "Engineering": {
+      "male": 70,
+      "female": 50,
+      "total": 120,
+      "todayMale": 25,
+      "todayFemale": 25,
+      "todayTotal": 50
+    }
+  },
+  "incomePerEmploymentStatus": {
+    "Employed": {
+      "below1500": {
+        "male": 25,
+        "female": 50,
+        "total": 75,
+        "todayMale": 52,
+        "todayFemale": 48
+      },
+      "above1500": {
+        "male": 25,
+        "female": 50,
+        "total": 75,
+        "todayMale": 52,
+        "todayFemale": 48
+      },
+      "total": 150
+    },
+    "Unemployed": {
+      "below1500": {
+        "male": 25,
+        "female": 50,
+        "total": 75,
+        "todayMale": 52,
+        "todayFemale": 48
+      },
+      "above1500": {
+        "male": 25,
+        "female": 50,
+        "total": 75,
+        "todayMale": 52,
+        "todayFemale": 48
+      },
+      "total": 150
+    }
+  },
+  "gpaHistogram": {
+    "3.0-3.2": {
+      "male": 25,
+      "female": 50,
+      "total": 75,
+      "todayMale": 52,
+      "todayFemale": 48
+    },
+    "3.2-3.4": {
+      "male": 25,
+      "female": 50,
+      "total": 75,
+      "todayMale": 52,
+      "todayFemale": 48
+    },
+    "3.4-3.6": {
+      "male": 25,
+      "female": 50,
+      "total": 75,
+      "todayMale": 52,
+      "todayFemale": 48
+    },
+    "3.6-3.8": {
+      "male": 25,
+      "female": 50,
+      "total": 75,
+      "todayMale": 52,
+      "todayFemale": 48
+    },
+    "3.8-4.0": {
+      "male": 25,
+      "female": 50,
+      "total": 75,
+      "todayMale": 52,
+      "todayFemale": 48
+    }
+  }
+}

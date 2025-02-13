@@ -151,7 +151,7 @@ async function convertToJsonMaster(applications, students) {
       Email: student.email,
       "Graduation Year": graduationYear,
       Status: application.status,
-      GPA: convertGpa(application.gpa),
+      GPA: application.gpa,
       "Verified GPA": application.verifiedGPA,
       Score: application.score,
       "University Name": await getUniversityNameById(student.m_universityID), // we need to get the university name I think this only contains the relashionship.
@@ -295,11 +295,11 @@ async function uploadToS3(xlsxBuffer, batchValue) {
   });
 }
 
-function convertGpa(gpa) {
-  if (!gpa) return "";
-  // Assuming a 4.0 scale: multiply by 25 to get a score out of 100.
-  return (parseFloat(gpa) * 25).toFixed(2);
-}
+// function convertGpa(gpa) {
+//   if (!gpa) return "";
+//   // Assuming a 4.0 scale: multiply by 25 to get a score out of 100.
+//   return (parseFloat(gpa) * 25).toFixed(2);
+// }
 
 /**
  * Retrieves the university name from the BahrainUniversity table using the university ID.

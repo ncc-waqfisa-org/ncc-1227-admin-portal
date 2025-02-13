@@ -204,6 +204,10 @@ export default function MasterStatisticsCreateForm(props) {
     applications: "",
     today: "",
     participatingUniversities: [],
+    applicationPerGenderHistogram: "",
+    registerAccountsPerGender: "",
+    majorsPerGenderHistogram: "",
+    incomePerEmploymentStatus: "",
   };
   const [id, setId] = React.useState(initialValues.id);
   const [batch, setBatch] = React.useState(initialValues.batch);
@@ -239,6 +243,14 @@ export default function MasterStatisticsCreateForm(props) {
   const [today, setToday] = React.useState(initialValues.today);
   const [participatingUniversities, setParticipatingUniversities] =
     React.useState(initialValues.participatingUniversities);
+  const [applicationPerGenderHistogram, setApplicationPerGenderHistogram] =
+    React.useState(initialValues.applicationPerGenderHistogram);
+  const [registerAccountsPerGender, setRegisterAccountsPerGender] =
+    React.useState(initialValues.registerAccountsPerGender);
+  const [majorsPerGenderHistogram, setMajorsPerGenderHistogram] =
+    React.useState(initialValues.majorsPerGenderHistogram);
+  const [incomePerEmploymentStatus, setIncomePerEmploymentStatus] =
+    React.useState(initialValues.incomePerEmploymentStatus);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     setId(initialValues.id);
@@ -259,6 +271,12 @@ export default function MasterStatisticsCreateForm(props) {
     setToday(initialValues.today);
     setParticipatingUniversities(initialValues.participatingUniversities);
     setCurrentParticipatingUniversitiesValue("");
+    setApplicationPerGenderHistogram(
+      initialValues.applicationPerGenderHistogram
+    );
+    setRegisterAccountsPerGender(initialValues.registerAccountsPerGender);
+    setMajorsPerGenderHistogram(initialValues.majorsPerGenderHistogram);
+    setIncomePerEmploymentStatus(initialValues.incomePerEmploymentStatus);
     setErrors({});
   };
   const [
@@ -282,6 +300,10 @@ export default function MasterStatisticsCreateForm(props) {
     applications: [{ type: "JSON" }],
     today: [{ type: "JSON" }],
     participatingUniversities: [],
+    applicationPerGenderHistogram: [{ type: "JSON" }],
+    registerAccountsPerGender: [{ type: "JSON" }],
+    majorsPerGenderHistogram: [{ type: "JSON" }],
+    incomePerEmploymentStatus: [{ type: "JSON" }],
   };
   const runValidationTasks = async (
     fieldName,
@@ -324,6 +346,10 @@ export default function MasterStatisticsCreateForm(props) {
           applications,
           today,
           participatingUniversities,
+          applicationPerGenderHistogram,
+          registerAccountsPerGender,
+          majorsPerGenderHistogram,
+          incomePerEmploymentStatus,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -397,6 +423,10 @@ export default function MasterStatisticsCreateForm(props) {
               applications,
               today,
               participatingUniversities,
+              applicationPerGenderHistogram,
+              registerAccountsPerGender,
+              majorsPerGenderHistogram,
+              incomePerEmploymentStatus,
             };
             const result = onChange(modelFields);
             value = result?.id ?? value;
@@ -439,6 +469,10 @@ export default function MasterStatisticsCreateForm(props) {
               applications,
               today,
               participatingUniversities,
+              applicationPerGenderHistogram,
+              registerAccountsPerGender,
+              majorsPerGenderHistogram,
+              incomePerEmploymentStatus,
             };
             const result = onChange(modelFields);
             value = result?.batch ?? value;
@@ -481,6 +515,10 @@ export default function MasterStatisticsCreateForm(props) {
               applications,
               today,
               participatingUniversities,
+              applicationPerGenderHistogram,
+              registerAccountsPerGender,
+              majorsPerGenderHistogram,
+              incomePerEmploymentStatus,
             };
             const result = onChange(modelFields);
             value = result?.totalApplications ?? value;
@@ -520,6 +558,10 @@ export default function MasterStatisticsCreateForm(props) {
               applications,
               today,
               participatingUniversities,
+              applicationPerGenderHistogram,
+              registerAccountsPerGender,
+              majorsPerGenderHistogram,
+              incomePerEmploymentStatus,
             };
             const result = onChange(modelFields);
             value = result?.totalApplicationsPerStatus ?? value;
@@ -562,6 +604,10 @@ export default function MasterStatisticsCreateForm(props) {
               applications,
               today,
               participatingUniversities,
+              applicationPerGenderHistogram,
+              registerAccountsPerGender,
+              majorsPerGenderHistogram,
+              incomePerEmploymentStatus,
             };
             const result = onChange(modelFields);
             value = result?.scoreHistogram ?? value;
@@ -599,6 +645,10 @@ export default function MasterStatisticsCreateForm(props) {
               applications,
               today,
               participatingUniversities,
+              applicationPerGenderHistogram,
+              registerAccountsPerGender,
+              majorsPerGenderHistogram,
+              incomePerEmploymentStatus,
             };
             const result = onChange(modelFields);
             value = result?.gpaHistogram ?? value;
@@ -636,6 +686,10 @@ export default function MasterStatisticsCreateForm(props) {
               applications,
               today,
               participatingUniversities,
+              applicationPerGenderHistogram,
+              registerAccountsPerGender,
+              majorsPerGenderHistogram,
+              incomePerEmploymentStatus,
             };
             const result = onChange(modelFields);
             value = result?.totalApplicationsPerUniversity ?? value;
@@ -678,6 +732,10 @@ export default function MasterStatisticsCreateForm(props) {
               applications,
               today,
               participatingUniversities,
+              applicationPerGenderHistogram,
+              registerAccountsPerGender,
+              majorsPerGenderHistogram,
+              incomePerEmploymentStatus,
             };
             const result = onChange(modelFields);
             value = result?.topUniversities ?? value;
@@ -715,6 +773,10 @@ export default function MasterStatisticsCreateForm(props) {
               applications,
               today,
               participatingUniversities,
+              applicationPerGenderHistogram,
+              registerAccountsPerGender,
+              majorsPerGenderHistogram,
+              incomePerEmploymentStatus,
             };
             const result = onChange(modelFields);
             value = result?.topBahrainUniversities ?? value;
@@ -754,6 +816,10 @@ export default function MasterStatisticsCreateForm(props) {
               applications,
               today,
               participatingUniversities,
+              applicationPerGenderHistogram,
+              registerAccountsPerGender,
+              majorsPerGenderHistogram,
+              incomePerEmploymentStatus,
             };
             const result = onChange(modelFields);
             value = result?.familyIncome ?? value;
@@ -791,6 +857,10 @@ export default function MasterStatisticsCreateForm(props) {
               applications,
               today,
               participatingUniversities,
+              applicationPerGenderHistogram,
+              registerAccountsPerGender,
+              majorsPerGenderHistogram,
+              incomePerEmploymentStatus,
             };
             const result = onChange(modelFields);
             value = result?.universitiesBahrain ?? value;
@@ -830,6 +900,10 @@ export default function MasterStatisticsCreateForm(props) {
               applications,
               today,
               participatingUniversities,
+              applicationPerGenderHistogram,
+              registerAccountsPerGender,
+              majorsPerGenderHistogram,
+              incomePerEmploymentStatus,
             };
             const result = onChange(modelFields);
             value = result?.students ?? value;
@@ -867,6 +941,10 @@ export default function MasterStatisticsCreateForm(props) {
               applications: value,
               today,
               participatingUniversities,
+              applicationPerGenderHistogram,
+              registerAccountsPerGender,
+              majorsPerGenderHistogram,
+              incomePerEmploymentStatus,
             };
             const result = onChange(modelFields);
             value = result?.applications ?? value;
@@ -904,6 +982,10 @@ export default function MasterStatisticsCreateForm(props) {
               applications,
               today: value,
               participatingUniversities,
+              applicationPerGenderHistogram,
+              registerAccountsPerGender,
+              majorsPerGenderHistogram,
+              incomePerEmploymentStatus,
             };
             const result = onChange(modelFields);
             value = result?.today ?? value;
@@ -938,6 +1020,10 @@ export default function MasterStatisticsCreateForm(props) {
               applications,
               today,
               participatingUniversities: values,
+              applicationPerGenderHistogram,
+              registerAccountsPerGender,
+              majorsPerGenderHistogram,
+              incomePerEmploymentStatus,
             };
             const result = onChange(modelFields);
             values = result?.participatingUniversities ?? values;
@@ -985,6 +1071,190 @@ export default function MasterStatisticsCreateForm(props) {
           {...getOverrideProps(overrides, "participatingUniversities")}
         ></TextField>
       </ArrayField>
+      <TextAreaField
+        label="Application per gender histogram"
+        isRequired={false}
+        isReadOnly={false}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              id,
+              batch,
+              totalApplications,
+              totalApplicationsPerStatus,
+              scoreHistogram,
+              gpaHistogram,
+              totalApplicationsPerUniversity,
+              topUniversities,
+              topBahrainUniversities,
+              familyIncome,
+              universitiesBahrain,
+              students,
+              applications,
+              today,
+              participatingUniversities,
+              applicationPerGenderHistogram: value,
+              registerAccountsPerGender,
+              majorsPerGenderHistogram,
+              incomePerEmploymentStatus,
+            };
+            const result = onChange(modelFields);
+            value = result?.applicationPerGenderHistogram ?? value;
+          }
+          if (errors.applicationPerGenderHistogram?.hasError) {
+            runValidationTasks("applicationPerGenderHistogram", value);
+          }
+          setApplicationPerGenderHistogram(value);
+        }}
+        onBlur={() =>
+          runValidationTasks(
+            "applicationPerGenderHistogram",
+            applicationPerGenderHistogram
+          )
+        }
+        errorMessage={errors.applicationPerGenderHistogram?.errorMessage}
+        hasError={errors.applicationPerGenderHistogram?.hasError}
+        {...getOverrideProps(overrides, "applicationPerGenderHistogram")}
+      ></TextAreaField>
+      <TextAreaField
+        label="Register accounts per gender"
+        isRequired={false}
+        isReadOnly={false}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              id,
+              batch,
+              totalApplications,
+              totalApplicationsPerStatus,
+              scoreHistogram,
+              gpaHistogram,
+              totalApplicationsPerUniversity,
+              topUniversities,
+              topBahrainUniversities,
+              familyIncome,
+              universitiesBahrain,
+              students,
+              applications,
+              today,
+              participatingUniversities,
+              applicationPerGenderHistogram,
+              registerAccountsPerGender: value,
+              majorsPerGenderHistogram,
+              incomePerEmploymentStatus,
+            };
+            const result = onChange(modelFields);
+            value = result?.registerAccountsPerGender ?? value;
+          }
+          if (errors.registerAccountsPerGender?.hasError) {
+            runValidationTasks("registerAccountsPerGender", value);
+          }
+          setRegisterAccountsPerGender(value);
+        }}
+        onBlur={() =>
+          runValidationTasks(
+            "registerAccountsPerGender",
+            registerAccountsPerGender
+          )
+        }
+        errorMessage={errors.registerAccountsPerGender?.errorMessage}
+        hasError={errors.registerAccountsPerGender?.hasError}
+        {...getOverrideProps(overrides, "registerAccountsPerGender")}
+      ></TextAreaField>
+      <TextAreaField
+        label="Majors per gender histogram"
+        isRequired={false}
+        isReadOnly={false}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              id,
+              batch,
+              totalApplications,
+              totalApplicationsPerStatus,
+              scoreHistogram,
+              gpaHistogram,
+              totalApplicationsPerUniversity,
+              topUniversities,
+              topBahrainUniversities,
+              familyIncome,
+              universitiesBahrain,
+              students,
+              applications,
+              today,
+              participatingUniversities,
+              applicationPerGenderHistogram,
+              registerAccountsPerGender,
+              majorsPerGenderHistogram: value,
+              incomePerEmploymentStatus,
+            };
+            const result = onChange(modelFields);
+            value = result?.majorsPerGenderHistogram ?? value;
+          }
+          if (errors.majorsPerGenderHistogram?.hasError) {
+            runValidationTasks("majorsPerGenderHistogram", value);
+          }
+          setMajorsPerGenderHistogram(value);
+        }}
+        onBlur={() =>
+          runValidationTasks(
+            "majorsPerGenderHistogram",
+            majorsPerGenderHistogram
+          )
+        }
+        errorMessage={errors.majorsPerGenderHistogram?.errorMessage}
+        hasError={errors.majorsPerGenderHistogram?.hasError}
+        {...getOverrideProps(overrides, "majorsPerGenderHistogram")}
+      ></TextAreaField>
+      <TextAreaField
+        label="Income per employment status"
+        isRequired={false}
+        isReadOnly={false}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              id,
+              batch,
+              totalApplications,
+              totalApplicationsPerStatus,
+              scoreHistogram,
+              gpaHistogram,
+              totalApplicationsPerUniversity,
+              topUniversities,
+              topBahrainUniversities,
+              familyIncome,
+              universitiesBahrain,
+              students,
+              applications,
+              today,
+              participatingUniversities,
+              applicationPerGenderHistogram,
+              registerAccountsPerGender,
+              majorsPerGenderHistogram,
+              incomePerEmploymentStatus: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.incomePerEmploymentStatus ?? value;
+          }
+          if (errors.incomePerEmploymentStatus?.hasError) {
+            runValidationTasks("incomePerEmploymentStatus", value);
+          }
+          setIncomePerEmploymentStatus(value);
+        }}
+        onBlur={() =>
+          runValidationTasks(
+            "incomePerEmploymentStatus",
+            incomePerEmploymentStatus
+          )
+        }
+        errorMessage={errors.incomePerEmploymentStatus?.errorMessage}
+        hasError={errors.incomePerEmploymentStatus?.hasError}
+        {...getOverrideProps(overrides, "incomePerEmploymentStatus")}
+      ></TextAreaField>
       <Flex
         justifyContent="space-between"
         {...getOverrideProps(overrides, "CTAFlex")}

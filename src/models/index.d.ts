@@ -942,6 +942,7 @@ type EagerMasterApplication = {
   readonly income?: Income | keyof typeof Income | null;
   readonly incomeDoc?: string | null;
   readonly toeflIELTSScore?: number | null;
+  readonly isToeflIELTSScoreVerified?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly masterApplicationAttachmentId?: string | null;
@@ -979,6 +980,7 @@ type LazyMasterApplication = {
   readonly income?: Income | keyof typeof Income | null;
   readonly incomeDoc?: string | null;
   readonly toeflIELTSScore?: number | null;
+  readonly isToeflIELTSScoreVerified?: boolean | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   readonly masterApplicationAttachmentId?: string | null;
@@ -1010,6 +1012,10 @@ type EagerMasterStatistics = {
   readonly applications?: string | null;
   readonly today?: string | null;
   readonly participatingUniversities?: (string | null)[] | null;
+  readonly applicationPerGenderHistogram?: string | null;
+  readonly registerAccountsPerGender?: string | null;
+  readonly majorsPerGenderHistogram?: string | null;
+  readonly incomePerEmploymentStatus?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }
@@ -1034,6 +1040,10 @@ type LazyMasterStatistics = {
   readonly applications?: string | null;
   readonly today?: string | null;
   readonly participatingUniversities?: (string | null)[] | null;
+  readonly applicationPerGenderHistogram?: string | null;
+  readonly registerAccountsPerGender?: string | null;
+  readonly majorsPerGenderHistogram?: string | null;
+  readonly incomePerEmploymentStatus?: string | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
 }

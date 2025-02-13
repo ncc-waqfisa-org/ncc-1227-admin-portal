@@ -1,4 +1,5 @@
 const AWS = require("aws-sdk");
+const { error } = require("console");
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
 const {
@@ -78,14 +79,18 @@ async function getBatchDetails(batchValue) {
 }
 
 async function getActiveUniversities() {
+  // Instead of filtering for "isDeactivated" equal to false,
+  // we now filter for records where "isDeactivated" is not true.
+  // This will include records where "isDeactivated" is false or not set (null).
   const params = {
     TableName: UNIVERSITY_TABLE,
-    FilterExpression: "#isDeactivated = :isDeactivatedValue",
+    FilterExpression:
+      "attribute_not_exists(#isDeactivated) OR #isDeactivated <> :true",
     ExpressionAttributeNames: {
       "#isDeactivated": "isDeactivated",
     },
     ExpressionAttributeValues: {
-      ":isDeactivatedValue": false, // false means active
+      ":true": true,
     },
   };
 
@@ -108,22 +113,26 @@ async function getActiveUniversities() {
 }
 
 async function updateStatistics(universities, batchValue) {
-  const params = {
-    TableName: STATISTICS_TABLE,
-    Key: {
-      id: batchValue, // Specific ID for master statistics
-    },
-    UpdateExpression:
-      "SET #participatingUniversities = :universities, #batch = :batch",
-    ExpressionAttributeNames: {
-      "#participatingUniversities": "participatingUniversities",
-      "#batch": "batch",
-    },
-    ExpressionAttributeValues: {
-      ":universities": universities,
-      ":batch": batchValue,
-    },
-  };
+  try {
+    const params = {
+      TableName: STATISTICS_TABLE,
+      Key: {
+        id: batchValue, // Specific ID for master statistics
+      },
+      UpdateExpression:
+        "SET #participatingUniversities = :universities, #batch = :batch",
+      ExpressionAttributeNames: {
+        "#participatingUniversities": "participatingUniversities",
+        "#batch": "batch",
+      },
+      ExpressionAttributeValues: {
+        ":universities": universities,
+        ":batch": batchValue,
+      },
+    };
 
-  await dynamoDB.update(params).promise();
+    await dynamoDB.update(params).promise();
+  } catch (e) {
+    console.log(`error on the update statistics: ${error}`);
+  }
 }

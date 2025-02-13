@@ -359,6 +359,7 @@ type MasterApplication @model @auth(rules: [{ allow: public }]) {
   income: Income
   incomeDoc: String
   toeflIELTSScore: Float
+  isToeflIELTSScoreVerified: Boolean
 }
 
 type MasterStatistics @model @auth(rules: [{ allow: public }]) {
@@ -383,6 +384,10 @@ type MasterStatistics @model @auth(rules: [{ allow: public }]) {
   applications: AWSJSON
   today: AWSJSON
   participatingUniversities: [String]
+  applicationPerGenderHistogram: AWSJSON
+  registerAccountsPerGender: AWSJSON
+  majorsPerGenderHistogram: AWSJSON
+  incomePerEmploymentStatus: AWSJSON
 }
 
 type MasterAttachment @model @auth(rules: [{ allow: public }]) {

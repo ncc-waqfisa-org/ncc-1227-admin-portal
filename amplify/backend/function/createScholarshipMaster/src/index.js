@@ -114,12 +114,15 @@ exports.handler = async (event) => {
       startDate,
       scholarshipPeriod,
       numberOfSemesters,
-      status: "APPROVED",
+      status: "PENDING",
       batch: masterApplication.batch || 0,
       isConfirmed: false,
       createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      _version: 1, // initial version
+      _lastChangedAt: Date.now(), // AWSTimestamp (non-nullable)
     };
-
+    // small add
     await dynamoDB
       .put({
         TableName: MASTER_SCHOLARSHIP_TABLE,

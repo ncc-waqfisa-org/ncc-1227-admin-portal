@@ -2785,6 +2785,7 @@ export const onCreateMasterApplication = /* GraphQL */ `subscription OnCreateMas
     income
     incomeDoc
     toeflIELTSScore
+    isToeflIELTSScoreVerified
     createdAt
     updatedAt
     _version
@@ -2923,6 +2924,7 @@ export const onUpdateMasterApplication = /* GraphQL */ `subscription OnUpdateMas
     income
     incomeDoc
     toeflIELTSScore
+    isToeflIELTSScoreVerified
     createdAt
     updatedAt
     _version
@@ -3061,6 +3063,7 @@ export const onDeleteMasterApplication = /* GraphQL */ `subscription OnDeleteMas
     income
     incomeDoc
     toeflIELTSScore
+    isToeflIELTSScoreVerified
     createdAt
     updatedAt
     _version
@@ -3093,6 +3096,10 @@ export const onCreateMasterStatistics = /* GraphQL */ `subscription OnCreateMast
     applications
     today
     participatingUniversities
+    applicationPerGenderHistogram
+    registerAccountsPerGender
+    majorsPerGenderHistogram
+    incomePerEmploymentStatus
     createdAt
     updatedAt
     _version
@@ -3124,6 +3131,10 @@ export const onUpdateMasterStatistics = /* GraphQL */ `subscription OnUpdateMast
     applications
     today
     participatingUniversities
+    applicationPerGenderHistogram
+    registerAccountsPerGender
+    majorsPerGenderHistogram
+    incomePerEmploymentStatus
     createdAt
     updatedAt
     _version
@@ -3155,6 +3166,10 @@ export const onDeleteMasterStatistics = /* GraphQL */ `subscription OnDeleteMast
     applications
     today
     participatingUniversities
+    applicationPerGenderHistogram
+    registerAccountsPerGender
+    majorsPerGenderHistogram
+    incomePerEmploymentStatus
     createdAt
     updatedAt
     _version
@@ -3345,6 +3360,7 @@ export const onCreateMasterScholarship = /* GraphQL */ `subscription OnCreateMas
       income
       incomeDoc
       toeflIELTSScore
+      isToeflIELTSScoreVerified
       createdAt
       updatedAt
       _version
@@ -3407,6 +3423,7 @@ export const onUpdateMasterScholarship = /* GraphQL */ `subscription OnUpdateMas
       income
       incomeDoc
       toeflIELTSScore
+      isToeflIELTSScoreVerified
       createdAt
       updatedAt
       _version
@@ -3469,6 +3486,7 @@ export const onDeleteMasterScholarship = /* GraphQL */ `subscription OnDeleteMas
       income
       incomeDoc
       toeflIELTSScore
+      isToeflIELTSScoreVerified
       createdAt
       updatedAt
       _version

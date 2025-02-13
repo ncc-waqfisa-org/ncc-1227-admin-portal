@@ -19,6 +19,8 @@ const {
   MasterUniversityTable: MASTER_UNIVERSITY_TABLE,
   AdminTable: ADMIN_TABLE,
   S3Bucket: S3_BUCKET,
+  UserPool: USER_POOL,
+  ClientID: CLIENT_ID,
 } = {
   MasterApplicationTable:
     "MasterApplication-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
@@ -27,6 +29,8 @@ const {
     "MasterAppliedUniversities-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
   AdminTable: "Admin-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
   S3Bucket: "ncc1227bucket65406-staging",
+  UserPool: "us-east-1_79xE8d6FS", //user pool
+  ClientID: "5uhjhod54mf44a2t1ajo7g301l", //this is client ID for web app in cogniot
 };
 
 // Define constants for the HTML template location in S3
@@ -95,7 +99,15 @@ exports.handler = async (event) => {
       masterApplication.universityID
     );
 
+    // Format the startDate using the same "ar-BH" options:
+    const formattedStartDate = new Intl.DateTimeFormat("ar-BH", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }).format(new Date(startDate));
+
     // Build the PDFFormat object using master application data and student record with master fields
+    // Build the PDFFormat object using master application data and student record
     const PDFFormat = {
       studentFirstName: student.m_firstName || "",
       studentSecondName: student.m_secondName || "",
@@ -111,8 +123,8 @@ exports.handler = async (event) => {
       studentAddress: student.address || "",
       studentEmail: student.email || "",
       // For masters, use the master application's allProgramsTextOption
-      studentProgram: masterApplication.allProgramsTextOption || "",
-      startDate,
+      studentProgram: masterApplication.program || "",
+      startDate: formattedStartDate, // use the formatted date here
       scholarshipPeriod,
       numberOfSemesters,
     };
@@ -135,12 +147,12 @@ exports.handler = async (event) => {
       address: student.address,
       email: student.email,
       guardianName: `${student.m_guardianFirstName} ${student.m_guardianSecondName} ${student.m_guardianThirdName} ${student.m_guardianLastName}`,
-      guardianCPR: student.m_guardianCPR, // optionally, if available in student record
+      guardianCPR: student.m_guardianCPR, // optionally, if available
       guardianAddress: student.m_guardianAddress || "",
       guardianEmail: student.m_guardianEmail || "",
       universityName,
-      programName: masterApplication.allProgramsTextOption || "",
-      startDate,
+      programName: masterApplication.program || "",
+      startDate: formattedStartDate, // updated formatted date
       scholarshipPeriod,
       numberOfSemesters,
     };
@@ -236,6 +248,7 @@ async function checkIsAdmin(token) {
   try {
     const cognitoUser = await cognito.getUser({ AccessToken: token }).promise();
     const username = cognitoUser.Username;
+    console.log("Admin username: ", username);
     const params = {
       TableName: ADMIN_TABLE,
       Key: { cpr: username },

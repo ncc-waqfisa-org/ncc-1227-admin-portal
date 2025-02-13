@@ -2273,6 +2273,7 @@ export const getMasterApplication = /* GraphQL */ `query GetMasterApplication($i
     income
     incomeDoc
     toeflIELTSScore
+    isToeflIELTSScoreVerified
     createdAt
     updatedAt
     _version
@@ -2318,6 +2319,7 @@ export const listMasterApplications = /* GraphQL */ `query ListMasterApplication
       income
       incomeDoc
       toeflIELTSScore
+      isToeflIELTSScoreVerified
       createdAt
       updatedAt
       _version
@@ -2369,6 +2371,7 @@ export const syncMasterApplications = /* GraphQL */ `query SyncMasterApplication
       income
       incomeDoc
       toeflIELTSScore
+      isToeflIELTSScoreVerified
       createdAt
       updatedAt
       _version
@@ -2403,6 +2406,10 @@ export const getMasterStatistics = /* GraphQL */ `query GetMasterStatistics($id:
     applications
     today
     participatingUniversities
+    applicationPerGenderHistogram
+    registerAccountsPerGender
+    majorsPerGenderHistogram
+    incomePerEmploymentStatus
     createdAt
     updatedAt
     _version
@@ -2445,6 +2452,10 @@ export const listMasterStatistics = /* GraphQL */ `query ListMasterStatistics(
       applications
       today
       participatingUniversities
+      applicationPerGenderHistogram
+      registerAccountsPerGender
+      majorsPerGenderHistogram
+      incomePerEmploymentStatus
       createdAt
       updatedAt
       _version
@@ -2489,6 +2500,10 @@ export const syncMasterStatistics = /* GraphQL */ `query SyncMasterStatistics(
       applications
       today
       participatingUniversities
+      applicationPerGenderHistogram
+      registerAccountsPerGender
+      majorsPerGenderHistogram
+      incomePerEmploymentStatus
       createdAt
       updatedAt
       _version
@@ -2715,6 +2730,7 @@ export const getMasterScholarship = /* GraphQL */ `query GetMasterScholarship($i
       income
       incomeDoc
       toeflIELTSScore
+      isToeflIELTSScoreVerified
       createdAt
       updatedAt
       _version
@@ -3657,6 +3673,7 @@ export const masterApplicationsByIdAndDateTime = /* GraphQL */ `query MasterAppl
       income
       incomeDoc
       toeflIELTSScore
+      isToeflIELTSScoreVerified
       createdAt
       updatedAt
       _version
@@ -3712,6 +3729,7 @@ export const masterApplicationsByNationalityCategoryAndBatch = /* GraphQL */ `qu
       income
       incomeDoc
       toeflIELTSScore
+      isToeflIELTSScoreVerified
       createdAt
       updatedAt
       _version
@@ -3767,6 +3785,7 @@ export const masterApplicationsByStudentCPRAndGpa = /* GraphQL */ `query MasterA
       income
       incomeDoc
       toeflIELTSScore
+      isToeflIELTSScoreVerified
       createdAt
       updatedAt
       _version
@@ -3822,6 +3841,7 @@ export const masterApplicationsByBatchAndStatus = /* GraphQL */ `query MasterApp
       income
       incomeDoc
       toeflIELTSScore
+      isToeflIELTSScoreVerified
       createdAt
       updatedAt
       _version
@@ -3877,6 +3897,7 @@ export const masterApplicationsByScoreAndStatus = /* GraphQL */ `query MasterApp
       income
       incomeDoc
       toeflIELTSScore
+      isToeflIELTSScoreVerified
       createdAt
       updatedAt
       _version
@@ -3932,6 +3953,7 @@ export const masterApplicationsByProcessedAndBatch = /* GraphQL */ `query Master
       income
       incomeDoc
       toeflIELTSScore
+      isToeflIELTSScoreVerified
       createdAt
       updatedAt
       _version
@@ -3981,6 +4003,10 @@ export const masterStatisticsByBatchAndTotalApplications = /* GraphQL */ `query 
       applications
       today
       participatingUniversities
+      applicationPerGenderHistogram
+      registerAccountsPerGender
+      majorsPerGenderHistogram
+      incomePerEmploymentStatus
       createdAt
       updatedAt
       _version
