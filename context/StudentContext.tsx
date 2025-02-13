@@ -606,6 +606,7 @@ export async function getMasterApplicationByIdAPI(
       gender
       email
       nationalityCategory
+      nationality
       phone
       preferredLanguage
       placeOfBirth
