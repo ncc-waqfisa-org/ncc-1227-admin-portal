@@ -24,10 +24,8 @@ import {
   DashboardIcon,
   UniversitiesIcon,
 } from "../icons";
-import { FiStar, FiUser } from "react-icons/fi";
-import { IoIosArrowRoundBack } from "react-icons/io";
+import { FiStar, FiUser, FiUsers } from "react-icons/fi";
 import { cn } from "../../src/utils";
-import { GiNextButton } from "react-icons/gi";
 import { Button } from "../ui/button";
 
 export function AppSidebar() {
@@ -67,7 +65,7 @@ export function AppSidebar() {
       title: t("Applicants"),
       url: "/students",
       icon: (
-        <ApplicationsIcon className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
+        <FiUsers className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
       ),
     },
     {
