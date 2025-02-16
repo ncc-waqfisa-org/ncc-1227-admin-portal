@@ -301,10 +301,6 @@ const MasterApplicationInfo: FC<Props> = (props) => {
                 <DialogContent className="">
                   <DialogHeader>
                     <DialogTitle>{t("generateScholarship")}</DialogTitle>
-                    {/* <DialogDescription>
-                      {`${t("thisWillGenerateAScholarshipFor")}`}
-                    </DialogDescription> */}
-                    {/* Download Contract template */}
                   </DialogHeader>
                   <div className="flex flex-col gap-3">
                     <div className="flex gap-4 items-center sm:col-span-2">
@@ -313,11 +309,20 @@ const MasterApplicationInfo: FC<Props> = (props) => {
                       <span className="w-full h-[1px] bg-border "></span>
                     </div>
                     <div className="grid grid-cols-1 gap-2 py-4">
-                      <p>
+                      <p className="p-1 px-3 text-center rounded-md border border-input">
                         {`${t("cpr")}`} - {props.application.studentCPR}
                       </p>
-                      <p>
+                      <p className="p-1 px-3 text-center rounded-md border border-input">
                         {`${t("fullName")}`} - {studentName}
+                      </p>
+                      <p className="p-1 px-3 text-center rounded-md border border-input">
+                        {`${t("university")}`} -{" "}
+                        {locale === "ar"
+                          ? props.application.university?.universityNameAr
+                          : props.application.university?.universityName}
+                      </p>
+                      <p className="p-1 px-3 text-center rounded-md border border-input">
+                        {`${t("programName")}`} - {props.application.program}
                       </p>
                     </div>
                     <div className="flex gap-4 items-center sm:col-span-2">
@@ -325,18 +330,6 @@ const MasterApplicationInfo: FC<Props> = (props) => {
                       <p className="text-center">{t("scholarshipInfo")}</p>
                       <span className="w-full h-[1px] bg-border "></span>
                     </div>
-                    {/* <div className="flex flex-col gap-1">
-                      <DownloadFileFromUrl
-                        isFromLocal
-                        url={`/Waqfisa-scholarship.pdf`}
-                        fileName={`Scholarship-Contract-${props.application.studentCPR}`}
-                      >
-                        {t("downloadContractTemplate")}
-                      </DownloadFileFromUrl>
-                      <DialogDescription>
-                        {`${t("downloadContractTemplateD")}`}
-                      </DialogDescription>
-                    </div> */}
                     <GenerateScholarshipForm
                       type={"masters"}
                       masterApplicationId={props.application.id}

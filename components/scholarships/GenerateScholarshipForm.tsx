@@ -15,15 +15,11 @@ import { Input } from "../ui/input";
 import { useTranslation } from "react-i18next";
 import { Button } from "../ui/button";
 import toast from "react-hot-toast";
-import { useBatchContext } from "../../context/BatchContext";
-import { useRouter } from "next/router";
 import { cn } from "../../src/utils";
 import DatePicker from "react-date-picker";
-import { format } from "date-fns";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import { useAuth } from "../../hooks/use-auth";
-import { values } from "lodash";
 
 type TGenerateScholarshipForm = {
   applicationId?: string;
@@ -44,9 +40,6 @@ export type TGeneratedScholarship = TGenerateScholarshipMutationVariables & {
   pdfUrl: string;
 };
 
-const MAX_UPLOAD_SIZE = 1024 * 1024 * 3; // 3MB
-const ACCEPTED_FILE_TYPES = ["application/pdf"];
-
 export const GenerateScholarshipForm: FC<TGenerateScholarshipForm> = ({
   applicationId,
   masterApplicationId,
@@ -54,8 +47,6 @@ export const GenerateScholarshipForm: FC<TGenerateScholarshipForm> = ({
   onGenerate,
 }) => {
   const { t } = useTranslation("scholarships");
-  const { push } = useRouter();
-  const { resetScholarships } = useBatchContext();
 
   const { token } = useAuth();
 
@@ -151,7 +142,7 @@ export const GenerateScholarshipForm: FC<TGenerateScholarshipForm> = ({
                 <FormLabel htmlFor="startDate">{t("startDate")}</FormLabel>
                 <FormControl>
                   <DatePicker
-                    className={cn(" input input-bordered input-primary")}
+                    className={cn("px-3 py-1 rounded-md border border-input")}
                     dayPlaceholder="dd"
                     monthPlaceholder="mm"
                     yearPlaceholder="yyyy"
@@ -164,6 +155,10 @@ export const GenerateScholarshipForm: FC<TGenerateScholarshipForm> = ({
                     }}
                     value={field.value}
                     format="dd/MM/yyyy"
+                    autoFocus={false}
+                    shouldOpenCalendar={(reason) => {
+                      return reason.reason == "buttonClick";
+                    }}
                   />
                 </FormControl>
                 <FormDescription>{t("startDateD")}</FormDescription>
