@@ -295,6 +295,7 @@ export default function MasterInfoForm({
           gender: values.gender as Gender,
           placeOfBirth: values.place_of_birth,
           nationality: values.nationality,
+          nationalityCategory: values.nationality as Nationality,
           dob: values.dob,
           m_numberOfFamilyMembers: values.number_of_family_member,
           m_universityID: values.universityID,
@@ -316,15 +317,13 @@ export default function MasterInfoForm({
         },
       };
 
-      console.log(JSON.stringify(studentData));
-
       let res = await updateStudentInDB(studentData);
-      console.log(JSON.stringify(res));
+
       return res;
     },
     async onSuccess(data) {
       if (data?.updateStudent?.cpr) {
-        toast.success(`${tToast("processComplete")}`);
+        toast.success(`${t("processComplete")}`);
       } else {
         throw new Error(`${tErrors("somethingWentWrong")}`);
       }
@@ -343,18 +342,6 @@ export default function MasterInfoForm({
     if (!student) {
       throw new Error(`CODE:00098 ${"Applicant data is missing"}`);
     }
-
-    // if (data.cpr_doc == undefined || docs.cpr_doc == undefined) {
-    // }
-    // if (data.income_doc == undefined || docs.income_doc == undefined) {
-    // }
-    // if (
-    //   data.guardian_cpr_doc == undefined ||
-    //   docs.guardian_cpr_doc == undefined
-    // ) {
-    // }
-
-    // TODO test update doc
 
     /**
      * Upload all documents to S3 with the applicant CPR
@@ -395,11 +382,8 @@ export default function MasterInfoForm({
       );
     }
 
-    // let guardian_full_name = `${data.guardianFirstName} ${data.guardianSecondName} ${data.guardianThirdName} ${data.guardianLastName}`;
-
     const dataToSend: MasterUpdateData = {
       ...data,
-      // guardian_full_name,
       cpr_doc,
       income_doc,
       guardian_cpr_doc,
@@ -690,7 +674,7 @@ export default function MasterInfoForm({
                     onBlur={handleBlur}
                     value={values.nationality}
                   >
-                    <option disabled value={undefined}>
+                    <option disabled value={""}>
                       {t("select")}
                     </option>
                     <option value={Nationality.BAHRAINI}>
@@ -706,21 +690,7 @@ export default function MasterInfoForm({
                       errors.nationality}
                   </label>
                 </div>
-                {/* <div className="flex flex-col justify-start w-full">
-                  <div className="flex items-center">
-                    <label className="label">{t("nationality")}</label>
-                  </div>
-                  <Field
-                    dir="ltr"
-                    disabled
-                    className={`input disabled input-bordered input-primary`}
-                    value={
-                      student?.nationalityCategory
-                        ? t(student?.nationalityCategory)
-                        : student?.nationalityCategory
-                    }
-                  />
-                </div> */}
+
                 <div className="flex flex-col justify-start w-full">
                   <div className="flex items-center">
                     <label className="label">
@@ -1107,7 +1077,7 @@ export default function MasterInfoForm({
                     />
                   </div>
                 )}
-                {JSON.stringify(errors)}
+
                 {/* Submit */}
                 {dirty && (
                   <button
@@ -1165,7 +1135,7 @@ export default function MasterInfoForm({
                             <strong>{t("phone")}:</strong> {errors.phone}
                           </li>
                         )}
-                        {/* {errors.gender && (
+                        {errors.gender && (
                           <li className="text-error">
                             <strong>{t("gender")}:</strong> {errors.gender}
                           </li>
@@ -1181,7 +1151,7 @@ export default function MasterInfoForm({
                             <strong>{t("nationality")}:</strong>{" "}
                             {errors.nationality}
                           </li>
-                        )} */}
+                        )}
                         {errors.number_of_family_member && (
                           <li className="text-error">
                             <strong>{t("numberOfFamilyMembers")}:</strong>{" "}

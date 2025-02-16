@@ -89,9 +89,10 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
   const formSchema = z.object({
     adminPoints: z.number().min(0).max(10).optional(),
     gpa: z.number().min(0).max(100),
-    toelfIELTSScore: z.number().min(0),
+    toeflIELTSScore: z.number().min(0),
     verifiedGPA: z.number().min(0).max(100).optional().nullable(),
     isIncomeVerified: z.boolean().default(false),
+    isToeflIELTSScoreVerified: z.boolean().default(false),
     status: z.enum(Object.values(Status) as [Status]),
     acceptanceLetter: z.string().optional(),
     universityCertificate: z.string().optional(),
@@ -125,8 +126,9 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
       adminReason: "",
       adminPoints: application.adminPoints ?? undefined,
       isIncomeVerified: application.isIncomeVerified ?? false,
+      isToeflIELTSScoreVerified: application.isToeflIELTSScoreVerified ?? false,
       gpa: application.gpa ?? 0,
-      toelfIELTSScore: application.toeflIELTSScore ?? 0,
+      toeflIELTSScore: application.toeflIELTSScore ?? 0,
       verifiedGPA: application.verifiedGPA ?? undefined,
       status: application.status ?? undefined,
       acceptanceLetter:
@@ -204,13 +206,14 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
         adminPoints: values.adminPoints,
         isIncomeVerified: values.isIncomeVerified,
         gpa: values.gpa,
-        toeflIELTSScore: values.toelfIELTSScore,
+        toeflIELTSScore: values.toeflIELTSScore,
         score: calculateMasterScore({
           income: application.income,
           gpa: values.verifiedGPA ?? values.gpa,
           adminScore: values?.adminPoints,
         }),
         verifiedGPA: values.verifiedGPA,
+        isToeflIELTSScoreVerified: values.isToeflIELTSScoreVerified,
         _version: application._version,
       },
     };
@@ -247,6 +250,7 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
           gpa: application.gpa,
           toelfIELTSScore: application.toeflIELTSScore,
           reason: application.reason,
+          isToeflIELTSScoreVerified: application.isToeflIELTSScoreVerified,
         };
 
         const newData = {
@@ -255,7 +259,8 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
           isIncomeVerified: values.isIncomeVerified,
           verifiedGPA: values.verifiedGPA,
           gpa: values.gpa,
-          toelfIELTSScore: values.toelfIELTSScore,
+          toeflIELTSScore: values.toeflIELTSScore,
+          isToeflIELTSScoreVerified: values.isToeflIELTSScoreVerified,
           reason: values.reason,
         };
 
@@ -333,14 +338,6 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
 
     setLoading(false);
   }
-
-  // function getUniversityName() {
-  //   return application.university?.universityName;
-  // }
-
-  // function getProgramName() {
-  //   return application.program ?? "";
-  // }
 
   return (
     <div className="flex flex-col gap-4 mx-auto max-w-4xl">
@@ -553,7 +550,7 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
                         onCheckedChange={field.onChange}
                         className="data-[state=checked]:bg-success"
                       />
-                      <p>{t("verified")}</p>
+                      <p>{field.value ? t("verified") : t("notVerified")}</p>
                     </div>
                   )}
                 </FormControl>
@@ -666,10 +663,10 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
           />
           <FormField
             control={form.control}
-            name="toelfIELTSScore"
+            name="toeflIELTSScore"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{tL("toelfIELTSScore")}</FormLabel>
+                <FormLabel>{tL("toeflIELTSScore")}</FormLabel>
                 <FormControl>
                   <Input
                     type="number"
@@ -688,6 +685,53 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
                 </FormControl>
                 {/* <FormDescription>{tL("gpaD")}</FormDescription> */}
                 <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* verify toefl certificate */}
+          <FormField
+            control={form.control}
+            name="isToeflIELTSScoreVerified"
+            render={({ field }) => (
+              <FormItem className="flex flex-row gap-2 justify-between items-center p-4 rounded-lg border col-span-2">
+                <div className="space-y-0.5">
+                  <div className="flex gap-2 items-center">
+                    <FormLabel className="text-base">
+                      {t("isToeflIELTSScoreVerified")}
+                    </FormLabel>
+                    {application.isToeflIELTSScoreVerified ? (
+                      <FiCheckCircle className="text-success" />
+                    ) : (
+                      <FiAlertCircle className="text-warning" />
+                    )}
+                  </div>
+                  {/* <FormDescription>
+                    {`${t("studentFamilyIncome")} ${t(
+                      `${application.income}`
+                    )}`}
+                  </FormDescription> */}
+                  <div className="flex gap-1 items-center py-1 rounded-md border w-fit ps-3 pe-2">
+                    <FileIcon />
+
+                    <GetStorageLinkComponent
+                      storageKey={application.attachment?.toeflIELTSCertificate}
+                      showName
+                    />
+                  </div>
+                </div>
+
+                <FormControl>
+                  {application.attachment?.toeflIELTSCertificate && (
+                    <div className="flex flex-col gap-1 items-center">
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        className="data-[state=checked]:bg-success"
+                      />
+                      <p>{field.value ? t("verified") : t("notVerified")}</p>
+                    </div>
+                  )}
+                </FormControl>
               </FormItem>
             )}
           />

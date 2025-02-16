@@ -106,6 +106,7 @@
   "guardianThirdName": "الوصي الاسم الثالث",
   "guardianLastName": "الوصي الاسم الأخير",
   "dateOfBirth": "تاريخ الميلاد",
-  "guardianEmail": "تاريخ الميلاد",
-  "guardianAddress": "البريد الإلكتروني الوصي"
+  "guardianEmail": "البريد الإلكتروني الوصي",
+  "guardianAddress": "العنوان الوصي",
+  "processComplete": "العملية كاملة"
 }

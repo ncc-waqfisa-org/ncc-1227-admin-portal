@@ -584,6 +584,7 @@ export async function getMasterApplicationByIdAPI(
     id
     gpa
     toeflIELTSScore
+    isToeflIELTSScoreVerified
     dateTime
     batch
     createdAt

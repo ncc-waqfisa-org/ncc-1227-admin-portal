@@ -24,15 +24,17 @@ const MasterUniversitiesTable = ({ uniType, university }: Props) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [disableForward, setDisableForward] = useState(false);
   const [disableBackward, setDisableBackward] = useState(true);
-  const [shownData, setShownData] = useState<University[] | undefined>([]);
+  const [shownData, setShownData] = useState<
+    MasterAppliedUniversities[] | BahrainUniversities[] | undefined
+  >([]);
 
-  const [resultList, setResultList] = useState<any>([]);
+  // const [resultList, setResultList] = useState<any>([]);
 
   useEffect(() => {
-    setNumberOfPages(Math.ceil((resultList?.length ?? 0) / elementPerPage));
+    setNumberOfPages(Math.ceil((university?.length ?? 0) / elementPerPage));
 
     return () => {};
-  }, [resultList]);
+  }, [university]);
 
   useEffect(() => {
     setDisableBackward(true);
@@ -51,7 +53,7 @@ const MasterUniversitiesTable = ({ uniType, university }: Props) => {
 
   useEffect(() => {
     function paginate() {
-      const tempShowData = resultList?.slice(
+      const tempShowData = university?.slice(
         (currentPage - 1) * elementPerPage,
         currentPage * elementPerPage
       );
@@ -61,7 +63,7 @@ const MasterUniversitiesTable = ({ uniType, university }: Props) => {
     paginate();
 
     return () => {};
-  }, [currentPage, resultList]);
+  }, [currentPage, university]);
 
   function goNextPage() {
     setCurrentPage(currentPage + 1);
@@ -85,8 +87,20 @@ const MasterUniversitiesTable = ({ uniType, university }: Props) => {
             </tr>
           </thead>
           <tbody>
-            {university
+            {shownData
               ?.sort((a, b) => {
+                let aName =
+                  locale === "ar"
+                    ? a.universityNameAr?.toLowerCase() ?? ""
+                    : a.universityName?.toLowerCase() ?? "";
+                let bName =
+                  locale === "ar"
+                    ? b.universityNameAr?.toLowerCase() ?? ""
+                    : b.universityName?.toLowerCase() ?? "";
+
+                return aName.localeCompare(bName);
+              })
+              .sort((a, b) => {
                 let bD = b.isDeactivated === true ? -1 : 1;
                 return bD;
               })

@@ -179,5 +179,9 @@
   "scholarshipInfoD": "These details will be added to the relevant fields inside the generated contract",
   "creatingScholarship": "Creating scholarship",
   "createdSuccessfully": "Created scholarship successfully",
-  "failedToCreate": "Failed to create scholarship"
+  "failedToCreate": "Failed to create scholarship",
+  "notVerified": "Not Verified",
+  "isToeflIELTSScoreVerified": "Verified TOEFL/IELTS Score",
+  "toeflIELTSScore": "TOEFL/IELTS Score",
+  "applicantAge": "Applicant's Age"
 }

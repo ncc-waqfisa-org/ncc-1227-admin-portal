@@ -43,6 +43,7 @@ import {
   TGeneratedScholarship,
 } from "../../../components/scholarships/GenerateScholarshipForm";
 import { useAuth } from "../../../hooks/use-auth";
+import { calculateAge, isValidAge } from "../../../src/Helpers";
 
 interface Props {
   application: MasterApplication;
@@ -131,7 +132,7 @@ const MasterApplicationInfo: FC<Props> = (props) => {
   }
 
   let studentName = `${props.application.student?.m_firstName} ${props.application.student?.m_secondName} ${props.application.student?.m_thirdName} ${props.application.student?.m_lastName}`;
-
+  let applicantAge = calculateAge(props.application.student?.dob ?? "");
   return (
     <div>
       <PageComponent title={"MApplicationInfo"}>
@@ -173,6 +174,23 @@ const MasterApplicationInfo: FC<Props> = (props) => {
               disabled
               onChange={() => {}}
             />
+            {props.application.student?.dob && (
+              <div
+                className={cn(
+                  "flex gap-4 items-center p-2 px-3 rounded-md border border-input w-fit",
+                  !isValidAge(applicantAge, "masters") &&
+                    "border-error bg-error/10"
+                )}
+              >
+                <p>{t("applicantAge")} -</p>
+                <p>{applicantAge}</p>
+                {isValidAge(applicantAge, "masters") ? (
+                  <FiCheckCircle className="text-success" />
+                ) : (
+                  <FiAlertCircle className="text-error" />
+                )}
+              </div>
+            )}
           </div>
           <div className="flex flex-col gap-3">
             <p>{`${t("nationality")} ${t(
@@ -203,6 +221,15 @@ const MasterApplicationInfo: FC<Props> = (props) => {
               <p>{t("isIncomeVerified")}</p>
 
               {props.application.isIncomeVerified ? (
+                <FiCheckCircle className="text-success" />
+              ) : (
+                <FiAlertCircle className="text-warning" />
+              )}
+            </div>
+            <div className="flex gap-4 items-center">
+              <p>{t("isToeflIELTSScoreVerified")}</p>
+
+              {props.application.isToeflIELTSScoreVerified ? (
                 <FiCheckCircle className="text-success" />
               ) : (
                 <FiAlertCircle className="text-warning" />

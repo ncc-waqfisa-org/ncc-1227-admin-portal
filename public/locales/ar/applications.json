@@ -175,5 +175,9 @@
   "scholarshipInfoD": "سيتم إضافة هذه التفاصيل إلى الحقول ذات الصلة داخل العقد الذي تم إنشاؤه",
   "creatingScholarship": "إنشاء منحة دراسية",
   "createdSuccessfully": "أنشأت منحة دراسية بنجاح",
-  "failedToCreate": "فشل في إنشاء منحة دراسية"
+  "failedToCreate": "فشل في إنشاء منحة دراسية",
+  "notVerified": "لم يتم التحقق منها",
+  "isToeflIELTSScoreVerified": "تم التحقق من تقدير TOEFL/IELTS",
+  "toeflIELTSScore": "TOEFL/IELTS النتيجة",
+  "applicantAge": "عمر مقدم الطلب"
 }

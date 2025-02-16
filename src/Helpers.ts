@@ -368,3 +368,50 @@ export function getNamePart(
       return "";
   }
 }
+
+export function calculateAge(dateOfBirth: string): string {
+  let chosenDate = new Date(dateOfBirth);
+  let currentDate = new Date();
+
+  let isValidDate: boolean =
+    chosenDate.toDateString() !== currentDate.toDateString();
+
+  let isAFutureDate: boolean = chosenDate > currentDate;
+
+  let age = currentDate.getFullYear() - chosenDate.getFullYear();
+  const month = currentDate.getMonth() - chosenDate.getMonth();
+
+  // Adjust the age if the current date hasn't passed the birthday this year yet
+  if (
+    month < 0 ||
+    (month === 0 && currentDate.getDate() < chosenDate.getDate())
+  ) {
+    age--;
+  }
+
+  // let isValidAge: boolean = true;
+
+  // if (type === StudentType.MASTERS) {
+  //   isValidAge = age < 31 && age >= 18;
+  // } else if (type === StudentType.BACHELORS) {
+  //   isValidAge = age >= 16;
+  // }
+
+  // let isUnder30AndLessThan18: boolean = age <= 30 && age >= 18;
+
+  // return isValidDate && !isAFutureDate && isValidAge;
+  return age.toString();
+}
+
+export function isValidAge(age: string, type: "masters" | "bachelor"): boolean {
+  let applicantAge = Number(age);
+  if (type === "masters") {
+    return applicantAge < 31 && applicantAge >= 18;
+  }
+
+  if (type === "bachelor") {
+    return applicantAge <= 16;
+  }
+
+  return false;
+}
