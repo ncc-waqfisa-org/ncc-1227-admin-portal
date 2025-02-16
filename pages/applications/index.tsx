@@ -42,12 +42,14 @@ const Applications = () => {
                 : t("applicationTitle")}
             </div>
           </div>
-          <Link
-            href="/applications/archive"
-            className="btdn btn-ghost btn-sm text-primary hover:bg-primary/30"
-          >
-            {t("archives")}
-          </Link>
+          {type === "bachelor" && (
+            <Link
+              href="/applications/archive"
+              className="btdn btn-ghost btn-sm text-primary hover:bg-primary/30"
+            >
+              {t("archives")}
+            </Link>
+          )}
         </div>
       </div>
 
@@ -59,14 +61,5 @@ const Applications = () => {
     </PageComponent>
   );
 };
-
-// {
-//   type === "masters" && (
-//     <div>
-//       {/* TODO: Create a InfiniteMastersApplications version of InfiniteApplications */}
-//       MASTER APPLICATIONS TABLE
-//     </div>
-//   );
-// }
 
 export default Applications;

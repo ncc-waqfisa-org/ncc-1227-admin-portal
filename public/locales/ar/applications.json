@@ -179,5 +179,7 @@
   "notVerified": "لم يتم التحقق منها",
   "isToeflIELTSScoreVerified": "تم التحقق من تقدير TOEFL/IELTS",
   "toeflIELTSScore": "TOEFL/IELTS النتيجة",
-  "applicantAge": "عمر مقدم الطلب"
+  "applicantAge": "عمر مقدم الطلب",
+  "program": "برنامج",
+  "applicationScore": "نتيجة التطبيق"
 }

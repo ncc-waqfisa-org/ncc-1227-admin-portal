@@ -183,5 +183,7 @@
   "notVerified": "Not Verified",
   "isToeflIELTSScoreVerified": "Verified TOEFL/IELTS Score",
   "toeflIELTSScore": "TOEFL/IELTS Score",
-  "applicantAge": "Applicant's Age"
+  "applicantAge": "Applicant's Age",
+  "program": "Program",
+  "applicationScore": "Application Score"
 }
