@@ -1,5 +1,6 @@
 {
   "Dashboard": "Dashboard",
+  "Applicants": "Applicants",
   "Applications": "Applications",
   "MApplication": "Masters Application",
   "BApplication": "Bachelor Application",
@@ -18,5 +19,6 @@
   "Back": "Back",
   "EditAdminUser": "Edit Admin User",
   "AddAdminUser": "Add Admin User",
-  "ApplicationsArchive": "Applications Archive"
+  "ApplicationsArchive": "Applications Archive",
+  "superAdmins": "Super Admins"
 }

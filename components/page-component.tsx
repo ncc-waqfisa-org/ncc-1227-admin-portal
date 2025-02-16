@@ -1,12 +1,11 @@
 import { FC, PropsWithChildren, useEffect } from "react";
-import { Toaster } from "react-hot-toast";
-import { GiHamburgerMenu } from "react-icons/gi";
 import { useAuth } from "../hooks/use-auth";
-import NavbarComponent from "./navbar-component";
 import SignInFormComponent from "./sign-in-form-component";
 
-import Image from "next/image";
 import { useTranslation } from "react-i18next";
+import { SidebarProvider, SidebarTrigger } from "./ui/sidebar";
+import { AppSidebar } from "./dashboard_layout/app-sidebar";
+import { cn } from "../src/utils";
 
 interface Props {
   title: string;
@@ -26,75 +25,39 @@ export const PageComponent: FC<PropsWithChildren<Props>> = (props) => {
   const isInitializing = init ?? true;
 
   return (
-    <div>
-      <Toaster
-        toastOptions={{
-          className: "ltr",
-        }}
-      />
-
-      <div className="fixed top-0 left-0 z-50 shadow-lg navbar lg:hidden bg-nccGray-50 shadow-black/5">
-        <div className="flex-none">
-          <label
-            htmlFor="my-drawer-2"
-            className="rounded-xl btn btn-primary drawer-button lg:hidden"
-          >
-            <GiHamburgerMenu className="fill-white" />
-          </label>
-        </div>
-        <div className="flex-1">
-          <Image
-            className="h-16"
-            src="/logo.svg"
-            alt="logo"
-            width={200}
-            height={100}
-          />
-        </div>
-        <div className="flex flex-col justify-center items-center p-3 text-center rounded-lg bg-zinc-100">
-          <p className="text-zinc-500">{user?.getUsername()}</p>
-        </div>
-      </div>
-      <div className="drawer lg:drawer-open">
-        <input
-          id="my-drawer-2"
-          type="checkbox"
-          className="drawer-toggle"
-          title="pageComponent"
-        />
-
-        <div className="drawer-content">
-          {isInitializing ? (
-            <div className="flex items-center justify-center flex-col w-full h-[100svh] bg-gray-200 animate-pulse">
-              <div className="flex gap-2 items-center">
-                <span className="loading"></span>
-                {` ${tCommon("loading")} `}
-              </div>
-            </div>
-          ) : (
-            <div>
-              {!isSignedIn ? (
-                <SignInFormComponent></SignInFormComponent>
-              ) : (
-                user?.challengeName !== "NEW_PASSWORD_REQUIRED" && (
-                  <div className="m-4">
-                    <div className="container px-6 mx-auto mt-24 md:px-10 lg:px-16">
-                      {props.children}
-                    </div>
-                  </div>
-                )
-              )}
-            </div>
-          )}
-        </div>
-
+    <SidebarProvider>
+      {isSignedIn && <AppSidebar />}
+      <main className="flex-1 overflow-clip">
         {isSignedIn && (
-          <div className="z-10 drawer-side">
-            <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
-            <NavbarComponent></NavbarComponent>
+          <div
+            className={cn(
+              "flex sticky top-0 gap-2 items-center p-4 bg-white border-b border-gray-200"
+            )}
+          >
+            <SidebarTrigger className="px-2 min-w-fit">
+              <p>{tCommon("sidebar")}</p>
+            </SidebarTrigger>
           </div>
         )}
-      </div>
-    </div>
+
+        {isInitializing ? (
+          <div className="flex items-center justify-center flex-col w-full h-[100svh] bg-gray-200 animate-pulse">
+            <div className="flex gap-2 items-center">
+              <span className="loading"></span>
+              {` ${tCommon("loading")} `}
+            </div>
+          </div>
+        ) : !isSignedIn ? (
+          <SignInFormComponent></SignInFormComponent>
+        ) : (
+          // Authorized -> Content
+          user?.challengeName !== "NEW_PASSWORD_REQUIRED" && (
+            <div className="container px-6 mx-auto mt-14 md:px-10 lg:px-16">
+              {props.children}
+            </div>
+          )
+        )}
+      </main>
+    </SidebarProvider>
   );
 };

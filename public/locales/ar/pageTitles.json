@@ -1,5 +1,6 @@
 {
   "Dashboard": "الصفحة الرئيسية",
+  "Applicants": "المتقدمين",
   "Applications": "الطلبات",
   "MApplication": "طلب ماستر",
   "BApplication": "طلب باكلوريوس",
@@ -16,5 +17,6 @@
   "Back": "الرجوع",
   "EditAdminUser": "تحرير المسؤول",
   "AddAdminUser": "أضف مسؤول جديد",
-  "ApplicationsArchive": "أرشيف الطلبات"
+  "ApplicationsArchive": "أرشيف الطلبات",
+  "superAdmins": "المدراء"
 }

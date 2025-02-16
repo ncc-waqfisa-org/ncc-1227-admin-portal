@@ -14,7 +14,6 @@ import {
   DashboardIcon,
   UniversitiesIcon,
 } from "./icons";
-import { useAppContext } from "../context/AppContext";
 import { ProgramTypeSwitcher } from "./program_type/ProgramTypeSwitcher";
 
 export default function NavbarComponent() {
