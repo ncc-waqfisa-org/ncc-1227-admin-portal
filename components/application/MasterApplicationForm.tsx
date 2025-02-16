@@ -666,7 +666,7 @@ export const MasterApplicationForm: FC<TMasterApplicationForm> = ({
             name="toeflIELTSScore"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>{tL("toeflIELTSScore")}</FormLabel>
+                <FormLabel>{tL("toelfIELTSScore")}</FormLabel>
                 <FormControl>
                   <Input
                     type="number"

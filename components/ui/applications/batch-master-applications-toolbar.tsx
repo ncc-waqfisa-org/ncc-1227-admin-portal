@@ -300,7 +300,7 @@ export const BatchMasterApplicationsToolbar: React.FC<
       >
         <FiRefreshCw />
       </Button>
-      <Button onClick={() => autoRejectApplications()}>Auto Reject</Button>
+      {/* <Button onClick={() => autoRejectApplications()}>Auto Reject</Button> */}
     </div>
   );
 };

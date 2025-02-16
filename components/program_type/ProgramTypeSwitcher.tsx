@@ -13,17 +13,14 @@ import {
 const types = ["bachelor", "masters"];
 
 export const ProgramTypeSwitcher = ({ isBox = true }: { isBox?: boolean }) => {
-  const { type, setType } = useAppContext();
+  const { type: currentType, setType } = useAppContext();
   const { t } = useTranslation("common");
   const router = useRouter();
 
   useEffect(() => {
-    const { scholarship_type } = router.query;
-    if (
-      typeof scholarship_type === "string" &&
-      types.includes(scholarship_type)
-    ) {
-      setType(scholarship_type as "bachelor" | "masters");
+    const { type } = router.query;
+    if (typeof type === "string" && types.includes(type)) {
+      setType(type as "bachelor" | "masters");
     }
   }, [router.query, setType]);
 
@@ -32,7 +29,7 @@ export const ProgramTypeSwitcher = ({ isBox = true }: { isBox?: boolean }) => {
       <div className="flex flex-col gap-2 p-4 border rounded-lg bg-zinc-50 border-zinc-200">
         <h4 className="text-lg font-semibold">{t("programType")}</h4>
         <Select
-          value={type}
+          value={currentType}
           onValueChange={(st) => {
             if (st === "masters" || st === "bachelor") {
               setType(st);
@@ -59,7 +56,7 @@ export const ProgramTypeSwitcher = ({ isBox = true }: { isBox?: boolean }) => {
 
   return (
     <Select
-      value={type}
+      value={currentType}
       onValueChange={(st) => {
         if (st === "masters" || st === "bachelor") {
           setType(st);
