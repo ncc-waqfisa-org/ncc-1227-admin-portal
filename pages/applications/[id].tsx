@@ -15,7 +15,10 @@ import {
 import StudentUpdate from "../../components/student/StudentUpdate";
 import UpdateParentInfo from "../../components/student/UpdateParentInfo";
 import { ApplicationForm } from "../../components/application/ApplicationForm";
-import { listAllPrograms, listScholarshipsOfApplicationId } from "../../src/CustomAPI";
+import {
+  listAllPrograms,
+  listScholarshipsOfApplicationId,
+} from "../../src/CustomAPI";
 import {
   Dialog,
   DialogContent,
@@ -33,7 +36,6 @@ import { PhoneNumberInput } from "../../components/phone";
 import { FiAlertCircle, FiCheckCircle, FiPrinter } from "react-icons/fi";
 import { DownloadFileFromUrl } from "../../components/download-file-from-url";
 import { Textarea } from "../../components/ui/textarea";
-
 
 import { IoMdArrowRoundBack } from "react-icons/io";
 import {
@@ -85,7 +87,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   };
 };
 
-  const sortUniversities = (locale: string = "en") => (a: Program, b: Program) => {
+const sortUniversities =
+  (locale: string = "en") =>
+  (a: Program, b: Program) => {
     const aUniversityName = a.university?.name ?? "";
     const bUniversityName = b.university?.name ?? "";
 
@@ -98,7 +102,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       return aUniversityName.localeCompare(bUniversityName);
     }
   };
-  const sortPrograms = (locale: string = "en") => (a: Program, b: Program) => {
+const sortPrograms =
+  (locale: string = "en") =>
+  (a: Program, b: Program) => {
     const aProgramName = a.name ?? "";
     const bProgramName = b.name ?? "";
 
@@ -111,9 +117,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
       return aProgramName.localeCompare(bProgramName);
     }
   };
-
-
-
 
 const ApplicationInfo: FC<Props> = (props) => {
   const { t } = useTranslation("applications");
@@ -170,11 +173,13 @@ const ApplicationInfo: FC<Props> = (props) => {
         </button>
         <Toaster />
         <div className="flex justify-between items-center">
-          <div className="text-2xl font-semibold">{tPageTitle("BApplication")}</div>
+          <div className="text-2xl font-semibold">
+            {tPageTitle("BApplication")}
+          </div>
           <DownloadFileFromUrl
-            url={`https://a69a50c47l.execute-api.us-east-1.amazonaws.com/default/applications/pdf?applicationId=${
-              props.application.id
-            }&lang=${locale ?? "en"}`}
+            url={`${
+              process.env.NEXT_PUBLIC_LAMBDA_GET_BACHELOR_APPLICATION_PDF
+            }?applicationId=${props.application.id}&lang=${locale ?? "en"}`}
             fileName={`${props.application.student?.cpr} Application`}
           >
             <div className="flex gap-2 items-center">
@@ -246,7 +251,7 @@ const ApplicationInfo: FC<Props> = (props) => {
         </div>
 
         {props.scholarship.canCreateNewScholarship && (
-          <div className="p-6 border mt-6 rounded-md grid gap-4">
+          <div className="grid gap-4 p-6 mt-6 rounded-md border">
             <div className="grid sm:grid-cols-2">
               <div>
                 <p className="font-medium">{t("thisApplicationIsApproved")}</p>
@@ -369,7 +374,7 @@ const ApplicationInfo: FC<Props> = (props) => {
               </Dialog>
             </div>
             {generatedContractData?.pdfUrl && (
-              <div className="flex items-center justify-between">
+              <div className="flex justify-between items-center">
                 <Link
                   className="btn btn-info btn-sm"
                   target="_blank"
@@ -403,7 +408,12 @@ const ApplicationInfo: FC<Props> = (props) => {
               </AccordionTrigger>
 
               <AccordionContent>
-                <ApplicationForm application={props.application} programs={props.programs.sort(sortPrograms(locale)).sort(sortUniversities(locale))} />
+                <ApplicationForm
+                  application={props.application}
+                  programs={props.programs
+                    .sort(sortPrograms(locale))
+                    .sort(sortUniversities(locale))}
+                />
               </AccordionContent>
             </AccordionItem>
 

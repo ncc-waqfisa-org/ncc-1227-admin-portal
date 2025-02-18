@@ -3,7 +3,6 @@ import { Button } from "./ui/button";
 import toast from "react-hot-toast";
 import { useAuth } from "../hooks/use-auth";
 import { useTranslation } from "react-i18next";
-import dayjs from "dayjs";
 
 type TDownloadFileFromUrl = {
   fileName?: string;
@@ -32,6 +31,7 @@ export const DownloadFileFromUrl: FC<
       const a = document.createElement("a");
       a.href = url;
       a.download = fileName ?? "File";
+      a.target = "_blank";
       a.click();
     } else {
       // Existing remote download logic
@@ -47,6 +47,7 @@ export const DownloadFileFromUrl: FC<
           const a = document.createElement("a");
           a.href = fileUrl;
           a.download = fileName ?? "File";
+          a.target = "_blank";
           a.click();
           window.URL.revokeObjectURL(fileUrl);
         }

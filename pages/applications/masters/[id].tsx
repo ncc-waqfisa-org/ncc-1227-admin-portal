@@ -148,9 +148,9 @@ const MasterApplicationInfo: FC<Props> = (props) => {
           </div>
           {/* TODO add this url to env */}
           <DownloadFileFromUrl
-            url={`https://a69a50c47l.execute-api.us-east-1.amazonaws.com/default/applications/pdf?applicationId=${
-              props.application.id
-            }&lang=${locale ?? "en"}`}
+            url={`${
+              process.env.NEXT_PUBLIC_LAMBDA_GET_MASTERS_APPLICATION_PDF
+            }?applicationId=${props.application.id}&lang=${locale ?? "en"}`}
             fileName={`${props.application.student?.cpr} Application`}
           >
             <div className="flex gap-2 items-center">
@@ -196,9 +196,9 @@ const MasterApplicationInfo: FC<Props> = (props) => {
             <p>{`${t("nationality")} ${t(
               props.application.nationalityCategory?.toString() ?? ""
             )}`}</p>
-            <div className=" flex gap-4 items-center">
+            <div className="flex gap-4 items-center">
               <p>{`${t("tableTitleGpa")}`}</p>{" "}
-              <p className="font-medium border border-input rounded-sm p-1 px-3">
+              <p className="p-1 px-3 font-medium rounded-sm border border-input">
                 {props.application?.gpa ?? 0}
               </p>
             </div>
@@ -206,7 +206,7 @@ const MasterApplicationInfo: FC<Props> = (props) => {
               <p>{t("tableTitleVerifiedGpa")}</p>
               {props.application.verifiedGPA ? (
                 <div className="flex gap-4 items-center">
-                  <p className=" font-medium border border-input rounded-sm p-1 px-3">
+                  <p className="p-1 px-3 font-medium rounded-sm border  border-input">
                     {props.application.verifiedGPA}
                   </p>
                   <FiCheckCircle className="text-success" />
@@ -220,7 +220,7 @@ const MasterApplicationInfo: FC<Props> = (props) => {
 
               {props.application.adminPoints ? (
                 <div className="flex gap-4 items-center">
-                  <p className=" font-medium border border-input rounded-sm p-1 px-3">
+                  <p className="p-1 px-3 font-medium rounded-sm border  border-input">
                     {props.application.adminPoints}
                   </p>
                   <FiCheckCircle className="text-success" />
@@ -243,7 +243,7 @@ const MasterApplicationInfo: FC<Props> = (props) => {
 
               {props.application.isToeflIELTSScoreVerified ? (
                 <div className="flex gap-4 items-center">
-                  <p className=" font-medium border border-input rounded-sm p-1 px-3">
+                  <p className="p-1 px-3 font-medium rounded-sm border  border-input">
                     {props.application.toeflIELTSScore}
                   </p>
                   <FiCheckCircle className="text-success" />
@@ -254,8 +254,8 @@ const MasterApplicationInfo: FC<Props> = (props) => {
             </div>
           </div>
 
-          <div className="py-4 grid grid-cols-1 md:grid-cols-2 gap-3 sm:col-span-2 ">
-            <div className=" flex flex-col gap-3">
+          <div className="grid grid-cols-1 gap-3 py-4 md:grid-cols-2 sm:col-span-2">
+            <div className="flex flex-col gap-3">
               <p className="font-medium">{t("program")}</p>
               <p className="p-1 px-4 rounded-md border w-fit">
                 {props.application.program?.toString() ?? ""}
@@ -394,14 +394,14 @@ const MasterApplicationInfo: FC<Props> = (props) => {
               {generatedContractData?.pdfUrl && (
                 <div className="flex flex-col gap-6 justify-end items-center mt-auto xl:flex-row">
                   <Link
-                    className="underline underline-offset-2 pt-2"
+                    className="pt-2 underline underline-offset-2"
                     // className="btn btn-info btn-sm"
                     target="_blank"
                     href={generatedContractData.pdfUrl}
                   >
                     {t("previewContract")}
                   </Link>
-                  <div className=" flex flex-col justify-center">
+                  <div className="flex flex-col justify-center">
                     <button
                       type="button"
                       className="btn-primary btn btn-sm"
@@ -418,7 +418,7 @@ const MasterApplicationInfo: FC<Props> = (props) => {
                       )}
                     </button>
                     {!props.scholarship.scholarshipId && (
-                      <p className=" text-sm pt-2 text-gray-400">
+                      <p className="pt-2 text-sm text-gray-400">
                         {t("sendToApplicantD")}
                       </p>
                     )}
