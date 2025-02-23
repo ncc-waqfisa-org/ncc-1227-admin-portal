@@ -31,7 +31,7 @@ export const PageComponent: FC<PropsWithChildren<Props>> = (props) => {
         {isSignedIn && (
           <div
             className={cn(
-              "flex sticky top-0 gap-2 items-center p-4 bg-white border-b border-gray-200"
+              "flex isolate sticky top-0 gap-2 items-center p-4 bg-white border-b border-gray-200 z-[999]"
             )}
           >
             <SidebarTrigger className="px-2 min-w-fit">

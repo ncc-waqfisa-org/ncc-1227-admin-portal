@@ -43,6 +43,7 @@ import {
   TGeneratedScholarship,
 } from "../../components/scholarships/GenerateScholarshipForm";
 import { useAuth } from "../../hooks/use-auth";
+import { FaCheck } from "react-icons/fa";
 
 interface Props {
   programs: Program[];
@@ -274,52 +275,7 @@ const ApplicationInfo: FC<Props> = (props) => {
                   }`}
                 </p>
               </div>
-              {/* <Dialog>
-                {props.scholarship.scholarshipId ? (
-                  <Link
-                    className={cn(
-                      buttonVariants({ variant: "outline" }),
-                      "mt-auto"
-                    )}
-                    href={`/scholarships/${props.scholarship.scholarshipId}`}
-                  >
-                    {t("goToScholarship")}
-                  </Link>
-                ) : (
-                  <DialogTrigger asChild>
-                    <Button variant="default" className="mt-auto">
-                      {t("createScholarship")}
-                    </Button>
-                  </DialogTrigger>
-                )}
-                <DialogContent className="">
-                  <DialogHeader>
-                    <DialogTitle>{t("createScholarship")}</DialogTitle>
-                    <DialogDescription>
-                      {`${t("thisWillCreateScholarship")} ${
-                        props.application.studentCPR
-                      }`}
-                    </DialogDescription> */}
-              {/* Download Condtract template */}
-              {/* </DialogHeader>
-                  <div className="flex flex-col gap-3">
-                    <div className="flex flex-col gap-1">
-                      <DownloadFileFromUrl
-                        isFromLocal
-                        url={`/Waqfisa-scholarship.pdf`}
-                        fileName={`Scholarship-Contract-${props.application.studentCPR}`}
-                      >
-                        {t("downloadContractTemplate")}
-                      </DownloadFileFromUrl>
-                      <DialogDescription>
-                        {`${t("downloadContractTemplateD")}`}
-                      </DialogDescription>
-                    </div>
-  
-                    <CreateScholarshipForm application={props.application} />
-                  </div>
-                </DialogContent>
-              </Dialog> */}
+
               <Dialog
                 open={isGenerateDialogOpen}
                 onOpenChange={setIsGenerateDialogOpen}
@@ -374,22 +330,45 @@ const ApplicationInfo: FC<Props> = (props) => {
               </Dialog>
             </div>
             {generatedContractData?.pdfUrl && (
-              <div className="flex justify-between items-center">
+              <div className="flex flex-col gap-6 justify-end items-center mt-auto xl:flex-row">
                 <Link
-                  className="btn btn-info btn-sm"
+                  className="pt-2 underline underline-offset-2"
+                  // className="btn btn-info btn-sm"
                   target="_blank"
                   href={generatedContractData.pdfUrl}
                 >
                   {t("previewContract")}
                 </Link>
-                <button
+                {/* <button
                   type="button"
                   className="btn-primary btn btn-sm"
                   disabled={isAttachingPending}
                   onClick={attachAndCreate}
                 >
                   {t("attachAndCreateScholarship")}
-                </button>
+                </button> */}
+                <div className="flex flex-col justify-center">
+                  <button
+                    type="button"
+                    className="btn-primary btn btn-sm"
+                    disabled={isAttachingPending}
+                    onClick={attachAndCreate}
+                  >
+                    {props.scholarship.scholarshipId ? (
+                      <div className="flex gap-2">
+                        <FaCheck />
+                        {t("scholarshipSent")}
+                      </div>
+                    ) : (
+                      t("sendToApplicant")
+                    )}
+                  </button>
+                  {!props.scholarship.scholarshipId && (
+                    <p className="pt-2 text-sm text-gray-400">
+                      {t("sendToApplicantD")}
+                    </p>
+                  )}
+                </div>
               </div>
             )}
           </div>
