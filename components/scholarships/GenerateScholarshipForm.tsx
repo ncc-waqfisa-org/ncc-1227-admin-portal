@@ -20,6 +20,7 @@ import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import { useAuth } from "../../hooks/use-auth";
+import dayjs from "dayjs";
 
 type TGenerateScholarshipForm = {
   applicationId?: string;
@@ -148,9 +149,9 @@ export const GenerateScholarshipForm: FC<TGenerateScholarshipForm> = ({
                     yearPlaceholder="yyyy"
                     onChange={(date) => {
                       const myDate: Date | null = date as Date | null;
-
                       if (myDate) {
-                        field.onChange(myDate.toISOString());
+                        const d = dayjs(myDate);
+                        field.onChange(d.format("YYYY-MM-DD"));
                       }
                     }}
                     value={field.value}
