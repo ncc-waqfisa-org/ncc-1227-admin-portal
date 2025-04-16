@@ -33,7 +33,7 @@ type TGenerateScholarshipMutationVariables = {
   applicationID: string;
   startDate: string;
   scholarshipPeriod: number;
-  numberOfSemesters: number;
+  // numberOfSemesters: number;
 };
 
 export type TGeneratedScholarship = TGenerateScholarshipMutationVariables & {
@@ -54,7 +54,7 @@ export const GenerateScholarshipForm: FC<TGenerateScholarshipForm> = ({
   const formSchema = z.object({
     startDate: z.string().min(1),
     scholarshipPeriod: z.number().min(1),
-    numberOfSemesters: z.number().min(1),
+    // numberOfSemesters: z.number().min(1),
     applicationID: z.string(),
   });
 
@@ -66,7 +66,7 @@ export const GenerateScholarshipForm: FC<TGenerateScholarshipForm> = ({
     defaultValues: {
       startDate: undefined,
       scholarshipPeriod: undefined,
-      numberOfSemesters: undefined,
+      // numberOfSemesters: undefined,
       applicationID:
         (type === "masters" ? masterApplicationId : applicationId) ?? "",
     },
@@ -80,7 +80,7 @@ export const GenerateScholarshipForm: FC<TGenerateScholarshipForm> = ({
         type === "bachelor" ? applicationId ?? "" : masterApplicationId ?? "",
       startDate: values.startDate,
       scholarshipPeriod: values.scholarshipPeriod,
-      numberOfSemesters: values.numberOfSemesters,
+      // numberOfSemesters: values.numberOfSemesters,
     };
 
     await toast
@@ -187,7 +187,7 @@ export const GenerateScholarshipForm: FC<TGenerateScholarshipForm> = ({
                         field.onChange(Number(e.target.value));
                       }}
                     />
-                    <p>{t("months")}</p>
+                    <p>{t("years")}</p>
                   </div>
                 </FormControl>
                 <FormDescription>{t("scholarshipPeriodD")}</FormDescription>
@@ -195,7 +195,7 @@ export const GenerateScholarshipForm: FC<TGenerateScholarshipForm> = ({
               </FormItem>
             )}
           />
-          <FormField
+          {/* <FormField
             control={form.control}
             name="numberOfSemesters"
             render={({ field }) => (
@@ -217,11 +217,10 @@ export const GenerateScholarshipForm: FC<TGenerateScholarshipForm> = ({
                     />
                   </div>
                 </FormControl>
-                {/* <FormDescription>{t("numberOfSemestersD")}</FormDescription> */}
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
 
           <div className="flex justify-end sm:col-span-2">
             <Button disabled={loading} type="submit">
