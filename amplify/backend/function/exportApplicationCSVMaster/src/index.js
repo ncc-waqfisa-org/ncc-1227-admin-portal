@@ -146,7 +146,9 @@ async function convertToJsonMaster(applications, students) {
       Phone: student.phone,
       Email: student.email,
 
-      "Student Date of Birth": student.dob,
+      "Student Date of Birth": student.dob
+        ? formatter.format(new Date(student.dob))
+        : "-",
       "Student Place of Birth": student.placeOfBirth,
       "Student Address": student.address,
       "Number of Family members": student.m_numberOfFamilyMembers,
@@ -343,3 +345,10 @@ async function getUniversityNameById(universityId) {
     throw error;
   }
 }
+
+const formatter = new Intl.DateTimeFormat("en-US", {
+  timeZone: "Asia/Bahrain",
+  year: "numeric",
+  month: "short",
+  day: "2-digit",
+});

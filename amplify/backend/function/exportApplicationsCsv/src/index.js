@@ -169,7 +169,9 @@ async function convertToJson(applications, students) {
         "Student CPR": application.studentCPR,
         Name: student.fullName,
         Gender: student.gender,
-        "Student Date of Birth": student.dob,
+        "Student Date of Birth": student.dob
+          ? formatter.format(new Date(student.dob))
+          : "-",
         "Number Of Family Members": student.numberOfFamilyMembers,
         "Number of Siblings": student.studentOrderAmongSiblings,
         Nationality: student.nationalityCategory,
@@ -433,3 +435,10 @@ async function getProgram(programId) {
   const program = await dynamoDB.get(params).promise();
   return program.Item;
 }
+
+const formatter = new Intl.DateTimeFormat("en-US", {
+  timeZone: "Asia/Bahrain",
+  year: "numeric",
+  month: "short",
+  day: "2-digit",
+});
