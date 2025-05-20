@@ -1,5 +1,67 @@
 {
-  "key1": "value1",
-  "key2": "value2",
-  "key3": "value3"
+  "version": "2.0",
+  "routeKey": "GET /master/export",
+  "rawPath": "/master/export",
+  "rawQueryString": "batch=2025",
+  "headers": {
+    "accept": "*/*",
+    "accept-encoding": "gzip, deflate, br, zstd",
+    "accept-language": "en-US,en;q=0.5",
+    "authorization": "Bearer eyJraWQiOiJcL1loR1dqdHZJV2s5SW9xYmhSXC9yYmdzVXVValhUZkE5aXVhTFp1ZTRIbTg9IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiI0NmRhMTExMC01NTgyLTQ3NDItYTRmYi1lMWYxODI4NzQ5ZDciLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMV9vdnFMRDlBeGYiLCJjbGllbnRfaWQiOiIxcThnODE3dmo0Mzl1Y2FpZzJ1b245MnE4NiIsIm9yaWdpbl9qdGkiOiJjMzkwOTM3My1jNjIzLTRhMzctYmJiOC0wMzI0N2M1NzExZTEiLCJldmVudF9pZCI6IjRhZTliYjMwLWEzYjQtNDdkMi1hZDk1LTIzOTkwNTQxYTc4NCIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4iLCJhdXRoX3RpbWUiOjE3NDc1NTA5MTEsImV4cCI6MTc0NzYzNzMxMSwiaWF0IjoxNzQ3NTUwOTExLCJqdGkiOiI2MDU1MjNkYS1mOTczLTQ1OGEtYmQ1Ni01ZmM0NzcyM2ZjNDkiLCJ1c2VybmFtZSI6Ijk3MDkwMDc2NyJ9.b-GarwvXYOeS96Qicql90yPl6sBC0zvTEkA8ouXpVob32a0pD5kjTu3gzfvx5jO9_zg3A-kTCE02tKIAf_MF5-VpOe57CsSN-KSZZthKmEH175wKSJifHXbj1YlBJDgKH-NTeYrnZnmT8Xm5hI1eJimeAZd9A2iSO5VJJxscaKr5_MFNDF6aCTzmODjKnOtcNOcHT9CnNztV6Emjfwz76dqJ7jgSsTjDJaj-ksY_RvZaF8meejnUbLQjgCyY3Ol4Meiz8BcD_bYkVJyvaG6wN9ySSwt8KF5wuMquJFogAD-r7ZXBEd-TYMpY8BfMDV2LsEYD-B5v-eVIrVAfAnDjbw",
+    "content-length": "0",
+    "host": "ord5mynnv9.execute-api.us-east-1.amazonaws.com",
+    "origin": "http://localhost:3000",
+    "priority": "u=0",
+    "referer": "http://localhost:3000/",
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "cross-site",
+    "sec-gpc": "1",
+    "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:138.0) Gecko/20100101 Firefox/138.0",
+    "x-amzn-trace-id": "Root=1-682986b4-4115352f7cd5bcd82c18b701",
+    "x-forwarded-for": "82.194.40.117",
+    "x-forwarded-port": "443",
+    "x-forwarded-proto": "https"
+  },
+  "queryStringParameters": {
+    "batch": "2025"
+  },
+  "requestContext": {
+    "accountId": "232269327483",
+    "apiId": "ord5mynnv9",
+    "authorizer": {
+      "jwt": {
+        "claims": {
+          "auth_time": "1747550911",
+          "client_id": "1q8g817vj439ucaig2uon92q86",
+          "event_id": "4ae9bb30-a3b4-47d2-ad95-23990541a784",
+          "exp": "1747637311",
+          "iat": "1747550911",
+          "iss": "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_ovqLD9Axf",
+          "jti": "605523da-f973-458a-bd56-5fc47723fc49",
+          "origin_jti": "c3909373-c623-4a37-bbb8-03247c5711e1",
+          "scope": "aws.cognito.signin.user.admin",
+          "sub": "46da1110-5582-4742-a4fb-e1f1828749d7",
+          "token_use": "access",
+          "username": "970900767"
+        },
+        "scopes": null
+      }
+    },
+    "domainName": "ord5mynnv9.execute-api.us-east-1.amazonaws.com",
+    "domainPrefix": "ord5mynnv9",
+    "http": {
+      "method": "GET",
+      "path": "/master/export",
+      "protocol": "HTTP/1.1",
+      "sourceIp": "82.194.40.117",
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:138.0) Gecko/20100101 Firefox/138.0"
+    },
+    "requestId": "KwH8PhAyoAMEV_g=",
+    "routeKey": "GET /master/export",
+    "stage": "$default",
+    "time": "18/May/2025:07:05:24 +0000",
+    "timeEpoch": 1747551924339
+  },
+  "isBase64Encoded": false
 }

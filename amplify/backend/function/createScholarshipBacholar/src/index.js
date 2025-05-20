@@ -57,14 +57,14 @@ exports.handler = async (event) => {
       applicationID,
       startDate,
       scholarshipPeriod,
-      numberOfSemesters,
+      // numberOfSemesters,
       contract,
     } = body;
     if (
       !applicationID ||
       !startDate ||
       !scholarshipPeriod ||
-      !numberOfSemesters ||
+      // !numberOfSemesters ||
       !contract
     ) {
       return {
@@ -109,9 +109,10 @@ exports.handler = async (event) => {
       studentName: studentFullName,
       startDate,
       scholarshipPeriod,
-      numberOfSemesters,
+      // numberOfSemesters,
       unsignedContractDoc: contract,
       status: "PENDING",
+      batch: application.batch || new Date().getFullYear(), //this should solve the problem of getting the batch for bacholar.
       createdAt: new Date().toISOString(),
       // Optionally include additional details from the application if needed
       programID: application.programID || null,

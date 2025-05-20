@@ -1,4 +1,4 @@
-"use strict";
+// "use strict";
 
 const AWS = require("aws-sdk");
 const XLSX = require("xlsx");
@@ -9,7 +9,7 @@ const cognito = new AWS.CognitoIdentityServiceProvider();
 const {
   ApplicationTable: APPLICATION_TABLE,
   StudentTable: STUDENT_TABLE,
-  MASTER_APPLIED_UNIVERSITIES: MASTER_APPLIED_UNIVERSITIES,
+  MASTER_APPLIED_UNIVERSITIES,
   BahrainUniversity: BAHRAIN_UNIVERSITY_TABLE,
   AdminTable: ADMIN_TABLE,
   S3Bucket: S3_BUCKET,
@@ -58,7 +58,8 @@ exports.handler = async (event) => {
     }
 
     const batchValue =
-      parseInt(event.queryStringParameters?.batch) || new Date().getFullYear();
+      Number.parseInt(event.queryStringParameters?.batch) ||
+      new Date().getFullYear();
 
     let body;
     if (typeof event.body === "string") {
@@ -118,7 +119,7 @@ async function exportApplicationsCsvMaster(
 
 async function convertToJsonMaster(applications, students) {
   const jsonArray = [];
-  for (let application of applications) {
+  for (const application of applications) {
     let student = students.find((stu) => stu.cpr === application.studentCPR);
     if (!student) {
       student = await getStudent(STUDENT_TABLE, application.studentCPR);
@@ -136,32 +137,44 @@ async function convertToJsonMaster(applications, students) {
     jsonArray.push({
       Id: application.id,
       "Student CPR": application.studentCPR,
-      Name:
-        student.m_firstName +
-        " " +
-        student.m_secondName +
-        " " +
-        student.m_thirdName +
-        " " +
-        student.m_lastName,
+      Name: `${student.m_firstName || "-"} ${student.m_secondName || "-"} ${
+        student.m_thirdName || "-"
+      } ${student.m_lastName || "-"}`,
       Gender: student.gender,
       Nationality: student.nationalityCategory,
       Major: application.major, // Replaces 'Field'
       Phone: student.phone,
       Email: student.email,
+
+      "Student Date of Birth": student.dob,
+      "Student Place of Birth": student.placeOfBirth,
+      "Student Address": student.address,
+      "Number of Family members": student.m_numberOfFamilyMembers,
+
+      // Guardian details
+      "Guardian Name": `${student.m_guardianFirstName || "-"} ${
+        student.m_guardianSecondName || "-"
+      } ${student.m_guardianThirdName || "-"} ${
+        student.m_guardianLastName || "-"
+      }`,
+      "Guardian CPR": student.m_guardianCPR || "-",
+      "Guardian Address": student.m_guardianAddress || "-",
+      "Guardian Email": student.m_guardianEmail || "-",
+
       "Graduation Year": graduationYear,
       Status: application.status,
       GPA: application.gpa,
       "Verified GPA": application.verifiedGPA,
       Score: application.score,
+      "Admin Points": application.adminPoints,
       "University Name": await getUniversityNameById(student.m_universityID), // we need to get the university name I think this only contains the relashionship.
       Income: application.income,
       "Chosen University": chosenUniversity.universityName,
       "Chosen Program": application.program, // Taken directly from master application
       Reason: reason,
       "Total Score": application.score,
-      "Number of Family members": student.m_numberOfFamilyMembers,
-      isIncomeVerified: application.isIncomeVerified ? "Yes" : "",
+
+      isIncomeVerified: application.isIncomeVerified ? "Yes" : "-",
     });
   }
   return jsonArray;
@@ -266,11 +279,11 @@ function processReason(reason) {
     charCount++;
     if (charCount >= 90) {
       if (reason[i] === " ") {
-        processedReason += line + "\n";
+        processedReason += `${line}\n`;
         line = "";
         charCount = 0;
       } else if (reason[i + 1] === " " || i === reason.length - 1) {
-        processedReason += line + "\n";
+        processedReason += `${line}\n`;
         line = "";
         charCount = 0;
       }
@@ -323,9 +336,8 @@ async function getUniversityNameById(universityId) {
         result.Item.universityName
       );
       return result.Item.universityName; // Use the correct attribute name
-    } else {
-      throw new Error(`University with ID ${universityId} not found.`);
     }
+    throw new Error(`University with ID ${universityId} not found.`);
   } catch (error) {
     console.error("Error retrieving university name:", error);
     throw error;

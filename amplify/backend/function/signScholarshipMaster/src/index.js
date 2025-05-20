@@ -125,20 +125,20 @@ async function signPDF(link, studentSignature, guardianSignature) {
   const signatureWidth = 100;
   const signatureHeight = 50;
   const xPosition = 70; // Position from the left of the page
-  const yPosition = 30 * 14; // Position from the bottom of the page
+  const yPosition = 30 * 14; // Position from the bottom of the page //420
 
-  // Put the first signature
+  // Student signature
   lastPage.drawImage(signatureImage, {
     x: xPosition,
-    y: yPosition + 90,
+    y: 460, //420 + 90 = 510 the new is 460
     width: signatureWidth,
     height: signatureHeight,
   });
 
-  // Put the second signature
+  // Guardian Signature
   lastPage.drawImage(secondSignatureImage, {
     x: xPosition,
-    y: yPosition,
+    y: 330, //330
     width: signatureWidth,
     height: signatureHeight,
   });
@@ -157,10 +157,10 @@ async function signPDF(link, studentSignature, guardianSignature) {
   // Embed the main signature PNG into the PDF document
   const mainSignatureImage = await pdfDoc.embedPng(mainSignatureBuffer);
 
-  // Draw the main signature at the specified position (yPosition + 180)
+  // Draw the waqf signature at the specified position (yPosition + 180) //420+180
   lastPage.drawImage(mainSignatureImage, {
     x: xPosition,
-    y: yPosition + 180,
+    y: 600, //420 + 180
     width: signatureWidth,
     height: signatureHeight,
   });

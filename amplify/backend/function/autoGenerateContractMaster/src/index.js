@@ -63,8 +63,12 @@ exports.handler = async (event) => {
     // Parse the request body
     const requestBody =
       typeof event.body === "string" ? JSON.parse(event.body) : event.body;
-    const { applicationID, startDate, scholarshipPeriod, numberOfSemesters } =
-      requestBody;
+    const {
+      applicationID,
+      startDate,
+      scholarshipPeriod,
+      //  numberOfSemesters
+    } = requestBody;
     if (!applicationID) {
       return {
         statusCode: 400,
@@ -126,7 +130,7 @@ exports.handler = async (event) => {
       studentProgram: masterApplication.program || "",
       startDate: formattedStartDate, // use the formatted date here
       scholarshipPeriod,
-      numberOfSemesters,
+      // numberOfSemesters,
     };
 
     // Determine university name via the MasterAppliedUniversities table
@@ -154,17 +158,17 @@ exports.handler = async (event) => {
       programName: masterApplication.program || "",
       startDate: formattedStartDate, // updated formatted date
       scholarshipPeriod,
-      numberOfSemesters,
+      // numberOfSemesters,
     };
 
     // Format additional values
-    const semestersCount = numberOfSemesters || "٣";
-    const scholarshipPeriodFormat = scholarshipPeriod || "٩";
+    // const semestersCount = numberOfSemesters || "٣";
+    const scholarshipPeriodFormat = scholarshipPeriod || "٢";
 
     // Prepare dynamic data for the Handlebars template
     const templateData = {
       ...items,
-      semestersCount,
+      // semestersCount,
       scholarshipPeriodFormat,
     };
 

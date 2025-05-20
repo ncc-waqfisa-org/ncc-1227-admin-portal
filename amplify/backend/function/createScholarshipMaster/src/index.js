@@ -59,14 +59,14 @@ exports.handler = async (event) => {
       applicationID,
       startDate,
       scholarshipPeriod,
-      numberOfSemesters,
+      // numberOfSemesters,
       contract,
     } = body;
     if (
       !applicationID ||
       !startDate ||
       !scholarshipPeriod ||
-      !numberOfSemesters ||
+      // !numberOfSemesters ||
       !contract
     ) {
       return {
@@ -113,9 +113,9 @@ exports.handler = async (event) => {
       unsignedContractDoc: contract,
       startDate,
       scholarshipPeriod,
-      numberOfSemesters,
+      // numberOfSemesters,
       status: "PENDING",
-      batch: masterApplication.batch || 0,
+      batch: masterApplication.batch || new Date().getFullYear(),
       isConfirmed: false,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),

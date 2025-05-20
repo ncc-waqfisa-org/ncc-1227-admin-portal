@@ -99,6 +99,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "exportApplicationPdfMaster": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "exportApplicationsCsv": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -166,6 +171,11 @@
       "service": "Lambda"
     },
     "participatingUniversitiesMaster": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "reminderToApplyEmailMaster": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
@@ -401,6 +411,22 @@
         {
           "category": "function",
           "resourceName": "exportApplicationCSVMaster"
+        }
+      ]
+    },
+    "AMPLIFY_function_exportApplicationPdfMaster_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "exportApplicationPdfMaster"
+        }
+      ]
+    },
+    "AMPLIFY_function_exportApplicationPdfMaster_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "exportApplicationPdfMaster"
         }
       ]
     },
@@ -641,6 +667,22 @@
         {
           "category": "function",
           "resourceName": "participatingUniversitiesMaster"
+        }
+      ]
+    },
+    "AMPLIFY_function_reminderToApplyEmailMaster_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "reminderToApplyEmailMaster"
+        }
+      ]
+    },
+    "AMPLIFY_function_reminderToApplyEmailMaster_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "reminderToApplyEmailMaster"
         }
       ]
     },

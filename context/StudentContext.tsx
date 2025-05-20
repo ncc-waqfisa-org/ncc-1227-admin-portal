@@ -297,6 +297,10 @@ function useProviderStudent() {
       fatherFullName
       guardianCPR
       guardianFullName
+      guardianFirstName
+      guardianSecondName
+      guardianThirdName
+      guardianLastName
       motherCPR
       motherFullName
       numberOfFamilyMembers

@@ -61,8 +61,12 @@ exports.handler = async (event) => {
     // Parse the request body
     const requestBody =
       typeof event.body === "string" ? JSON.parse(event.body) : event.body;
-    const { applicationID, startDate, scholarshipPeriod, numberOfSemesters } =
-      requestBody;
+    const {
+      applicationID,
+      startDate,
+      scholarshipPeriod,
+      // numberOfSemesters
+    } = requestBody;
     if (!applicationID) {
       return {
         statusCode: 400,
@@ -111,6 +115,12 @@ exports.handler = async (event) => {
       };
     }
 
+    const formattedStartDate = new Intl.DateTimeFormat("ar-BH", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }).format(new Date(startDate));
+
     // Build the PDFFormat object using the student record and parent info
     const PDFFormat = {
       studentFirstName: student.firstName || "",
@@ -127,9 +137,9 @@ exports.handler = async (event) => {
       studentAddress: student.address || "",
       studentEmail: student.email || "",
       studentProgram: "", // To be determined below
-      startDate,
+      startDate: formattedStartDate,
       scholarshipPeriod,
-      numberOfSemesters,
+      // numberOfSemesters,
     };
 
     // Determine the student program value based on the application's programID
@@ -167,19 +177,19 @@ exports.handler = async (event) => {
       guardianEmail: PDFFormat.guardianEmail,
       universityName,
       programName: PDFFormat.studentProgram || "",
-      startDate,
+      startDate: formattedStartDate,
       scholarshipPeriod,
-      numberOfSemesters,
+      // numberOfSemesters,
     };
 
     // Format additional values
-    const semestersCount = PDFFormat.numberOfSemesters || "٨";
-    const scholarshipPeriodFormat = PDFFormat.scholarshipPeriod || "٤ سنوات";
+    // const semestersCount = PDFFormat.numberOfSemesters || "٨";
+    const scholarshipPeriodFormat = PDFFormat.scholarshipPeriod || "٤";
 
     // Prepare dynamic data for the Handlebars template
     const templateData = {
       ...items,
-      semestersCount,
+      // semestersCount,
       scholarshipPeriodFormat,
     };
 

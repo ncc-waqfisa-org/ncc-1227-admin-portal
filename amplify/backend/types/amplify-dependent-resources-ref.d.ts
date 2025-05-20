@@ -95,6 +95,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Name": "string",
       "Region": "string"
     },
+    "exportApplicationPdfMaster": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "exportApplicationsCsv": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
@@ -187,6 +194,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Region": "string"
     },
     "participatingUniversitiesMaster": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "reminderToApplyEmailMaster": {
       "Arn": "string",
       "LambdaExecutionRole": "string",
       "LambdaExecutionRoleArn": "string",

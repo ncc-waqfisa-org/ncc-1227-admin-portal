@@ -249,7 +249,7 @@ export const BatchApplicationsToolbar: React.FC<
         onClick={() => {
           toast.promise(
             fetch(
-              `https://z7pe3akpcz6bazr3djdk4yo7e40yqevt.lambda-url.us-east-1.on.aws/?batch=${batch}`,
+              `${process.env.NEXT_PUBLIC_LAMBDA_EXPORT_CSV_STATISTICS}?batch=${batch}`,
               {
                 headers: {
                   Authorization: `Bearer ${token}`,

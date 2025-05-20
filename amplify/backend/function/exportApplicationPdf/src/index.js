@@ -229,7 +229,10 @@ async function generatePdf(application, program, university, parent, student) {
     .font("./fonts/Almarai.ttf")
     .fontSize(valueFontSize)
     .text("Guardian Name: ", { continued: true });
-  doc.text(parent.guardianFullName, { features: ["rtla"] });
+  doc.text(
+    `${parent.guardianFirstName} ${parent.guardianSecondName} ${parent.guardianThirdName} ${parent.guardianLastName}`,
+    { features: ["rtla"] }
+  );
   doc.text("Guardian CPR: ", { continued: true });
   doc.text(parent.guardianCPR);
   if (parent.fatherFullName) {
@@ -452,7 +455,10 @@ async function generateArabicPdf(
       underline: true,
     })
     .font("./fonts/Almarai.ttf")
-    .text(parent.guardianFullName, { align: "right", features: ["rtla"] });
+    .text(
+      `${parent.guardianFirstName} ${parent.guardianSecondName} ${parent.guardianThirdName} ${parent.guardianLastName}`,
+      { align: "right", features: ["rtla"] }
+    );
   doc
     .font("./fonts/Almarai-Bold.ttf")
     .text("رقم البطاقة الذكية لولي الأمر: ", {
@@ -566,9 +572,11 @@ async function generateArabicPdf(
     .font("./fonts/Almarai.ttf")
     .fontSize(8)
     .text(
-      "هذا المستند تم إنشاؤه بواسطة نظام وقف عيسى. جميع الحقوق محفوظة ",
+      "هذا المستند تم إنشاؤه بواسطة نظام وقف عيسى. جميع الحقوق محفوظة " +
+        new Date().getFullYear(),
       20,
-      710
+      710,
+      { features: ["rtla"], align: "right" }
     );
 
   doc.end();

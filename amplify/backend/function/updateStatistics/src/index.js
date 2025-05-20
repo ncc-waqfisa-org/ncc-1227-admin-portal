@@ -372,17 +372,20 @@ async function getFamilyIncomeRatio(applications, students) {
     },
   };
 }
-
+// need to be changed
 async function getStudents(batchValue) {
   const params = {
     TableName: STUDENT_TABLE,
-    // graduationDate is contained in the batch attribute
-    FilterExpression: "#batch = :batchValue",
+    // Filter for graduation date in the batch attribute AND m_applicantType containing exactly ["STUDENT"]
+    FilterExpression:
+      "#batch = :batchValue AND #m_applicantType = :applicantType",
     ExpressionAttributeValues: {
       ":batchValue": batchValue,
+      ":applicantType": ["STUDENT"], // Exactly match this array
     },
     ExpressionAttributeNames: {
       "#batch": "batch",
+      "#m_applicantType": "m_applicantType",
     },
   };
   let allStudents = [];

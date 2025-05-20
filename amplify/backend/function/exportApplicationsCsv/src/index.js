@@ -7,6 +7,7 @@ const cognito = new AWS.CognitoIdentityServiceProvider();
 const {
   ApplicationTable: APPLICATION_TABLE,
   StudentTable: STUDENT_TABLE,
+  ParentInfoTable: PARENT_INFO_TABLE,
   UniversityTable: UNIVERSITY_TABLE,
   ProgramTable: PROGRAM_TABLE,
   AdminTable: ADMIN_TABLE,
@@ -14,6 +15,7 @@ const {
 } = {
   ApplicationTable: "Application-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
   StudentTable: "Student-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
+  ParentInfoTable: "ParentInfo-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
   UniversityTable: "University-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
   ProgramTable: "Program-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
   AdminTable: "Admin-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
@@ -35,7 +37,8 @@ exports.handler = async (event) => {
       };
     }
     const batchValue =
-      parseInt(event.queryStringParameters?.batch) || new Date().getFullYear();
+      Number.parseInt(event.queryStringParameters?.batch) ||
+      new Date().getFullYear();
     let body;
 
     if (typeof event.body === "string") {
@@ -124,6 +127,17 @@ async function getStudent(tableName, cpr) {
   return Item;
 }
 
+async function getParentInfo(tableName, id) {
+  const params = {
+    TableName: PARENT_INFO_TABLE,
+    Key: {
+      id: id,
+    },
+  };
+  const { Item } = await dynamoDB.get(params).promise();
+  return Item;
+}
+
 async function convertToJson(applications, students) {
   const jsonArray = [];
   for (const application of applications) {
@@ -144,17 +158,49 @@ async function convertToJson(applications, students) {
       ? new Date(student?.graduationDate).getFullYear()
       : application.batch;
 
+    let parentInfo = null;
+    if (student?.parentInfoID) {
+      parentInfo = await getParentInfo(PARENT_INFO_TABLE, student.parentInfoID);
+    }
+
     if (student) {
       jsonArray.push({
         Id: application.id,
         "Student CPR": application.studentCPR,
         Name: student.fullName,
         Gender: student.gender,
+        "Student Date of Birth": student.dob,
+        "Number Of Family Members": student.numberOfFamilyMembers,
+        "Number of Siblings": student.studentOrderAmongSiblings,
         Nationality: student.nationalityCategory,
+        "Student Place of Birth": student.placeOfBirth,
+        "Student Address": student.address,
         Field: student.specialization,
         Phone: student.phone,
         Email: student.email,
         "Graduation Year": graduationYear,
+
+        "Guardian Name": parentInfo?.guardianFirstName
+          ? [
+              parentInfo?.guardianFirstName,
+              parentInfo?.guardianSecondName,
+              parentInfo?.guardianThirdName,
+              parentInfo?.guardianLastName,
+            ]
+              .filter(Boolean)
+              .join(" ")
+          : parentInfo?.guardianFullName || "-",
+        "Guardian Relation": parentInfo?.relation || "-",
+        "Guardian CPR": parentInfo?.guardianCPR || "-",
+        "Guardian Address": parentInfo?.address || "-",
+        "Guardian Primary Mobile Number": parentInfo?.primaryMobile || "-",
+        "Guardian Secondary Mobile Number": parentInfo?.secondaryMobile || "-",
+        "Guardian Email": parentInfo?.guardianEmail || "-",
+        "Father Name": parentInfo?.fatherFullName || "-",
+        "Father CPR": parentInfo?.fatherCPR || "-",
+        "Mother Name": parentInfo?.motherFullName || "-",
+        "Mother CPR": parentInfo?.motherCPR || "-",
+
         Status: application.status,
         GPA: application.gpa,
         "Verified GPA": application.verifiedGPA,
@@ -166,7 +212,8 @@ async function convertToJson(applications, students) {
         "Chosen Program": program.name,
         Reason: reason,
         "Total Score": application.score,
-        "Number Of Family Members": student.numberOfFamilyMembers,
+        "Admin Points": application.adminPoints,
+
         "Is Family Income Verified": application.isFamilyIncomeVerified
           ? "Yes"
           : "",
@@ -253,11 +300,11 @@ function processReason(reason) {
     charCount++;
     if (charCount >= 90) {
       if (reason[i] === " ") {
-        processedReason += line + "\n";
+        processedReason += `${line}\n`;
         line = "";
         charCount = 0;
       } else if (reason[i + 1] === " " || i === reason.length - 1) {
-        processedReason += line + "\n";
+        processedReason += `${line}\n`;
         line = "";
         charCount = 0;
       }
