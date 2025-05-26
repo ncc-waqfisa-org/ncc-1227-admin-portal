@@ -34,7 +34,7 @@
         },
         "exportApplicationsCsv": {
           "deploymentBucketName": "amplify-ncc-masterdev-2e2e0-deployment",
-          "s3Key": "amplify-builds/exportApplicationsCsv-6a552f734a6d4a4c7563-build.zip"
+          "s3Key": "amplify-builds/exportApplicationsCsv-594b563939482f59764c-build.zip"
         },
         "exportEligibleCsv": {
           "deploymentBucketName": "amplify-ncc-masterdev-2e2e0-deployment",

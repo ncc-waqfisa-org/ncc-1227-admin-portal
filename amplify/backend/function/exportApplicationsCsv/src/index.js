@@ -169,19 +169,32 @@ async function convertToJson(applications, students) {
         "Student CPR": application.studentCPR,
         Name: student.fullName,
         Gender: student.gender,
+        Nationality: student.nationalityCategory,
+        Status: application.status,
+        "Graduation Year": graduationYear,
+        Field: student.specialization,
+        "School Name": application.schoolName,
+        "School Type": application.schoolType,
+        GPA: application.gpa,
+        "Verified GPA": application.verifiedGPA,
+        Score: application.score,
+        "Chosen University": university.name,
+        "Chosen Program": program.name,
+        "Preferred Program": application.allProgramsTextOption ?? "-",
+        Reason: reason,
+        "Family Income": application.familyIncome,
+        "Is Family Income Verified": application.isFamilyIncomeVerified
+          ? "Yes"
+          : "",
+        "Number Of Family Members": student.numberOfFamilyMembers,
+        "Number of Siblings": student.studentOrderAmongSiblings,
         "Student Date of Birth": student.dob
           ? formatter.format(new Date(student.dob))
           : "-",
-        "Number Of Family Members": student.numberOfFamilyMembers,
-        "Number of Siblings": student.studentOrderAmongSiblings,
-        Nationality: student.nationalityCategory,
         "Student Place of Birth": student.placeOfBirth,
         "Student Address": student.address,
-        Field: student.specialization,
         Phone: student.phone,
         Email: student.email,
-        "Graduation Year": graduationYear,
-
         "Guardian Name": parentInfo?.guardianFirstName
           ? [
               parentInfo?.guardianFirstName,
@@ -202,23 +215,8 @@ async function convertToJson(applications, students) {
         "Father CPR": parentInfo?.fatherCPR || "-",
         "Mother Name": parentInfo?.motherFullName || "-",
         "Mother CPR": parentInfo?.motherCPR || "-",
-
-        Status: application.status,
-        GPA: application.gpa,
-        "Verified GPA": application.verifiedGPA,
-        Score: application.score,
-        "School Name": application.schoolName,
-        "School Type": application.schoolType,
-        "Family Income": application.familyIncome,
-        "Chosen University": university.name,
-        "Chosen Program": program.name,
-        Reason: reason,
         "Total Score": application.score,
         "Admin Points": application.adminPoints,
-
-        "Is Family Income Verified": application.isFamilyIncomeVerified
-          ? "Yes"
-          : "",
       });
     }
   }
