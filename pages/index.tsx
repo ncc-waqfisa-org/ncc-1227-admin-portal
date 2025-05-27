@@ -14,13 +14,16 @@ import { LargeDonutGraphInfo } from "../components/graphs/large-donut-graph-info
 import { GetStaticProps } from "next";
 import { BatchSelector } from "../components/batch/BatchSelector";
 import { useAuth } from "../hooks/use-auth";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useBatchContext } from "../context/BatchContext";
 import { getMastersStatistics, getStatistics } from "../src/CustomAPI";
 import { DownloadFileFromUrl } from "../components/download-file-from-url";
 import { MoreStatistics } from "../components/MoreStatistics";
 import { useAppContext } from "../context/AppContext";
 import { MasterStatistics } from "../components/MasterStatistics";
+import { FiRefreshCw } from "react-icons/fi";
+import { Button } from "../components/ui/button";
+import toast from "react-hot-toast";
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const { locale } = ctx;
@@ -44,12 +47,40 @@ const Home = () => {
   const { token } = useAuth();
   const { batch } = useBatchContext();
   const { type } = useAppContext();
+  const queryClient = useQueryClient();
 
   const { data: statistics, isPending } = useQuery({
     queryKey: ["statistics", batch, token, locale],
     queryFn: () =>
       getStatistics({ batch: batch, token: token, locale: locale }),
   });
+
+  const { mutate: refreshStatistics, isPending: isRefreshPending } =
+    useMutation({
+      mutationFn: () =>
+        fetch(
+          `${process.env.NEXT_PUBLIC_BACHELOR_STATISTICS_ENDPOINT}`,
+          {
+            method: "PUT",
+            headers: {
+              ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            },
+          }
+        ),
+      onSuccess: (res) => {
+        if (res.ok) {
+          queryClient.invalidateQueries({
+            queryKey: ["statistics", batch, token, locale],
+          });
+          toast.success(t("statisticsRefreshedSuccessfully"));
+        }
+      },
+      onError: () => {
+        toast.error(t("failedToRefreshStatistics"));
+      },
+    });
+
+
 
   return (
     <PageComponent title={"Home"}>
@@ -79,11 +110,21 @@ const Home = () => {
               <DownloadFileFromUrl
                 fileName={`${batch} Applications`}
                 url={`${process.env.NEXT_PUBLIC_LAMBDA_EXPORT_CSV_STATISTICS}?batch=${batch}`}
-                // url={`https://z7pe3akpcz6bazr3djdk4yo7e40yqevt.lambda-url.us-east-1.on.aws/?batch=${batch}`}
+              // url={`https://z7pe3akpcz6bazr3djdk4yo7e40yqevt.lambda-url.us-east-1.on.aws/?batch=${batch}`}
               >
                 {/* */}
                 {t("exportCSV")}
               </DownloadFileFromUrl>
+              <Button
+                onClick={() => {
+                  refreshStatistics();
+                }}
+                size={"icon"}
+                variant={"outline"}
+                disabled={isRefreshPending}
+              >
+                <FiRefreshCw className={isRefreshPending ? "animate-spin" : ""} />
+              </Button>
             </div>
           </div>
           {/* mini graphs */}
@@ -182,17 +223,17 @@ const Home = () => {
                   data={
                     statistics?.scoreHistogram
                       ? [
-                          ...Object.keys(statistics.scoreHistogram).map(
-                            (sh, i) => {
-                              return {
-                                Score: sh,
-                                Applications: Object.values(
-                                  statistics.scoreHistogram
-                                )[i],
-                              };
-                            }
-                          ),
-                        ]
+                        ...Object.keys(statistics.scoreHistogram).map(
+                          (sh, i) => {
+                            return {
+                              Score: sh,
+                              Applications: Object.values(
+                                statistics.scoreHistogram
+                              )[i],
+                            };
+                          }
+                        ),
+                      ]
                       : [{ score: "none", applications: 0 }]
                   }
                   className="text-xs text-white btn btn-primary btn-sm"
@@ -219,17 +260,17 @@ const Home = () => {
                   data={
                     statistics?.topUniversities
                       ? [
-                          ...Object.keys(statistics.topUniversities).map(
-                            (sh, i) => {
-                              return {
-                                University: sh,
-                                Applications: Object.values(
-                                  statistics.topUniversities
-                                )[i],
-                              };
-                            }
-                          ),
-                        ]
+                        ...Object.keys(statistics.topUniversities).map(
+                          (sh, i) => {
+                            return {
+                              University: sh,
+                              Applications: Object.values(
+                                statistics.topUniversities
+                              )[i],
+                            };
+                          }
+                        ),
+                      ]
                       : [{ university: "none", applications: 0 }]
                   }
                   className="text-xs text-white btn btn-primary btn-sm"
@@ -259,17 +300,17 @@ const Home = () => {
                   data={
                     statistics?.gpaHistogram
                       ? [
-                          ...Object.keys(statistics.gpaHistogram).map(
-                            (sh, i) => {
-                              return {
-                                GPA: sh,
-                                Applications: Object.values(
-                                  statistics.gpaHistogram
-                                )[i],
-                              };
-                            }
-                          ),
-                        ]
+                        ...Object.keys(statistics.gpaHistogram).map(
+                          (sh, i) => {
+                            return {
+                              GPA: sh,
+                              Applications: Object.values(
+                                statistics.gpaHistogram
+                              )[i],
+                            };
+                          }
+                        ),
+                      ]
                       : [{ gpa: "none", applications: 0 }]
                   }
                   className="text-xs text-white btn btn-primary btn-sm"
@@ -288,8 +329,8 @@ const Home = () => {
                 data={
                   statistics?.totalApplicationsPerStatus
                     ? Object.values(statistics.totalApplicationsPerStatus).map(
-                        (v) => v ?? 0
-                      )
+                      (v) => v ?? 0
+                    )
                     : []
                 }
               >
@@ -298,18 +339,18 @@ const Home = () => {
                   data={
                     statistics?.totalApplicationsPerStatus
                       ? [
-                          ...Object.keys(
-                            statistics.totalApplicationsPerStatus
-                          ).map((sh, i) => {
-                            return {
-                              GPA: sh,
-                              Applications:
-                                Object.values(
-                                  statistics.totalApplicationsPerStatus
-                                )[i] ?? 0,
-                            };
-                          }),
-                        ]
+                        ...Object.keys(
+                          statistics.totalApplicationsPerStatus
+                        ).map((sh, i) => {
+                          return {
+                            GPA: sh,
+                            Applications:
+                              Object.values(
+                                statistics.totalApplicationsPerStatus
+                              )[i] ?? 0,
+                          };
+                        }),
+                      ]
                       : [{ gpa: "none", applications: 0 }]
                   }
                   className="text-xs text-white btn btn-primary btn-sm"
