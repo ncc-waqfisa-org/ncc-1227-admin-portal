@@ -24,6 +24,9 @@ import { MasterStatistics } from "../components/MasterStatistics";
 import { FiRefreshCw } from "react-icons/fi";
 import { Button } from "../components/ui/button";
 import toast from "react-hot-toast";
+import dayjs from "dayjs";
+import locale_ar from "dayjs/locale/ar";
+import locale_en from "dayjs/locale/en";
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const { locale } = ctx;
@@ -58,15 +61,12 @@ const Home = () => {
   const { mutate: refreshStatistics, isPending: isRefreshPending } =
     useMutation({
       mutationFn: () =>
-        fetch(
-          `${process.env.NEXT_PUBLIC_BACHELOR_STATISTICS_ENDPOINT}`,
-          {
-            method: "PUT",
-            headers: {
-              ...(token ? { Authorization: `Bearer ${token}` } : {}),
-            },
-          }
-        ),
+        fetch(`${process.env.NEXT_PUBLIC_BACHELOR_STATISTICS_ENDPOINT}`, {
+          method: "PUT",
+          headers: {
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+        }),
       onSuccess: (res) => {
         if (res.ok) {
           queryClient.invalidateQueries({
@@ -79,8 +79,6 @@ const Home = () => {
         toast.error(t("failedToRefreshStatistics"));
       },
     });
-
-
 
   return (
     <PageComponent title={"Home"}>
@@ -100,31 +98,41 @@ const Home = () => {
                 </div>
               </div>
             </div>
-            <div className="flex flex-wrap gap-4 justify-end items-center my-4">
-              <BatchSelector />
-              <PrimaryButton
-                name={t("allApplicationsButton")}
-                buttonClick={() => push("/applications")}
-              ></PrimaryButton>
+            <div className="flex flex-col justify-end">
+              <div className="flex flex-wrap gap-4 justify-end items-center my-4">
+                <BatchSelector />
+                <PrimaryButton
+                  name={t("allApplicationsButton")}
+                  buttonClick={() => push("/applications")}
+                ></PrimaryButton>
 
-              <DownloadFileFromUrl
-                fileName={`${batch} Applications`}
-                url={`${process.env.NEXT_PUBLIC_LAMBDA_EXPORT_CSV_STATISTICS}?batch=${batch}`}
-              // url={`https://z7pe3akpcz6bazr3djdk4yo7e40yqevt.lambda-url.us-east-1.on.aws/?batch=${batch}`}
-              >
-                {/* */}
-                {t("exportCSV")}
-              </DownloadFileFromUrl>
-              <Button
-                onClick={() => {
-                  refreshStatistics();
-                }}
-                size={"icon"}
-                variant={"outline"}
-                disabled={isRefreshPending}
-              >
-                <FiRefreshCw className={isRefreshPending ? "animate-spin" : ""} />
-              </Button>
+                <DownloadFileFromUrl
+                  fileName={`${batch} Applications`}
+                  url={`${process.env.NEXT_PUBLIC_LAMBDA_EXPORT_CSV_STATISTICS}?batch=${batch}`}
+                  // url={`https://z7pe3akpcz6bazr3djdk4yo7e40yqevt.lambda-url.us-east-1.on.aws/?batch=${batch}`}
+                >
+                  {/* */}
+                  {t("exportCSV")}
+                </DownloadFileFromUrl>
+                <Button
+                  onClick={() => {
+                    refreshStatistics();
+                  }}
+                  size={"icon"}
+                  variant={"outline"}
+                  disabled={isRefreshPending}
+                >
+                  <FiRefreshCw
+                    className={isRefreshPending ? "animate-spin" : ""}
+                  />
+                </Button>
+              </div>
+              <p className="text-sm text-gray-400 text-end">
+                {t("lastUpdated")}
+                {dayjs(statistics?.updatedAt)
+                  .locale(locale == "ar" ? locale_ar : locale_en)
+                  .format("MMMM D, YYYY h:mm A")}
+              </p>
             </div>
           </div>
           {/* mini graphs */}
@@ -223,17 +231,17 @@ const Home = () => {
                   data={
                     statistics?.scoreHistogram
                       ? [
-                        ...Object.keys(statistics.scoreHistogram).map(
-                          (sh, i) => {
-                            return {
-                              Score: sh,
-                              Applications: Object.values(
-                                statistics.scoreHistogram
-                              )[i],
-                            };
-                          }
-                        ),
-                      ]
+                          ...Object.keys(statistics.scoreHistogram).map(
+                            (sh, i) => {
+                              return {
+                                Score: sh,
+                                Applications: Object.values(
+                                  statistics.scoreHistogram
+                                )[i],
+                              };
+                            }
+                          ),
+                        ]
                       : [{ score: "none", applications: 0 }]
                   }
                   className="text-xs text-white btn btn-primary btn-sm"
@@ -260,17 +268,17 @@ const Home = () => {
                   data={
                     statistics?.topUniversities
                       ? [
-                        ...Object.keys(statistics.topUniversities).map(
-                          (sh, i) => {
-                            return {
-                              University: sh,
-                              Applications: Object.values(
-                                statistics.topUniversities
-                              )[i],
-                            };
-                          }
-                        ),
-                      ]
+                          ...Object.keys(statistics.topUniversities).map(
+                            (sh, i) => {
+                              return {
+                                University: sh,
+                                Applications: Object.values(
+                                  statistics.topUniversities
+                                )[i],
+                              };
+                            }
+                          ),
+                        ]
                       : [{ university: "none", applications: 0 }]
                   }
                   className="text-xs text-white btn btn-primary btn-sm"
@@ -300,17 +308,17 @@ const Home = () => {
                   data={
                     statistics?.gpaHistogram
                       ? [
-                        ...Object.keys(statistics.gpaHistogram).map(
-                          (sh, i) => {
-                            return {
-                              GPA: sh,
-                              Applications: Object.values(
-                                statistics.gpaHistogram
-                              )[i],
-                            };
-                          }
-                        ),
-                      ]
+                          ...Object.keys(statistics.gpaHistogram).map(
+                            (sh, i) => {
+                              return {
+                                GPA: sh,
+                                Applications: Object.values(
+                                  statistics.gpaHistogram
+                                )[i],
+                              };
+                            }
+                          ),
+                        ]
                       : [{ gpa: "none", applications: 0 }]
                   }
                   className="text-xs text-white btn btn-primary btn-sm"
@@ -329,8 +337,8 @@ const Home = () => {
                 data={
                   statistics?.totalApplicationsPerStatus
                     ? Object.values(statistics.totalApplicationsPerStatus).map(
-                      (v) => v ?? 0
-                    )
+                        (v) => v ?? 0
+                      )
                     : []
                 }
               >
@@ -339,18 +347,18 @@ const Home = () => {
                   data={
                     statistics?.totalApplicationsPerStatus
                       ? [
-                        ...Object.keys(
-                          statistics.totalApplicationsPerStatus
-                        ).map((sh, i) => {
-                          return {
-                            GPA: sh,
-                            Applications:
-                              Object.values(
-                                statistics.totalApplicationsPerStatus
-                              )[i] ?? 0,
-                          };
-                        }),
-                      ]
+                          ...Object.keys(
+                            statistics.totalApplicationsPerStatus
+                          ).map((sh, i) => {
+                            return {
+                              GPA: sh,
+                              Applications:
+                                Object.values(
+                                  statistics.totalApplicationsPerStatus
+                                )[i] ?? 0,
+                            };
+                          }),
+                        ]
                       : [{ gpa: "none", applications: 0 }]
                   }
                   className="text-xs text-white btn btn-primary btn-sm"

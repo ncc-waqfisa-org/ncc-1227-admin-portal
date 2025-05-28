@@ -13,6 +13,7 @@ export type TStatistics = {
   familyIncome: TMoreStatisticsFamilyIncome;
   today: TMoreStatisticsToday;
   participatingUniversities: string[];
+  updatedAt: string;
 };
 
 export type TMastersStatistics = {

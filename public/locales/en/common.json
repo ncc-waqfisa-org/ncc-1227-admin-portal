@@ -69,5 +69,6 @@
   "totalUnemployed": "Total Unemployed",
   "statisticsRefreshedSuccessfully": "Statistics refreshed successfully",
   "failedToRefreshStatistics": "Failed to refresh statistics",
-  "exportApplicationsCSV": "Export Applications CSV"
+  "exportApplicationsCSV": "Export Applications CSV",
+  "lastUpdated": "Last updated at: "
 }
