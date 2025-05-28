@@ -203,13 +203,13 @@ async function convertToJson(applications, students) {
         Email: student.email,
         "Guardian Name": parentInfo?.guardianFirstName
           ? [
-            parentInfo?.guardianFirstName,
-            parentInfo?.guardianSecondName,
-            parentInfo?.guardianThirdName,
-            parentInfo?.guardianLastName,
-          ]
-            .filter(Boolean)
-            .join(" ")
+              parentInfo?.guardianFirstName,
+              parentInfo?.guardianSecondName,
+              parentInfo?.guardianThirdName,
+              parentInfo?.guardianLastName,
+            ]
+              .filter(Boolean)
+              .join(" ")
           : parentInfo?.guardianFullName || "-",
         "Guardian Relation": parentInfo?.relation || "-",
         "Guardian CPR": parentInfo?.guardianCPR || "-",
@@ -240,6 +240,8 @@ async function exportApplicationsCsv(
     ? await getSelectedApplications(tableName, selectedApplications)
     : await getApplications(tableName, batchValue, status);
   const students = await getStudents(batchValue);
+  // sort applications by createdAt in ascending order
+  applications.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
   const jsonArray = await convertToJson(applications, students);
   const xlsxBuffer = jsonToXlsx(jsonArray);
   const uploadUrl = await uploadToS3(xlsxBuffer, batchValue);

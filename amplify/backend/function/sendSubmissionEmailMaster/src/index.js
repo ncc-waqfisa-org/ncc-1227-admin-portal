@@ -403,6 +403,7 @@ function emailTemplateCombined(logo, studentName, missingDoc) {
             <a href="mailto:info@waqfisa.bh" target="_blank" style="display:inline-block; width:100%; background-color:rgb(201,141,75); color:#fff; padding:10px 0; border-radius:0.375rem; text-align:center; text-decoration:none;">
               Contact Support / تواصل معنا
             </a>
+            <a href="mailto:info@waqfisa.bh" style="color:rgb(201, 141, 75);display:block;text-align:center;margin-top:10px;">info@waqfisa.bh</a>
           </td>
         </tr>
       </table>
