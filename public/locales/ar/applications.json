@@ -181,5 +181,6 @@
   "toeflIELTSScore": "TOEFL/IELTS النتيجة",
   "applicantAge": "عمر مقدم الطلب",
   "program": "برنامج",
-  "applicationScore": "نتيجة التطبيق"
+  "applicationScore": "نتيجة التطبيق",
+  "guardianEmail": "البريد الإلكتروني الوصي"
 }

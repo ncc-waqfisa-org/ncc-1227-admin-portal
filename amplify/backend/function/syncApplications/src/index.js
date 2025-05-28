@@ -27,22 +27,20 @@ exports.handler = async (event) => {
     const student = requestBody.dynamodb.NewImage;
     const oldStudent = requestBody.dynamodb.OldImage;
     console.log(student, oldStudent);
-    const application = await getApplication(student.cpr.S);
-    console.log(application);
-    if (!application) {
-      console.log("Application not found. Skipping update");
-      return {
-        statusCode: 200,
-        body: JSON.stringify({
-          message: "Application not found. Skipping update",
-        }),
-      };
-    }
 
-    console.log("oldStudent", oldStudent);
-    console.log("student", student);
+    // Get all unapproved applications for the student
+    const applications = await getApplications(student.cpr.S);
 
-    await updateApplication(application, oldStudent, student);
+    applications.forEach(application => async () => {
+
+      console.log(application);
+      if (application) {
+        console.log("oldStudent", oldStudent);
+        console.log("student", student);
+
+        await updateApplication(application, oldStudent, student);
+      }
+    });
     console.log("Lambda executed successfully");
 
     return {
@@ -112,17 +110,26 @@ async function updateApplication(application, oldStudent, student) {
   await dynamoDB.update(params).promise();
 }
 
-async function getApplication(studentCPR) {
+/**
+ * Get all applications for a student by their CPR
+ * 
+ * @param {*} studentCPR 
+ * @returns 
+ */
+async function getApplications(studentCPR) {
   const params = {
     TableName: APPLICATION_TABLE,
     IndexName: "byCPR",
     KeyConditionExpression: "studentCPR = :studentCPR",
+    FilterExpression: "isFamilyIncomeVerified <> :trueValue",
     ExpressionAttributeValues: {
       ":studentCPR": studentCPR,
+      ":trueValue": true,
     },
   };
+
   const application = await dynamoDB.query(params).promise();
-  return application.Items[0];
+  return application.Items;
 }
 
 function calculateScore(familyIncome, verifiedGPA, gpa, adminPoints) {

@@ -185,5 +185,6 @@
   "toeflIELTSScore": "TOEFL/IELTS Score",
   "applicantAge": "Applicant's Age",
   "program": "Program",
-  "applicationScore": "Application Score"
+  "applicationScore": "Application Score",
+  "guardianEmail": "Guardian Email"
 }

@@ -135,11 +135,16 @@ async function convertToJsonMaster(applications, students) {
     const reason = processReason(application.reason);
 
     jsonArray.push({
+      "Submission Date": application.createdAt
+        ? formatter.format(new Date(application.createdAt))
+        : "-",
+      "Submission Time": application.createdAt
+        ? timeFormatter.format(new Date(application.createdAt))
+        : "-",
       Id: application.id,
       "Student CPR": application.studentCPR,
-      Name: `${student.m_firstName || "-"} ${student.m_secondName || "-"} ${
-        student.m_thirdName || "-"
-      } ${student.m_lastName || "-"}`,
+      Name: `${student.m_firstName || "-"} ${student.m_secondName || "-"} ${student.m_thirdName || "-"
+        } ${student.m_lastName || "-"}`,
       Gender: student.gender,
       Nationality: student.nationalityCategory,
       Major: application.major, // Replaces 'Field'
@@ -154,11 +159,9 @@ async function convertToJsonMaster(applications, students) {
       "Number of Family members": student.m_numberOfFamilyMembers,
 
       // Guardian details
-      "Guardian Name": `${student.m_guardianFirstName || "-"} ${
-        student.m_guardianSecondName || "-"
-      } ${student.m_guardianThirdName || "-"} ${
-        student.m_guardianLastName || "-"
-      }`,
+      "Guardian Name": `${student.m_guardianFirstName || "-"} ${student.m_guardianSecondName || "-"
+        } ${student.m_guardianThirdName || "-"} ${student.m_guardianLastName || "-"
+        }`,
       "Guardian CPR": student.m_guardianCPR || "-",
       "Guardian Address": student.m_guardianAddress || "-",
       "Guardian Email": student.m_guardianEmail || "-",
@@ -351,4 +354,12 @@ const formatter = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
   month: "short",
   day: "2-digit",
+});
+
+const timeFormatter = new Intl.DateTimeFormat("en-US", {
+  timeZone: "Asia/Bahrain",
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+  hour12: true,
 });

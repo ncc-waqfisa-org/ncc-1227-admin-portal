@@ -132,7 +132,7 @@ exports.handler = async (event) => {
       guardianThirdName: parentinfo.guardianThirdName || "",
       guardianLastName: parentinfo.guardianLastName || "",
       guardianAddress: parentinfo.address || "",
-      guardianEmail: parentinfo.email || "",
+      guardianEmail: parentinfo.guardianEmail || "",
       studentCPR: student.cpr || "",
       studentAddress: student.address || "",
       studentEmail: student.email || "",
@@ -225,9 +225,8 @@ exports.handler = async (event) => {
     await browser.close();
 
     // Upload the generated PDF to S3
-    const key = `contracts/bacholar/contract-${
-      application.id
-    }-${Date.now()}.pdf`;
+    const key = `contracts/bacholar/contract-${application.id
+      }-${Date.now()}.pdf`;
     const pdfKey = "public/" + key;
 
     await s3

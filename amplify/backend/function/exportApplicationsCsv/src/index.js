@@ -165,6 +165,12 @@ async function convertToJson(applications, students) {
 
     if (student) {
       jsonArray.push({
+        "Submission Date": application.createdAt
+          ? formatter.format(new Date(application.createdAt))
+          : "-",
+        "Submission Time": application.createdAt
+          ? timeFormatter.format(new Date(application.createdAt))
+          : "-",
         Id: application.id,
         "Student CPR": application.studentCPR,
         Name: student.fullName,
@@ -186,7 +192,7 @@ async function convertToJson(applications, students) {
         "Is Family Income Verified": application.isFamilyIncomeVerified
           ? "Yes"
           : "",
-        "Number Of Family Members": student.numberOfFamilyMembers,
+        "Number Of Family Members": parentInfo?.numberOfFamilyMembers,
         "Number of Siblings": student.studentOrderAmongSiblings,
         "Student Date of Birth": student.dob
           ? formatter.format(new Date(student.dob))
@@ -197,13 +203,13 @@ async function convertToJson(applications, students) {
         Email: student.email,
         "Guardian Name": parentInfo?.guardianFirstName
           ? [
-              parentInfo?.guardianFirstName,
-              parentInfo?.guardianSecondName,
-              parentInfo?.guardianThirdName,
-              parentInfo?.guardianLastName,
-            ]
-              .filter(Boolean)
-              .join(" ")
+            parentInfo?.guardianFirstName,
+            parentInfo?.guardianSecondName,
+            parentInfo?.guardianThirdName,
+            parentInfo?.guardianLastName,
+          ]
+            .filter(Boolean)
+            .join(" ")
           : parentInfo?.guardianFullName || "-",
         "Guardian Relation": parentInfo?.relation || "-",
         "Guardian CPR": parentInfo?.guardianCPR || "-",
@@ -439,4 +445,12 @@ const formatter = new Intl.DateTimeFormat("en-US", {
   year: "numeric",
   month: "short",
   day: "2-digit",
+});
+
+const timeFormatter = new Intl.DateTimeFormat("en-US", {
+  timeZone: "Asia/Bahrain",
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+  hour12: true,
 });
