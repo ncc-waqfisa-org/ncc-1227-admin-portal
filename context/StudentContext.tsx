@@ -55,7 +55,7 @@ interface IUseStudentContext {
 const defaultState: IUseStudentContext = {
   applications: undefined,
   applicationById: undefined,
-  getApplicationByID: () => {},
+  getApplicationByID: () => { },
   batch: new Date().getFullYear(),
   updateBatch: function (): void {
     throw new Error("Function not implemented.");
@@ -151,7 +151,7 @@ function useProviderStudent() {
       }
 
       // on destroy
-      return () => {};
+      return () => { };
     },
 
     // Re-run whenever anything here changes
@@ -515,6 +515,7 @@ export async function getApplicationByIdAPI(
       }
       student {
         ParentInfo {
+          _version
           address
           fatherCPR
           fatherFullName
@@ -523,6 +524,7 @@ export async function getApplicationByIdAPI(
           guardianSecondName
           guardianThirdName
           guardianLastName
+          guardianEmail
           motherCPR
           id
           motherFullName
