@@ -62,5 +62,6 @@
   "APPROVED": "Approved",
   "REJECTED": "Rejected",
   "PENDING": "Pending",
-  "WITHDRAWN": "Withdrawn"
+  "WITHDRAWN": "Withdrawn",
+  "startDateMustBeAfterToday": "Start date must be after today"
 }

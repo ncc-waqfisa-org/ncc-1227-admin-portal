@@ -328,7 +328,7 @@ async function generateArabicPdf(
     .font("./fonts/Almarai-Bold.ttf")
     .fontSize(valueFontSize)
     .text(
-      "نشهد بأن الطالب التالي قد تقدم لبرنامج منح وقف عيسى للدراسات العليا. تفاصيل الطلب كالتالي:",
+      "نشهد بأن الطالب التالي قد تقدم لبرنامج بعث وقف عيسى للدراسات العليا. تفاصيل الطلب كالتالي:",
       { features: ["rtla"], align: "right" }
     );
 

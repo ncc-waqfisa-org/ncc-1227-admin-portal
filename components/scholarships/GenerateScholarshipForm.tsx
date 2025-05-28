@@ -52,7 +52,21 @@ export const GenerateScholarshipForm: FC<TGenerateScholarshipForm> = ({
   const { token } = useAuth();
 
   const formSchema = z.object({
-    startDate: z.string().min(1),
+    startDate: z
+      .string()
+      .min(1)
+      .refine(
+        (val) => {
+          // Ensure the date is after today
+          const inputDate = dayjs(val, "YYYY-MM-DD");
+          const today = dayjs().startOf("day");
+          return inputDate.isAfter(today);
+        },
+        {
+          message:
+            t("startDateMustBeAfterToday") ?? "Start date must be after today",
+        }
+      ),
     scholarshipPeriod: z.number().min(1),
     // numberOfSemesters: z.number().min(1),
     applicationID: z.string(),
@@ -147,6 +161,7 @@ export const GenerateScholarshipForm: FC<TGenerateScholarshipForm> = ({
                     dayPlaceholder="dd"
                     monthPlaceholder="mm"
                     yearPlaceholder="yyyy"
+                    minDate={new Date()}
                     onChange={(date) => {
                       const myDate: Date | null = date as Date | null;
                       if (myDate) {

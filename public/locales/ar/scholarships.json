@@ -17,8 +17,8 @@
   "scholarship": "منحة دراسية",
   "masterScholarships": "المنح الدراسية للماجيستير",
   "bachelorScholarships": "المنح الدراسية للبكالوريوس",
-  "masterScholarshipsSubtitle": "منح الماجيستير الدراسية لدفعة",
-  "bachelorScholarshipsSubtitle": "منح البكالوريوس الدراسية لدفعة",
+  "masterScholarshipsSubtitle": "بعث الماجيستير الدراسية لدفعة",
+  "bachelorScholarshipsSubtitle": "بعث البكالوريوس الدراسية لدفعة",
   "scholarships": "المنح الدراسية",
   "scholarshipsSubtitle": "المنح الدراسية لدفعة",
   "status": "الحالة",
@@ -62,5 +62,6 @@
   "APPROVED": "موافق",
   "REJECTED": "مرفوض",
   "PENDING": "قيد الانتظار",
-  "WITHDRAWN": "منسحب"
+  "WITHDRAWN": "منسحب",
+  "startDateMustBeAfterToday": "تاريخ البدء يجب أن يكون بعد اليوم"
 }

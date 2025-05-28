@@ -376,7 +376,7 @@ function emailTemplateArabic(logo, missingDoc) {
                 <img src="${logo}" alt="NCC Logo" style="display: block; margin: 0 auto;">
                 <h2 style="text-align: center;">تذكير برفع المستندات المتبقية</h2>
                 <p>عزيزي الطالب،</p>
-                <p>يسرنا أن نستلم طلبكم للحصول على منحة مؤسسة عيسى بن سلمان للتعليم الخيري للسنة الأكاديمية ${currentYear} - ${nextYear}.</p>
+                <p>يسرنا أن نستلم طلبكم للحصول على بعثة مؤسسة عيسى بن سلمان للتعليم الخيري للسنة الأكاديمية ${currentYear} - ${nextYear}.</p>
                 ${
                   missingDocArabic.length > 0
                     ? `
