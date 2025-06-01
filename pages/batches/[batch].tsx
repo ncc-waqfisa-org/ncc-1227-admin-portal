@@ -14,6 +14,9 @@ import { DownloadFileFromUrl } from "../../components/download-file-from-url";
 import { BulkUploadGpa } from "../../components/batch/BulkUploadGpa";
 import { BatchUpdateFormInputValues } from "../../src/ui-components/BatchUpdateForm";
 import BatchForm from "../../components/batch/BatchForm";
+import { Button } from "../../components/ui/button";
+import { useAuth } from "../../hooks/use-auth";
+
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { batch } = ctx.query;
@@ -40,6 +43,8 @@ type PageType = {
 
 const SingleBatchPage: FC<PageType> = ({ batchYear }) => {
   const { t } = useTranslation("batches");
+  const { token } = useAuth();
+
   const queryClient = useQueryClient();
   const { data: batch, isPending } = useQuery({
     queryKey: ["batch", batchYear],
@@ -58,26 +63,22 @@ const SingleBatchPage: FC<PageType> = ({ batchYear }) => {
   //   });
   // }
 
-  // const updateBatchMutation = useMutation({
-  //   mutationFn: (values: UpdateBatchMutationVariables) => {
-  //     return updateSingleBatch(values);
-  //   },
-  //   async onSuccess(data) {
-  //     if (data?.updateBatch) {
-  //       queryClient.invalidateQueries({
-  //         queryKey: ["batch", batchYear],
-  //       });
-  //       queryClient.invalidateQueries({ queryKey: ["batches"] });
-
-  //       toast.success(t("updatedSuccessfully"));
-  //     } else {
-  //       toast.error(t("failedToUpdate"));
-  //     }
-  //   },
-  //   async onError(error) {
-  //     toast.error(error.message, { duration: 6000 });
-  //   },
-  // });
+  const updateApplicationsStatuses = useMutation({
+    mutationFn: () => fetch(`${process.env.NEXT_PUBLIC_LAMBDA_GET_BACHELOR_APPLICATION}/refresh-statuses`, {
+      method: "POST",
+      headers: {
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+      body: JSON.stringify({ batch: batchYear }),
+    }),
+    async onSuccess(data) {
+      queryClient.invalidateQueries({ queryKey: ["applications"] });
+      toast.success(t("updatedSuccessfully"));
+    },
+    async onError(error) {
+      toast.error(error.message, { duration: 6000 });
+    },
+  });
 
   // if (isPending || updateBatchMutation.isPending) {
   //   return (
@@ -116,6 +117,15 @@ const SingleBatchPage: FC<PageType> = ({ batchYear }) => {
               {t("downloadCPRsList")}
             </DownloadFileFromUrl>
             {batchYear && <BulkUploadGpa batch={batchYear} />}
+            <Button
+              className="rounded-xl"
+              variant={"outline"}
+              disabled={updateApplicationsStatuses.isPending}
+              onClick={() => updateApplicationsStatuses.mutate()
+              }
+            >
+              {t("refreshApplicationsStatus")}
+            </Button>
           </div>
         </div>
 

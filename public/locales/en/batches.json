@@ -35,5 +35,6 @@
   "reset": "Reset",
   "loading": "Loading",
   "batchCurrent": "Batch Year",
-  "noBatchFound": "No batch found. Please try again later"
+  "noBatchFound": "No batch found. Please try again later",
+  "refreshApplicationsStatus": "Refresh Applications Status"
 }
