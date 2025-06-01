@@ -277,6 +277,13 @@ export type AmplifyDependentResourcesAttributes = {
       "Name": "string",
       "Region": "string"
     },
+    "updateInvalidApplicationsStatuses": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
     "updateStatistics": {
       "Arn": "string",
       "CloudWatchEventRule": "string",

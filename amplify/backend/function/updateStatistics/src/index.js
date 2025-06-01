@@ -1,6 +1,6 @@
 /* Amplify Params - DO NOT EDIT
-	ENV
-	REGION
+  ENV
+  REGION
 Amplify Params - DO NOT EDIT */
 
 const AWS = require("aws-sdk");
@@ -229,24 +229,24 @@ async function getPrivatePublicRatio(applications, students) {
         student.gender === "FEMALE" ? privateCountFemale++ : privateCountMale++;
 
         student.gender === "FEMALE" &&
-        new Date(application.createdAt).toDateString() ===
+          new Date(application.createdAt).toDateString() ===
           new Date().toDateString()
           ? privateCountFemaleToday++
           : null;
         student.gender === "MALE" &&
-        new Date(application.createdAt).toDateString() ===
+          new Date(application.createdAt).toDateString() ===
           new Date().toDateString()
           ? privateCountMaleToday++
           : null;
       } else {
         student.gender === "FEMALE" ? publicCountFemale++ : publicCountMale++;
         student.gender === "FEMALE" &&
-        new Date(application.createdAt).toDateString() ===
+          new Date(application.createdAt).toDateString() ===
           new Date().toDateString()
           ? publicCountFemaleToday++
           : null;
         student.gender === "MALE" &&
-        new Date(application.createdAt).toDateString() ===
+          new Date(application.createdAt).toDateString() ===
           new Date().toDateString()
           ? publicCountMaleToday++
           : null;
@@ -322,24 +322,24 @@ async function getFamilyIncomeRatio(applications, students) {
       if (student.familyIncome === "MORE_THAN_1500") {
         student.gender === "FEMALE" ? above1500Female++ : above1500Male++;
         student.gender === "FEMALE" &&
-        new Date(application.createdAt).toDateString() ===
+          new Date(application.createdAt).toDateString() ===
           new Date().toDateString()
           ? above1500FemaleToday++
           : null;
         student.gender === "MALE" &&
-        new Date(application.createdAt).toDateString() ===
+          new Date(application.createdAt).toDateString() ===
           new Date().toDateString()
           ? above1500MaleToday++
           : null;
       } else {
         student.gender === "FEMALE" ? below1500Female++ : below1500Male++;
         student.gender === "FEMALE" &&
-        new Date(application.createdAt).toDateString() ===
+          new Date(application.createdAt).toDateString() ===
           new Date().toDateString()
           ? below1500FemaleToday++
           : null;
         student.gender === "MALE" &&
-        new Date(application.createdAt).toDateString() ===
+          new Date(application.createdAt).toDateString() ===
           new Date().toDateString()
           ? below1500MaleToday++
           : null;
@@ -520,10 +520,10 @@ async function updateStatistics(tableName, batchValue) {
   const studentsToday =
     batchValue === new Date().getFullYear()
       ? students.filter(
-          (student) =>
-            new Date(student.createdAt).toDateString() ===
-            new Date().toDateString()
-        )
+        (student) =>
+          new Date(student.createdAt).toDateString() ===
+          new Date().toDateString()
+      )
       : [];
   const totalStudentsToday = studentsToday.length;
   const totalFemaleStudentsToday =
@@ -537,10 +537,10 @@ async function updateStatistics(tableName, batchValue) {
   const applicationsToday =
     batchValue === new Date().getFullYear()
       ? applications.filter(
-          (application) =>
-            new Date(application.createdAt).toDateString() ===
-            new Date().toDateString()
-        )
+        (application) =>
+          new Date(application.createdAt).toDateString() ===
+          new Date().toDateString()
+      )
       : [];
   const applicationsPerGender = await getApplicationsPerGender(
     applications,
@@ -609,7 +609,8 @@ async function updateStatistics(tableName, batchValue) {
           familyIncome = :familyIncome,
           students = :students,
           applications = :applications,
-          today = :today
+          today = :today,
+          updatedAt = :updatedAt
       `,
       ExpressionAttributeNames: {
         "#batch": "batch", // alias for reserved word "batch"
@@ -629,6 +630,7 @@ async function updateStatistics(tableName, batchValue) {
         ":students": statisticsData.students,
         ":applications": statisticsData.applications,
         ":today": statisticsData.today,
+        ":updatedAt": new Date().toISOString()
       },
       ReturnValues: "UPDATED_NEW",
     };

@@ -231,6 +231,11 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "updateInvalidApplicationsStatuses": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "updateStatistics": {
       "build": true,
       "dependsOn": [],
@@ -859,6 +864,22 @@
         {
           "category": "function",
           "resourceName": "updateGpaCsv"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateInvalidApplicationsStatuses_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateInvalidApplicationsStatuses"
+        }
+      ]
+    },
+    "AMPLIFY_function_updateInvalidApplicationsStatuses_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "updateInvalidApplicationsStatuses"
         }
       ]
     },

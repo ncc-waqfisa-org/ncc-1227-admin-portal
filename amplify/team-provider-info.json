@@ -90,7 +90,7 @@
         },
         "updateStatistics": {
           "deploymentBucketName": "amplify-ncc-masterdev-2e2e0-deployment",
-          "s3Key": "amplify-builds/updateStatistics-5734657a41594a756f33-build.zip"
+          "s3Key": "amplify-builds/updateStatistics-683533316f62764c6256-build.zip"
         },
         "updateStudentEmail": {
           "deploymentBucketName": "amplify-ncc-masterdev-2e2e0-deployment",
@@ -183,6 +183,10 @@
         "exportApplicationPdfMaster": {
           "deploymentBucketName": "amplify-ncc-masterdev-2e2e0-deployment",
           "s3Key": "amplify-builds/exportApplicationPdfMaster-735068776d6975354268-build.zip"
+        },
+        "updateInvalidApplicationsStatuses": {
+          "deploymentBucketName": "amplify-ncc-masterdev-2e2e0-deployment",
+          "s3Key": "amplify-builds/updateInvalidApplicationsStatuses-7330432f58562f31656f-build.zip"
         }
       },
       "storage": {
