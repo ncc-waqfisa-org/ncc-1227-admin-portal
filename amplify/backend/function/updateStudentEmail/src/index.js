@@ -1,7 +1,7 @@
 const AWS = require("aws-sdk");
 
 const { UserPoolId: USER_POOL_ID, StudentTable: STUDENT_TABLE } = {
-  UserPoolId: "us-east-1_79xE8d6FS",
+  UserPoolId: "us-east-1_ovqLD9Axf",
   StudentTable: "Student-q4lah3ddkjdd3dwtif26jdkx6e-masterdev",
 };
 

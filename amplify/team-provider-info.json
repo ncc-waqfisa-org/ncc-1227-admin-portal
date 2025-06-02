@@ -94,7 +94,7 @@
         },
         "updateStudentEmail": {
           "deploymentBucketName": "amplify-ncc-masterdev-2e2e0-deployment",
-          "s3Key": "amplify-builds/updateStudentEmail-75623747335742636f35-build.zip"
+          "s3Key": "amplify-builds/updateStudentEmail-746f6155336e58656f73-build.zip"
         },
         "signScholarshipMaster": {
           "deploymentBucketName": "amplify-ncc-masterdev-2e2e0-deployment",
