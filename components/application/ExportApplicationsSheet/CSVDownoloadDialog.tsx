@@ -84,7 +84,7 @@ export const CSVDownoloadDialog: FC<Props> = ({ exportType = "bachelor" }) => {
   const isOld = () => {
     if (!status.lastModified) return false;
     const diffMs = Date.now() - status.lastModified.getTime();
-    return diffMs > 5 * 60 * 1000;
+    return diffMs > 30 * 60 * 1000;
   };
 
   const handleDownload = () => {
