@@ -326,9 +326,11 @@ function processReason(reason) {
 async function uploadToS3(xlsxBuffer, batchValue) {
   console.log("Uploading to S3", batchValue);
 
+  const path = "public/reports/";
+
   const params = {
     Bucket: S3_BUCKET,
-    Key: `Applications ${batchValue}.xlsx`,
+    Key: `${path}Applications ${batchValue}.xlsx`,
     Body: xlsxBuffer,
     ContentType:
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",

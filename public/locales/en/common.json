@@ -70,5 +70,14 @@
   "statisticsRefreshedSuccessfully": "Statistics refreshed successfully",
   "failedToRefreshStatistics": "Failed to refresh statistics",
   "exportApplicationsCSV": "Export Applications CSV",
-  "lastUpdated": "Last updated at: "
+  "lastUpdated": "Last updated at: ",
+  "downloadOrGenerateANewCSV": "Download or generate a new CSV export file.",
+  "downloadCSV": "Download CSV",
+  "generateNewCSV": "Generate New CSV",
+  "generated": "Generated",
+  "theCurrentExportIsOutdated": "The current export is outdated. Generate a new one for the latest data.",
+  "generateNewIfYouNeedMostRecent": "Generate a new export if you need the most recent data.",
+  "old": "Old",
+  "generating": "Generating...",
+  "notAvailable": "Not Available"
 }

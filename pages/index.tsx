@@ -16,8 +16,7 @@ import { BatchSelector } from "../components/batch/BatchSelector";
 import { useAuth } from "../hooks/use-auth";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useBatchContext } from "../context/BatchContext";
-import { getMastersStatistics, getStatistics } from "../src/CustomAPI";
-import { DownloadFileFromUrl } from "../components/download-file-from-url";
+import { getStatistics } from "../src/CustomAPI";
 import { MoreStatistics } from "../components/MoreStatistics";
 import { useAppContext } from "../context/AppContext";
 import { MasterStatistics } from "../components/MasterStatistics";
@@ -27,6 +26,7 @@ import toast from "react-hot-toast";
 import dayjs from "dayjs";
 import locale_ar from "dayjs/locale/ar";
 import locale_en from "dayjs/locale/en";
+import { CSVDownoloadDialog } from "../components/application/ExportApplicationsSheet/CSVDownoloadDialog";
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
   const { locale } = ctx;
@@ -106,14 +106,8 @@ const Home = () => {
                   buttonClick={() => push("/applications")}
                 ></PrimaryButton>
 
-                <DownloadFileFromUrl
-                  fileName={`${batch} Applications`}
-                  url={`${process.env.NEXT_PUBLIC_LAMBDA_EXPORT_CSV_STATISTICS}?batch=${batch}`}
-                  // url={`https://z7pe3akpcz6bazr3djdk4yo7e40yqevt.lambda-url.us-east-1.on.aws/?batch=${batch}`}
-                >
-                  {/* */}
-                  {t("exportCSV")}
-                </DownloadFileFromUrl>
+                <CSVDownoloadDialog />
+
                 <Button
                   onClick={() => {
                     refreshStatistics();

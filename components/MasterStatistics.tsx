@@ -17,6 +17,7 @@ import { LargeDualBarGraphInfo } from "./graphs/large-dual-bar-graph-info";
 import { FiRefreshCw } from "react-icons/fi";
 import { Button } from "./ui/button";
 import toast from "react-hot-toast";
+import { CSVDownoloadDialog } from "./application/ExportApplicationsSheet/CSVDownoloadDialog";
 
 export const MasterStatistics = () => {
   const { batch } = useBatchContext();
@@ -81,14 +82,16 @@ export const MasterStatistics = () => {
             buttonClick={() => push("/applications?type=masters")}
           ></PrimaryButton>
 
-          <DownloadFileFromUrl
+          <CSVDownoloadDialog exportType="master" />
+
+          {/* <DownloadFileFromUrl
             fileName={`${batch} Applications`}
             url={`${process.env.NEXT_PUBLIC_LAMBDA_EXPORT_MASTER_CSV_STATISTICS}?batch=${batch}`}
             // url={`https://z7pe3akpcz6bazr3djdk4yo7e40yqevt.lambda-url.us-east-1.on.aws/?batch=${batch}`}
           >
-            {/* */}
+       
             {t("exportApplicationsCSV")}
-          </DownloadFileFromUrl>
+          </DownloadFileFromUrl> */}
           <Button
             onClick={() => {
               refreshMasterStatistics();

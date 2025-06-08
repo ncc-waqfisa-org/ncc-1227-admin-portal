@@ -143,8 +143,9 @@ async function convertToJsonMaster(applications, students) {
         : "-",
       Id: application.id,
       "Student CPR": application.studentCPR,
-      Name: `${student.m_firstName || "-"} ${student.m_secondName || "-"} ${student.m_thirdName || "-"
-        } ${student.m_lastName || "-"}`,
+      Name: `${student.m_firstName || "-"} ${student.m_secondName || "-"} ${
+        student.m_thirdName || "-"
+      } ${student.m_lastName || "-"}`,
       Gender: student.gender,
       Nationality: student.nationalityCategory,
       Major: application.major, // Replaces 'Field'
@@ -159,9 +160,11 @@ async function convertToJsonMaster(applications, students) {
       "Number of Family members": student.m_numberOfFamilyMembers,
 
       // Guardian details
-      "Guardian Name": `${student.m_guardianFirstName || "-"} ${student.m_guardianSecondName || "-"
-        } ${student.m_guardianThirdName || "-"} ${student.m_guardianLastName || "-"
-        }`,
+      "Guardian Name": `${student.m_guardianFirstName || "-"} ${
+        student.m_guardianSecondName || "-"
+      } ${student.m_guardianThirdName || "-"} ${
+        student.m_guardianLastName || "-"
+      }`,
       "Guardian CPR": student.m_guardianCPR || "-",
       "Guardian Address": student.m_guardianAddress || "-",
       "Guardian Email": student.m_guardianEmail || "-",
@@ -299,9 +302,11 @@ function processReason(reason) {
 }
 
 async function uploadToS3(xlsxBuffer, batchValue) {
+  const path = "public/reports/";
+
   const params = {
     Bucket: S3_BUCKET,
-    Key: `MasterApplications ${batchValue}.xlsx`,
+    Key: `${path}MasterApplications ${batchValue}.xlsx`,
     Body: xlsxBuffer,
     ContentType:
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",

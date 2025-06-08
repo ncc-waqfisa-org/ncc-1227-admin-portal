@@ -41,6 +41,7 @@ import {
   FormLabel,
   FormMessage,
 } from "../form";
+import { CSVDownoloadDialog } from "../../application/ExportApplicationsSheet/CSVDownoloadDialog";
 
 interface ApplicationsStatusFilterProps {
   handleStatusChange: (value: string) => void;
@@ -244,7 +245,8 @@ export const BatchApplicationsToolbar: React.FC<
         </Button>
       )}
 
-      <Button
+      <CSVDownoloadDialog />
+      {/* <Button
         variant={"outline"}
         onClick={() => {
           toast.promise(
@@ -280,7 +282,7 @@ export const BatchApplicationsToolbar: React.FC<
         }}
       >
         {t("exportAllAsCSV")}
-      </Button>
+      </Button> */}
       <Link
         className={cn(buttonVariants({ variant: "outline" }))}
         href={`/batches/${batch}`}

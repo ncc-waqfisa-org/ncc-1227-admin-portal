@@ -56,5 +56,14 @@
   "success": "Success",
   "participatingUniversities": "Participating Universities",
   "applicantIncome": "Applicant/Guardian familyIncome",
-  "lastUpdated": "آخر تحديث في: "
+  "lastUpdated": "آخر تحديث في: ",
+  "downloadOrGenerateANewCSV": "تنزيل أو إنشاء ملف CSV جديد",
+  "downloadCSV": "تنزيل CSV",
+  "generateNewCSV": "إنشاء CSV جديد",
+  "generated": "تم الإنشاء",
+  "theCurrentExportIsOutdated": "ملف ال CSV  الحالي قديم. قم بإنشاء ملف جديد للحصول على أحدث البيانات",
+  "generateNewIfYouNeedMostRecent": "قم بإنشاء ملف CSV جديد إذا كنت بحاجة إلى أحدث البيانات",
+  "old": "قديم",
+  "generating": "جاري الإنشاء...",
+  "notAvailable": "غير متوفر"
 }
