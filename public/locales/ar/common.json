@@ -65,5 +65,6 @@
   "generateNewIfYouNeedMostRecent": "قم بإنشاء ملف CSV جديد إذا كنت بحاجة إلى أحدث البيانات",
   "old": "قديم",
   "generating": "جاري الإنشاء...",
-  "notAvailable": "غير متوفر"
+  "notAvailable": "غير متوفر",
+  "exporting": "تصدير..."
 }

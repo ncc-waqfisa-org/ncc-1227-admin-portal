@@ -52,7 +52,14 @@ export const CSVDownoloadDialog: FC<Props> = ({ exportType = "bachelor" }) => {
       : `reports/Applications ${batch}.xlsx`;
 
   const [status, setStatus] = useState<{
-    phase: "idle" | "generating" | "ready" | "error" | "loading";
+    phase:
+      | "idle"
+      | "generating"
+      | "ready"
+      | "error"
+      | "loading"
+      | "exporting"
+      | "export_error";
     lastModified?: Date;
     downloadUrl?: string;
     error?: string;
@@ -87,19 +94,49 @@ export const CSVDownoloadDialog: FC<Props> = ({ exportType = "bachelor" }) => {
     return diffMs > 30 * 60 * 1000;
   };
 
-  const handleDownload = () => {
+  const handleDownload = async () => {
     if (!status.downloadUrl) return;
-    // Simulate CSV download
-    const url = status.downloadUrl;
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `export-${
-      status.lastModified?.toISOString().split("T")[0]
-    }.csv`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
+
+    setStatus((prev) => ({
+      ...prev,
+      phase: "exporting",
+    }));
+
+    try {
+      const response = await fetch(status.downloadUrl);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = blobUrl;
+      if (isArabic) {
+        a.download = `${
+          exportType === "bachelor" ? "البكالوريوس" : "الماجستير"
+        }-تصدير-${status.lastModified && formatDate(status.lastModified)}.xlsx`;
+      } else {
+        a.download = `${
+          exportType === "bachelor" ? "Bachelor" : "Masters"
+        }-export-${
+          status.lastModified && formatDate(status.lastModified)
+        }.xlsx`;
+      }
+
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(blobUrl);
+      setStatus((prev) => ({
+        ...prev,
+        phase: "idle",
+      }));
+    } catch (error) {
+      setStatus((prev) => ({
+        ...prev,
+        phase: "export_error",
+        error: "Download failed",
+      }));
+      console.error("Download failed:", error);
+    }
   };
 
   const generateFile = async () => {
@@ -195,11 +232,20 @@ export const CSVDownoloadDialog: FC<Props> = ({ exportType = "bachelor" }) => {
             <div className="flex items-center justify-between">
               <Button
                 onClick={handleDownload}
-                disabled={!status.downloadUrl}
+                disabled={!status.downloadUrl || status.phase === "exporting"}
                 className="flex-1 me-3"
               >
-                <Download className="me-2 h-4 w-4" />
-                {t("downloadCSV")}
+                {status.phase === "exporting" ? (
+                  <>
+                    <RefreshCw className="me-2 h-4 w-4 animate-spin" />
+                    {t("exporting")}
+                  </>
+                ) : (
+                  <>
+                    <Download className="me-2 h-4 w-4" />
+                    {t("downloadCSV")}
+                  </>
+                )}
               </Button>
               {isOld() && (
                 <Badge variant="destructive" className="text-xs">

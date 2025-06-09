@@ -79,5 +79,6 @@
   "generateNewIfYouNeedMostRecent": "Generate a new export if you need the most recent data.",
   "old": "Old",
   "generating": "Generating...",
-  "notAvailable": "Not Available"
+  "notAvailable": "Not Available",
+  "exporting": "Exporting..."
 }

@@ -310,6 +310,9 @@ async function uploadToS3(xlsxBuffer, batchValue) {
     Body: xlsxBuffer,
     ContentType:
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    ContentDisposition: `attachment; filename="Masters Applications ${batchValue}-export-${
+      new Date()?.toISOString().split("T")[0]
+    }.xlsx"`,
   };
   await s3.upload(params).promise();
   return s3.getSignedUrl("getObject", {
