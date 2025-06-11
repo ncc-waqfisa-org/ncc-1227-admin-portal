@@ -172,7 +172,7 @@ async function bulkUpdateApplications(
     const program = programs.find(
       (program) => program.id === application.programID
     );
-    const minimumGPA = (program && program.minimumGPA) || 88;
+    const minimumGPA = (program && program.minimumGPA) || 82;
     // const universityId = application.universityID; // if needed for further logic
     const isNonBahraini = application.nationalityCategory === "NON_BAHRAINI";
     const isEligible = application.verifiedGPA
@@ -193,10 +193,10 @@ async function bulkUpdateApplications(
       isProcessed = 1;
       reason = "Student is not Bahraini";
       snapshot = "Changed from " + application.status + " to " + status;
-    } else if (application.verifiedGPA && application.verifiedGPA < 88) {
+    } else if (application.verifiedGPA && application.verifiedGPA < 82) {
       status = "REJECTED";
       isProcessed = 1;
-      reason = "GPA is less than 88";
+      reason = "GPA is less than 82";
       snapshot = "Changed from " + application.status + " to " + status;
     } else if (isEligible) {
       status = "ELIGIBLE";

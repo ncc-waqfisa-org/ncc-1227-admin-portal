@@ -18,7 +18,7 @@
       "function": {
         "bulkAutoReject": {
           "deploymentBucketName": "amplify-ncc-masterdev-2e2e0-deployment",
-          "s3Key": "amplify-builds/bulkAutoReject-56487545576b4758544c-build.zip"
+          "s3Key": "amplify-builds/bulkAutoReject-4c757455665462514e62-build.zip"
         },
         "deleteAdmin": {
           "deploymentBucketName": "amplify-ncc-masterdev-2e2e0-deployment",
