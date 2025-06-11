@@ -39,6 +39,8 @@
   "above1500": "اكثر من 1500",
   "bellow1500": "اقل من 1500",
   "totalRegisteredAccounts": "إجمالي الحسابات المسجلة",
+  "totalApplicants": "إجمالي المتقدمين",
+  "totalSuccessfulApplications": "إجمالي الطلبات الناجحة",
   "totalApplicationsPerStatus": "إجمالي الطلبات لكل حالة",
   "totalApplicationsPerUniversity": "إجمالي الطلبات لكل جامعة",
   "apply": "تطبيق",

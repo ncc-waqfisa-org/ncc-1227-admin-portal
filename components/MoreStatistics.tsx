@@ -1,7 +1,13 @@
 import React, { FC, useMemo } from "react";
 import { TStatistics } from "../src/custom-types";
 import { useTranslation } from "react-i18next";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
 
 type TMoreStatistics = {
   statistics: TStatistics;
@@ -165,7 +171,8 @@ export const MoreStatistics: FC<TMoreStatistics> = ({ statistics }) => {
         {/* Total Students */}
         <Card className="break-inside-avoid-column">
           <CardHeader>
-            <CardTitle>{t("totalRegisteredAccounts")}</CardTitle>
+            <CardTitle>{t("totalApplicants")}</CardTitle>
+            {/* <CardDescription>{t("totalRegisteredAccounts")}</CardDescription> */}
           </CardHeader>
           <CardContent className="flex items-center justify-between gap-2">
             <div>
@@ -200,7 +207,8 @@ export const MoreStatistics: FC<TMoreStatistics> = ({ statistics }) => {
         {statistics.today.applications && (
           <Card className="break-inside-avoid-column">
             <CardHeader>
-              <CardTitle>{t("totalApplications")}</CardTitle>
+              <CardTitle>{t("totalSuccessfulApplications")}</CardTitle>
+              {/* <CardDescription>{t("totalApplications")}</CardDescription> */}
             </CardHeader>
             <CardContent className="flex items-center justify-between gap-2">
               <div>

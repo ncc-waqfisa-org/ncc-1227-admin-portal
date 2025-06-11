@@ -41,6 +41,8 @@
   "above1500": "Above 1500",
   "bellow1500": "Below 1500",
   "totalRegisteredAccounts": "Total Registered Accounts",
+  "totalApplicants": "Total Applicants",
+  "totalSuccessfulApplications": "Total Successful Applications",
   "totalApplicationsPerStatus": "Total Applications Per Status",
   "totalApplicationsPerUniversity": "Total Applications Per University",
   "apply": "Apply",

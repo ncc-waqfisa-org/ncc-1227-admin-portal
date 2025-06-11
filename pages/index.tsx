@@ -360,24 +360,25 @@ const Home = () => {
                   {t("exportCSV")}
                 </CSVLink>
               </LargeDonutGraphInfo>
-              {statistics?.participatingUniversities && (
-                <div className="flex flex-col col-span-2 justify-between p-4 w-full rounded-xl border bg-nccGray-50">
-                  <div className="">{t("participatingUniversities")}</div>
-                  <div className="py-2">
-                    <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 text-muted-foreground">
-                      {statistics?.participatingUniversities.map(
-                        (uni, index) => {
-                          return (
-                            <li key={index} className="py-1">
-                              {uni}
-                            </li>
-                          );
-                        }
-                      )}
-                    </ul>
+              {statistics?.participatingUniversities &&
+                statistics?.participatingUniversities.length > 0 && (
+                  <div className="flex flex-col col-span-2 justify-between p-4 w-full rounded-xl border bg-nccGray-50">
+                    <div className="">{t("participatingUniversities")}</div>
+                    <div className="py-2">
+                      <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 text-muted-foreground">
+                        {statistics?.participatingUniversities.map(
+                          (uni, index) => {
+                            return (
+                              <li key={index} className="py-1">
+                                {uni}
+                              </li>
+                            );
+                          }
+                        )}
+                      </ul>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
             </div>
           </div>
 
