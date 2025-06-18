@@ -27,6 +27,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BatchProvider } from "../context/BatchContext";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { initializeAwsConfig } from "../src/aws_config";
+import { Toaster } from "../components/ui/sonner";
 
 // initialize aws config
 initializeAwsConfig();
@@ -75,6 +76,7 @@ function App({ Component, pageProps }: AppProps) {
         </AuthProvider>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
+      <Toaster />
     </div>
   );
 }

@@ -1,12 +1,15 @@
 import _, { round } from "lodash";
 import {
   Admin,
+  ApplicantType,
   Application,
   FamilyIncome,
   Income,
   Program,
   Status,
 } from "./API";
+import { Student } from "./models";
+import { Student as TStudent } from "./API";
 
 /* -------------------------------------------------------------------------- */
 /*                                  INTERFACE                                 */
@@ -414,4 +417,65 @@ export function isValidAge(age: string, type: "masters" | "bachelor"): boolean {
   }
 
   return false;
+}
+
+export function getStudentName(student: TStudent): string | null {
+  if (!student) return null;
+
+  const isMaster =
+    student.m_applicantType?.includes(ApplicantType.MASTER) ?? false;
+
+  // check if student is master or bachelor
+  if (isMaster) {
+    if (!!student.m_firstName) {
+      let firstName = student.m_firstName;
+      let secondName = student.m_secondName;
+      let thirdName = student.m_thirdName;
+      let lastName = student.m_lastName;
+
+      if (firstName && secondName && thirdName && lastName) {
+        return `${firstName} ${secondName} ${thirdName} ${lastName}`;
+      } else if (firstName && secondName && lastName) {
+        return `${firstName} ${secondName} ${lastName}`;
+      } else if (firstName && lastName) {
+        return `${firstName} ${lastName}`;
+      } else {
+        return firstName;
+      }
+    }
+  }
+
+  if (!!student.firstName) {
+    let firstName = student.firstName;
+    let secondName = student.secondName;
+    let thirdName = student.thirdName;
+    let lastName = student.lastName;
+
+    if (firstName && secondName && thirdName && lastName) {
+      return `${firstName} ${secondName} ${thirdName} ${lastName}`;
+    } else if (firstName && secondName && lastName) {
+      return `${firstName} ${secondName} ${lastName}`;
+    } else if (firstName && lastName) {
+      return `${firstName} ${lastName}`;
+    } else {
+      return firstName;
+    }
+  }
+
+  if (!student.fullName) return null;
+
+  let firstName = getNamePart(student.fullName, "first");
+  let secondName = getNamePart(student.fullName, "second");
+  let thirdName = getNamePart(student.fullName, "third");
+  let lastName = getNamePart(student.fullName, "last");
+
+  if (firstName && secondName && thirdName && lastName) {
+    return `${firstName} ${secondName} ${thirdName} ${lastName}`;
+  } else if (firstName && secondName && lastName) {
+    return `${firstName} ${secondName} ${lastName}`;
+  } else if (firstName && lastName) {
+    return `${firstName} ${lastName}`;
+  } else {
+    return firstName;
+  }
 }

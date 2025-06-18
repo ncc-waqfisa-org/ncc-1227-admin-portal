@@ -24,6 +24,7 @@ import { BMTabs } from "./BMTabs";
 import MasterInfoForm from "./student/MasterInfoForm";
 import { ApplicationsIcon, SearchIcon } from "./icons";
 import { cn } from "../src/utils";
+import StudentInfoCard from "./student/StudentInfoCard";
 
 interface IStudentForm {
   cpr: string;
@@ -77,7 +78,7 @@ export default function StudentsPageComponent({
             : "flex justify-center items-center min-h-[80svh]"
         }`}
       >
-        <div className={`max-w-md mx-auto ${firstSearchDone ? "w-full" : ""}`}>
+        <div className={` mx-auto ${firstSearchDone ? "w-full" : ""}`}>
           <header
             className={`text-center mb-6 ${
               firstSearchDone ? "animate-cpr-fade-down" : ""
@@ -90,80 +91,111 @@ export default function StudentsPageComponent({
               {t("applicantSearch")}
             </h1>
           </header>
-          <Formik
-            initialValues={initialValues}
-            validationSchema={yup.object({
-              cpr: yup
-                .string()
-                .min(9, `${tErrors("cprShouldBe9")}`)
-                .max(9, `${tErrors("cprShouldBe9")}`)
-                .required(`${tErrors("requiredField")}`),
-            })}
-            onSubmit={async (values, actions) => {
-              setLoading(true);
-              setFirstSearchDone(true);
-              const _student = await getStudentInfo(values.cpr);
-              setStudent(_student);
-              setLoading(false);
-              actions.setSubmitting(false);
-            }}
-          >
-            {({
-              values,
-              errors,
-              touched,
-              handleChange,
-              handleBlur,
-              isSubmitting,
-              isValid,
-            }) => (
-              <Form className="container flex flex-col gap-6 w-full max-w-md">
-                <div className="mb-4 w-full">
-                  <label
-                    htmlFor="cpr"
-                    className="block mb-2 text-sm font-medium text-gray-700"
-                  >
-                    {t("applicantCPR")}
-                  </label>
-                  <Field
-                    name="cpr"
-                    type="text"
-                    handleChange={handleChange}
-                    handleBlur={handleBlur}
-                    className={cn(
-                      "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#e1ba3d]",
-                      errors.cpr && "border-error"
-                    )}
-                    placeholder={t("applicantCPR")}
-                  />
-                  {errors.cpr && (
-                    <label className="label-text-alt text-error">
-                      {errors.cpr}
+          <div className="flex justify-center flex-col items-center gap-6">
+            <Formik
+              initialValues={initialValues}
+              validationSchema={yup.object({
+                cpr: yup
+                  .string()
+                  .min(9, `${tErrors("cprShouldBe9")}`)
+                  .max(9, `${tErrors("cprShouldBe9")}`)
+                  .required(`${tErrors("requiredField")}`),
+              })}
+              onSubmit={async (values, actions) => {
+                setLoading(true);
+                setFirstSearchDone(true);
+                setStudent(undefined);
+                const _student = await getStudentInfo(values.cpr);
+                setStudent(_student);
+                setLoading(false);
+                actions.setSubmitting(false);
+              }}
+            >
+              {({
+                values,
+                errors,
+                touched,
+                handleChange,
+                handleBlur,
+                isSubmitting,
+                isValid,
+              }) => (
+                <Form className="container flex flex-col gap-6 w-full max-w-md">
+                  <div className="mb-4 w-full">
+                    <label
+                      htmlFor="cpr"
+                      className="block mb-2 text-sm font-medium text-gray-700"
+                    >
+                      {t("applicantCPR")}
                     </label>
-                  )}
-                </div>
+                    <Field
+                      name="cpr"
+                      type="text"
+                      handleChange={handleChange}
+                      handleBlur={handleBlur}
+                      className={cn(
+                        "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#e1ba3d]",
+                        errors.cpr && "border-error"
+                      )}
+                      placeholder={t("applicantCPR")}
+                    />
+                    {errors.cpr && (
+                      <label className="label-text-alt text-error">
+                        {errors.cpr}
+                      </label>
+                    )}
+                  </div>
 
-                <button
-                  type="submit"
-                  className={`w-full bg-[#e1ba3d] gap-4 text-white py-2 px-4 disabled:bg-gray-400 rounded-md hover:bg-[#c9a636] focus:outline-none focus:ring-2 focus:ring-[#e1ba3d] focus:ring-offset-2 flex items-center justify-center transition-all duration-300 ${
-                    loading ? "" : ""
-                  }`}
-                  disabled={isSubmitting || !isValid}
-                >
-                  {isSubmitting && (
-                    <span className="animate-pulse loading"></span>
-                  )}
-                  {!isSubmitting && <SearchIcon size={20} />}
-                  {loading ? t("searching") : t("applicantSearch")}
-                </button>
-              </Form>
-            )}
-          </Formik>
+                  <button
+                    type="submit"
+                    className={`w-full bg-[#e1ba3d] gap-4 text-white py-2 px-4 disabled:bg-gray-400 rounded-md hover:bg-[#c9a636] focus:outline-none focus:ring-2 focus:ring-[#e1ba3d] focus:ring-offset-2 flex items-center justify-center transition-all duration-300 ${
+                      loading ? "" : ""
+                    }`}
+                    disabled={isSubmitting || !isValid}
+                  >
+                    {isSubmitting && (
+                      <span className="animate-pulse loading"></span>
+                    )}
+                    {!isSubmitting && <SearchIcon size={20} />}
+                    {loading ? t("searching") : t("applicantSearch")}
+                  </button>
+                </Form>
+              )}
+            </Formik>
+            <div
+              className={cn(
+                "w-0 opacity-0  duration-300",
+                student && "w-full  opacity-100"
+              )}
+            >
+              {student && (
+                <StudentInfoCard
+                  student={student}
+                  bachelorApplicationStatus={
+                    student.applications &&
+                    student.applications.items.filter(
+                      (app) => app?._deleted !== true
+                    ).length > 0
+                      ? "Yes"
+                      : "No"
+                  }
+                  masterApplicationStatus={
+                    student.applications &&
+                    student.applications.items.filter(
+                      (app) => app?._deleted !== true
+                    ).length > 0
+                      ? "Yes"
+                      : "No"
+                  }
+                />
+              )}
+            </div>
+          </div>
         </div>
       </div>
 
       {firstSearchDone && student && (
-        <div className="isolate z-20 px-4 py-8 mx-auto max-w-4xl">
+        <div className="isolate z-20 px-4 py-8 mx-auto max-w-4xl flex flex-col gap-6">
           <div>
             {/* Show selected student data */}
             {firstSearchDone && (
@@ -184,7 +216,7 @@ export default function StudentsPageComponent({
                     />
                   </div>
                 )}
-                {student && !applicantType.isBoth && !loading && (
+                {/* {student && !applicantType.isBoth && !loading && (
                   <div className="flex items-center p-4 my-6 space-x-4 max-w-xl rounded-md border pe-10">
                     <ApplicationsIcon className="w-5 h-5 stroke-gray hover:stroke-anzac-500 hover:cursor-pointer" />
                     <div className="flex-1 space-y-1">
@@ -197,9 +229,7 @@ export default function StudentsPageComponent({
                       </p>
                     </div>
                   </div>
-                )}
-
-                {/* TODO: have update master student info */}
+                )} */}
 
                 {/* Bachelor */}
                 {student &&
