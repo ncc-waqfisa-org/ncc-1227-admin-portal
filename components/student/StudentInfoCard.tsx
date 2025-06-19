@@ -25,6 +25,7 @@ import { ApplicantType, Student } from "../../src/API";
 import { getStudentName } from "../../src/Helpers";
 import { useTranslation } from "react-i18next";
 import { ApplicationsIcon } from "../icons";
+import { useAuth } from "../../hooks/use-auth";
 
 interface StudentInfoCardProps {
   student: Student;
@@ -38,6 +39,7 @@ export default function StudentInfoCard({
   masterApplicationStatus,
 }: StudentInfoCardProps) {
   const { t } = useTranslation("applications");
+  const { isSuperAdmin } = useAuth();
 
   const isMaster =
     student.m_applicantType?.includes(ApplicantType.MASTER) ?? false;
@@ -151,16 +153,21 @@ export default function StudentInfoCard({
           </div>
         </div>
 
-        <Separator />
-
         {/* Account Actions Section */}
-        <div>
-          <h3 className="text-lg font-semibold mb-4">{t("accountActions")}</h3>
+        {isSuperAdmin && (
+          <>
+            <Separator />
+            <div>
+              <h3 className="text-lg font-semibold mb-4">
+                {t("accountActions")}
+              </h3>
 
-          <div className="flex flex-col sm:flex-row gap-3">
-            <ChangeStudentCpr student={student} />
-          </div>
-        </div>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <ChangeStudentCpr student={student} />
+              </div>
+            </div>
+          </>
+        )}
       </CardContent>
     </Card>
   );

@@ -53,6 +53,7 @@ function App({ Component, pageProps }: AppProps) {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
+        // 30 minutes
         staleTime: 30 * 60 * 1000,
       },
     },
@@ -76,7 +77,11 @@ function App({ Component, pageProps }: AppProps) {
         </AuthProvider>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
-      <Toaster />
+      <Toaster
+        toastOptions={{
+          duration: 5000,
+        }}
+      />
     </div>
   );
 }

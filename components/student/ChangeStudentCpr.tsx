@@ -28,6 +28,9 @@ import { Student } from "../../src/API";
 import { getStudentName } from "../../src/Helpers";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAuth } from "../../hooks/use-auth";
+import { useRouter } from "next/router";
 
 type Props = {
   student: Student;
@@ -35,6 +38,9 @@ type Props = {
 
 export default function ChangeStudentCpr({ student }: Props) {
   const { t } = useTranslation("applications");
+  const queryClient = useQueryClient();
+  const { token } = useAuth();
+  const { locale } = useRouter();
 
   const [isWarningOpen, setIsWarningOpen] = useState(false);
   const [isCprChangeOpen, setIsCprChangeOpen] = useState(false);
@@ -48,23 +54,60 @@ export default function ChangeStudentCpr({ student }: Props) {
     setConfirmationChecked(false);
   };
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: ({
+      newCprNumber,
+      oldCprNumber,
+      locale,
+    }: {
+      newCprNumber: string;
+      oldCprNumber: string;
+      locale: string;
+    }) =>
+      fetch(`${process.env.NEXT_PUBLIC_LAMBDA_POST_CHANGE_CPR}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({
+          newCprNumber,
+          oldCprNumber,
+          locale,
+        }),
+      }),
+    onSuccess: async (res) => {
+      if (res.ok) {
+        const result = await res.json();
+        toast.success(result.message || t("cprChangedSuccessfully"));
+        setIsCprChangeOpen(false);
+      } else {
+        const error = await res.json();
+        toast.error(error.message || t("failedToChangeCpr"));
+      }
+    },
+    onError: (error) => {
+      toast.error(error.message || t("failedToChangeCpr"));
+    },
+    onMutate: () => {
+      setIsProcessing(true);
+    },
+    onSettled: () => {
+      setNewCpr("");
+      setIsProcessing(false);
+      setConfirmationChecked(false);
+    },
+  });
+
   const handleCprSubmit = async () => {
     if (!newCpr || !confirmationChecked) return;
 
-    setIsProcessing(true);
-
-    // TODO: Add actual API call to change CPR
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    setIsProcessing(false);
-    setIsCprChangeOpen(false);
-    setNewCpr("");
-    setConfirmationChecked(false);
-
-    // Toast notification or success message can be added here
-    toast.success("Success message here");
-    // toast.success(result.message);
+    mutate({
+      newCprNumber: newCpr,
+      oldCprNumber: student.cpr,
+      locale: locale || "en",
+    });
   };
 
   const isValidCpr = (cpr: string) => {
@@ -74,7 +117,7 @@ export default function ChangeStudentCpr({ student }: Props) {
   };
 
   return (
-    <div className="p-6">
+    <div className="">
       <Dialog open={isWarningOpen} onOpenChange={setIsWarningOpen}>
         <DialogTrigger asChild>
           <Button
@@ -247,10 +290,13 @@ export default function ChangeStudentCpr({ student }: Props) {
                 !newCpr ||
                 !isValidCpr(newCpr) ||
                 !confirmationChecked ||
-                isProcessing
+                isProcessing ||
+                isPending
               }
             >
-              {isProcessing ? t("processing") : t("changeApplicantCPR")}
+              {isProcessing || isPending
+                ? t("processing")
+                : t("changeApplicantCPR")}
             </Button>
           </DialogFooter>
         </DialogContent>

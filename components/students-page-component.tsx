@@ -180,8 +180,8 @@ export default function StudentsPageComponent({
                       : "No"
                   }
                   masterApplicationStatus={
-                    student.applications &&
-                    student.applications.items.filter(
+                    student.m_masterApplications &&
+                    student.m_masterApplications.items.filter(
                       (app) => app?._deleted !== true
                     ).length > 0
                       ? "Yes"

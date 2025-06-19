@@ -585,7 +585,7 @@ export const ApplicationForm: FC<TApplicationForm> = ({
                   <div className="flex flex-col gap-2">
                     <Textarea
                       {...field}
-                      className="max-h-96 min-h-40"
+                      className="max-h-96 min-h-48"
                       onChange={(e) => field.onChange(e.target.value)}
                     />
                     <WordCounter value={field.value} maxWords={100} />
