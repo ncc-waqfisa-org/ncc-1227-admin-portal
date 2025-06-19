@@ -187,6 +187,14 @@
         "updateInvalidApplicationsStatuses": {
           "deploymentBucketName": "amplify-ncc-masterdev-2e2e0-deployment",
           "s3Key": "amplify-builds/updateInvalidApplicationsStatuses-7330432f58562f31656f-build.zip"
+        },
+        "fixStudentWrongCprNumber": {
+          "deploymentBucketName": "amplify-ncc-masterdev-2e2e0-deployment",
+          "s3Key": "amplify-builds/fixStudentWrongCprNumber-50536e485a4d55774757-build.zip"
+        },
+        "fixStudentWrongCprNumberApi": {
+          "deploymentBucketName": "amplify-ncc-masterdev-2e2e0-deployment",
+          "s3Key": "amplify-builds/fixStudentWrongCprNumberApi-3276754a32565a563944-build.zip"
         }
       },
       "storage": {

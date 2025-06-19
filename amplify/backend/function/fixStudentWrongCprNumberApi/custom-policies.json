@@ -1,0 +1,24 @@
+[
+  {
+    "Effect": "Allow",
+    "Action": [
+      "lambda:InvokeFunction"
+    ],
+    "Resource": [
+      {
+        "Fn::Sub": [
+          "arn:aws:lambda:${region}:${accountId}:function:${workerFunctionName}-${env}",
+          {
+            "region": {
+              "Ref": "AWS::Region"
+            },
+            "accountId": {
+              "Ref": "AWS::AccountId"
+            },
+            "workerFunctionName": "fixStudentWrongCprNumber"
+          }
+        ]
+      }
+    ]
+  }
+]

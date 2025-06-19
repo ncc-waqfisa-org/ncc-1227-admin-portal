@@ -130,6 +130,16 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
+    "fixStudentWrongCprNumber": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "fixStudentWrongCprNumberApi": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
     "generateProgramListCSVMaster": {
       "build": true,
       "providerPlugin": "awscloudformation",
@@ -528,6 +538,38 @@
         {
           "category": "function",
           "resourceName": "exportWebsiteStats"
+        }
+      ]
+    },
+    "AMPLIFY_function_fixStudentWrongCprNumberApi_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fixStudentWrongCprNumberApi"
+        }
+      ]
+    },
+    "AMPLIFY_function_fixStudentWrongCprNumberApi_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fixStudentWrongCprNumberApi"
+        }
+      ]
+    },
+    "AMPLIFY_function_fixStudentWrongCprNumber_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fixStudentWrongCprNumber"
+        }
+      ]
+    },
+    "AMPLIFY_function_fixStudentWrongCprNumber_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fixStudentWrongCprNumber"
         }
       ]
     },

@@ -244,7 +244,7 @@ const ApplicationInfo: FC<Props> = (props) => {
             <p className="font-medium">{t("studentReasonD")}</p>
             <Textarea
               disabled
-              className="max-h-96 min-h-40  sm:min-h-20 !cursor-default"
+              className="max-h-96 min-h-48  sm:min-h-40 !cursor-default"
             >
               {props.application.reason ?? t("empty")}
             </Textarea>
