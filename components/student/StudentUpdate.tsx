@@ -185,7 +185,7 @@ export default function ViewAccount({ student, applicationId }: Props) {
         address: yup.string().required(`${tErrors("requiredField")}`),
         placeOfBirth: yup.string().required(`${tErrors("requiredField")}`),
         familyIncome: yup.string().required(`${tErrors("requiredField")}`),
-        familyIncomeProofDocs: yup.array(yup.string().nullable()),
+        familyIncomeProofDocs: yup.array(yup.string().nullable()).nullable(),
         familyIncomeProofDocsFile: yup.array(yup.string()),
         nationalityCategory: yup
           .string()
@@ -889,16 +889,12 @@ export default function ViewAccount({ student, applicationId }: Props) {
               </label>
             </div>
           )}
-
           {/* Submit */}
           <button
-            className={cn(
-              "my-3 text-white md:col-span-2 btn btn-primary",
-              !dirty && "hidden"
-            )}
+            className={cn("my-3 text-white md:col-span-2 btn btn-primary")}
             type="submit"
             disabled={
-              isSubmitting || !isValid || !dirty
+              isSubmitting || !isValid
               // familyIncomeProofInvalid ||
               // (familyIncomeProofDocsFile.length === 0 &&
               //   (student.familyIncomeProofDocs ?? []).length === 0)
