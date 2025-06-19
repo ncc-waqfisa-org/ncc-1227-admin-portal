@@ -154,7 +154,7 @@ export default function StudentInfoCard({
         </div>
 
         {/* Account Actions Section */}
-        {isSuperAdmin && (
+        {/* {isSuperAdmin && (
           <>
             <Separator />
             <div>
@@ -167,7 +167,7 @@ export default function StudentInfoCard({
               </div>
             </div>
           </>
-        )}
+        )} */}
       </CardContent>
     </Card>
   );
