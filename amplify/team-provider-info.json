@@ -82,7 +82,7 @@
         },
         "syncApplications": {
           "deploymentBucketName": "amplify-ncc-masterdev-2e2e0-deployment",
-          "s3Key": "amplify-builds/syncApplications-566b6672756b7a684733-build.zip"
+          "s3Key": "amplify-builds/syncApplications-4f6c71627936626c3133-build.zip"
         },
         "updateGpaCsv": {
           "deploymentBucketName": "amplify-ncc-masterdev-2e2e0-deployment",

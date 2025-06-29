@@ -26,21 +26,21 @@ exports.handler = async (event) => {
 
     const student = requestBody.dynamodb.NewImage;
     const oldStudent = requestBody.dynamodb.OldImage;
-    console.log(student, oldStudent);
+    console.log("New Student Record", student);
+    console.log("Old Student Record", oldStudent);
 
     // Get all unapproved applications for the student
     const applications = await getApplications(student.cpr.S);
 
-    applications.forEach(application => async () => {
+    console.log("Applications to update:", applications);
 
-      console.log(application);
+    for (const application of applications) {
+      console.log("Processing application:", application);
+
       if (application) {
-        console.log("oldStudent", oldStudent);
-        console.log("student", student);
-
         await updateApplication(application, oldStudent, student);
       }
-    });
+    }
     console.log("Lambda executed successfully");
 
     return {

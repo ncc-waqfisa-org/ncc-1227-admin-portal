@@ -16,8 +16,8 @@ export type ModelAttachmentConditionInput = {
   signedContractDoc?: ModelStringInput | null,
   transcriptDoc?: ModelStringInput | null,
   schoolCertificate?: ModelStringInput | null,
-  and?: Array< ModelAttachmentConditionInput | null > | null,
-  or?: Array< ModelAttachmentConditionInput | null > | null,
+  and?: Array<ModelAttachmentConditionInput | null> | null,
+  or?: Array<ModelAttachmentConditionInput | null> | null,
   not?: ModelAttachmentConditionInput | null,
   _deleted?: ModelBooleanInput | null,
   createdAt?: ModelStringInput | null,
@@ -33,7 +33,7 @@ export type ModelStringInput = {
   gt?: string | null,
   contains?: string | null,
   notContains?: string | null,
-  between?: Array< string | null > | null,
+  between?: Array<string | null> | null,
   beginsWith?: string | null,
   attributeExists?: boolean | null,
   attributeType?: ModelAttributeTypes | null,
@@ -61,7 +61,7 @@ export type ModelSizeInput = {
   lt?: number | null,
   ge?: number | null,
   gt?: number | null,
-  between?: Array< number | null > | null,
+  between?: Array<number | null> | null,
 };
 
 export type ModelBooleanInput = {
@@ -135,6 +135,7 @@ export enum Status {
   NOT_COMPLETED = "NOT_COMPLETED",
   REJECTED = "REJECTED",
   WITHDRAWN = "WITHDRAWN",
+  NOT_COMPLETED_MARKED_BY_ADMIN = "NOT_COMPLETED_MARKED_BY_ADMIN",
 }
 
 
@@ -182,8 +183,8 @@ export type ModelApplicationConditionInput = {
   processed?: ModelIntInput | null,
   isFamilyIncomeVerified?: ModelBooleanInput | null,
   reason?: ModelStringInput | null,
-  and?: Array< ModelApplicationConditionInput | null > | null,
-  or?: Array< ModelApplicationConditionInput | null > | null,
+  and?: Array<ModelApplicationConditionInput | null> | null,
+  or?: Array<ModelApplicationConditionInput | null> | null,
   not?: ModelApplicationConditionInput | null,
   _deleted?: ModelBooleanInput | null,
   createdAt?: ModelStringInput | null,
@@ -200,7 +201,7 @@ export type ModelFloatInput = {
   lt?: number | null,
   ge?: number | null,
   gt?: number | null,
-  between?: Array< number | null > | null,
+  between?: Array<number | null> | null,
   attributeExists?: boolean | null,
   attributeType?: ModelAttributeTypes | null,
 };
@@ -234,7 +235,7 @@ export type ModelIDInput = {
   gt?: string | null,
   contains?: string | null,
   notContains?: string | null,
-  between?: Array< string | null > | null,
+  between?: Array<string | null> | null,
   beginsWith?: string | null,
   attributeExists?: boolean | null,
   attributeType?: ModelAttributeTypes | null,
@@ -248,7 +249,7 @@ export type ModelIntInput = {
   lt?: number | null,
   ge?: number | null,
   gt?: number | null,
-  between?: Array< number | null > | null,
+  between?: Array<number | null> | null,
   attributeExists?: boolean | null,
   attributeType?: ModelAttributeTypes | null,
 };
@@ -296,7 +297,7 @@ export type Application = {
 
 export type ModelAdminLogConnection = {
   __typename: "ModelAdminLogConnection",
-  items:  Array<AdminLog | null >,
+  items: Array<AdminLog | null>,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -343,7 +344,7 @@ export enum AdminRole {
 
 export type ModelStudentLogConnection = {
   __typename: "ModelStudentLogConnection",
-  items:  Array<StudentLog | null >,
+  items: Array<StudentLog | null>,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -385,7 +386,7 @@ export type Student = {
   studentOrderAmongSiblings?: number | null,
   familyIncome?: FamilyIncome | null,
   familyIncomeProofDoc?: string | null,
-  familyIncomeProofDocs?: Array< string | null > | null,
+  familyIncomeProofDocs?: Array<string | null> | null,
   preferredLanguage?: Language | null,
   graduationDate?: string | null,
   address?: string | null,
@@ -409,7 +410,7 @@ export type Student = {
   m_university?: BahrainUniversities | null,
   m_universityID?: string | null,
   m_oldProgram?: string | null,
-  m_applicantType?: Array< ApplicantType | null > | null,
+  m_applicantType?: Array<ApplicantType | null> | null,
   m_isEmployed?: boolean | null,
   m_placeOfEmployment?: string | null,
   m_income?: Income | null,
@@ -445,7 +446,7 @@ export enum Language {
 
 export type ModelApplicationConnection = {
   __typename: "ModelApplicationConnection",
-  items:  Array<Application | null >,
+  items: Array<Application | null>,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -478,7 +479,7 @@ export type ParentInfo = {
 
 export type ModelMasterLogConnection = {
   __typename: "ModelMasterLogConnection",
-  items:  Array<MasterLog | null >,
+  items: Array<MasterLog | null>,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -518,7 +519,7 @@ export type BahrainUniversities = {
 
 export type ModelStudentConnection = {
   __typename: "ModelStudentConnection",
-  items:  Array<Student | null >,
+  items: Array<Student | null>,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -537,7 +538,7 @@ export enum Income {
 
 export type ModelMasterApplicationConnection = {
   __typename: "ModelMasterApplicationConnection",
-  items:  Array<MasterApplication | null >,
+  items: Array<MasterApplication | null>,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -620,7 +621,7 @@ export enum Major {
 
 export type ModelProgramChoiceConnection = {
   __typename: "ModelProgramChoiceConnection",
-  items:  Array<ProgramChoice | null >,
+  items: Array<ProgramChoice | null>,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -688,7 +689,7 @@ export type University = {
 
 export type ModelProgramConnection = {
   __typename: "ModelProgramConnection",
-  items:  Array<Program | null >,
+  items: Array<Program | null>,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -743,8 +744,8 @@ export type ModelProgramChoiceConditionInput = {
   applicationID?: ModelIDInput | null,
   choiceOrder?: ModelIntInput | null,
   acceptanceLetterDoc?: ModelStringInput | null,
-  and?: Array< ModelProgramChoiceConditionInput | null > | null,
-  or?: Array< ModelProgramChoiceConditionInput | null > | null,
+  and?: Array<ModelProgramChoiceConditionInput | null> | null,
+  or?: Array<ModelProgramChoiceConditionInput | null> | null,
   not?: ModelProgramChoiceConditionInput | null,
   _deleted?: ModelBooleanInput | null,
   createdAt?: ModelStringInput | null,
@@ -794,8 +795,8 @@ export type ModelProgramConditionInput = {
   universityID?: ModelIDInput | null,
   isDeactivated?: ModelBooleanInput | null,
   isTrashed?: ModelBooleanInput | null,
-  and?: Array< ModelProgramConditionInput | null > | null,
-  or?: Array< ModelProgramConditionInput | null > | null,
+  and?: Array<ModelProgramConditionInput | null> | null,
+  or?: Array<ModelProgramConditionInput | null> | null,
   not?: ModelProgramConditionInput | null,
   _deleted?: ModelBooleanInput | null,
   createdAt?: ModelStringInput | null,
@@ -845,8 +846,8 @@ export type ModelUniversityConditionInput = {
   extensionDuration?: ModelIntInput | null,
   isException?: ModelIntInput | null,
   isTrashed?: ModelBooleanInput | null,
-  and?: Array< ModelUniversityConditionInput | null > | null,
-  or?: Array< ModelUniversityConditionInput | null > | null,
+  and?: Array<ModelUniversityConditionInput | null> | null,
+  or?: Array<ModelUniversityConditionInput | null> | null,
   not?: ModelUniversityConditionInput | null,
   _deleted?: ModelBooleanInput | null,
   createdAt?: ModelStringInput | null,
@@ -890,8 +891,8 @@ export type ModelAdminLogConditionInput = {
   dateTime?: ModelStringInput | null,
   snapshot?: ModelStringInput | null,
   reason?: ModelStringInput | null,
-  and?: Array< ModelAdminLogConditionInput | null > | null,
-  or?: Array< ModelAdminLogConditionInput | null > | null,
+  and?: Array<ModelAdminLogConditionInput | null> | null,
+  or?: Array<ModelAdminLogConditionInput | null> | null,
   not?: ModelAdminLogConditionInput | null,
   _deleted?: ModelBooleanInput | null,
   createdAt?: ModelStringInput | null,
@@ -938,8 +939,8 @@ export type ModelStudentLogConditionInput = {
   dateTime?: ModelStringInput | null,
   snapshot?: ModelStringInput | null,
   reason?: ModelStringInput | null,
-  and?: Array< ModelStudentLogConditionInput | null > | null,
-  or?: Array< ModelStudentLogConditionInput | null > | null,
+  and?: Array<ModelStudentLogConditionInput | null> | null,
+  or?: Array<ModelStudentLogConditionInput | null> | null,
   not?: ModelStudentLogConditionInput | null,
   _deleted?: ModelBooleanInput | null,
   createdAt?: ModelStringInput | null,
@@ -981,8 +982,8 @@ export type ModelAdminConditionInput = {
   email?: ModelStringInput | null,
   role?: ModelAdminRoleInput | null,
   isDeactivated?: ModelBooleanInput | null,
-  and?: Array< ModelAdminConditionInput | null > | null,
-  or?: Array< ModelAdminConditionInput | null > | null,
+  and?: Array<ModelAdminConditionInput | null> | null,
+  or?: Array<ModelAdminConditionInput | null> | null,
   not?: ModelAdminConditionInput | null,
   _deleted?: ModelBooleanInput | null,
   createdAt?: ModelStringInput | null,
@@ -1046,8 +1047,8 @@ export type ModelParentInfoConditionInput = {
   guardianThirdName?: ModelStringInput | null,
   guardianLastName?: ModelStringInput | null,
   guardianEmail?: ModelStringInput | null,
-  and?: Array< ModelParentInfoConditionInput | null > | null,
-  or?: Array< ModelParentInfoConditionInput | null > | null,
+  and?: Array<ModelParentInfoConditionInput | null> | null,
+  or?: Array<ModelParentInfoConditionInput | null> | null,
   not?: ModelParentInfoConditionInput | null,
   _deleted?: ModelBooleanInput | null,
   createdAt?: ModelStringInput | null,
@@ -1097,7 +1098,7 @@ export type CreateStudentInput = {
   studentOrderAmongSiblings?: number | null,
   familyIncome?: FamilyIncome | null,
   familyIncomeProofDoc?: string | null,
-  familyIncomeProofDocs?: Array< string | null > | null,
+  familyIncomeProofDocs?: Array<string | null> | null,
   preferredLanguage?: Language | null,
   graduationDate?: string | null,
   address?: string | null,
@@ -1116,7 +1117,7 @@ export type CreateStudentInput = {
   m_graduationYear?: string | null,
   m_universityID?: string | null,
   m_oldProgram?: string | null,
-  m_applicantType?: Array< ApplicantType | null > | null,
+  m_applicantType?: Array<ApplicantType | null> | null,
   m_isEmployed?: boolean | null,
   m_placeOfEmployment?: string | null,
   m_income?: Income | null,
@@ -1182,8 +1183,8 @@ export type ModelStudentConditionInput = {
   m_guardianLastName?: ModelStringInput | null,
   m_guardianEmail?: ModelStringInput | null,
   m_guardianAddress?: ModelStringInput | null,
-  and?: Array< ModelStudentConditionInput | null > | null,
-  or?: Array< ModelStudentConditionInput | null > | null,
+  and?: Array<ModelStudentConditionInput | null> | null,
+  or?: Array<ModelStudentConditionInput | null> | null,
   not?: ModelStudentConditionInput | null,
   _deleted?: ModelBooleanInput | null,
   createdAt?: ModelStringInput | null,
@@ -1201,8 +1202,8 @@ export type ModelLanguageInput = {
 };
 
 export type ModelApplicantTypeListInput = {
-  eq?: Array< ApplicantType | null > | null,
-  ne?: Array< ApplicantType | null > | null,
+  eq?: Array<ApplicantType | null> | null,
+  ne?: Array<ApplicantType | null> | null,
   contains?: ApplicantType | null,
   notContains?: ApplicantType | null,
 };
@@ -1229,7 +1230,7 @@ export type UpdateStudentInput = {
   studentOrderAmongSiblings?: number | null,
   familyIncome?: FamilyIncome | null,
   familyIncomeProofDoc?: string | null,
-  familyIncomeProofDocs?: Array< string | null > | null,
+  familyIncomeProofDocs?: Array<string | null> | null,
   preferredLanguage?: Language | null,
   graduationDate?: string | null,
   address?: string | null,
@@ -1248,7 +1249,7 @@ export type UpdateStudentInput = {
   m_graduationYear?: string | null,
   m_universityID?: string | null,
   m_oldProgram?: string | null,
-  m_applicantType?: Array< ApplicantType | null > | null,
+  m_applicantType?: Array<ApplicantType | null> | null,
   m_isEmployed?: boolean | null,
   m_placeOfEmployment?: string | null,
   m_income?: Income | null,
@@ -1286,8 +1287,8 @@ export type ModelBatchConditionInput = {
   updateApplicationEndDate?: ModelStringInput | null,
   signUpStartDate?: ModelStringInput | null,
   signUpEndDate?: ModelStringInput | null,
-  and?: Array< ModelBatchConditionInput | null > | null,
-  or?: Array< ModelBatchConditionInput | null > | null,
+  and?: Array<ModelBatchConditionInput | null> | null,
+  or?: Array<ModelBatchConditionInput | null> | null,
   not?: ModelBatchConditionInput | null,
   _deleted?: ModelBooleanInput | null,
   createdAt?: ModelStringInput | null,
@@ -1368,8 +1369,8 @@ export type ModelScholarshipConditionInput = {
   startDate?: ModelStringInput | null,
   scholarshipPeriod?: ModelIntInput | null,
   numberOfSemesters?: ModelIntInput | null,
-  and?: Array< ModelScholarshipConditionInput | null > | null,
-  or?: Array< ModelScholarshipConditionInput | null > | null,
+  and?: Array<ModelScholarshipConditionInput | null> | null,
+  or?: Array<ModelScholarshipConditionInput | null> | null,
   not?: ModelScholarshipConditionInput | null,
   _deleted?: ModelBooleanInput | null,
   createdAt?: ModelStringInput | null,
@@ -1447,7 +1448,7 @@ export type CreateStatisticsInput = {
   students?: string | null,
   applications?: string | null,
   today?: string | null,
-  participatingUniversities?: Array< string | null > | null,
+  participatingUniversities?: Array<string | null> | null,
   _version?: number | null,
 };
 
@@ -1466,8 +1467,8 @@ export type ModelStatisticsConditionInput = {
   applications?: ModelStringInput | null,
   today?: ModelStringInput | null,
   participatingUniversities?: ModelStringInput | null,
-  and?: Array< ModelStatisticsConditionInput | null > | null,
-  or?: Array< ModelStatisticsConditionInput | null > | null,
+  and?: Array<ModelStatisticsConditionInput | null> | null,
+  or?: Array<ModelStatisticsConditionInput | null> | null,
   not?: ModelStatisticsConditionInput | null,
   _deleted?: ModelBooleanInput | null,
   createdAt?: ModelStringInput | null,
@@ -1490,7 +1491,7 @@ export type Statistics = {
   students?: string | null,
   applications?: string | null,
   today?: string | null,
-  participatingUniversities?: Array< string | null > | null,
+  participatingUniversities?: Array<string | null> | null,
   createdAt: string,
   updatedAt: string,
   _version: number,
@@ -1513,7 +1514,7 @@ export type UpdateStatisticsInput = {
   students?: string | null,
   applications?: string | null,
   today?: string | null,
-  participatingUniversities?: Array< string | null > | null,
+  participatingUniversities?: Array<string | null> | null,
   _version?: number | null,
 };
 
@@ -1538,8 +1539,8 @@ export type ModelMasterBatchConditionInput = {
   updateApplicationEndDate?: ModelStringInput | null,
   signUpStartDate?: ModelStringInput | null,
   signUpEndDate?: ModelStringInput | null,
-  and?: Array< ModelMasterBatchConditionInput | null > | null,
-  or?: Array< ModelMasterBatchConditionInput | null > | null,
+  and?: Array<ModelMasterBatchConditionInput | null> | null,
+  or?: Array<ModelMasterBatchConditionInput | null> | null,
   not?: ModelMasterBatchConditionInput | null,
   _deleted?: ModelBooleanInput | null,
   createdAt?: ModelStringInput | null,
@@ -1594,8 +1595,8 @@ export type ModelMasterLogConditionInput = {
   dateTime?: ModelStringInput | null,
   snapshot?: ModelStringInput | null,
   reason?: ModelStringInput | null,
-  and?: Array< ModelMasterLogConditionInput | null > | null,
-  or?: Array< ModelMasterLogConditionInput | null > | null,
+  and?: Array<ModelMasterLogConditionInput | null> | null,
+  or?: Array<ModelMasterLogConditionInput | null> | null,
   not?: ModelMasterLogConditionInput | null,
   _deleted?: ModelBooleanInput | null,
   createdAt?: ModelStringInput | null,
@@ -1635,8 +1636,8 @@ export type ModelBahrainUniversitiesConditionInput = {
   universityNameAr?: ModelStringInput | null,
   isDeactivated?: ModelBooleanInput | null,
   availability?: ModelStringInput | null,
-  and?: Array< ModelBahrainUniversitiesConditionInput | null > | null,
-  or?: Array< ModelBahrainUniversitiesConditionInput | null > | null,
+  and?: Array<ModelBahrainUniversitiesConditionInput | null> | null,
+  or?: Array<ModelBahrainUniversitiesConditionInput | null> | null,
   not?: ModelBahrainUniversitiesConditionInput | null,
   _deleted?: ModelBooleanInput | null,
   createdAt?: ModelStringInput | null,
@@ -1706,8 +1707,8 @@ export type ModelMasterApplicationConditionInput = {
   incomeDoc?: ModelStringInput | null,
   toeflIELTSScore?: ModelFloatInput | null,
   isToeflIELTSScoreVerified?: ModelBooleanInput | null,
-  and?: Array< ModelMasterApplicationConditionInput | null > | null,
-  or?: Array< ModelMasterApplicationConditionInput | null > | null,
+  and?: Array<ModelMasterApplicationConditionInput | null> | null,
+  or?: Array<ModelMasterApplicationConditionInput | null> | null,
   not?: ModelMasterApplicationConditionInput | null,
   _deleted?: ModelBooleanInput | null,
   createdAt?: ModelStringInput | null,
@@ -1767,7 +1768,7 @@ export type CreateMasterStatisticsInput = {
   students?: string | null,
   applications?: string | null,
   today?: string | null,
-  participatingUniversities?: Array< string | null > | null,
+  participatingUniversities?: Array<string | null> | null,
   applicationPerGenderHistogram?: string | null,
   registerAccountsPerGender?: string | null,
   majorsPerGenderHistogram?: string | null,
@@ -1794,8 +1795,8 @@ export type ModelMasterStatisticsConditionInput = {
   registerAccountsPerGender?: ModelStringInput | null,
   majorsPerGenderHistogram?: ModelStringInput | null,
   incomePerEmploymentStatus?: ModelStringInput | null,
-  and?: Array< ModelMasterStatisticsConditionInput | null > | null,
-  or?: Array< ModelMasterStatisticsConditionInput | null > | null,
+  and?: Array<ModelMasterStatisticsConditionInput | null> | null,
+  or?: Array<ModelMasterStatisticsConditionInput | null> | null,
   not?: ModelMasterStatisticsConditionInput | null,
   _deleted?: ModelBooleanInput | null,
   createdAt?: ModelStringInput | null,
@@ -1818,7 +1819,7 @@ export type MasterStatistics = {
   students?: string | null,
   applications?: string | null,
   today?: string | null,
-  participatingUniversities?: Array< string | null > | null,
+  participatingUniversities?: Array<string | null> | null,
   applicationPerGenderHistogram?: string | null,
   registerAccountsPerGender?: string | null,
   majorsPerGenderHistogram?: string | null,
@@ -1845,7 +1846,7 @@ export type UpdateMasterStatisticsInput = {
   students?: string | null,
   applications?: string | null,
   today?: string | null,
-  participatingUniversities?: Array< string | null > | null,
+  participatingUniversities?: Array<string | null> | null,
   applicationPerGenderHistogram?: string | null,
   registerAccountsPerGender?: string | null,
   majorsPerGenderHistogram?: string | null,
@@ -1876,8 +1877,8 @@ export type ModelMasterAttachmentConditionInput = {
   universityCertificate?: ModelStringInput | null,
   toeflIELTSCertificate?: ModelStringInput | null,
   acceptanceLetterDoc?: ModelStringInput | null,
-  and?: Array< ModelMasterAttachmentConditionInput | null > | null,
-  or?: Array< ModelMasterAttachmentConditionInput | null > | null,
+  and?: Array<ModelMasterAttachmentConditionInput | null> | null,
+  or?: Array<ModelMasterAttachmentConditionInput | null> | null,
   not?: ModelMasterAttachmentConditionInput | null,
   _deleted?: ModelBooleanInput | null,
   createdAt?: ModelStringInput | null,
@@ -1914,8 +1915,8 @@ export type ModelMasterAppliedUniversitiesConditionInput = {
   universityNameAr?: ModelStringInput | null,
   isDeactivated?: ModelBooleanInput | null,
   availability?: ModelStringInput | null,
-  and?: Array< ModelMasterAppliedUniversitiesConditionInput | null > | null,
-  or?: Array< ModelMasterAppliedUniversitiesConditionInput | null > | null,
+  and?: Array<ModelMasterAppliedUniversitiesConditionInput | null> | null,
+  or?: Array<ModelMasterAppliedUniversitiesConditionInput | null> | null,
   not?: ModelMasterAppliedUniversitiesConditionInput | null,
   _deleted?: ModelBooleanInput | null,
   createdAt?: ModelStringInput | null,
@@ -1972,8 +1973,8 @@ export type ModelMasterScholarshipConditionInput = {
   startDate?: ModelStringInput | null,
   scholarshipPeriod?: ModelIntInput | null,
   numberOfSemesters?: ModelIntInput | null,
-  and?: Array< ModelMasterScholarshipConditionInput | null > | null,
-  or?: Array< ModelMasterScholarshipConditionInput | null > | null,
+  and?: Array<ModelMasterScholarshipConditionInput | null> | null,
+  or?: Array<ModelMasterScholarshipConditionInput | null> | null,
   not?: ModelMasterScholarshipConditionInput | null,
   _deleted?: ModelBooleanInput | null,
   createdAt?: ModelStringInput | null,
@@ -2039,15 +2040,15 @@ export type ModelAttachmentFilterInput = {
   schoolCertificate?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  and?: Array< ModelAttachmentFilterInput | null > | null,
-  or?: Array< ModelAttachmentFilterInput | null > | null,
+  and?: Array<ModelAttachmentFilterInput | null> | null,
+  or?: Array<ModelAttachmentFilterInput | null> | null,
   not?: ModelAttachmentFilterInput | null,
   _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelAttachmentConnection = {
   __typename: "ModelAttachmentConnection",
-  items:  Array<Attachment | null >,
+  items: Array<Attachment | null>,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -2077,8 +2078,8 @@ export type ModelApplicationFilterInput = {
   reason?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  and?: Array< ModelApplicationFilterInput | null > | null,
-  or?: Array< ModelApplicationFilterInput | null > | null,
+  and?: Array<ModelApplicationFilterInput | null> | null,
+  or?: Array<ModelApplicationFilterInput | null> | null,
   not?: ModelApplicationFilterInput | null,
   _deleted?: ModelBooleanInput | null,
   programApplicationId?: ModelIDInput | null,
@@ -2094,8 +2095,8 @@ export type ModelProgramChoiceFilterInput = {
   acceptanceLetterDoc?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  and?: Array< ModelProgramChoiceFilterInput | null > | null,
-  or?: Array< ModelProgramChoiceFilterInput | null > | null,
+  and?: Array<ModelProgramChoiceFilterInput | null> | null,
+  or?: Array<ModelProgramChoiceFilterInput | null> | null,
   not?: ModelProgramChoiceFilterInput | null,
   _deleted?: ModelBooleanInput | null,
   applicationProgramsId?: ModelIDInput | null,
@@ -2115,8 +2116,8 @@ export type ModelProgramFilterInput = {
   isTrashed?: ModelBooleanInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  and?: Array< ModelProgramFilterInput | null > | null,
-  or?: Array< ModelProgramFilterInput | null > | null,
+  and?: Array<ModelProgramFilterInput | null> | null,
+  or?: Array<ModelProgramFilterInput | null> | null,
   not?: ModelProgramFilterInput | null,
   _deleted?: ModelBooleanInput | null,
   universityProgramsId?: ModelIDInput | null,
@@ -2134,15 +2135,15 @@ export type ModelUniversityFilterInput = {
   isTrashed?: ModelBooleanInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  and?: Array< ModelUniversityFilterInput | null > | null,
-  or?: Array< ModelUniversityFilterInput | null > | null,
+  and?: Array<ModelUniversityFilterInput | null> | null,
+  or?: Array<ModelUniversityFilterInput | null> | null,
   not?: ModelUniversityFilterInput | null,
   _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelUniversityConnection = {
   __typename: "ModelUniversityConnection",
-  items:  Array<University | null >,
+  items: Array<University | null>,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -2156,8 +2157,8 @@ export type ModelAdminLogFilterInput = {
   reason?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  and?: Array< ModelAdminLogFilterInput | null > | null,
-  or?: Array< ModelAdminLogFilterInput | null > | null,
+  and?: Array<ModelAdminLogFilterInput | null> | null,
+  or?: Array<ModelAdminLogFilterInput | null> | null,
   not?: ModelAdminLogFilterInput | null,
   _deleted?: ModelBooleanInput | null,
   applicationAdminLogsId?: ModelIDInput | null,
@@ -2174,8 +2175,8 @@ export type ModelStudentLogFilterInput = {
   reason?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  and?: Array< ModelStudentLogFilterInput | null > | null,
-  or?: Array< ModelStudentLogFilterInput | null > | null,
+  and?: Array<ModelStudentLogFilterInput | null> | null,
+  or?: Array<ModelStudentLogFilterInput | null> | null,
   not?: ModelStudentLogFilterInput | null,
   _deleted?: ModelBooleanInput | null,
   applicationStudentLogsId?: ModelIDInput | null,
@@ -2192,8 +2193,8 @@ export type ModelAdminFilterInput = {
   id?: ModelIDInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  and?: Array< ModelAdminFilterInput | null > | null,
-  or?: Array< ModelAdminFilterInput | null > | null,
+  and?: Array<ModelAdminFilterInput | null> | null,
+  or?: Array<ModelAdminFilterInput | null> | null,
   not?: ModelAdminFilterInput | null,
   _deleted?: ModelBooleanInput | null,
 };
@@ -2206,7 +2207,7 @@ export enum ModelSortDirection {
 
 export type ModelAdminConnection = {
   __typename: "ModelAdminConnection",
-  items:  Array<Admin | null >,
+  items: Array<Admin | null>,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -2231,15 +2232,15 @@ export type ModelParentInfoFilterInput = {
   guardianEmail?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  and?: Array< ModelParentInfoFilterInput | null > | null,
-  or?: Array< ModelParentInfoFilterInput | null > | null,
+  and?: Array<ModelParentInfoFilterInput | null> | null,
+  or?: Array<ModelParentInfoFilterInput | null> | null,
   not?: ModelParentInfoFilterInput | null,
   _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelParentInfoConnection = {
   __typename: "ModelParentInfoConnection",
-  items:  Array<ParentInfo | null >,
+  items: Array<ParentInfo | null>,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -2297,8 +2298,8 @@ export type ModelStudentFilterInput = {
   id?: ModelIDInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  and?: Array< ModelStudentFilterInput | null > | null,
-  or?: Array< ModelStudentFilterInput | null > | null,
+  and?: Array<ModelStudentFilterInput | null> | null,
+  or?: Array<ModelStudentFilterInput | null> | null,
   not?: ModelStudentFilterInput | null,
   _deleted?: ModelBooleanInput | null,
 };
@@ -2313,15 +2314,15 @@ export type ModelBatchFilterInput = {
   id?: ModelIDInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  and?: Array< ModelBatchFilterInput | null > | null,
-  or?: Array< ModelBatchFilterInput | null > | null,
+  and?: Array<ModelBatchFilterInput | null> | null,
+  or?: Array<ModelBatchFilterInput | null> | null,
   not?: ModelBatchFilterInput | null,
   _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelBatchConnection = {
   __typename: "ModelBatchConnection",
-  items:  Array<Batch | null >,
+  items: Array<Batch | null>,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -2345,15 +2346,15 @@ export type ModelScholarshipFilterInput = {
   numberOfSemesters?: ModelIntInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  and?: Array< ModelScholarshipFilterInput | null > | null,
-  or?: Array< ModelScholarshipFilterInput | null > | null,
+  and?: Array<ModelScholarshipFilterInput | null> | null,
+  or?: Array<ModelScholarshipFilterInput | null> | null,
   not?: ModelScholarshipFilterInput | null,
   _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelScholarshipConnection = {
   __typename: "ModelScholarshipConnection",
-  items:  Array<Scholarship | null >,
+  items: Array<Scholarship | null>,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -2376,15 +2377,15 @@ export type ModelStatisticsFilterInput = {
   participatingUniversities?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  and?: Array< ModelStatisticsFilterInput | null > | null,
-  or?: Array< ModelStatisticsFilterInput | null > | null,
+  and?: Array<ModelStatisticsFilterInput | null> | null,
+  or?: Array<ModelStatisticsFilterInput | null> | null,
   not?: ModelStatisticsFilterInput | null,
   _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelStatisticsConnection = {
   __typename: "ModelStatisticsConnection",
-  items:  Array<Statistics | null >,
+  items: Array<Statistics | null>,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -2399,15 +2400,15 @@ export type ModelMasterBatchFilterInput = {
   id?: ModelIDInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  and?: Array< ModelMasterBatchFilterInput | null > | null,
-  or?: Array< ModelMasterBatchFilterInput | null > | null,
+  and?: Array<ModelMasterBatchFilterInput | null> | null,
+  or?: Array<ModelMasterBatchFilterInput | null> | null,
   not?: ModelMasterBatchFilterInput | null,
   _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelMasterBatchConnection = {
   __typename: "ModelMasterBatchConnection",
-  items:  Array<MasterBatch | null >,
+  items: Array<MasterBatch | null>,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -2421,8 +2422,8 @@ export type ModelMasterLogFilterInput = {
   reason?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  and?: Array< ModelMasterLogFilterInput | null > | null,
-  or?: Array< ModelMasterLogFilterInput | null > | null,
+  and?: Array<ModelMasterLogFilterInput | null> | null,
+  or?: Array<ModelMasterLogFilterInput | null> | null,
   not?: ModelMasterLogFilterInput | null,
   _deleted?: ModelBooleanInput | null,
   studentM_MasterLogsCpr?: ModelStringInput | null,
@@ -2437,15 +2438,15 @@ export type ModelBahrainUniversitiesFilterInput = {
   availability?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  and?: Array< ModelBahrainUniversitiesFilterInput | null > | null,
-  or?: Array< ModelBahrainUniversitiesFilterInput | null > | null,
+  and?: Array<ModelBahrainUniversitiesFilterInput | null> | null,
+  or?: Array<ModelBahrainUniversitiesFilterInput | null> | null,
   not?: ModelBahrainUniversitiesFilterInput | null,
   _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelBahrainUniversitiesConnection = {
   __typename: "ModelBahrainUniversitiesConnection",
-  items:  Array<BahrainUniversities | null >,
+  items: Array<BahrainUniversities | null>,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -2475,8 +2476,8 @@ export type ModelMasterApplicationFilterInput = {
   isToeflIELTSScoreVerified?: ModelBooleanInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  and?: Array< ModelMasterApplicationFilterInput | null > | null,
-  or?: Array< ModelMasterApplicationFilterInput | null > | null,
+  and?: Array<ModelMasterApplicationFilterInput | null> | null,
+  or?: Array<ModelMasterApplicationFilterInput | null> | null,
   not?: ModelMasterApplicationFilterInput | null,
   _deleted?: ModelBooleanInput | null,
   masterApplicationAttachmentId?: ModelIDInput | null,
@@ -2504,15 +2505,15 @@ export type ModelMasterStatisticsFilterInput = {
   incomePerEmploymentStatus?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  and?: Array< ModelMasterStatisticsFilterInput | null > | null,
-  or?: Array< ModelMasterStatisticsFilterInput | null > | null,
+  and?: Array<ModelMasterStatisticsFilterInput | null> | null,
+  or?: Array<ModelMasterStatisticsFilterInput | null> | null,
   not?: ModelMasterStatisticsFilterInput | null,
   _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelMasterStatisticsConnection = {
   __typename: "ModelMasterStatisticsConnection",
-  items:  Array<MasterStatistics | null >,
+  items: Array<MasterStatistics | null>,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -2527,15 +2528,15 @@ export type ModelMasterAttachmentFilterInput = {
   acceptanceLetterDoc?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  and?: Array< ModelMasterAttachmentFilterInput | null > | null,
-  or?: Array< ModelMasterAttachmentFilterInput | null > | null,
+  and?: Array<ModelMasterAttachmentFilterInput | null> | null,
+  or?: Array<ModelMasterAttachmentFilterInput | null> | null,
   not?: ModelMasterAttachmentFilterInput | null,
   _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelMasterAttachmentConnection = {
   __typename: "ModelMasterAttachmentConnection",
-  items:  Array<MasterAttachment | null >,
+  items: Array<MasterAttachment | null>,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -2548,15 +2549,15 @@ export type ModelMasterAppliedUniversitiesFilterInput = {
   availability?: ModelStringInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  and?: Array< ModelMasterAppliedUniversitiesFilterInput | null > | null,
-  or?: Array< ModelMasterAppliedUniversitiesFilterInput | null > | null,
+  and?: Array<ModelMasterAppliedUniversitiesFilterInput | null> | null,
+  or?: Array<ModelMasterAppliedUniversitiesFilterInput | null> | null,
   not?: ModelMasterAppliedUniversitiesFilterInput | null,
   _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelMasterAppliedUniversitiesConnection = {
   __typename: "ModelMasterAppliedUniversitiesConnection",
-  items:  Array<MasterAppliedUniversities | null >,
+  items: Array<MasterAppliedUniversities | null>,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -2580,15 +2581,15 @@ export type ModelMasterScholarshipFilterInput = {
   numberOfSemesters?: ModelIntInput | null,
   createdAt?: ModelStringInput | null,
   updatedAt?: ModelStringInput | null,
-  and?: Array< ModelMasterScholarshipFilterInput | null > | null,
-  or?: Array< ModelMasterScholarshipFilterInput | null > | null,
+  and?: Array<ModelMasterScholarshipFilterInput | null> | null,
+  or?: Array<ModelMasterScholarshipFilterInput | null> | null,
   not?: ModelMasterScholarshipFilterInput | null,
   _deleted?: ModelBooleanInput | null,
 };
 
 export type ModelMasterScholarshipConnection = {
   __typename: "ModelMasterScholarshipConnection",
-  items:  Array<MasterScholarship | null >,
+  items: Array<MasterScholarship | null>,
   nextToken?: string | null,
   startedAt?: number | null,
 };
@@ -2599,7 +2600,7 @@ export type ModelStringKeyConditionInput = {
   lt?: string | null,
   ge?: string | null,
   gt?: string | null,
-  between?: Array< string | null > | null,
+  between?: Array<string | null> | null,
   beginsWith?: string | null,
 };
 
@@ -2609,7 +2610,7 @@ export type ModelIntKeyConditionInput = {
   lt?: number | null,
   ge?: number | null,
   gt?: number | null,
-  between?: Array< number | null > | null,
+  between?: Array<number | null> | null,
 };
 
 export type ModelFloatKeyConditionInput = {
@@ -2618,7 +2619,7 @@ export type ModelFloatKeyConditionInput = {
   lt?: number | null,
   ge?: number | null,
   gt?: number | null,
-  between?: Array< number | null > | null,
+  between?: Array<number | null> | null,
 };
 
 export type ModelSubscriptionAttachmentFilterInput = {
@@ -2629,8 +2630,8 @@ export type ModelSubscriptionAttachmentFilterInput = {
   schoolCertificate?: ModelSubscriptionStringInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionAttachmentFilterInput | null > | null,
-  or?: Array< ModelSubscriptionAttachmentFilterInput | null > | null,
+  and?: Array<ModelSubscriptionAttachmentFilterInput | null> | null,
+  or?: Array<ModelSubscriptionAttachmentFilterInput | null> | null,
   _deleted?: ModelBooleanInput | null,
 };
 
@@ -2643,10 +2644,10 @@ export type ModelSubscriptionIDInput = {
   gt?: string | null,
   contains?: string | null,
   notContains?: string | null,
-  between?: Array< string | null > | null,
+  between?: Array<string | null> | null,
   beginsWith?: string | null,
-  in?: Array< string | null > | null,
-  notIn?: Array< string | null > | null,
+  in?: Array<string | null> | null,
+  notIn?: Array<string | null> | null,
 };
 
 export type ModelSubscriptionStringInput = {
@@ -2658,10 +2659,10 @@ export type ModelSubscriptionStringInput = {
   gt?: string | null,
   contains?: string | null,
   notContains?: string | null,
-  between?: Array< string | null > | null,
+  between?: Array<string | null> | null,
   beginsWith?: string | null,
-  in?: Array< string | null > | null,
-  notIn?: Array< string | null > | null,
+  in?: Array<string | null> | null,
+  notIn?: Array<string | null> | null,
 };
 
 export type ModelSubscriptionApplicationFilterInput = {
@@ -2689,8 +2690,8 @@ export type ModelSubscriptionApplicationFilterInput = {
   reason?: ModelSubscriptionStringInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionApplicationFilterInput | null > | null,
-  or?: Array< ModelSubscriptionApplicationFilterInput | null > | null,
+  and?: Array<ModelSubscriptionApplicationFilterInput | null> | null,
+  or?: Array<ModelSubscriptionApplicationFilterInput | null> | null,
   _deleted?: ModelBooleanInput | null,
   applicationAdminLogsId?: ModelSubscriptionIDInput | null,
   applicationStudentLogsId?: ModelSubscriptionIDInput | null,
@@ -2705,9 +2706,9 @@ export type ModelSubscriptionFloatInput = {
   lt?: number | null,
   ge?: number | null,
   gt?: number | null,
-  between?: Array< number | null > | null,
-  in?: Array< number | null > | null,
-  notIn?: Array< number | null > | null,
+  between?: Array<number | null> | null,
+  in?: Array<number | null> | null,
+  notIn?: Array<number | null> | null,
 };
 
 export type ModelSubscriptionBooleanInput = {
@@ -2722,9 +2723,9 @@ export type ModelSubscriptionIntInput = {
   lt?: number | null,
   ge?: number | null,
   gt?: number | null,
-  between?: Array< number | null > | null,
-  in?: Array< number | null > | null,
-  notIn?: Array< number | null > | null,
+  between?: Array<number | null> | null,
+  in?: Array<number | null> | null,
+  notIn?: Array<number | null> | null,
 };
 
 export type ModelSubscriptionProgramChoiceFilterInput = {
@@ -2735,8 +2736,8 @@ export type ModelSubscriptionProgramChoiceFilterInput = {
   acceptanceLetterDoc?: ModelSubscriptionStringInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionProgramChoiceFilterInput | null > | null,
-  or?: Array< ModelSubscriptionProgramChoiceFilterInput | null > | null,
+  and?: Array<ModelSubscriptionProgramChoiceFilterInput | null> | null,
+  or?: Array<ModelSubscriptionProgramChoiceFilterInput | null> | null,
   _deleted?: ModelBooleanInput | null,
 };
 
@@ -2753,8 +2754,8 @@ export type ModelSubscriptionProgramFilterInput = {
   isTrashed?: ModelSubscriptionBooleanInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionProgramFilterInput | null > | null,
-  or?: Array< ModelSubscriptionProgramFilterInput | null > | null,
+  and?: Array<ModelSubscriptionProgramFilterInput | null> | null,
+  or?: Array<ModelSubscriptionProgramFilterInput | null> | null,
   _deleted?: ModelBooleanInput | null,
   programApplicationsId?: ModelSubscriptionIDInput | null,
   programApplicationId?: ModelSubscriptionIDInput | null,
@@ -2772,8 +2773,8 @@ export type ModelSubscriptionUniversityFilterInput = {
   isTrashed?: ModelSubscriptionBooleanInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionUniversityFilterInput | null > | null,
-  or?: Array< ModelSubscriptionUniversityFilterInput | null > | null,
+  and?: Array<ModelSubscriptionUniversityFilterInput | null> | null,
+  or?: Array<ModelSubscriptionUniversityFilterInput | null> | null,
   _deleted?: ModelBooleanInput | null,
   universityProgramsId?: ModelSubscriptionIDInput | null,
   universityApplicationsId?: ModelSubscriptionIDInput | null,
@@ -2788,8 +2789,8 @@ export type ModelSubscriptionAdminLogFilterInput = {
   reason?: ModelSubscriptionStringInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionAdminLogFilterInput | null > | null,
-  or?: Array< ModelSubscriptionAdminLogFilterInput | null > | null,
+  and?: Array<ModelSubscriptionAdminLogFilterInput | null> | null,
+  or?: Array<ModelSubscriptionAdminLogFilterInput | null> | null,
   _deleted?: ModelBooleanInput | null,
 };
 
@@ -2802,8 +2803,8 @@ export type ModelSubscriptionStudentLogFilterInput = {
   reason?: ModelSubscriptionStringInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionStudentLogFilterInput | null > | null,
-  or?: Array< ModelSubscriptionStudentLogFilterInput | null > | null,
+  and?: Array<ModelSubscriptionStudentLogFilterInput | null> | null,
+  or?: Array<ModelSubscriptionStudentLogFilterInput | null> | null,
   _deleted?: ModelBooleanInput | null,
 };
 
@@ -2816,8 +2817,8 @@ export type ModelSubscriptionAdminFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionAdminFilterInput | null > | null,
-  or?: Array< ModelSubscriptionAdminFilterInput | null > | null,
+  and?: Array<ModelSubscriptionAdminFilterInput | null> | null,
+  or?: Array<ModelSubscriptionAdminFilterInput | null> | null,
   _deleted?: ModelBooleanInput | null,
   adminAdminLogsCpr?: ModelSubscriptionStringInput | null,
 };
@@ -2842,8 +2843,8 @@ export type ModelSubscriptionParentInfoFilterInput = {
   guardianEmail?: ModelSubscriptionStringInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionParentInfoFilterInput | null > | null,
-  or?: Array< ModelSubscriptionParentInfoFilterInput | null > | null,
+  and?: Array<ModelSubscriptionParentInfoFilterInput | null> | null,
+  or?: Array<ModelSubscriptionParentInfoFilterInput | null> | null,
   _deleted?: ModelBooleanInput | null,
 };
 
@@ -2900,8 +2901,8 @@ export type ModelSubscriptionStudentFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionStudentFilterInput | null > | null,
-  or?: Array< ModelSubscriptionStudentFilterInput | null > | null,
+  and?: Array<ModelSubscriptionStudentFilterInput | null> | null,
+  or?: Array<ModelSubscriptionStudentFilterInput | null> | null,
   _deleted?: ModelBooleanInput | null,
   studentStudentLogsCpr?: ModelSubscriptionStringInput | null,
   studentM_MasterLogsCpr?: ModelSubscriptionStringInput | null,
@@ -2917,8 +2918,8 @@ export type ModelSubscriptionBatchFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionBatchFilterInput | null > | null,
-  or?: Array< ModelSubscriptionBatchFilterInput | null > | null,
+  and?: Array<ModelSubscriptionBatchFilterInput | null> | null,
+  or?: Array<ModelSubscriptionBatchFilterInput | null> | null,
   _deleted?: ModelBooleanInput | null,
 };
 
@@ -2941,8 +2942,8 @@ export type ModelSubscriptionScholarshipFilterInput = {
   numberOfSemesters?: ModelSubscriptionIntInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionScholarshipFilterInput | null > | null,
-  or?: Array< ModelSubscriptionScholarshipFilterInput | null > | null,
+  and?: Array<ModelSubscriptionScholarshipFilterInput | null> | null,
+  or?: Array<ModelSubscriptionScholarshipFilterInput | null> | null,
   _deleted?: ModelBooleanInput | null,
 };
 
@@ -2964,8 +2965,8 @@ export type ModelSubscriptionStatisticsFilterInput = {
   participatingUniversities?: ModelSubscriptionStringInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionStatisticsFilterInput | null > | null,
-  or?: Array< ModelSubscriptionStatisticsFilterInput | null > | null,
+  and?: Array<ModelSubscriptionStatisticsFilterInput | null> | null,
+  or?: Array<ModelSubscriptionStatisticsFilterInput | null> | null,
   _deleted?: ModelBooleanInput | null,
 };
 
@@ -2979,8 +2980,8 @@ export type ModelSubscriptionMasterBatchFilterInput = {
   id?: ModelSubscriptionIDInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionMasterBatchFilterInput | null > | null,
-  or?: Array< ModelSubscriptionMasterBatchFilterInput | null > | null,
+  and?: Array<ModelSubscriptionMasterBatchFilterInput | null> | null,
+  or?: Array<ModelSubscriptionMasterBatchFilterInput | null> | null,
   _deleted?: ModelBooleanInput | null,
 };
 
@@ -2993,8 +2994,8 @@ export type ModelSubscriptionMasterLogFilterInput = {
   reason?: ModelSubscriptionStringInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionMasterLogFilterInput | null > | null,
-  or?: Array< ModelSubscriptionMasterLogFilterInput | null > | null,
+  and?: Array<ModelSubscriptionMasterLogFilterInput | null> | null,
+  or?: Array<ModelSubscriptionMasterLogFilterInput | null> | null,
   _deleted?: ModelBooleanInput | null,
 };
 
@@ -3006,8 +3007,8 @@ export type ModelSubscriptionBahrainUniversitiesFilterInput = {
   availability?: ModelSubscriptionStringInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionBahrainUniversitiesFilterInput | null > | null,
-  or?: Array< ModelSubscriptionBahrainUniversitiesFilterInput | null > | null,
+  and?: Array<ModelSubscriptionBahrainUniversitiesFilterInput | null> | null,
+  or?: Array<ModelSubscriptionBahrainUniversitiesFilterInput | null> | null,
   _deleted?: ModelBooleanInput | null,
 };
 
@@ -3036,8 +3037,8 @@ export type ModelSubscriptionMasterApplicationFilterInput = {
   isToeflIELTSScoreVerified?: ModelSubscriptionBooleanInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionMasterApplicationFilterInput | null > | null,
-  or?: Array< ModelSubscriptionMasterApplicationFilterInput | null > | null,
+  and?: Array<ModelSubscriptionMasterApplicationFilterInput | null> | null,
+  or?: Array<ModelSubscriptionMasterApplicationFilterInput | null> | null,
   _deleted?: ModelBooleanInput | null,
   masterApplicationAdminLogsId?: ModelSubscriptionIDInput | null,
   masterApplicationMasterLogsId?: ModelSubscriptionIDInput | null,
@@ -3067,8 +3068,8 @@ export type ModelSubscriptionMasterStatisticsFilterInput = {
   incomePerEmploymentStatus?: ModelSubscriptionStringInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionMasterStatisticsFilterInput | null > | null,
-  or?: Array< ModelSubscriptionMasterStatisticsFilterInput | null > | null,
+  and?: Array<ModelSubscriptionMasterStatisticsFilterInput | null> | null,
+  or?: Array<ModelSubscriptionMasterStatisticsFilterInput | null> | null,
   _deleted?: ModelBooleanInput | null,
 };
 
@@ -3082,8 +3083,8 @@ export type ModelSubscriptionMasterAttachmentFilterInput = {
   acceptanceLetterDoc?: ModelSubscriptionStringInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionMasterAttachmentFilterInput | null > | null,
-  or?: Array< ModelSubscriptionMasterAttachmentFilterInput | null > | null,
+  and?: Array<ModelSubscriptionMasterAttachmentFilterInput | null> | null,
+  or?: Array<ModelSubscriptionMasterAttachmentFilterInput | null> | null,
   _deleted?: ModelBooleanInput | null,
 };
 
@@ -3095,8 +3096,8 @@ export type ModelSubscriptionMasterAppliedUniversitiesFilterInput = {
   availability?: ModelSubscriptionStringInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionMasterAppliedUniversitiesFilterInput | null > | null,
-  or?: Array< ModelSubscriptionMasterAppliedUniversitiesFilterInput | null > | null,
+  and?: Array<ModelSubscriptionMasterAppliedUniversitiesFilterInput | null> | null,
+  or?: Array<ModelSubscriptionMasterAppliedUniversitiesFilterInput | null> | null,
   _deleted?: ModelBooleanInput | null,
 };
 
@@ -3119,8 +3120,8 @@ export type ModelSubscriptionMasterScholarshipFilterInput = {
   numberOfSemesters?: ModelSubscriptionIntInput | null,
   createdAt?: ModelSubscriptionStringInput | null,
   updatedAt?: ModelSubscriptionStringInput | null,
-  and?: Array< ModelSubscriptionMasterScholarshipFilterInput | null > | null,
-  or?: Array< ModelSubscriptionMasterScholarshipFilterInput | null > | null,
+  and?: Array<ModelSubscriptionMasterScholarshipFilterInput | null> | null,
+  or?: Array<ModelSubscriptionMasterScholarshipFilterInput | null> | null,
   _deleted?: ModelBooleanInput | null,
 };
 
@@ -3130,7 +3131,7 @@ export type CreateAttachmentMutationVariables = {
 };
 
 export type CreateAttachmentMutation = {
-  createAttachment?:  {
+  createAttachment?: {
     __typename: "Attachment",
     id: string,
     cprDoc?: string | null,
@@ -3151,7 +3152,7 @@ export type UpdateAttachmentMutationVariables = {
 };
 
 export type UpdateAttachmentMutation = {
-  updateAttachment?:  {
+  updateAttachment?: {
     __typename: "Attachment",
     id: string,
     cprDoc?: string | null,
@@ -3172,7 +3173,7 @@ export type DeleteAttachmentMutationVariables = {
 };
 
 export type DeleteAttachmentMutation = {
-  deleteAttachment?:  {
+  deleteAttachment?: {
     __typename: "Attachment",
     id: string,
     cprDoc?: string | null,
@@ -3193,24 +3194,24 @@ export type CreateApplicationMutationVariables = {
 };
 
 export type CreateApplicationMutation = {
-  createApplication?:  {
+  createApplication?: {
     __typename: "Application",
     id: string,
     gpa?: number | null,
     verifiedGPA?: number | null,
     status?: Status | null,
     attachmentID?: string | null,
-    adminLogs?:  {
+    adminLogs?: {
       __typename: "ModelAdminLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    studentLogs?:  {
+    studentLogs?: {
       __typename: "ModelStudentLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    attachment?:  {
+    attachment?: {
       __typename: "Attachment",
       id: string,
       cprDoc?: string | null,
@@ -3223,7 +3224,7 @@ export type CreateApplicationMutation = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
     } | null,
-    programs?:  {
+    programs?: {
       __typename: "ModelProgramChoiceConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -3236,7 +3237,7 @@ export type CreateApplicationMutation = {
     schoolType?: SchoolType | null,
     studentName?: string | null,
     programID?: string | null,
-    program?:  {
+    program?: {
       __typename: "Program",
       id: string,
       name?: string | null,
@@ -3256,7 +3257,7 @@ export type CreateApplicationMutation = {
       universityProgramsId?: string | null,
     } | null,
     universityID?: string | null,
-    university?:  {
+    university?: {
       __typename: "University",
       id: string,
       name?: string | null,
@@ -3275,7 +3276,7 @@ export type CreateApplicationMutation = {
     } | null,
     studentCPR: string,
     allProgramsTextOption?: string | null,
-    student?:  {
+    student?: {
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -3293,7 +3294,7 @@ export type CreateApplicationMutation = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -3312,7 +3313,7 @@ export type CreateApplicationMutation = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -3355,24 +3356,24 @@ export type UpdateApplicationMutationVariables = {
 };
 
 export type UpdateApplicationMutation = {
-  updateApplication?:  {
+  updateApplication?: {
     __typename: "Application",
     id: string,
     gpa?: number | null,
     verifiedGPA?: number | null,
     status?: Status | null,
     attachmentID?: string | null,
-    adminLogs?:  {
+    adminLogs?: {
       __typename: "ModelAdminLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    studentLogs?:  {
+    studentLogs?: {
       __typename: "ModelStudentLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    attachment?:  {
+    attachment?: {
       __typename: "Attachment",
       id: string,
       cprDoc?: string | null,
@@ -3385,7 +3386,7 @@ export type UpdateApplicationMutation = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
     } | null,
-    programs?:  {
+    programs?: {
       __typename: "ModelProgramChoiceConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -3398,7 +3399,7 @@ export type UpdateApplicationMutation = {
     schoolType?: SchoolType | null,
     studentName?: string | null,
     programID?: string | null,
-    program?:  {
+    program?: {
       __typename: "Program",
       id: string,
       name?: string | null,
@@ -3418,7 +3419,7 @@ export type UpdateApplicationMutation = {
       universityProgramsId?: string | null,
     } | null,
     universityID?: string | null,
-    university?:  {
+    university?: {
       __typename: "University",
       id: string,
       name?: string | null,
@@ -3437,7 +3438,7 @@ export type UpdateApplicationMutation = {
     } | null,
     studentCPR: string,
     allProgramsTextOption?: string | null,
-    student?:  {
+    student?: {
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -3455,7 +3456,7 @@ export type UpdateApplicationMutation = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -3474,7 +3475,7 @@ export type UpdateApplicationMutation = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -3517,24 +3518,24 @@ export type DeleteApplicationMutationVariables = {
 };
 
 export type DeleteApplicationMutation = {
-  deleteApplication?:  {
+  deleteApplication?: {
     __typename: "Application",
     id: string,
     gpa?: number | null,
     verifiedGPA?: number | null,
     status?: Status | null,
     attachmentID?: string | null,
-    adminLogs?:  {
+    adminLogs?: {
       __typename: "ModelAdminLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    studentLogs?:  {
+    studentLogs?: {
       __typename: "ModelStudentLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    attachment?:  {
+    attachment?: {
       __typename: "Attachment",
       id: string,
       cprDoc?: string | null,
@@ -3547,7 +3548,7 @@ export type DeleteApplicationMutation = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
     } | null,
-    programs?:  {
+    programs?: {
       __typename: "ModelProgramChoiceConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -3560,7 +3561,7 @@ export type DeleteApplicationMutation = {
     schoolType?: SchoolType | null,
     studentName?: string | null,
     programID?: string | null,
-    program?:  {
+    program?: {
       __typename: "Program",
       id: string,
       name?: string | null,
@@ -3580,7 +3581,7 @@ export type DeleteApplicationMutation = {
       universityProgramsId?: string | null,
     } | null,
     universityID?: string | null,
-    university?:  {
+    university?: {
       __typename: "University",
       id: string,
       name?: string | null,
@@ -3599,7 +3600,7 @@ export type DeleteApplicationMutation = {
     } | null,
     studentCPR: string,
     allProgramsTextOption?: string | null,
-    student?:  {
+    student?: {
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -3617,7 +3618,7 @@ export type DeleteApplicationMutation = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -3636,7 +3637,7 @@ export type DeleteApplicationMutation = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -3679,12 +3680,12 @@ export type CreateProgramChoiceMutationVariables = {
 };
 
 export type CreateProgramChoiceMutation = {
-  createProgramChoice?:  {
+  createProgramChoice?: {
     __typename: "ProgramChoice",
     id: string,
     programID: string,
     applicationID: string,
-    program?:  {
+    program?: {
       __typename: "Program",
       id: string,
       name?: string | null,
@@ -3703,7 +3704,7 @@ export type CreateProgramChoiceMutation = {
       _lastChangedAt: number,
       universityProgramsId?: string | null,
     } | null,
-    application?:  {
+    application?: {
       __typename: "Application",
       id: string,
       gpa?: number | null,
@@ -3754,12 +3755,12 @@ export type UpdateProgramChoiceMutationVariables = {
 };
 
 export type UpdateProgramChoiceMutation = {
-  updateProgramChoice?:  {
+  updateProgramChoice?: {
     __typename: "ProgramChoice",
     id: string,
     programID: string,
     applicationID: string,
-    program?:  {
+    program?: {
       __typename: "Program",
       id: string,
       name?: string | null,
@@ -3778,7 +3779,7 @@ export type UpdateProgramChoiceMutation = {
       _lastChangedAt: number,
       universityProgramsId?: string | null,
     } | null,
-    application?:  {
+    application?: {
       __typename: "Application",
       id: string,
       gpa?: number | null,
@@ -3829,12 +3830,12 @@ export type DeleteProgramChoiceMutationVariables = {
 };
 
 export type DeleteProgramChoiceMutation = {
-  deleteProgramChoice?:  {
+  deleteProgramChoice?: {
     __typename: "ProgramChoice",
     id: string,
     programID: string,
     applicationID: string,
-    program?:  {
+    program?: {
       __typename: "Program",
       id: string,
       name?: string | null,
@@ -3853,7 +3854,7 @@ export type DeleteProgramChoiceMutation = {
       _lastChangedAt: number,
       universityProgramsId?: string | null,
     } | null,
-    application?:  {
+    application?: {
       __typename: "Application",
       id: string,
       gpa?: number | null,
@@ -3904,7 +3905,7 @@ export type CreateProgramMutationVariables = {
 };
 
 export type CreateProgramMutation = {
-  createProgram?:  {
+  createProgram?: {
     __typename: "Program",
     id: string,
     name?: string | null,
@@ -3914,7 +3915,7 @@ export type CreateProgramMutation = {
     requirementsAr?: string | null,
     availability?: number | null,
     universityID: string,
-    university?:  {
+    university?: {
       __typename: "University",
       id: string,
       name?: string | null,
@@ -3931,14 +3932,14 @@ export type CreateProgramMutation = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
     } | null,
-    applications?:  {
+    applications?: {
       __typename: "ModelProgramChoiceConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
     isDeactivated?: boolean | null,
     isTrashed?: boolean | null,
-    application?:  {
+    application?: {
       __typename: "ModelApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -3958,7 +3959,7 @@ export type UpdateProgramMutationVariables = {
 };
 
 export type UpdateProgramMutation = {
-  updateProgram?:  {
+  updateProgram?: {
     __typename: "Program",
     id: string,
     name?: string | null,
@@ -3968,7 +3969,7 @@ export type UpdateProgramMutation = {
     requirementsAr?: string | null,
     availability?: number | null,
     universityID: string,
-    university?:  {
+    university?: {
       __typename: "University",
       id: string,
       name?: string | null,
@@ -3985,14 +3986,14 @@ export type UpdateProgramMutation = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
     } | null,
-    applications?:  {
+    applications?: {
       __typename: "ModelProgramChoiceConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
     isDeactivated?: boolean | null,
     isTrashed?: boolean | null,
-    application?:  {
+    application?: {
       __typename: "ModelApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -4012,7 +4013,7 @@ export type DeleteProgramMutationVariables = {
 };
 
 export type DeleteProgramMutation = {
-  deleteProgram?:  {
+  deleteProgram?: {
     __typename: "Program",
     id: string,
     name?: string | null,
@@ -4022,7 +4023,7 @@ export type DeleteProgramMutation = {
     requirementsAr?: string | null,
     availability?: number | null,
     universityID: string,
-    university?:  {
+    university?: {
       __typename: "University",
       id: string,
       name?: string | null,
@@ -4039,14 +4040,14 @@ export type DeleteProgramMutation = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
     } | null,
-    applications?:  {
+    applications?: {
       __typename: "ModelProgramChoiceConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
     isDeactivated?: boolean | null,
     isTrashed?: boolean | null,
-    application?:  {
+    application?: {
       __typename: "ModelApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -4066,12 +4067,12 @@ export type CreateUniversityMutationVariables = {
 };
 
 export type CreateUniversityMutation = {
-  createUniversity?:  {
+  createUniversity?: {
     __typename: "University",
     id: string,
     name?: string | null,
     nameAr?: string | null,
-    Programs?:  {
+    Programs?: {
       __typename: "ModelProgramConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -4082,7 +4083,7 @@ export type CreateUniversityMutation = {
     extensionDuration?: number | null,
     isException?: number | null,
     isTrashed?: boolean | null,
-    applications?:  {
+    applications?: {
       __typename: "ModelApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -4101,12 +4102,12 @@ export type UpdateUniversityMutationVariables = {
 };
 
 export type UpdateUniversityMutation = {
-  updateUniversity?:  {
+  updateUniversity?: {
     __typename: "University",
     id: string,
     name?: string | null,
     nameAr?: string | null,
-    Programs?:  {
+    Programs?: {
       __typename: "ModelProgramConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -4117,7 +4118,7 @@ export type UpdateUniversityMutation = {
     extensionDuration?: number | null,
     isException?: number | null,
     isTrashed?: boolean | null,
-    applications?:  {
+    applications?: {
       __typename: "ModelApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -4136,12 +4137,12 @@ export type DeleteUniversityMutationVariables = {
 };
 
 export type DeleteUniversityMutation = {
-  deleteUniversity?:  {
+  deleteUniversity?: {
     __typename: "University",
     id: string,
     name?: string | null,
     nameAr?: string | null,
-    Programs?:  {
+    Programs?: {
       __typename: "ModelProgramConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -4152,7 +4153,7 @@ export type DeleteUniversityMutation = {
     extensionDuration?: number | null,
     isException?: number | null,
     isTrashed?: boolean | null,
-    applications?:  {
+    applications?: {
       __typename: "ModelApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -4171,7 +4172,7 @@ export type CreateAdminLogMutationVariables = {
 };
 
 export type CreateAdminLogMutation = {
-  createAdminLog?:  {
+  createAdminLog?: {
     __typename: "AdminLog",
     id: string,
     applicationID: string,
@@ -4179,7 +4180,7 @@ export type CreateAdminLogMutation = {
     dateTime?: string | null,
     snapshot?: string | null,
     reason?: string | null,
-    admin?:  {
+    admin?: {
       __typename: "Admin",
       cpr: string,
       fullName?: string | null,
@@ -4209,7 +4210,7 @@ export type UpdateAdminLogMutationVariables = {
 };
 
 export type UpdateAdminLogMutation = {
-  updateAdminLog?:  {
+  updateAdminLog?: {
     __typename: "AdminLog",
     id: string,
     applicationID: string,
@@ -4217,7 +4218,7 @@ export type UpdateAdminLogMutation = {
     dateTime?: string | null,
     snapshot?: string | null,
     reason?: string | null,
-    admin?:  {
+    admin?: {
       __typename: "Admin",
       cpr: string,
       fullName?: string | null,
@@ -4247,7 +4248,7 @@ export type DeleteAdminLogMutationVariables = {
 };
 
 export type DeleteAdminLogMutation = {
-  deleteAdminLog?:  {
+  deleteAdminLog?: {
     __typename: "AdminLog",
     id: string,
     applicationID: string,
@@ -4255,7 +4256,7 @@ export type DeleteAdminLogMutation = {
     dateTime?: string | null,
     snapshot?: string | null,
     reason?: string | null,
-    admin?:  {
+    admin?: {
       __typename: "Admin",
       cpr: string,
       fullName?: string | null,
@@ -4285,7 +4286,7 @@ export type CreateStudentLogMutationVariables = {
 };
 
 export type CreateStudentLogMutation = {
-  createStudentLog?:  {
+  createStudentLog?: {
     __typename: "StudentLog",
     id: string,
     applicationID: string,
@@ -4293,7 +4294,7 @@ export type CreateStudentLogMutation = {
     dateTime?: string | null,
     snapshot?: string | null,
     reason?: string | null,
-    student?:  {
+    student?: {
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -4311,7 +4312,7 @@ export type CreateStudentLogMutation = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -4330,7 +4331,7 @@ export type CreateStudentLogMutation = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -4367,7 +4368,7 @@ export type UpdateStudentLogMutationVariables = {
 };
 
 export type UpdateStudentLogMutation = {
-  updateStudentLog?:  {
+  updateStudentLog?: {
     __typename: "StudentLog",
     id: string,
     applicationID: string,
@@ -4375,7 +4376,7 @@ export type UpdateStudentLogMutation = {
     dateTime?: string | null,
     snapshot?: string | null,
     reason?: string | null,
-    student?:  {
+    student?: {
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -4393,7 +4394,7 @@ export type UpdateStudentLogMutation = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -4412,7 +4413,7 @@ export type UpdateStudentLogMutation = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -4449,7 +4450,7 @@ export type DeleteStudentLogMutationVariables = {
 };
 
 export type DeleteStudentLogMutation = {
-  deleteStudentLog?:  {
+  deleteStudentLog?: {
     __typename: "StudentLog",
     id: string,
     applicationID: string,
@@ -4457,7 +4458,7 @@ export type DeleteStudentLogMutation = {
     dateTime?: string | null,
     snapshot?: string | null,
     reason?: string | null,
-    student?:  {
+    student?: {
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -4475,7 +4476,7 @@ export type DeleteStudentLogMutation = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -4494,7 +4495,7 @@ export type DeleteStudentLogMutation = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -4531,12 +4532,12 @@ export type CreateAdminMutationVariables = {
 };
 
 export type CreateAdminMutation = {
-  createAdmin?:  {
+  createAdmin?: {
     __typename: "Admin",
     cpr: string,
     fullName?: string | null,
     email?: string | null,
-    AdminLogs?:  {
+    AdminLogs?: {
       __typename: "ModelAdminLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -4557,12 +4558,12 @@ export type UpdateAdminMutationVariables = {
 };
 
 export type UpdateAdminMutation = {
-  updateAdmin?:  {
+  updateAdmin?: {
     __typename: "Admin",
     cpr: string,
     fullName?: string | null,
     email?: string | null,
-    AdminLogs?:  {
+    AdminLogs?: {
       __typename: "ModelAdminLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -4583,12 +4584,12 @@ export type DeleteAdminMutationVariables = {
 };
 
 export type DeleteAdminMutation = {
-  deleteAdmin?:  {
+  deleteAdmin?: {
     __typename: "Admin",
     cpr: string,
     fullName?: string | null,
     email?: string | null,
-    AdminLogs?:  {
+    AdminLogs?: {
       __typename: "ModelAdminLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -4609,7 +4610,7 @@ export type CreateParentInfoMutationVariables = {
 };
 
 export type CreateParentInfoMutation = {
-  createParentInfo?:  {
+  createParentInfo?: {
     __typename: "ParentInfo",
     id: string,
     guardianFullName?: string | null,
@@ -4642,7 +4643,7 @@ export type UpdateParentInfoMutationVariables = {
 };
 
 export type UpdateParentInfoMutation = {
-  updateParentInfo?:  {
+  updateParentInfo?: {
     __typename: "ParentInfo",
     id: string,
     guardianFullName?: string | null,
@@ -4675,7 +4676,7 @@ export type DeleteParentInfoMutationVariables = {
 };
 
 export type DeleteParentInfoMutation = {
-  deleteParentInfo?:  {
+  deleteParentInfo?: {
     __typename: "ParentInfo",
     id: string,
     guardianFullName?: string | null,
@@ -4708,7 +4709,7 @@ export type CreateStudentMutationVariables = {
 };
 
 export type CreateStudentMutation = {
-  createStudent?:  {
+  createStudent?: {
     __typename: "Student",
     cpr: string,
     cprDoc?: string | null,
@@ -4726,16 +4727,16 @@ export type CreateStudentMutation = {
     studentOrderAmongSiblings?: number | null,
     familyIncome?: FamilyIncome | null,
     familyIncomeProofDoc?: string | null,
-    familyIncomeProofDocs?: Array< string | null > | null,
+    familyIncomeProofDocs?: Array<string | null> | null,
     preferredLanguage?: Language | null,
     graduationDate?: string | null,
     address?: string | null,
-    applications?:  {
+    applications?: {
       __typename: "ModelApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    ParentInfo?:  {
+    ParentInfo?: {
       __typename: "ParentInfo",
       id: string,
       guardianFullName?: string | null,
@@ -4761,7 +4762,7 @@ export type CreateStudentMutation = {
       _lastChangedAt: number,
     } | null,
     parentInfoID?: string | null,
-    StudentLogs?:  {
+    StudentLogs?: {
       __typename: "ModelStudentLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -4772,7 +4773,7 @@ export type CreateStudentMutation = {
     lastName?: string | null,
     dob?: string | null,
     schoolMajor?: string | null,
-    m_MasterLogs?:  {
+    m_MasterLogs?: {
       __typename: "ModelMasterLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -4783,7 +4784,7 @@ export type CreateStudentMutation = {
     m_lastName?: string | null,
     m_numberOfFamilyMembers?: number | null,
     m_graduationYear?: string | null,
-    m_university?:  {
+    m_university?: {
       __typename: "BahrainUniversities",
       id: string,
       universityName?: string | null,
@@ -4798,7 +4799,7 @@ export type CreateStudentMutation = {
     } | null,
     m_universityID?: string | null,
     m_oldProgram?: string | null,
-    m_applicantType?: Array< ApplicantType | null > | null,
+    m_applicantType?: Array<ApplicantType | null> | null,
     m_isEmployed?: boolean | null,
     m_placeOfEmployment?: string | null,
     m_income?: Income | null,
@@ -4806,7 +4807,7 @@ export type CreateStudentMutation = {
     m_guardianCPR?: string | null,
     m_guardianFullName?: string | null,
     m_guardianCPRDoc?: string | null,
-    m_masterApplications?:  {
+    m_masterApplications?: {
       __typename: "ModelMasterApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -4831,7 +4832,7 @@ export type UpdateStudentMutationVariables = {
 };
 
 export type UpdateStudentMutation = {
-  updateStudent?:  {
+  updateStudent?: {
     __typename: "Student",
     cpr: string,
     cprDoc?: string | null,
@@ -4849,16 +4850,16 @@ export type UpdateStudentMutation = {
     studentOrderAmongSiblings?: number | null,
     familyIncome?: FamilyIncome | null,
     familyIncomeProofDoc?: string | null,
-    familyIncomeProofDocs?: Array< string | null > | null,
+    familyIncomeProofDocs?: Array<string | null> | null,
     preferredLanguage?: Language | null,
     graduationDate?: string | null,
     address?: string | null,
-    applications?:  {
+    applications?: {
       __typename: "ModelApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    ParentInfo?:  {
+    ParentInfo?: {
       __typename: "ParentInfo",
       id: string,
       guardianFullName?: string | null,
@@ -4884,7 +4885,7 @@ export type UpdateStudentMutation = {
       _lastChangedAt: number,
     } | null,
     parentInfoID?: string | null,
-    StudentLogs?:  {
+    StudentLogs?: {
       __typename: "ModelStudentLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -4895,7 +4896,7 @@ export type UpdateStudentMutation = {
     lastName?: string | null,
     dob?: string | null,
     schoolMajor?: string | null,
-    m_MasterLogs?:  {
+    m_MasterLogs?: {
       __typename: "ModelMasterLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -4906,7 +4907,7 @@ export type UpdateStudentMutation = {
     m_lastName?: string | null,
     m_numberOfFamilyMembers?: number | null,
     m_graduationYear?: string | null,
-    m_university?:  {
+    m_university?: {
       __typename: "BahrainUniversities",
       id: string,
       universityName?: string | null,
@@ -4921,7 +4922,7 @@ export type UpdateStudentMutation = {
     } | null,
     m_universityID?: string | null,
     m_oldProgram?: string | null,
-    m_applicantType?: Array< ApplicantType | null > | null,
+    m_applicantType?: Array<ApplicantType | null> | null,
     m_isEmployed?: boolean | null,
     m_placeOfEmployment?: string | null,
     m_income?: Income | null,
@@ -4929,7 +4930,7 @@ export type UpdateStudentMutation = {
     m_guardianCPR?: string | null,
     m_guardianFullName?: string | null,
     m_guardianCPRDoc?: string | null,
-    m_masterApplications?:  {
+    m_masterApplications?: {
       __typename: "ModelMasterApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -4954,7 +4955,7 @@ export type DeleteStudentMutationVariables = {
 };
 
 export type DeleteStudentMutation = {
-  deleteStudent?:  {
+  deleteStudent?: {
     __typename: "Student",
     cpr: string,
     cprDoc?: string | null,
@@ -4972,16 +4973,16 @@ export type DeleteStudentMutation = {
     studentOrderAmongSiblings?: number | null,
     familyIncome?: FamilyIncome | null,
     familyIncomeProofDoc?: string | null,
-    familyIncomeProofDocs?: Array< string | null > | null,
+    familyIncomeProofDocs?: Array<string | null> | null,
     preferredLanguage?: Language | null,
     graduationDate?: string | null,
     address?: string | null,
-    applications?:  {
+    applications?: {
       __typename: "ModelApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    ParentInfo?:  {
+    ParentInfo?: {
       __typename: "ParentInfo",
       id: string,
       guardianFullName?: string | null,
@@ -5007,7 +5008,7 @@ export type DeleteStudentMutation = {
       _lastChangedAt: number,
     } | null,
     parentInfoID?: string | null,
-    StudentLogs?:  {
+    StudentLogs?: {
       __typename: "ModelStudentLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -5018,7 +5019,7 @@ export type DeleteStudentMutation = {
     lastName?: string | null,
     dob?: string | null,
     schoolMajor?: string | null,
-    m_MasterLogs?:  {
+    m_MasterLogs?: {
       __typename: "ModelMasterLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -5029,7 +5030,7 @@ export type DeleteStudentMutation = {
     m_lastName?: string | null,
     m_numberOfFamilyMembers?: number | null,
     m_graduationYear?: string | null,
-    m_university?:  {
+    m_university?: {
       __typename: "BahrainUniversities",
       id: string,
       universityName?: string | null,
@@ -5044,7 +5045,7 @@ export type DeleteStudentMutation = {
     } | null,
     m_universityID?: string | null,
     m_oldProgram?: string | null,
-    m_applicantType?: Array< ApplicantType | null > | null,
+    m_applicantType?: Array<ApplicantType | null> | null,
     m_isEmployed?: boolean | null,
     m_placeOfEmployment?: string | null,
     m_income?: Income | null,
@@ -5052,7 +5053,7 @@ export type DeleteStudentMutation = {
     m_guardianCPR?: string | null,
     m_guardianFullName?: string | null,
     m_guardianCPRDoc?: string | null,
-    m_masterApplications?:  {
+    m_masterApplications?: {
       __typename: "ModelMasterApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -5077,7 +5078,7 @@ export type CreateBatchMutationVariables = {
 };
 
 export type CreateBatchMutation = {
-  createBatch?:  {
+  createBatch?: {
     __typename: "Batch",
     batch: number,
     createApplicationStartDate?: string | null,
@@ -5099,7 +5100,7 @@ export type UpdateBatchMutationVariables = {
 };
 
 export type UpdateBatchMutation = {
-  updateBatch?:  {
+  updateBatch?: {
     __typename: "Batch",
     batch: number,
     createApplicationStartDate?: string | null,
@@ -5121,7 +5122,7 @@ export type DeleteBatchMutationVariables = {
 };
 
 export type DeleteBatchMutation = {
-  deleteBatch?:  {
+  deleteBatch?: {
     __typename: "Batch",
     batch: number,
     createApplicationStartDate?: string | null,
@@ -5143,14 +5144,14 @@ export type CreateScholarshipMutationVariables = {
 };
 
 export type CreateScholarshipMutation = {
-  createScholarship?:  {
+  createScholarship?: {
     __typename: "Scholarship",
     id: string,
     status?: ScholarshipStatus | null,
     applicationID: string,
     batch?: number | null,
     isConfirmed?: boolean | null,
-    application?:  {
+    application?: {
       __typename: "Application",
       id: string,
       gpa?: number | null,
@@ -5208,14 +5209,14 @@ export type UpdateScholarshipMutationVariables = {
 };
 
 export type UpdateScholarshipMutation = {
-  updateScholarship?:  {
+  updateScholarship?: {
     __typename: "Scholarship",
     id: string,
     status?: ScholarshipStatus | null,
     applicationID: string,
     batch?: number | null,
     isConfirmed?: boolean | null,
-    application?:  {
+    application?: {
       __typename: "Application",
       id: string,
       gpa?: number | null,
@@ -5273,14 +5274,14 @@ export type DeleteScholarshipMutationVariables = {
 };
 
 export type DeleteScholarshipMutation = {
-  deleteScholarship?:  {
+  deleteScholarship?: {
     __typename: "Scholarship",
     id: string,
     status?: ScholarshipStatus | null,
     applicationID: string,
     batch?: number | null,
     isConfirmed?: boolean | null,
-    application?:  {
+    application?: {
       __typename: "Application",
       id: string,
       gpa?: number | null,
@@ -5338,7 +5339,7 @@ export type CreateStatisticsMutationVariables = {
 };
 
 export type CreateStatisticsMutation = {
-  createStatistics?:  {
+  createStatistics?: {
     __typename: "Statistics",
     id: number,
     batch: number,
@@ -5354,7 +5355,7 @@ export type CreateStatisticsMutation = {
     students?: string | null,
     applications?: string | null,
     today?: string | null,
-    participatingUniversities?: Array< string | null > | null,
+    participatingUniversities?: Array<string | null> | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -5369,7 +5370,7 @@ export type UpdateStatisticsMutationVariables = {
 };
 
 export type UpdateStatisticsMutation = {
-  updateStatistics?:  {
+  updateStatistics?: {
     __typename: "Statistics",
     id: number,
     batch: number,
@@ -5385,7 +5386,7 @@ export type UpdateStatisticsMutation = {
     students?: string | null,
     applications?: string | null,
     today?: string | null,
-    participatingUniversities?: Array< string | null > | null,
+    participatingUniversities?: Array<string | null> | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -5400,7 +5401,7 @@ export type DeleteStatisticsMutationVariables = {
 };
 
 export type DeleteStatisticsMutation = {
-  deleteStatistics?:  {
+  deleteStatistics?: {
     __typename: "Statistics",
     id: number,
     batch: number,
@@ -5416,7 +5417,7 @@ export type DeleteStatisticsMutation = {
     students?: string | null,
     applications?: string | null,
     today?: string | null,
-    participatingUniversities?: Array< string | null > | null,
+    participatingUniversities?: Array<string | null> | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -5431,7 +5432,7 @@ export type CreateMasterBatchMutationVariables = {
 };
 
 export type CreateMasterBatchMutation = {
-  createMasterBatch?:  {
+  createMasterBatch?: {
     __typename: "MasterBatch",
     batch: number,
     createApplicationStartDate?: string | null,
@@ -5453,7 +5454,7 @@ export type UpdateMasterBatchMutationVariables = {
 };
 
 export type UpdateMasterBatchMutation = {
-  updateMasterBatch?:  {
+  updateMasterBatch?: {
     __typename: "MasterBatch",
     batch: number,
     createApplicationStartDate?: string | null,
@@ -5475,7 +5476,7 @@ export type DeleteMasterBatchMutationVariables = {
 };
 
 export type DeleteMasterBatchMutation = {
-  deleteMasterBatch?:  {
+  deleteMasterBatch?: {
     __typename: "MasterBatch",
     batch: number,
     createApplicationStartDate?: string | null,
@@ -5497,7 +5498,7 @@ export type CreateMasterLogMutationVariables = {
 };
 
 export type CreateMasterLogMutation = {
-  createMasterLog?:  {
+  createMasterLog?: {
     __typename: "MasterLog",
     id: string,
     applicationID: string,
@@ -5505,7 +5506,7 @@ export type CreateMasterLogMutation = {
     dateTime?: string | null,
     snapshot?: string | null,
     reason?: string | null,
-    student?:  {
+    student?: {
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -5523,7 +5524,7 @@ export type CreateMasterLogMutation = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -5542,7 +5543,7 @@ export type CreateMasterLogMutation = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -5578,7 +5579,7 @@ export type UpdateMasterLogMutationVariables = {
 };
 
 export type UpdateMasterLogMutation = {
-  updateMasterLog?:  {
+  updateMasterLog?: {
     __typename: "MasterLog",
     id: string,
     applicationID: string,
@@ -5586,7 +5587,7 @@ export type UpdateMasterLogMutation = {
     dateTime?: string | null,
     snapshot?: string | null,
     reason?: string | null,
-    student?:  {
+    student?: {
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -5604,7 +5605,7 @@ export type UpdateMasterLogMutation = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -5623,7 +5624,7 @@ export type UpdateMasterLogMutation = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -5659,7 +5660,7 @@ export type DeleteMasterLogMutationVariables = {
 };
 
 export type DeleteMasterLogMutation = {
-  deleteMasterLog?:  {
+  deleteMasterLog?: {
     __typename: "MasterLog",
     id: string,
     applicationID: string,
@@ -5667,7 +5668,7 @@ export type DeleteMasterLogMutation = {
     dateTime?: string | null,
     snapshot?: string | null,
     reason?: string | null,
-    student?:  {
+    student?: {
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -5685,7 +5686,7 @@ export type DeleteMasterLogMutation = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -5704,7 +5705,7 @@ export type DeleteMasterLogMutation = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -5740,13 +5741,13 @@ export type CreateBahrainUniversitiesMutationVariables = {
 };
 
 export type CreateBahrainUniversitiesMutation = {
-  createBahrainUniversities?:  {
+  createBahrainUniversities?: {
     __typename: "BahrainUniversities",
     id: string,
     universityName?: string | null,
     universityNameAr?: string | null,
     isDeactivated?: boolean | null,
-    students?:  {
+    students?: {
       __typename: "ModelStudentConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -5766,13 +5767,13 @@ export type UpdateBahrainUniversitiesMutationVariables = {
 };
 
 export type UpdateBahrainUniversitiesMutation = {
-  updateBahrainUniversities?:  {
+  updateBahrainUniversities?: {
     __typename: "BahrainUniversities",
     id: string,
     universityName?: string | null,
     universityNameAr?: string | null,
     isDeactivated?: boolean | null,
-    students?:  {
+    students?: {
       __typename: "ModelStudentConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -5792,13 +5793,13 @@ export type DeleteBahrainUniversitiesMutationVariables = {
 };
 
 export type DeleteBahrainUniversitiesMutation = {
-  deleteBahrainUniversities?:  {
+  deleteBahrainUniversities?: {
     __typename: "BahrainUniversities",
     id: string,
     universityName?: string | null,
     universityNameAr?: string | null,
     isDeactivated?: boolean | null,
-    students?:  {
+    students?: {
       __typename: "ModelStudentConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -5818,28 +5819,28 @@ export type CreateMasterApplicationMutationVariables = {
 };
 
 export type CreateMasterApplicationMutation = {
-  createMasterApplication?:  {
+  createMasterApplication?: {
     __typename: "MasterApplication",
     id: string,
     gpa?: number | null,
     verifiedGPA?: number | null,
     status?: Status | null,
-    adminLogs?:  {
+    adminLogs?: {
       __typename: "ModelAdminLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    masterLogs?:  {
+    masterLogs?: {
       __typename: "ModelMasterLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    studentLogs?:  {
+    studentLogs?: {
       __typename: "ModelStudentLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    attachment?:  {
+    attachment?: {
       __typename: "MasterAttachment",
       id: string,
       cprDoc?: string | null,
@@ -5859,7 +5860,7 @@ export type CreateMasterApplicationMutation = {
     isEmailSent?: boolean | null,
     nationalityCategory?: Nationality | null,
     universityID: string,
-    university?:  {
+    university?: {
       __typename: "MasterAppliedUniversities",
       id: string,
       universityName: string,
@@ -5874,7 +5875,7 @@ export type CreateMasterApplicationMutation = {
     } | null,
     studentCPR: string,
     studentName?: string | null,
-    student?:  {
+    student?: {
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -5892,7 +5893,7 @@ export type CreateMasterApplicationMutation = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -5911,7 +5912,7 @@ export type CreateMasterApplicationMutation = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -5957,28 +5958,28 @@ export type UpdateMasterApplicationMutationVariables = {
 };
 
 export type UpdateMasterApplicationMutation = {
-  updateMasterApplication?:  {
+  updateMasterApplication?: {
     __typename: "MasterApplication",
     id: string,
     gpa?: number | null,
     verifiedGPA?: number | null,
     status?: Status | null,
-    adminLogs?:  {
+    adminLogs?: {
       __typename: "ModelAdminLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    masterLogs?:  {
+    masterLogs?: {
       __typename: "ModelMasterLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    studentLogs?:  {
+    studentLogs?: {
       __typename: "ModelStudentLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    attachment?:  {
+    attachment?: {
       __typename: "MasterAttachment",
       id: string,
       cprDoc?: string | null,
@@ -5998,7 +5999,7 @@ export type UpdateMasterApplicationMutation = {
     isEmailSent?: boolean | null,
     nationalityCategory?: Nationality | null,
     universityID: string,
-    university?:  {
+    university?: {
       __typename: "MasterAppliedUniversities",
       id: string,
       universityName: string,
@@ -6013,7 +6014,7 @@ export type UpdateMasterApplicationMutation = {
     } | null,
     studentCPR: string,
     studentName?: string | null,
-    student?:  {
+    student?: {
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -6031,7 +6032,7 @@ export type UpdateMasterApplicationMutation = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -6050,7 +6051,7 @@ export type UpdateMasterApplicationMutation = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -6096,28 +6097,28 @@ export type DeleteMasterApplicationMutationVariables = {
 };
 
 export type DeleteMasterApplicationMutation = {
-  deleteMasterApplication?:  {
+  deleteMasterApplication?: {
     __typename: "MasterApplication",
     id: string,
     gpa?: number | null,
     verifiedGPA?: number | null,
     status?: Status | null,
-    adminLogs?:  {
+    adminLogs?: {
       __typename: "ModelAdminLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    masterLogs?:  {
+    masterLogs?: {
       __typename: "ModelMasterLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    studentLogs?:  {
+    studentLogs?: {
       __typename: "ModelStudentLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    attachment?:  {
+    attachment?: {
       __typename: "MasterAttachment",
       id: string,
       cprDoc?: string | null,
@@ -6137,7 +6138,7 @@ export type DeleteMasterApplicationMutation = {
     isEmailSent?: boolean | null,
     nationalityCategory?: Nationality | null,
     universityID: string,
-    university?:  {
+    university?: {
       __typename: "MasterAppliedUniversities",
       id: string,
       universityName: string,
@@ -6152,7 +6153,7 @@ export type DeleteMasterApplicationMutation = {
     } | null,
     studentCPR: string,
     studentName?: string | null,
-    student?:  {
+    student?: {
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -6170,7 +6171,7 @@ export type DeleteMasterApplicationMutation = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -6189,7 +6190,7 @@ export type DeleteMasterApplicationMutation = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -6235,7 +6236,7 @@ export type CreateMasterStatisticsMutationVariables = {
 };
 
 export type CreateMasterStatisticsMutation = {
-  createMasterStatistics?:  {
+  createMasterStatistics?: {
     __typename: "MasterStatistics",
     id: number,
     batch: number,
@@ -6251,7 +6252,7 @@ export type CreateMasterStatisticsMutation = {
     students?: string | null,
     applications?: string | null,
     today?: string | null,
-    participatingUniversities?: Array< string | null > | null,
+    participatingUniversities?: Array<string | null> | null,
     applicationPerGenderHistogram?: string | null,
     registerAccountsPerGender?: string | null,
     majorsPerGenderHistogram?: string | null,
@@ -6270,7 +6271,7 @@ export type UpdateMasterStatisticsMutationVariables = {
 };
 
 export type UpdateMasterStatisticsMutation = {
-  updateMasterStatistics?:  {
+  updateMasterStatistics?: {
     __typename: "MasterStatistics",
     id: number,
     batch: number,
@@ -6286,7 +6287,7 @@ export type UpdateMasterStatisticsMutation = {
     students?: string | null,
     applications?: string | null,
     today?: string | null,
-    participatingUniversities?: Array< string | null > | null,
+    participatingUniversities?: Array<string | null> | null,
     applicationPerGenderHistogram?: string | null,
     registerAccountsPerGender?: string | null,
     majorsPerGenderHistogram?: string | null,
@@ -6305,7 +6306,7 @@ export type DeleteMasterStatisticsMutationVariables = {
 };
 
 export type DeleteMasterStatisticsMutation = {
-  deleteMasterStatistics?:  {
+  deleteMasterStatistics?: {
     __typename: "MasterStatistics",
     id: number,
     batch: number,
@@ -6321,7 +6322,7 @@ export type DeleteMasterStatisticsMutation = {
     students?: string | null,
     applications?: string | null,
     today?: string | null,
-    participatingUniversities?: Array< string | null > | null,
+    participatingUniversities?: Array<string | null> | null,
     applicationPerGenderHistogram?: string | null,
     registerAccountsPerGender?: string | null,
     majorsPerGenderHistogram?: string | null,
@@ -6340,7 +6341,7 @@ export type CreateMasterAttachmentMutationVariables = {
 };
 
 export type CreateMasterAttachmentMutation = {
-  createMasterAttachment?:  {
+  createMasterAttachment?: {
     __typename: "MasterAttachment",
     id: string,
     cprDoc?: string | null,
@@ -6363,7 +6364,7 @@ export type UpdateMasterAttachmentMutationVariables = {
 };
 
 export type UpdateMasterAttachmentMutation = {
-  updateMasterAttachment?:  {
+  updateMasterAttachment?: {
     __typename: "MasterAttachment",
     id: string,
     cprDoc?: string | null,
@@ -6386,7 +6387,7 @@ export type DeleteMasterAttachmentMutationVariables = {
 };
 
 export type DeleteMasterAttachmentMutation = {
-  deleteMasterAttachment?:  {
+  deleteMasterAttachment?: {
     __typename: "MasterAttachment",
     id: string,
     cprDoc?: string | null,
@@ -6409,13 +6410,13 @@ export type CreateMasterAppliedUniversitiesMutationVariables = {
 };
 
 export type CreateMasterAppliedUniversitiesMutation = {
-  createMasterAppliedUniversities?:  {
+  createMasterAppliedUniversities?: {
     __typename: "MasterAppliedUniversities",
     id: string,
     universityName: string,
     universityNameAr: string,
     isDeactivated?: boolean | null,
-    applications?:  {
+    applications?: {
       __typename: "ModelMasterApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -6435,13 +6436,13 @@ export type UpdateMasterAppliedUniversitiesMutationVariables = {
 };
 
 export type UpdateMasterAppliedUniversitiesMutation = {
-  updateMasterAppliedUniversities?:  {
+  updateMasterAppliedUniversities?: {
     __typename: "MasterAppliedUniversities",
     id: string,
     universityName: string,
     universityNameAr: string,
     isDeactivated?: boolean | null,
-    applications?:  {
+    applications?: {
       __typename: "ModelMasterApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -6461,13 +6462,13 @@ export type DeleteMasterAppliedUniversitiesMutationVariables = {
 };
 
 export type DeleteMasterAppliedUniversitiesMutation = {
-  deleteMasterAppliedUniversities?:  {
+  deleteMasterAppliedUniversities?: {
     __typename: "MasterAppliedUniversities",
     id: string,
     universityName: string,
     universityNameAr: string,
     isDeactivated?: boolean | null,
-    applications?:  {
+    applications?: {
       __typename: "ModelMasterApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -6487,14 +6488,14 @@ export type CreateMasterScholarshipMutationVariables = {
 };
 
 export type CreateMasterScholarshipMutation = {
-  createMasterScholarship?:  {
+  createMasterScholarship?: {
     __typename: "MasterScholarship",
     id: string,
     status?: ScholarshipStatus | null,
     applicationID: string,
     batch?: number | null,
     isConfirmed?: boolean | null,
-    application?:  {
+    application?: {
       __typename: "MasterApplication",
       id: string,
       gpa?: number | null,
@@ -6550,14 +6551,14 @@ export type UpdateMasterScholarshipMutationVariables = {
 };
 
 export type UpdateMasterScholarshipMutation = {
-  updateMasterScholarship?:  {
+  updateMasterScholarship?: {
     __typename: "MasterScholarship",
     id: string,
     status?: ScholarshipStatus | null,
     applicationID: string,
     batch?: number | null,
     isConfirmed?: boolean | null,
-    application?:  {
+    application?: {
       __typename: "MasterApplication",
       id: string,
       gpa?: number | null,
@@ -6613,14 +6614,14 @@ export type DeleteMasterScholarshipMutationVariables = {
 };
 
 export type DeleteMasterScholarshipMutation = {
-  deleteMasterScholarship?:  {
+  deleteMasterScholarship?: {
     __typename: "MasterScholarship",
     id: string,
     status?: ScholarshipStatus | null,
     applicationID: string,
     batch?: number | null,
     isConfirmed?: boolean | null,
-    application?:  {
+    application?: {
       __typename: "MasterApplication",
       id: string,
       gpa?: number | null,
@@ -6675,7 +6676,7 @@ export type GetAttachmentQueryVariables = {
 };
 
 export type GetAttachmentQuery = {
-  getAttachment?:  {
+  getAttachment?: {
     __typename: "Attachment",
     id: string,
     cprDoc?: string | null,
@@ -6697,9 +6698,9 @@ export type ListAttachmentsQueryVariables = {
 };
 
 export type ListAttachmentsQuery = {
-  listAttachments?:  {
+  listAttachments?: {
     __typename: "ModelAttachmentConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "Attachment",
       id: string,
       cprDoc?: string | null,
@@ -6711,7 +6712,7 @@ export type ListAttachmentsQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -6725,9 +6726,9 @@ export type SyncAttachmentsQueryVariables = {
 };
 
 export type SyncAttachmentsQuery = {
-  syncAttachments?:  {
+  syncAttachments?: {
     __typename: "ModelAttachmentConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "Attachment",
       id: string,
       cprDoc?: string | null,
@@ -6739,7 +6740,7 @@ export type SyncAttachmentsQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -6750,24 +6751,24 @@ export type GetApplicationQueryVariables = {
 };
 
 export type GetApplicationQuery = {
-  getApplication?:  {
+  getApplication?: {
     __typename: "Application",
     id: string,
     gpa?: number | null,
     verifiedGPA?: number | null,
     status?: Status | null,
     attachmentID?: string | null,
-    adminLogs?:  {
+    adminLogs?: {
       __typename: "ModelAdminLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    studentLogs?:  {
+    studentLogs?: {
       __typename: "ModelStudentLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    attachment?:  {
+    attachment?: {
       __typename: "Attachment",
       id: string,
       cprDoc?: string | null,
@@ -6780,7 +6781,7 @@ export type GetApplicationQuery = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
     } | null,
-    programs?:  {
+    programs?: {
       __typename: "ModelProgramChoiceConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -6793,7 +6794,7 @@ export type GetApplicationQuery = {
     schoolType?: SchoolType | null,
     studentName?: string | null,
     programID?: string | null,
-    program?:  {
+    program?: {
       __typename: "Program",
       id: string,
       name?: string | null,
@@ -6813,7 +6814,7 @@ export type GetApplicationQuery = {
       universityProgramsId?: string | null,
     } | null,
     universityID?: string | null,
-    university?:  {
+    university?: {
       __typename: "University",
       id: string,
       name?: string | null,
@@ -6832,7 +6833,7 @@ export type GetApplicationQuery = {
     } | null,
     studentCPR: string,
     allProgramsTextOption?: string | null,
-    student?:  {
+    student?: {
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -6850,7 +6851,7 @@ export type GetApplicationQuery = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -6869,7 +6870,7 @@ export type GetApplicationQuery = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -6913,9 +6914,9 @@ export type ListApplicationsQueryVariables = {
 };
 
 export type ListApplicationsQuery = {
-  listApplications?:  {
+  listApplications?: {
     __typename: "ModelApplicationConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "Application",
       id: string,
       gpa?: number | null,
@@ -6947,7 +6948,7 @@ export type ListApplicationsQuery = {
       programApplicationId?: string | null,
       universityApplicationsId?: string | null,
       applicationAttachmentId?: string | null,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -6961,9 +6962,9 @@ export type SyncApplicationsQueryVariables = {
 };
 
 export type SyncApplicationsQuery = {
-  syncApplications?:  {
+  syncApplications?: {
     __typename: "ModelApplicationConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "Application",
       id: string,
       gpa?: number | null,
@@ -6995,7 +6996,7 @@ export type SyncApplicationsQuery = {
       programApplicationId?: string | null,
       universityApplicationsId?: string | null,
       applicationAttachmentId?: string | null,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -7006,12 +7007,12 @@ export type GetProgramChoiceQueryVariables = {
 };
 
 export type GetProgramChoiceQuery = {
-  getProgramChoice?:  {
+  getProgramChoice?: {
     __typename: "ProgramChoice",
     id: string,
     programID: string,
     applicationID: string,
-    program?:  {
+    program?: {
       __typename: "Program",
       id: string,
       name?: string | null,
@@ -7030,7 +7031,7 @@ export type GetProgramChoiceQuery = {
       _lastChangedAt: number,
       universityProgramsId?: string | null,
     } | null,
-    application?:  {
+    application?: {
       __typename: "Application",
       id: string,
       gpa?: number | null,
@@ -7082,9 +7083,9 @@ export type ListProgramChoicesQueryVariables = {
 };
 
 export type ListProgramChoicesQuery = {
-  listProgramChoices?:  {
+  listProgramChoices?: {
     __typename: "ModelProgramChoiceConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "ProgramChoice",
       id: string,
       programID: string,
@@ -7098,7 +7099,7 @@ export type ListProgramChoicesQuery = {
       _lastChangedAt: number,
       applicationProgramsId?: string | null,
       programApplicationsId?: string | null,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -7112,9 +7113,9 @@ export type SyncProgramChoicesQueryVariables = {
 };
 
 export type SyncProgramChoicesQuery = {
-  syncProgramChoices?:  {
+  syncProgramChoices?: {
     __typename: "ModelProgramChoiceConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "ProgramChoice",
       id: string,
       programID: string,
@@ -7128,7 +7129,7 @@ export type SyncProgramChoicesQuery = {
       _lastChangedAt: number,
       applicationProgramsId?: string | null,
       programApplicationsId?: string | null,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -7139,7 +7140,7 @@ export type GetProgramQueryVariables = {
 };
 
 export type GetProgramQuery = {
-  getProgram?:  {
+  getProgram?: {
     __typename: "Program",
     id: string,
     name?: string | null,
@@ -7149,7 +7150,7 @@ export type GetProgramQuery = {
     requirementsAr?: string | null,
     availability?: number | null,
     universityID: string,
-    university?:  {
+    university?: {
       __typename: "University",
       id: string,
       name?: string | null,
@@ -7166,14 +7167,14 @@ export type GetProgramQuery = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
     } | null,
-    applications?:  {
+    applications?: {
       __typename: "ModelProgramChoiceConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
     isDeactivated?: boolean | null,
     isTrashed?: boolean | null,
-    application?:  {
+    application?: {
       __typename: "ModelApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -7194,9 +7195,9 @@ export type ListProgramsQueryVariables = {
 };
 
 export type ListProgramsQuery = {
-  listPrograms?:  {
+  listPrograms?: {
     __typename: "ModelProgramConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "Program",
       id: string,
       name?: string | null,
@@ -7214,7 +7215,7 @@ export type ListProgramsQuery = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
       universityProgramsId?: string | null,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -7228,9 +7229,9 @@ export type SyncProgramsQueryVariables = {
 };
 
 export type SyncProgramsQuery = {
-  syncPrograms?:  {
+  syncPrograms?: {
     __typename: "ModelProgramConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "Program",
       id: string,
       name?: string | null,
@@ -7248,7 +7249,7 @@ export type SyncProgramsQuery = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
       universityProgramsId?: string | null,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -7259,12 +7260,12 @@ export type GetUniversityQueryVariables = {
 };
 
 export type GetUniversityQuery = {
-  getUniversity?:  {
+  getUniversity?: {
     __typename: "University",
     id: string,
     name?: string | null,
     nameAr?: string | null,
-    Programs?:  {
+    Programs?: {
       __typename: "ModelProgramConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -7275,7 +7276,7 @@ export type GetUniversityQuery = {
     extensionDuration?: number | null,
     isException?: number | null,
     isTrashed?: boolean | null,
-    applications?:  {
+    applications?: {
       __typename: "ModelApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -7295,9 +7296,9 @@ export type ListUniversitiesQueryVariables = {
 };
 
 export type ListUniversitiesQuery = {
-  listUniversities?:  {
+  listUniversities?: {
     __typename: "ModelUniversityConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "University",
       id: string,
       name?: string | null,
@@ -7313,7 +7314,7 @@ export type ListUniversitiesQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -7327,9 +7328,9 @@ export type SyncUniversitiesQueryVariables = {
 };
 
 export type SyncUniversitiesQuery = {
-  syncUniversities?:  {
+  syncUniversities?: {
     __typename: "ModelUniversityConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "University",
       id: string,
       name?: string | null,
@@ -7345,7 +7346,7 @@ export type SyncUniversitiesQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -7356,7 +7357,7 @@ export type GetAdminLogQueryVariables = {
 };
 
 export type GetAdminLogQuery = {
-  getAdminLog?:  {
+  getAdminLog?: {
     __typename: "AdminLog",
     id: string,
     applicationID: string,
@@ -7364,7 +7365,7 @@ export type GetAdminLogQuery = {
     dateTime?: string | null,
     snapshot?: string | null,
     reason?: string | null,
-    admin?:  {
+    admin?: {
       __typename: "Admin",
       cpr: string,
       fullName?: string | null,
@@ -7395,9 +7396,9 @@ export type ListAdminLogsQueryVariables = {
 };
 
 export type ListAdminLogsQuery = {
-  listAdminLogs?:  {
+  listAdminLogs?: {
     __typename: "ModelAdminLogConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "AdminLog",
       id: string,
       applicationID: string,
@@ -7413,7 +7414,7 @@ export type ListAdminLogsQuery = {
       applicationAdminLogsId?: string | null,
       adminAdminLogsCpr?: string | null,
       masterApplicationAdminLogsId?: string | null,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -7427,9 +7428,9 @@ export type SyncAdminLogsQueryVariables = {
 };
 
 export type SyncAdminLogsQuery = {
-  syncAdminLogs?:  {
+  syncAdminLogs?: {
     __typename: "ModelAdminLogConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "AdminLog",
       id: string,
       applicationID: string,
@@ -7445,7 +7446,7 @@ export type SyncAdminLogsQuery = {
       applicationAdminLogsId?: string | null,
       adminAdminLogsCpr?: string | null,
       masterApplicationAdminLogsId?: string | null,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -7456,7 +7457,7 @@ export type GetStudentLogQueryVariables = {
 };
 
 export type GetStudentLogQuery = {
-  getStudentLog?:  {
+  getStudentLog?: {
     __typename: "StudentLog",
     id: string,
     applicationID: string,
@@ -7464,7 +7465,7 @@ export type GetStudentLogQuery = {
     dateTime?: string | null,
     snapshot?: string | null,
     reason?: string | null,
-    student?:  {
+    student?: {
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -7482,7 +7483,7 @@ export type GetStudentLogQuery = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -7501,7 +7502,7 @@ export type GetStudentLogQuery = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -7539,9 +7540,9 @@ export type ListStudentLogsQueryVariables = {
 };
 
 export type ListStudentLogsQuery = {
-  listStudentLogs?:  {
+  listStudentLogs?: {
     __typename: "ModelStudentLogConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "StudentLog",
       id: string,
       applicationID: string,
@@ -7557,7 +7558,7 @@ export type ListStudentLogsQuery = {
       applicationStudentLogsId?: string | null,
       studentStudentLogsCpr?: string | null,
       masterApplicationStudentLogsId?: string | null,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -7571,9 +7572,9 @@ export type SyncStudentLogsQueryVariables = {
 };
 
 export type SyncStudentLogsQuery = {
-  syncStudentLogs?:  {
+  syncStudentLogs?: {
     __typename: "ModelStudentLogConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "StudentLog",
       id: string,
       applicationID: string,
@@ -7589,7 +7590,7 @@ export type SyncStudentLogsQuery = {
       applicationStudentLogsId?: string | null,
       studentStudentLogsCpr?: string | null,
       masterApplicationStudentLogsId?: string | null,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -7600,12 +7601,12 @@ export type GetAdminQueryVariables = {
 };
 
 export type GetAdminQuery = {
-  getAdmin?:  {
+  getAdmin?: {
     __typename: "Admin",
     cpr: string,
     fullName?: string | null,
     email?: string | null,
-    AdminLogs?:  {
+    AdminLogs?: {
       __typename: "ModelAdminLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -7629,9 +7630,9 @@ export type ListAdminsQueryVariables = {
 };
 
 export type ListAdminsQuery = {
-  listAdmins?:  {
+  listAdmins?: {
     __typename: "ModelAdminConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "Admin",
       cpr: string,
       fullName?: string | null,
@@ -7643,7 +7644,7 @@ export type ListAdminsQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -7657,9 +7658,9 @@ export type SyncAdminsQueryVariables = {
 };
 
 export type SyncAdminsQuery = {
-  syncAdmins?:  {
+  syncAdmins?: {
     __typename: "ModelAdminConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "Admin",
       cpr: string,
       fullName?: string | null,
@@ -7671,7 +7672,7 @@ export type SyncAdminsQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -7682,7 +7683,7 @@ export type GetParentInfoQueryVariables = {
 };
 
 export type GetParentInfoQuery = {
-  getParentInfo?:  {
+  getParentInfo?: {
     __typename: "ParentInfo",
     id: string,
     guardianFullName?: string | null,
@@ -7716,9 +7717,9 @@ export type ListParentInfosQueryVariables = {
 };
 
 export type ListParentInfosQuery = {
-  listParentInfos?:  {
+  listParentInfos?: {
     __typename: "ModelParentInfoConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "ParentInfo",
       id: string,
       guardianFullName?: string | null,
@@ -7742,7 +7743,7 @@ export type ListParentInfosQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -7756,9 +7757,9 @@ export type SyncParentInfosQueryVariables = {
 };
 
 export type SyncParentInfosQuery = {
-  syncParentInfos?:  {
+  syncParentInfos?: {
     __typename: "ModelParentInfoConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "ParentInfo",
       id: string,
       guardianFullName?: string | null,
@@ -7782,7 +7783,7 @@ export type SyncParentInfosQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -7793,7 +7794,7 @@ export type GetStudentQueryVariables = {
 };
 
 export type GetStudentQuery = {
-  getStudent?:  {
+  getStudent?: {
     __typename: "Student",
     cpr: string,
     cprDoc?: string | null,
@@ -7811,16 +7812,16 @@ export type GetStudentQuery = {
     studentOrderAmongSiblings?: number | null,
     familyIncome?: FamilyIncome | null,
     familyIncomeProofDoc?: string | null,
-    familyIncomeProofDocs?: Array< string | null > | null,
+    familyIncomeProofDocs?: Array<string | null> | null,
     preferredLanguage?: Language | null,
     graduationDate?: string | null,
     address?: string | null,
-    applications?:  {
+    applications?: {
       __typename: "ModelApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    ParentInfo?:  {
+    ParentInfo?: {
       __typename: "ParentInfo",
       id: string,
       guardianFullName?: string | null,
@@ -7846,7 +7847,7 @@ export type GetStudentQuery = {
       _lastChangedAt: number,
     } | null,
     parentInfoID?: string | null,
-    StudentLogs?:  {
+    StudentLogs?: {
       __typename: "ModelStudentLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -7857,7 +7858,7 @@ export type GetStudentQuery = {
     lastName?: string | null,
     dob?: string | null,
     schoolMajor?: string | null,
-    m_MasterLogs?:  {
+    m_MasterLogs?: {
       __typename: "ModelMasterLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -7868,7 +7869,7 @@ export type GetStudentQuery = {
     m_lastName?: string | null,
     m_numberOfFamilyMembers?: number | null,
     m_graduationYear?: string | null,
-    m_university?:  {
+    m_university?: {
       __typename: "BahrainUniversities",
       id: string,
       universityName?: string | null,
@@ -7883,7 +7884,7 @@ export type GetStudentQuery = {
     } | null,
     m_universityID?: string | null,
     m_oldProgram?: string | null,
-    m_applicantType?: Array< ApplicantType | null > | null,
+    m_applicantType?: Array<ApplicantType | null> | null,
     m_isEmployed?: boolean | null,
     m_placeOfEmployment?: string | null,
     m_income?: Income | null,
@@ -7891,7 +7892,7 @@ export type GetStudentQuery = {
     m_guardianCPR?: string | null,
     m_guardianFullName?: string | null,
     m_guardianCPRDoc?: string | null,
-    m_masterApplications?:  {
+    m_masterApplications?: {
       __typename: "ModelMasterApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -7919,9 +7920,9 @@ export type ListStudentsQueryVariables = {
 };
 
 export type ListStudentsQuery = {
-  listStudents?:  {
+  listStudents?: {
     __typename: "ModelStudentConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -7939,7 +7940,7 @@ export type ListStudentsQuery = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -7958,7 +7959,7 @@ export type ListStudentsQuery = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -7977,7 +7978,7 @@ export type ListStudentsQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -7991,9 +7992,9 @@ export type SyncStudentsQueryVariables = {
 };
 
 export type SyncStudentsQuery = {
-  syncStudents?:  {
+  syncStudents?: {
     __typename: "ModelStudentConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -8011,7 +8012,7 @@ export type SyncStudentsQuery = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -8030,7 +8031,7 @@ export type SyncStudentsQuery = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -8049,7 +8050,7 @@ export type SyncStudentsQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -8060,7 +8061,7 @@ export type GetBatchQueryVariables = {
 };
 
 export type GetBatchQuery = {
-  getBatch?:  {
+  getBatch?: {
     __typename: "Batch",
     batch: number,
     createApplicationStartDate?: string | null,
@@ -8085,9 +8086,9 @@ export type ListBatchesQueryVariables = {
 };
 
 export type ListBatchesQuery = {
-  listBatches?:  {
+  listBatches?: {
     __typename: "ModelBatchConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "Batch",
       batch: number,
       createApplicationStartDate?: string | null,
@@ -8100,7 +8101,7 @@ export type ListBatchesQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -8114,9 +8115,9 @@ export type SyncBatchesQueryVariables = {
 };
 
 export type SyncBatchesQuery = {
-  syncBatches?:  {
+  syncBatches?: {
     __typename: "ModelBatchConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "Batch",
       batch: number,
       createApplicationStartDate?: string | null,
@@ -8129,7 +8130,7 @@ export type SyncBatchesQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -8140,14 +8141,14 @@ export type GetScholarshipQueryVariables = {
 };
 
 export type GetScholarshipQuery = {
-  getScholarship?:  {
+  getScholarship?: {
     __typename: "Scholarship",
     id: string,
     status?: ScholarshipStatus | null,
     applicationID: string,
     batch?: number | null,
     isConfirmed?: boolean | null,
-    application?:  {
+    application?: {
       __typename: "Application",
       id: string,
       gpa?: number | null,
@@ -8206,9 +8207,9 @@ export type ListScholarshipsQueryVariables = {
 };
 
 export type ListScholarshipsQuery = {
-  listScholarships?:  {
+  listScholarships?: {
     __typename: "ModelScholarshipConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "Scholarship",
       id: string,
       status?: ScholarshipStatus | null,
@@ -8231,7 +8232,7 @@ export type ListScholarshipsQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -8245,9 +8246,9 @@ export type SyncScholarshipsQueryVariables = {
 };
 
 export type SyncScholarshipsQuery = {
-  syncScholarships?:  {
+  syncScholarships?: {
     __typename: "ModelScholarshipConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "Scholarship",
       id: string,
       status?: ScholarshipStatus | null,
@@ -8270,7 +8271,7 @@ export type SyncScholarshipsQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -8281,7 +8282,7 @@ export type GetStatisticsQueryVariables = {
 };
 
 export type GetStatisticsQuery = {
-  getStatistics?:  {
+  getStatistics?: {
     __typename: "Statistics",
     id: number,
     batch: number,
@@ -8297,7 +8298,7 @@ export type GetStatisticsQuery = {
     students?: string | null,
     applications?: string | null,
     today?: string | null,
-    participatingUniversities?: Array< string | null > | null,
+    participatingUniversities?: Array<string | null> | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -8315,9 +8316,9 @@ export type ListStatisticsQueryVariables = {
 };
 
 export type ListStatisticsQuery = {
-  listStatistics?:  {
+  listStatistics?: {
     __typename: "ModelStatisticsConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "Statistics",
       id: number,
       batch: number,
@@ -8333,13 +8334,13 @@ export type ListStatisticsQuery = {
       students?: string | null,
       applications?: string | null,
       today?: string | null,
-      participatingUniversities?: Array< string | null > | null,
+      participatingUniversities?: Array<string | null> | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -8353,9 +8354,9 @@ export type SyncStatisticsQueryVariables = {
 };
 
 export type SyncStatisticsQuery = {
-  syncStatistics?:  {
+  syncStatistics?: {
     __typename: "ModelStatisticsConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "Statistics",
       id: number,
       batch: number,
@@ -8371,13 +8372,13 @@ export type SyncStatisticsQuery = {
       students?: string | null,
       applications?: string | null,
       today?: string | null,
-      participatingUniversities?: Array< string | null > | null,
+      participatingUniversities?: Array<string | null> | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -8388,7 +8389,7 @@ export type GetMasterBatchQueryVariables = {
 };
 
 export type GetMasterBatchQuery = {
-  getMasterBatch?:  {
+  getMasterBatch?: {
     __typename: "MasterBatch",
     batch: number,
     createApplicationStartDate?: string | null,
@@ -8413,9 +8414,9 @@ export type ListMasterBatchesQueryVariables = {
 };
 
 export type ListMasterBatchesQuery = {
-  listMasterBatches?:  {
+  listMasterBatches?: {
     __typename: "ModelMasterBatchConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "MasterBatch",
       batch: number,
       createApplicationStartDate?: string | null,
@@ -8428,7 +8429,7 @@ export type ListMasterBatchesQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -8442,9 +8443,9 @@ export type SyncMasterBatchesQueryVariables = {
 };
 
 export type SyncMasterBatchesQuery = {
-  syncMasterBatches?:  {
+  syncMasterBatches?: {
     __typename: "ModelMasterBatchConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "MasterBatch",
       batch: number,
       createApplicationStartDate?: string | null,
@@ -8457,7 +8458,7 @@ export type SyncMasterBatchesQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -8468,7 +8469,7 @@ export type GetMasterLogQueryVariables = {
 };
 
 export type GetMasterLogQuery = {
-  getMasterLog?:  {
+  getMasterLog?: {
     __typename: "MasterLog",
     id: string,
     applicationID: string,
@@ -8476,7 +8477,7 @@ export type GetMasterLogQuery = {
     dateTime?: string | null,
     snapshot?: string | null,
     reason?: string | null,
-    student?:  {
+    student?: {
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -8494,7 +8495,7 @@ export type GetMasterLogQuery = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -8513,7 +8514,7 @@ export type GetMasterLogQuery = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -8550,9 +8551,9 @@ export type ListMasterLogsQueryVariables = {
 };
 
 export type ListMasterLogsQuery = {
-  listMasterLogs?:  {
+  listMasterLogs?: {
     __typename: "ModelMasterLogConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "MasterLog",
       id: string,
       applicationID: string,
@@ -8567,7 +8568,7 @@ export type ListMasterLogsQuery = {
       _lastChangedAt: number,
       studentM_MasterLogsCpr?: string | null,
       masterApplicationMasterLogsId?: string | null,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -8581,9 +8582,9 @@ export type SyncMasterLogsQueryVariables = {
 };
 
 export type SyncMasterLogsQuery = {
-  syncMasterLogs?:  {
+  syncMasterLogs?: {
     __typename: "ModelMasterLogConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "MasterLog",
       id: string,
       applicationID: string,
@@ -8598,7 +8599,7 @@ export type SyncMasterLogsQuery = {
       _lastChangedAt: number,
       studentM_MasterLogsCpr?: string | null,
       masterApplicationMasterLogsId?: string | null,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -8609,13 +8610,13 @@ export type GetBahrainUniversitiesQueryVariables = {
 };
 
 export type GetBahrainUniversitiesQuery = {
-  getBahrainUniversities?:  {
+  getBahrainUniversities?: {
     __typename: "BahrainUniversities",
     id: string,
     universityName?: string | null,
     universityNameAr?: string | null,
     isDeactivated?: boolean | null,
-    students?:  {
+    students?: {
       __typename: "ModelStudentConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -8638,9 +8639,9 @@ export type ListBahrainUniversitiesQueryVariables = {
 };
 
 export type ListBahrainUniversitiesQuery = {
-  listBahrainUniversities?:  {
+  listBahrainUniversities?: {
     __typename: "ModelBahrainUniversitiesConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "BahrainUniversities",
       id: string,
       universityName?: string | null,
@@ -8652,7 +8653,7 @@ export type ListBahrainUniversitiesQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -8666,9 +8667,9 @@ export type SyncBahrainUniversitiesQueryVariables = {
 };
 
 export type SyncBahrainUniversitiesQuery = {
-  syncBahrainUniversities?:  {
+  syncBahrainUniversities?: {
     __typename: "ModelBahrainUniversitiesConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "BahrainUniversities",
       id: string,
       universityName?: string | null,
@@ -8680,7 +8681,7 @@ export type SyncBahrainUniversitiesQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -8691,28 +8692,28 @@ export type GetMasterApplicationQueryVariables = {
 };
 
 export type GetMasterApplicationQuery = {
-  getMasterApplication?:  {
+  getMasterApplication?: {
     __typename: "MasterApplication",
     id: string,
     gpa?: number | null,
     verifiedGPA?: number | null,
     status?: Status | null,
-    adminLogs?:  {
+    adminLogs?: {
       __typename: "ModelAdminLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    masterLogs?:  {
+    masterLogs?: {
       __typename: "ModelMasterLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    studentLogs?:  {
+    studentLogs?: {
       __typename: "ModelStudentLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    attachment?:  {
+    attachment?: {
       __typename: "MasterAttachment",
       id: string,
       cprDoc?: string | null,
@@ -8732,7 +8733,7 @@ export type GetMasterApplicationQuery = {
     isEmailSent?: boolean | null,
     nationalityCategory?: Nationality | null,
     universityID: string,
-    university?:  {
+    university?: {
       __typename: "MasterAppliedUniversities",
       id: string,
       universityName: string,
@@ -8747,7 +8748,7 @@ export type GetMasterApplicationQuery = {
     } | null,
     studentCPR: string,
     studentName?: string | null,
-    student?:  {
+    student?: {
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -8765,7 +8766,7 @@ export type GetMasterApplicationQuery = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -8784,7 +8785,7 @@ export type GetMasterApplicationQuery = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -8831,9 +8832,9 @@ export type ListMasterApplicationsQueryVariables = {
 };
 
 export type ListMasterApplicationsQuery = {
-  listMasterApplications?:  {
+  listMasterApplications?: {
     __typename: "ModelMasterApplicationConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "MasterApplication",
       id: string,
       gpa?: number | null,
@@ -8863,7 +8864,7 @@ export type ListMasterApplicationsQuery = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
       masterApplicationAttachmentId?: string | null,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -8877,9 +8878,9 @@ export type SyncMasterApplicationsQueryVariables = {
 };
 
 export type SyncMasterApplicationsQuery = {
-  syncMasterApplications?:  {
+  syncMasterApplications?: {
     __typename: "ModelMasterApplicationConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "MasterApplication",
       id: string,
       gpa?: number | null,
@@ -8909,7 +8910,7 @@ export type SyncMasterApplicationsQuery = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
       masterApplicationAttachmentId?: string | null,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -8920,7 +8921,7 @@ export type GetMasterStatisticsQueryVariables = {
 };
 
 export type GetMasterStatisticsQuery = {
-  getMasterStatistics?:  {
+  getMasterStatistics?: {
     __typename: "MasterStatistics",
     id: number,
     batch: number,
@@ -8936,7 +8937,7 @@ export type GetMasterStatisticsQuery = {
     students?: string | null,
     applications?: string | null,
     today?: string | null,
-    participatingUniversities?: Array< string | null > | null,
+    participatingUniversities?: Array<string | null> | null,
     applicationPerGenderHistogram?: string | null,
     registerAccountsPerGender?: string | null,
     majorsPerGenderHistogram?: string | null,
@@ -8958,9 +8959,9 @@ export type ListMasterStatisticsQueryVariables = {
 };
 
 export type ListMasterStatisticsQuery = {
-  listMasterStatistics?:  {
+  listMasterStatistics?: {
     __typename: "ModelMasterStatisticsConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "MasterStatistics",
       id: number,
       batch: number,
@@ -8976,7 +8977,7 @@ export type ListMasterStatisticsQuery = {
       students?: string | null,
       applications?: string | null,
       today?: string | null,
-      participatingUniversities?: Array< string | null > | null,
+      participatingUniversities?: Array<string | null> | null,
       applicationPerGenderHistogram?: string | null,
       registerAccountsPerGender?: string | null,
       majorsPerGenderHistogram?: string | null,
@@ -8986,7 +8987,7 @@ export type ListMasterStatisticsQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -9000,9 +9001,9 @@ export type SyncMasterStatisticsQueryVariables = {
 };
 
 export type SyncMasterStatisticsQuery = {
-  syncMasterStatistics?:  {
+  syncMasterStatistics?: {
     __typename: "ModelMasterStatisticsConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "MasterStatistics",
       id: number,
       batch: number,
@@ -9018,7 +9019,7 @@ export type SyncMasterStatisticsQuery = {
       students?: string | null,
       applications?: string | null,
       today?: string | null,
-      participatingUniversities?: Array< string | null > | null,
+      participatingUniversities?: Array<string | null> | null,
       applicationPerGenderHistogram?: string | null,
       registerAccountsPerGender?: string | null,
       majorsPerGenderHistogram?: string | null,
@@ -9028,7 +9029,7 @@ export type SyncMasterStatisticsQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -9039,7 +9040,7 @@ export type GetMasterAttachmentQueryVariables = {
 };
 
 export type GetMasterAttachmentQuery = {
-  getMasterAttachment?:  {
+  getMasterAttachment?: {
     __typename: "MasterAttachment",
     id: string,
     cprDoc?: string | null,
@@ -9063,9 +9064,9 @@ export type ListMasterAttachmentsQueryVariables = {
 };
 
 export type ListMasterAttachmentsQuery = {
-  listMasterAttachments?:  {
+  listMasterAttachments?: {
     __typename: "ModelMasterAttachmentConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "MasterAttachment",
       id: string,
       cprDoc?: string | null,
@@ -9079,7 +9080,7 @@ export type ListMasterAttachmentsQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -9093,9 +9094,9 @@ export type SyncMasterAttachmentsQueryVariables = {
 };
 
 export type SyncMasterAttachmentsQuery = {
-  syncMasterAttachments?:  {
+  syncMasterAttachments?: {
     __typename: "ModelMasterAttachmentConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "MasterAttachment",
       id: string,
       cprDoc?: string | null,
@@ -9109,7 +9110,7 @@ export type SyncMasterAttachmentsQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -9120,13 +9121,13 @@ export type GetMasterAppliedUniversitiesQueryVariables = {
 };
 
 export type GetMasterAppliedUniversitiesQuery = {
-  getMasterAppliedUniversities?:  {
+  getMasterAppliedUniversities?: {
     __typename: "MasterAppliedUniversities",
     id: string,
     universityName: string,
     universityNameAr: string,
     isDeactivated?: boolean | null,
-    applications?:  {
+    applications?: {
       __typename: "ModelMasterApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -9149,9 +9150,9 @@ export type ListMasterAppliedUniversitiesQueryVariables = {
 };
 
 export type ListMasterAppliedUniversitiesQuery = {
-  listMasterAppliedUniversities?:  {
+  listMasterAppliedUniversities?: {
     __typename: "ModelMasterAppliedUniversitiesConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "MasterAppliedUniversities",
       id: string,
       universityName: string,
@@ -9163,7 +9164,7 @@ export type ListMasterAppliedUniversitiesQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -9177,9 +9178,9 @@ export type SyncMasterAppliedUniversitiesQueryVariables = {
 };
 
 export type SyncMasterAppliedUniversitiesQuery = {
-  syncMasterAppliedUniversities?:  {
+  syncMasterAppliedUniversities?: {
     __typename: "ModelMasterAppliedUniversitiesConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "MasterAppliedUniversities",
       id: string,
       universityName: string,
@@ -9191,7 +9192,7 @@ export type SyncMasterAppliedUniversitiesQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -9202,14 +9203,14 @@ export type GetMasterScholarshipQueryVariables = {
 };
 
 export type GetMasterScholarshipQuery = {
-  getMasterScholarship?:  {
+  getMasterScholarship?: {
     __typename: "MasterScholarship",
     id: string,
     status?: ScholarshipStatus | null,
     applicationID: string,
     batch?: number | null,
     isConfirmed?: boolean | null,
-    application?:  {
+    application?: {
       __typename: "MasterApplication",
       id: string,
       gpa?: number | null,
@@ -9266,9 +9267,9 @@ export type ListMasterScholarshipsQueryVariables = {
 };
 
 export type ListMasterScholarshipsQuery = {
-  listMasterScholarships?:  {
+  listMasterScholarships?: {
     __typename: "ModelMasterScholarshipConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "MasterScholarship",
       id: string,
       status?: ScholarshipStatus | null,
@@ -9291,7 +9292,7 @@ export type ListMasterScholarshipsQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -9305,9 +9306,9 @@ export type SyncMasterScholarshipsQueryVariables = {
 };
 
 export type SyncMasterScholarshipsQuery = {
-  syncMasterScholarships?:  {
+  syncMasterScholarships?: {
     __typename: "ModelMasterScholarshipConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "MasterScholarship",
       id: string,
       status?: ScholarshipStatus | null,
@@ -9330,7 +9331,7 @@ export type SyncMasterScholarshipsQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -9346,9 +9347,9 @@ export type ApplicationsByIdAndDateTimeQueryVariables = {
 };
 
 export type ApplicationsByIdAndDateTimeQuery = {
-  applicationsByIdAndDateTime?:  {
+  applicationsByIdAndDateTime?: {
     __typename: "ModelApplicationConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "Application",
       id: string,
       gpa?: number | null,
@@ -9380,7 +9381,7 @@ export type ApplicationsByIdAndDateTimeQuery = {
       programApplicationId?: string | null,
       universityApplicationsId?: string | null,
       applicationAttachmentId?: string | null,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -9396,9 +9397,9 @@ export type ApplicationsByNationalityCategoryAndBatchQueryVariables = {
 };
 
 export type ApplicationsByNationalityCategoryAndBatchQuery = {
-  applicationsByNationalityCategoryAndBatch?:  {
+  applicationsByNationalityCategoryAndBatch?: {
     __typename: "ModelApplicationConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "Application",
       id: string,
       gpa?: number | null,
@@ -9430,7 +9431,7 @@ export type ApplicationsByNationalityCategoryAndBatchQuery = {
       programApplicationId?: string | null,
       universityApplicationsId?: string | null,
       applicationAttachmentId?: string | null,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -9446,9 +9447,9 @@ export type ApplicationsByStudentCPRAndGpaQueryVariables = {
 };
 
 export type ApplicationsByStudentCPRAndGpaQuery = {
-  applicationsByStudentCPRAndGpa?:  {
+  applicationsByStudentCPRAndGpa?: {
     __typename: "ModelApplicationConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "Application",
       id: string,
       gpa?: number | null,
@@ -9480,7 +9481,7 @@ export type ApplicationsByStudentCPRAndGpaQuery = {
       programApplicationId?: string | null,
       universityApplicationsId?: string | null,
       applicationAttachmentId?: string | null,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -9496,9 +9497,9 @@ export type ApplicationsByBatchAndStatusQueryVariables = {
 };
 
 export type ApplicationsByBatchAndStatusQuery = {
-  applicationsByBatchAndStatus?:  {
+  applicationsByBatchAndStatus?: {
     __typename: "ModelApplicationConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "Application",
       id: string,
       gpa?: number | null,
@@ -9530,7 +9531,7 @@ export type ApplicationsByBatchAndStatusQuery = {
       programApplicationId?: string | null,
       universityApplicationsId?: string | null,
       applicationAttachmentId?: string | null,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -9546,9 +9547,9 @@ export type ApplicationsByScoreAndStatusQueryVariables = {
 };
 
 export type ApplicationsByScoreAndStatusQuery = {
-  applicationsByScoreAndStatus?:  {
+  applicationsByScoreAndStatus?: {
     __typename: "ModelApplicationConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "Application",
       id: string,
       gpa?: number | null,
@@ -9580,7 +9581,7 @@ export type ApplicationsByScoreAndStatusQuery = {
       programApplicationId?: string | null,
       universityApplicationsId?: string | null,
       applicationAttachmentId?: string | null,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -9596,9 +9597,9 @@ export type ApplicationsByProcessedAndBatchQueryVariables = {
 };
 
 export type ApplicationsByProcessedAndBatchQuery = {
-  applicationsByProcessedAndBatch?:  {
+  applicationsByProcessedAndBatch?: {
     __typename: "ModelApplicationConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "Application",
       id: string,
       gpa?: number | null,
@@ -9630,7 +9631,7 @@ export type ApplicationsByProcessedAndBatchQuery = {
       programApplicationId?: string | null,
       universityApplicationsId?: string | null,
       applicationAttachmentId?: string | null,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -9646,9 +9647,9 @@ export type UniversitiesByIsExtendedAndNameQueryVariables = {
 };
 
 export type UniversitiesByIsExtendedAndNameQuery = {
-  universitiesByIsExtendedAndName?:  {
+  universitiesByIsExtendedAndName?: {
     __typename: "ModelUniversityConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "University",
       id: string,
       name?: string | null,
@@ -9664,7 +9665,7 @@ export type UniversitiesByIsExtendedAndNameQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -9679,9 +9680,9 @@ export type UniversitiesByIsExceptionQueryVariables = {
 };
 
 export type UniversitiesByIsExceptionQuery = {
-  universitiesByIsException?:  {
+  universitiesByIsException?: {
     __typename: "ModelUniversityConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "University",
       id: string,
       name?: string | null,
@@ -9697,7 +9698,7 @@ export type UniversitiesByIsExceptionQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -9713,9 +9714,9 @@ export type StudentsByNationalityCategoryAndGraduationDateQueryVariables = {
 };
 
 export type StudentsByNationalityCategoryAndGraduationDateQuery = {
-  studentsByNationalityCategoryAndGraduationDate?:  {
+  studentsByNationalityCategoryAndGraduationDate?: {
     __typename: "ModelStudentConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -9733,7 +9734,7 @@ export type StudentsByNationalityCategoryAndGraduationDateQuery = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -9752,7 +9753,7 @@ export type StudentsByNationalityCategoryAndGraduationDateQuery = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -9771,7 +9772,7 @@ export type StudentsByNationalityCategoryAndGraduationDateQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -9786,9 +9787,9 @@ export type StudentsByM_universityIDQueryVariables = {
 };
 
 export type StudentsByM_universityIDQuery = {
-  studentsByM_universityID?:  {
+  studentsByM_universityID?: {
     __typename: "ModelStudentConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -9806,7 +9807,7 @@ export type StudentsByM_universityIDQuery = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -9825,7 +9826,7 @@ export type StudentsByM_universityIDQuery = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -9844,7 +9845,7 @@ export type StudentsByM_universityIDQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -9859,9 +9860,9 @@ export type ScholarshipsByApplicationIDQueryVariables = {
 };
 
 export type ScholarshipsByApplicationIDQuery = {
-  scholarshipsByApplicationID?:  {
+  scholarshipsByApplicationID?: {
     __typename: "ModelScholarshipConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "Scholarship",
       id: string,
       status?: ScholarshipStatus | null,
@@ -9884,7 +9885,7 @@ export type ScholarshipsByApplicationIDQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -9900,9 +9901,9 @@ export type ScholarshipsByBatchAndStatusQueryVariables = {
 };
 
 export type ScholarshipsByBatchAndStatusQuery = {
-  scholarshipsByBatchAndStatus?:  {
+  scholarshipsByBatchAndStatus?: {
     __typename: "ModelScholarshipConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "Scholarship",
       id: string,
       status?: ScholarshipStatus | null,
@@ -9925,7 +9926,7 @@ export type ScholarshipsByBatchAndStatusQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -9941,9 +9942,9 @@ export type ScholarshipsByStudentCPRAndStatusQueryVariables = {
 };
 
 export type ScholarshipsByStudentCPRAndStatusQuery = {
-  scholarshipsByStudentCPRAndStatus?:  {
+  scholarshipsByStudentCPRAndStatus?: {
     __typename: "ModelScholarshipConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "Scholarship",
       id: string,
       status?: ScholarshipStatus | null,
@@ -9966,7 +9967,7 @@ export type ScholarshipsByStudentCPRAndStatusQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -9982,9 +9983,9 @@ export type StatisticsByBatchAndTotalApplicationsQueryVariables = {
 };
 
 export type StatisticsByBatchAndTotalApplicationsQuery = {
-  statisticsByBatchAndTotalApplications?:  {
+  statisticsByBatchAndTotalApplications?: {
     __typename: "ModelStatisticsConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "Statistics",
       id: number,
       batch: number,
@@ -10000,13 +10001,13 @@ export type StatisticsByBatchAndTotalApplicationsQuery = {
       students?: string | null,
       applications?: string | null,
       today?: string | null,
-      participatingUniversities?: Array< string | null > | null,
+      participatingUniversities?: Array<string | null> | null,
       createdAt: string,
       updatedAt: string,
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -10022,9 +10023,9 @@ export type MasterApplicationsByIdAndDateTimeQueryVariables = {
 };
 
 export type MasterApplicationsByIdAndDateTimeQuery = {
-  masterApplicationsByIdAndDateTime?:  {
+  masterApplicationsByIdAndDateTime?: {
     __typename: "ModelMasterApplicationConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "MasterApplication",
       id: string,
       gpa?: number | null,
@@ -10054,7 +10055,7 @@ export type MasterApplicationsByIdAndDateTimeQuery = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
       masterApplicationAttachmentId?: string | null,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -10070,9 +10071,9 @@ export type MasterApplicationsByNationalityCategoryAndBatchQueryVariables = {
 };
 
 export type MasterApplicationsByNationalityCategoryAndBatchQuery = {
-  masterApplicationsByNationalityCategoryAndBatch?:  {
+  masterApplicationsByNationalityCategoryAndBatch?: {
     __typename: "ModelMasterApplicationConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "MasterApplication",
       id: string,
       gpa?: number | null,
@@ -10102,7 +10103,7 @@ export type MasterApplicationsByNationalityCategoryAndBatchQuery = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
       masterApplicationAttachmentId?: string | null,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -10118,9 +10119,9 @@ export type MasterApplicationsByStudentCPRAndGpaQueryVariables = {
 };
 
 export type MasterApplicationsByStudentCPRAndGpaQuery = {
-  masterApplicationsByStudentCPRAndGpa?:  {
+  masterApplicationsByStudentCPRAndGpa?: {
     __typename: "ModelMasterApplicationConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "MasterApplication",
       id: string,
       gpa?: number | null,
@@ -10150,7 +10151,7 @@ export type MasterApplicationsByStudentCPRAndGpaQuery = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
       masterApplicationAttachmentId?: string | null,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -10166,9 +10167,9 @@ export type MasterApplicationsByBatchAndStatusQueryVariables = {
 };
 
 export type MasterApplicationsByBatchAndStatusQuery = {
-  masterApplicationsByBatchAndStatus?:  {
+  masterApplicationsByBatchAndStatus?: {
     __typename: "ModelMasterApplicationConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "MasterApplication",
       id: string,
       gpa?: number | null,
@@ -10198,7 +10199,7 @@ export type MasterApplicationsByBatchAndStatusQuery = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
       masterApplicationAttachmentId?: string | null,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -10214,9 +10215,9 @@ export type MasterApplicationsByScoreAndStatusQueryVariables = {
 };
 
 export type MasterApplicationsByScoreAndStatusQuery = {
-  masterApplicationsByScoreAndStatus?:  {
+  masterApplicationsByScoreAndStatus?: {
     __typename: "ModelMasterApplicationConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "MasterApplication",
       id: string,
       gpa?: number | null,
@@ -10246,7 +10247,7 @@ export type MasterApplicationsByScoreAndStatusQuery = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
       masterApplicationAttachmentId?: string | null,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -10262,9 +10263,9 @@ export type MasterApplicationsByProcessedAndBatchQueryVariables = {
 };
 
 export type MasterApplicationsByProcessedAndBatchQuery = {
-  masterApplicationsByProcessedAndBatch?:  {
+  masterApplicationsByProcessedAndBatch?: {
     __typename: "ModelMasterApplicationConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "MasterApplication",
       id: string,
       gpa?: number | null,
@@ -10294,7 +10295,7 @@ export type MasterApplicationsByProcessedAndBatchQuery = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
       masterApplicationAttachmentId?: string | null,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -10310,9 +10311,9 @@ export type MasterStatisticsByBatchAndTotalApplicationsQueryVariables = {
 };
 
 export type MasterStatisticsByBatchAndTotalApplicationsQuery = {
-  masterStatisticsByBatchAndTotalApplications?:  {
+  masterStatisticsByBatchAndTotalApplications?: {
     __typename: "ModelMasterStatisticsConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "MasterStatistics",
       id: number,
       batch: number,
@@ -10328,7 +10329,7 @@ export type MasterStatisticsByBatchAndTotalApplicationsQuery = {
       students?: string | null,
       applications?: string | null,
       today?: string | null,
-      participatingUniversities?: Array< string | null > | null,
+      participatingUniversities?: Array<string | null> | null,
       applicationPerGenderHistogram?: string | null,
       registerAccountsPerGender?: string | null,
       majorsPerGenderHistogram?: string | null,
@@ -10338,7 +10339,7 @@ export type MasterStatisticsByBatchAndTotalApplicationsQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -10353,9 +10354,9 @@ export type MasterScholarshipsByApplicationIDQueryVariables = {
 };
 
 export type MasterScholarshipsByApplicationIDQuery = {
-  masterScholarshipsByApplicationID?:  {
+  masterScholarshipsByApplicationID?: {
     __typename: "ModelMasterScholarshipConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "MasterScholarship",
       id: string,
       status?: ScholarshipStatus | null,
@@ -10378,7 +10379,7 @@ export type MasterScholarshipsByApplicationIDQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -10394,9 +10395,9 @@ export type MasterScholarshipsByBatchAndStatusQueryVariables = {
 };
 
 export type MasterScholarshipsByBatchAndStatusQuery = {
-  masterScholarshipsByBatchAndStatus?:  {
+  masterScholarshipsByBatchAndStatus?: {
     __typename: "ModelMasterScholarshipConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "MasterScholarship",
       id: string,
       status?: ScholarshipStatus | null,
@@ -10419,7 +10420,7 @@ export type MasterScholarshipsByBatchAndStatusQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -10435,9 +10436,9 @@ export type MasterScholarshipsByStudentCPRAndStatusQueryVariables = {
 };
 
 export type MasterScholarshipsByStudentCPRAndStatusQuery = {
-  masterScholarshipsByStudentCPRAndStatus?:  {
+  masterScholarshipsByStudentCPRAndStatus?: {
     __typename: "ModelMasterScholarshipConnection",
-    items:  Array< {
+    items: Array<{
       __typename: "MasterScholarship",
       id: string,
       status?: ScholarshipStatus | null,
@@ -10460,7 +10461,7 @@ export type MasterScholarshipsByStudentCPRAndStatusQuery = {
       _version: number,
       _deleted?: boolean | null,
       _lastChangedAt: number,
-    } | null >,
+    } | null>,
     nextToken?: string | null,
     startedAt?: number | null,
   } | null,
@@ -10471,7 +10472,7 @@ export type OnCreateAttachmentSubscriptionVariables = {
 };
 
 export type OnCreateAttachmentSubscription = {
-  onCreateAttachment?:  {
+  onCreateAttachment?: {
     __typename: "Attachment",
     id: string,
     cprDoc?: string | null,
@@ -10491,7 +10492,7 @@ export type OnUpdateAttachmentSubscriptionVariables = {
 };
 
 export type OnUpdateAttachmentSubscription = {
-  onUpdateAttachment?:  {
+  onUpdateAttachment?: {
     __typename: "Attachment",
     id: string,
     cprDoc?: string | null,
@@ -10511,7 +10512,7 @@ export type OnDeleteAttachmentSubscriptionVariables = {
 };
 
 export type OnDeleteAttachmentSubscription = {
-  onDeleteAttachment?:  {
+  onDeleteAttachment?: {
     __typename: "Attachment",
     id: string,
     cprDoc?: string | null,
@@ -10531,24 +10532,24 @@ export type OnCreateApplicationSubscriptionVariables = {
 };
 
 export type OnCreateApplicationSubscription = {
-  onCreateApplication?:  {
+  onCreateApplication?: {
     __typename: "Application",
     id: string,
     gpa?: number | null,
     verifiedGPA?: number | null,
     status?: Status | null,
     attachmentID?: string | null,
-    adminLogs?:  {
+    adminLogs?: {
       __typename: "ModelAdminLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    studentLogs?:  {
+    studentLogs?: {
       __typename: "ModelStudentLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    attachment?:  {
+    attachment?: {
       __typename: "Attachment",
       id: string,
       cprDoc?: string | null,
@@ -10561,7 +10562,7 @@ export type OnCreateApplicationSubscription = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
     } | null,
-    programs?:  {
+    programs?: {
       __typename: "ModelProgramChoiceConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -10574,7 +10575,7 @@ export type OnCreateApplicationSubscription = {
     schoolType?: SchoolType | null,
     studentName?: string | null,
     programID?: string | null,
-    program?:  {
+    program?: {
       __typename: "Program",
       id: string,
       name?: string | null,
@@ -10594,7 +10595,7 @@ export type OnCreateApplicationSubscription = {
       universityProgramsId?: string | null,
     } | null,
     universityID?: string | null,
-    university?:  {
+    university?: {
       __typename: "University",
       id: string,
       name?: string | null,
@@ -10613,7 +10614,7 @@ export type OnCreateApplicationSubscription = {
     } | null,
     studentCPR: string,
     allProgramsTextOption?: string | null,
-    student?:  {
+    student?: {
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -10631,7 +10632,7 @@ export type OnCreateApplicationSubscription = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -10650,7 +10651,7 @@ export type OnCreateApplicationSubscription = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -10692,24 +10693,24 @@ export type OnUpdateApplicationSubscriptionVariables = {
 };
 
 export type OnUpdateApplicationSubscription = {
-  onUpdateApplication?:  {
+  onUpdateApplication?: {
     __typename: "Application",
     id: string,
     gpa?: number | null,
     verifiedGPA?: number | null,
     status?: Status | null,
     attachmentID?: string | null,
-    adminLogs?:  {
+    adminLogs?: {
       __typename: "ModelAdminLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    studentLogs?:  {
+    studentLogs?: {
       __typename: "ModelStudentLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    attachment?:  {
+    attachment?: {
       __typename: "Attachment",
       id: string,
       cprDoc?: string | null,
@@ -10722,7 +10723,7 @@ export type OnUpdateApplicationSubscription = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
     } | null,
-    programs?:  {
+    programs?: {
       __typename: "ModelProgramChoiceConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -10735,7 +10736,7 @@ export type OnUpdateApplicationSubscription = {
     schoolType?: SchoolType | null,
     studentName?: string | null,
     programID?: string | null,
-    program?:  {
+    program?: {
       __typename: "Program",
       id: string,
       name?: string | null,
@@ -10755,7 +10756,7 @@ export type OnUpdateApplicationSubscription = {
       universityProgramsId?: string | null,
     } | null,
     universityID?: string | null,
-    university?:  {
+    university?: {
       __typename: "University",
       id: string,
       name?: string | null,
@@ -10774,7 +10775,7 @@ export type OnUpdateApplicationSubscription = {
     } | null,
     studentCPR: string,
     allProgramsTextOption?: string | null,
-    student?:  {
+    student?: {
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -10792,7 +10793,7 @@ export type OnUpdateApplicationSubscription = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -10811,7 +10812,7 @@ export type OnUpdateApplicationSubscription = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -10853,24 +10854,24 @@ export type OnDeleteApplicationSubscriptionVariables = {
 };
 
 export type OnDeleteApplicationSubscription = {
-  onDeleteApplication?:  {
+  onDeleteApplication?: {
     __typename: "Application",
     id: string,
     gpa?: number | null,
     verifiedGPA?: number | null,
     status?: Status | null,
     attachmentID?: string | null,
-    adminLogs?:  {
+    adminLogs?: {
       __typename: "ModelAdminLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    studentLogs?:  {
+    studentLogs?: {
       __typename: "ModelStudentLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    attachment?:  {
+    attachment?: {
       __typename: "Attachment",
       id: string,
       cprDoc?: string | null,
@@ -10883,7 +10884,7 @@ export type OnDeleteApplicationSubscription = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
     } | null,
-    programs?:  {
+    programs?: {
       __typename: "ModelProgramChoiceConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -10896,7 +10897,7 @@ export type OnDeleteApplicationSubscription = {
     schoolType?: SchoolType | null,
     studentName?: string | null,
     programID?: string | null,
-    program?:  {
+    program?: {
       __typename: "Program",
       id: string,
       name?: string | null,
@@ -10916,7 +10917,7 @@ export type OnDeleteApplicationSubscription = {
       universityProgramsId?: string | null,
     } | null,
     universityID?: string | null,
-    university?:  {
+    university?: {
       __typename: "University",
       id: string,
       name?: string | null,
@@ -10935,7 +10936,7 @@ export type OnDeleteApplicationSubscription = {
     } | null,
     studentCPR: string,
     allProgramsTextOption?: string | null,
-    student?:  {
+    student?: {
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -10953,7 +10954,7 @@ export type OnDeleteApplicationSubscription = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -10972,7 +10973,7 @@ export type OnDeleteApplicationSubscription = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -11014,12 +11015,12 @@ export type OnCreateProgramChoiceSubscriptionVariables = {
 };
 
 export type OnCreateProgramChoiceSubscription = {
-  onCreateProgramChoice?:  {
+  onCreateProgramChoice?: {
     __typename: "ProgramChoice",
     id: string,
     programID: string,
     applicationID: string,
-    program?:  {
+    program?: {
       __typename: "Program",
       id: string,
       name?: string | null,
@@ -11038,7 +11039,7 @@ export type OnCreateProgramChoiceSubscription = {
       _lastChangedAt: number,
       universityProgramsId?: string | null,
     } | null,
-    application?:  {
+    application?: {
       __typename: "Application",
       id: string,
       gpa?: number | null,
@@ -11088,12 +11089,12 @@ export type OnUpdateProgramChoiceSubscriptionVariables = {
 };
 
 export type OnUpdateProgramChoiceSubscription = {
-  onUpdateProgramChoice?:  {
+  onUpdateProgramChoice?: {
     __typename: "ProgramChoice",
     id: string,
     programID: string,
     applicationID: string,
-    program?:  {
+    program?: {
       __typename: "Program",
       id: string,
       name?: string | null,
@@ -11112,7 +11113,7 @@ export type OnUpdateProgramChoiceSubscription = {
       _lastChangedAt: number,
       universityProgramsId?: string | null,
     } | null,
-    application?:  {
+    application?: {
       __typename: "Application",
       id: string,
       gpa?: number | null,
@@ -11162,12 +11163,12 @@ export type OnDeleteProgramChoiceSubscriptionVariables = {
 };
 
 export type OnDeleteProgramChoiceSubscription = {
-  onDeleteProgramChoice?:  {
+  onDeleteProgramChoice?: {
     __typename: "ProgramChoice",
     id: string,
     programID: string,
     applicationID: string,
-    program?:  {
+    program?: {
       __typename: "Program",
       id: string,
       name?: string | null,
@@ -11186,7 +11187,7 @@ export type OnDeleteProgramChoiceSubscription = {
       _lastChangedAt: number,
       universityProgramsId?: string | null,
     } | null,
-    application?:  {
+    application?: {
       __typename: "Application",
       id: string,
       gpa?: number | null,
@@ -11236,7 +11237,7 @@ export type OnCreateProgramSubscriptionVariables = {
 };
 
 export type OnCreateProgramSubscription = {
-  onCreateProgram?:  {
+  onCreateProgram?: {
     __typename: "Program",
     id: string,
     name?: string | null,
@@ -11246,7 +11247,7 @@ export type OnCreateProgramSubscription = {
     requirementsAr?: string | null,
     availability?: number | null,
     universityID: string,
-    university?:  {
+    university?: {
       __typename: "University",
       id: string,
       name?: string | null,
@@ -11263,14 +11264,14 @@ export type OnCreateProgramSubscription = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
     } | null,
-    applications?:  {
+    applications?: {
       __typename: "ModelProgramChoiceConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
     isDeactivated?: boolean | null,
     isTrashed?: boolean | null,
-    application?:  {
+    application?: {
       __typename: "ModelApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -11289,7 +11290,7 @@ export type OnUpdateProgramSubscriptionVariables = {
 };
 
 export type OnUpdateProgramSubscription = {
-  onUpdateProgram?:  {
+  onUpdateProgram?: {
     __typename: "Program",
     id: string,
     name?: string | null,
@@ -11299,7 +11300,7 @@ export type OnUpdateProgramSubscription = {
     requirementsAr?: string | null,
     availability?: number | null,
     universityID: string,
-    university?:  {
+    university?: {
       __typename: "University",
       id: string,
       name?: string | null,
@@ -11316,14 +11317,14 @@ export type OnUpdateProgramSubscription = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
     } | null,
-    applications?:  {
+    applications?: {
       __typename: "ModelProgramChoiceConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
     isDeactivated?: boolean | null,
     isTrashed?: boolean | null,
-    application?:  {
+    application?: {
       __typename: "ModelApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -11342,7 +11343,7 @@ export type OnDeleteProgramSubscriptionVariables = {
 };
 
 export type OnDeleteProgramSubscription = {
-  onDeleteProgram?:  {
+  onDeleteProgram?: {
     __typename: "Program",
     id: string,
     name?: string | null,
@@ -11352,7 +11353,7 @@ export type OnDeleteProgramSubscription = {
     requirementsAr?: string | null,
     availability?: number | null,
     universityID: string,
-    university?:  {
+    university?: {
       __typename: "University",
       id: string,
       name?: string | null,
@@ -11369,14 +11370,14 @@ export type OnDeleteProgramSubscription = {
       _deleted?: boolean | null,
       _lastChangedAt: number,
     } | null,
-    applications?:  {
+    applications?: {
       __typename: "ModelProgramChoiceConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
     isDeactivated?: boolean | null,
     isTrashed?: boolean | null,
-    application?:  {
+    application?: {
       __typename: "ModelApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -11395,12 +11396,12 @@ export type OnCreateUniversitySubscriptionVariables = {
 };
 
 export type OnCreateUniversitySubscription = {
-  onCreateUniversity?:  {
+  onCreateUniversity?: {
     __typename: "University",
     id: string,
     name?: string | null,
     nameAr?: string | null,
-    Programs?:  {
+    Programs?: {
       __typename: "ModelProgramConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -11411,7 +11412,7 @@ export type OnCreateUniversitySubscription = {
     extensionDuration?: number | null,
     isException?: number | null,
     isTrashed?: boolean | null,
-    applications?:  {
+    applications?: {
       __typename: "ModelApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -11429,12 +11430,12 @@ export type OnUpdateUniversitySubscriptionVariables = {
 };
 
 export type OnUpdateUniversitySubscription = {
-  onUpdateUniversity?:  {
+  onUpdateUniversity?: {
     __typename: "University",
     id: string,
     name?: string | null,
     nameAr?: string | null,
-    Programs?:  {
+    Programs?: {
       __typename: "ModelProgramConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -11445,7 +11446,7 @@ export type OnUpdateUniversitySubscription = {
     extensionDuration?: number | null,
     isException?: number | null,
     isTrashed?: boolean | null,
-    applications?:  {
+    applications?: {
       __typename: "ModelApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -11463,12 +11464,12 @@ export type OnDeleteUniversitySubscriptionVariables = {
 };
 
 export type OnDeleteUniversitySubscription = {
-  onDeleteUniversity?:  {
+  onDeleteUniversity?: {
     __typename: "University",
     id: string,
     name?: string | null,
     nameAr?: string | null,
-    Programs?:  {
+    Programs?: {
       __typename: "ModelProgramConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -11479,7 +11480,7 @@ export type OnDeleteUniversitySubscription = {
     extensionDuration?: number | null,
     isException?: number | null,
     isTrashed?: boolean | null,
-    applications?:  {
+    applications?: {
       __typename: "ModelApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -11497,7 +11498,7 @@ export type OnCreateAdminLogSubscriptionVariables = {
 };
 
 export type OnCreateAdminLogSubscription = {
-  onCreateAdminLog?:  {
+  onCreateAdminLog?: {
     __typename: "AdminLog",
     id: string,
     applicationID: string,
@@ -11505,7 +11506,7 @@ export type OnCreateAdminLogSubscription = {
     dateTime?: string | null,
     snapshot?: string | null,
     reason?: string | null,
-    admin?:  {
+    admin?: {
       __typename: "Admin",
       cpr: string,
       fullName?: string | null,
@@ -11534,7 +11535,7 @@ export type OnUpdateAdminLogSubscriptionVariables = {
 };
 
 export type OnUpdateAdminLogSubscription = {
-  onUpdateAdminLog?:  {
+  onUpdateAdminLog?: {
     __typename: "AdminLog",
     id: string,
     applicationID: string,
@@ -11542,7 +11543,7 @@ export type OnUpdateAdminLogSubscription = {
     dateTime?: string | null,
     snapshot?: string | null,
     reason?: string | null,
-    admin?:  {
+    admin?: {
       __typename: "Admin",
       cpr: string,
       fullName?: string | null,
@@ -11571,7 +11572,7 @@ export type OnDeleteAdminLogSubscriptionVariables = {
 };
 
 export type OnDeleteAdminLogSubscription = {
-  onDeleteAdminLog?:  {
+  onDeleteAdminLog?: {
     __typename: "AdminLog",
     id: string,
     applicationID: string,
@@ -11579,7 +11580,7 @@ export type OnDeleteAdminLogSubscription = {
     dateTime?: string | null,
     snapshot?: string | null,
     reason?: string | null,
-    admin?:  {
+    admin?: {
       __typename: "Admin",
       cpr: string,
       fullName?: string | null,
@@ -11608,7 +11609,7 @@ export type OnCreateStudentLogSubscriptionVariables = {
 };
 
 export type OnCreateStudentLogSubscription = {
-  onCreateStudentLog?:  {
+  onCreateStudentLog?: {
     __typename: "StudentLog",
     id: string,
     applicationID: string,
@@ -11616,7 +11617,7 @@ export type OnCreateStudentLogSubscription = {
     dateTime?: string | null,
     snapshot?: string | null,
     reason?: string | null,
-    student?:  {
+    student?: {
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -11634,7 +11635,7 @@ export type OnCreateStudentLogSubscription = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -11653,7 +11654,7 @@ export type OnCreateStudentLogSubscription = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -11689,7 +11690,7 @@ export type OnUpdateStudentLogSubscriptionVariables = {
 };
 
 export type OnUpdateStudentLogSubscription = {
-  onUpdateStudentLog?:  {
+  onUpdateStudentLog?: {
     __typename: "StudentLog",
     id: string,
     applicationID: string,
@@ -11697,7 +11698,7 @@ export type OnUpdateStudentLogSubscription = {
     dateTime?: string | null,
     snapshot?: string | null,
     reason?: string | null,
-    student?:  {
+    student?: {
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -11715,7 +11716,7 @@ export type OnUpdateStudentLogSubscription = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -11734,7 +11735,7 @@ export type OnUpdateStudentLogSubscription = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -11770,7 +11771,7 @@ export type OnDeleteStudentLogSubscriptionVariables = {
 };
 
 export type OnDeleteStudentLogSubscription = {
-  onDeleteStudentLog?:  {
+  onDeleteStudentLog?: {
     __typename: "StudentLog",
     id: string,
     applicationID: string,
@@ -11778,7 +11779,7 @@ export type OnDeleteStudentLogSubscription = {
     dateTime?: string | null,
     snapshot?: string | null,
     reason?: string | null,
-    student?:  {
+    student?: {
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -11796,7 +11797,7 @@ export type OnDeleteStudentLogSubscription = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -11815,7 +11816,7 @@ export type OnDeleteStudentLogSubscription = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -11851,12 +11852,12 @@ export type OnCreateAdminSubscriptionVariables = {
 };
 
 export type OnCreateAdminSubscription = {
-  onCreateAdmin?:  {
+  onCreateAdmin?: {
     __typename: "Admin",
     cpr: string,
     fullName?: string | null,
     email?: string | null,
-    AdminLogs?:  {
+    AdminLogs?: {
       __typename: "ModelAdminLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -11876,12 +11877,12 @@ export type OnUpdateAdminSubscriptionVariables = {
 };
 
 export type OnUpdateAdminSubscription = {
-  onUpdateAdmin?:  {
+  onUpdateAdmin?: {
     __typename: "Admin",
     cpr: string,
     fullName?: string | null,
     email?: string | null,
-    AdminLogs?:  {
+    AdminLogs?: {
       __typename: "ModelAdminLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -11901,12 +11902,12 @@ export type OnDeleteAdminSubscriptionVariables = {
 };
 
 export type OnDeleteAdminSubscription = {
-  onDeleteAdmin?:  {
+  onDeleteAdmin?: {
     __typename: "Admin",
     cpr: string,
     fullName?: string | null,
     email?: string | null,
-    AdminLogs?:  {
+    AdminLogs?: {
       __typename: "ModelAdminLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -11926,7 +11927,7 @@ export type OnCreateParentInfoSubscriptionVariables = {
 };
 
 export type OnCreateParentInfoSubscription = {
-  onCreateParentInfo?:  {
+  onCreateParentInfo?: {
     __typename: "ParentInfo",
     id: string,
     guardianFullName?: string | null,
@@ -11958,7 +11959,7 @@ export type OnUpdateParentInfoSubscriptionVariables = {
 };
 
 export type OnUpdateParentInfoSubscription = {
-  onUpdateParentInfo?:  {
+  onUpdateParentInfo?: {
     __typename: "ParentInfo",
     id: string,
     guardianFullName?: string | null,
@@ -11990,7 +11991,7 @@ export type OnDeleteParentInfoSubscriptionVariables = {
 };
 
 export type OnDeleteParentInfoSubscription = {
-  onDeleteParentInfo?:  {
+  onDeleteParentInfo?: {
     __typename: "ParentInfo",
     id: string,
     guardianFullName?: string | null,
@@ -12022,7 +12023,7 @@ export type OnCreateStudentSubscriptionVariables = {
 };
 
 export type OnCreateStudentSubscription = {
-  onCreateStudent?:  {
+  onCreateStudent?: {
     __typename: "Student",
     cpr: string,
     cprDoc?: string | null,
@@ -12040,16 +12041,16 @@ export type OnCreateStudentSubscription = {
     studentOrderAmongSiblings?: number | null,
     familyIncome?: FamilyIncome | null,
     familyIncomeProofDoc?: string | null,
-    familyIncomeProofDocs?: Array< string | null > | null,
+    familyIncomeProofDocs?: Array<string | null> | null,
     preferredLanguage?: Language | null,
     graduationDate?: string | null,
     address?: string | null,
-    applications?:  {
+    applications?: {
       __typename: "ModelApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    ParentInfo?:  {
+    ParentInfo?: {
       __typename: "ParentInfo",
       id: string,
       guardianFullName?: string | null,
@@ -12075,7 +12076,7 @@ export type OnCreateStudentSubscription = {
       _lastChangedAt: number,
     } | null,
     parentInfoID?: string | null,
-    StudentLogs?:  {
+    StudentLogs?: {
       __typename: "ModelStudentLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -12086,7 +12087,7 @@ export type OnCreateStudentSubscription = {
     lastName?: string | null,
     dob?: string | null,
     schoolMajor?: string | null,
-    m_MasterLogs?:  {
+    m_MasterLogs?: {
       __typename: "ModelMasterLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -12097,7 +12098,7 @@ export type OnCreateStudentSubscription = {
     m_lastName?: string | null,
     m_numberOfFamilyMembers?: number | null,
     m_graduationYear?: string | null,
-    m_university?:  {
+    m_university?: {
       __typename: "BahrainUniversities",
       id: string,
       universityName?: string | null,
@@ -12112,7 +12113,7 @@ export type OnCreateStudentSubscription = {
     } | null,
     m_universityID?: string | null,
     m_oldProgram?: string | null,
-    m_applicantType?: Array< ApplicantType | null > | null,
+    m_applicantType?: Array<ApplicantType | null> | null,
     m_isEmployed?: boolean | null,
     m_placeOfEmployment?: string | null,
     m_income?: Income | null,
@@ -12120,7 +12121,7 @@ export type OnCreateStudentSubscription = {
     m_guardianCPR?: string | null,
     m_guardianFullName?: string | null,
     m_guardianCPRDoc?: string | null,
-    m_masterApplications?:  {
+    m_masterApplications?: {
       __typename: "ModelMasterApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -12144,7 +12145,7 @@ export type OnUpdateStudentSubscriptionVariables = {
 };
 
 export type OnUpdateStudentSubscription = {
-  onUpdateStudent?:  {
+  onUpdateStudent?: {
     __typename: "Student",
     cpr: string,
     cprDoc?: string | null,
@@ -12162,16 +12163,16 @@ export type OnUpdateStudentSubscription = {
     studentOrderAmongSiblings?: number | null,
     familyIncome?: FamilyIncome | null,
     familyIncomeProofDoc?: string | null,
-    familyIncomeProofDocs?: Array< string | null > | null,
+    familyIncomeProofDocs?: Array<string | null> | null,
     preferredLanguage?: Language | null,
     graduationDate?: string | null,
     address?: string | null,
-    applications?:  {
+    applications?: {
       __typename: "ModelApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    ParentInfo?:  {
+    ParentInfo?: {
       __typename: "ParentInfo",
       id: string,
       guardianFullName?: string | null,
@@ -12197,7 +12198,7 @@ export type OnUpdateStudentSubscription = {
       _lastChangedAt: number,
     } | null,
     parentInfoID?: string | null,
-    StudentLogs?:  {
+    StudentLogs?: {
       __typename: "ModelStudentLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -12208,7 +12209,7 @@ export type OnUpdateStudentSubscription = {
     lastName?: string | null,
     dob?: string | null,
     schoolMajor?: string | null,
-    m_MasterLogs?:  {
+    m_MasterLogs?: {
       __typename: "ModelMasterLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -12219,7 +12220,7 @@ export type OnUpdateStudentSubscription = {
     m_lastName?: string | null,
     m_numberOfFamilyMembers?: number | null,
     m_graduationYear?: string | null,
-    m_university?:  {
+    m_university?: {
       __typename: "BahrainUniversities",
       id: string,
       universityName?: string | null,
@@ -12234,7 +12235,7 @@ export type OnUpdateStudentSubscription = {
     } | null,
     m_universityID?: string | null,
     m_oldProgram?: string | null,
-    m_applicantType?: Array< ApplicantType | null > | null,
+    m_applicantType?: Array<ApplicantType | null> | null,
     m_isEmployed?: boolean | null,
     m_placeOfEmployment?: string | null,
     m_income?: Income | null,
@@ -12242,7 +12243,7 @@ export type OnUpdateStudentSubscription = {
     m_guardianCPR?: string | null,
     m_guardianFullName?: string | null,
     m_guardianCPRDoc?: string | null,
-    m_masterApplications?:  {
+    m_masterApplications?: {
       __typename: "ModelMasterApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -12266,7 +12267,7 @@ export type OnDeleteStudentSubscriptionVariables = {
 };
 
 export type OnDeleteStudentSubscription = {
-  onDeleteStudent?:  {
+  onDeleteStudent?: {
     __typename: "Student",
     cpr: string,
     cprDoc?: string | null,
@@ -12284,16 +12285,16 @@ export type OnDeleteStudentSubscription = {
     studentOrderAmongSiblings?: number | null,
     familyIncome?: FamilyIncome | null,
     familyIncomeProofDoc?: string | null,
-    familyIncomeProofDocs?: Array< string | null > | null,
+    familyIncomeProofDocs?: Array<string | null> | null,
     preferredLanguage?: Language | null,
     graduationDate?: string | null,
     address?: string | null,
-    applications?:  {
+    applications?: {
       __typename: "ModelApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    ParentInfo?:  {
+    ParentInfo?: {
       __typename: "ParentInfo",
       id: string,
       guardianFullName?: string | null,
@@ -12319,7 +12320,7 @@ export type OnDeleteStudentSubscription = {
       _lastChangedAt: number,
     } | null,
     parentInfoID?: string | null,
-    StudentLogs?:  {
+    StudentLogs?: {
       __typename: "ModelStudentLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -12330,7 +12331,7 @@ export type OnDeleteStudentSubscription = {
     lastName?: string | null,
     dob?: string | null,
     schoolMajor?: string | null,
-    m_MasterLogs?:  {
+    m_MasterLogs?: {
       __typename: "ModelMasterLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -12341,7 +12342,7 @@ export type OnDeleteStudentSubscription = {
     m_lastName?: string | null,
     m_numberOfFamilyMembers?: number | null,
     m_graduationYear?: string | null,
-    m_university?:  {
+    m_university?: {
       __typename: "BahrainUniversities",
       id: string,
       universityName?: string | null,
@@ -12356,7 +12357,7 @@ export type OnDeleteStudentSubscription = {
     } | null,
     m_universityID?: string | null,
     m_oldProgram?: string | null,
-    m_applicantType?: Array< ApplicantType | null > | null,
+    m_applicantType?: Array<ApplicantType | null> | null,
     m_isEmployed?: boolean | null,
     m_placeOfEmployment?: string | null,
     m_income?: Income | null,
@@ -12364,7 +12365,7 @@ export type OnDeleteStudentSubscription = {
     m_guardianCPR?: string | null,
     m_guardianFullName?: string | null,
     m_guardianCPRDoc?: string | null,
-    m_masterApplications?:  {
+    m_masterApplications?: {
       __typename: "ModelMasterApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -12388,7 +12389,7 @@ export type OnCreateBatchSubscriptionVariables = {
 };
 
 export type OnCreateBatchSubscription = {
-  onCreateBatch?:  {
+  onCreateBatch?: {
     __typename: "Batch",
     batch: number,
     createApplicationStartDate?: string | null,
@@ -12409,7 +12410,7 @@ export type OnUpdateBatchSubscriptionVariables = {
 };
 
 export type OnUpdateBatchSubscription = {
-  onUpdateBatch?:  {
+  onUpdateBatch?: {
     __typename: "Batch",
     batch: number,
     createApplicationStartDate?: string | null,
@@ -12430,7 +12431,7 @@ export type OnDeleteBatchSubscriptionVariables = {
 };
 
 export type OnDeleteBatchSubscription = {
-  onDeleteBatch?:  {
+  onDeleteBatch?: {
     __typename: "Batch",
     batch: number,
     createApplicationStartDate?: string | null,
@@ -12451,14 +12452,14 @@ export type OnCreateScholarshipSubscriptionVariables = {
 };
 
 export type OnCreateScholarshipSubscription = {
-  onCreateScholarship?:  {
+  onCreateScholarship?: {
     __typename: "Scholarship",
     id: string,
     status?: ScholarshipStatus | null,
     applicationID: string,
     batch?: number | null,
     isConfirmed?: boolean | null,
-    application?:  {
+    application?: {
       __typename: "Application",
       id: string,
       gpa?: number | null,
@@ -12515,14 +12516,14 @@ export type OnUpdateScholarshipSubscriptionVariables = {
 };
 
 export type OnUpdateScholarshipSubscription = {
-  onUpdateScholarship?:  {
+  onUpdateScholarship?: {
     __typename: "Scholarship",
     id: string,
     status?: ScholarshipStatus | null,
     applicationID: string,
     batch?: number | null,
     isConfirmed?: boolean | null,
-    application?:  {
+    application?: {
       __typename: "Application",
       id: string,
       gpa?: number | null,
@@ -12579,14 +12580,14 @@ export type OnDeleteScholarshipSubscriptionVariables = {
 };
 
 export type OnDeleteScholarshipSubscription = {
-  onDeleteScholarship?:  {
+  onDeleteScholarship?: {
     __typename: "Scholarship",
     id: string,
     status?: ScholarshipStatus | null,
     applicationID: string,
     batch?: number | null,
     isConfirmed?: boolean | null,
-    application?:  {
+    application?: {
       __typename: "Application",
       id: string,
       gpa?: number | null,
@@ -12643,7 +12644,7 @@ export type OnCreateStatisticsSubscriptionVariables = {
 };
 
 export type OnCreateStatisticsSubscription = {
-  onCreateStatistics?:  {
+  onCreateStatistics?: {
     __typename: "Statistics",
     id: number,
     batch: number,
@@ -12659,7 +12660,7 @@ export type OnCreateStatisticsSubscription = {
     students?: string | null,
     applications?: string | null,
     today?: string | null,
-    participatingUniversities?: Array< string | null > | null,
+    participatingUniversities?: Array<string | null> | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -12673,7 +12674,7 @@ export type OnUpdateStatisticsSubscriptionVariables = {
 };
 
 export type OnUpdateStatisticsSubscription = {
-  onUpdateStatistics?:  {
+  onUpdateStatistics?: {
     __typename: "Statistics",
     id: number,
     batch: number,
@@ -12689,7 +12690,7 @@ export type OnUpdateStatisticsSubscription = {
     students?: string | null,
     applications?: string | null,
     today?: string | null,
-    participatingUniversities?: Array< string | null > | null,
+    participatingUniversities?: Array<string | null> | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -12703,7 +12704,7 @@ export type OnDeleteStatisticsSubscriptionVariables = {
 };
 
 export type OnDeleteStatisticsSubscription = {
-  onDeleteStatistics?:  {
+  onDeleteStatistics?: {
     __typename: "Statistics",
     id: number,
     batch: number,
@@ -12719,7 +12720,7 @@ export type OnDeleteStatisticsSubscription = {
     students?: string | null,
     applications?: string | null,
     today?: string | null,
-    participatingUniversities?: Array< string | null > | null,
+    participatingUniversities?: Array<string | null> | null,
     createdAt: string,
     updatedAt: string,
     _version: number,
@@ -12733,7 +12734,7 @@ export type OnCreateMasterBatchSubscriptionVariables = {
 };
 
 export type OnCreateMasterBatchSubscription = {
-  onCreateMasterBatch?:  {
+  onCreateMasterBatch?: {
     __typename: "MasterBatch",
     batch: number,
     createApplicationStartDate?: string | null,
@@ -12754,7 +12755,7 @@ export type OnUpdateMasterBatchSubscriptionVariables = {
 };
 
 export type OnUpdateMasterBatchSubscription = {
-  onUpdateMasterBatch?:  {
+  onUpdateMasterBatch?: {
     __typename: "MasterBatch",
     batch: number,
     createApplicationStartDate?: string | null,
@@ -12775,7 +12776,7 @@ export type OnDeleteMasterBatchSubscriptionVariables = {
 };
 
 export type OnDeleteMasterBatchSubscription = {
-  onDeleteMasterBatch?:  {
+  onDeleteMasterBatch?: {
     __typename: "MasterBatch",
     batch: number,
     createApplicationStartDate?: string | null,
@@ -12796,7 +12797,7 @@ export type OnCreateMasterLogSubscriptionVariables = {
 };
 
 export type OnCreateMasterLogSubscription = {
-  onCreateMasterLog?:  {
+  onCreateMasterLog?: {
     __typename: "MasterLog",
     id: string,
     applicationID: string,
@@ -12804,7 +12805,7 @@ export type OnCreateMasterLogSubscription = {
     dateTime?: string | null,
     snapshot?: string | null,
     reason?: string | null,
-    student?:  {
+    student?: {
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -12822,7 +12823,7 @@ export type OnCreateMasterLogSubscription = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -12841,7 +12842,7 @@ export type OnCreateMasterLogSubscription = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -12876,7 +12877,7 @@ export type OnUpdateMasterLogSubscriptionVariables = {
 };
 
 export type OnUpdateMasterLogSubscription = {
-  onUpdateMasterLog?:  {
+  onUpdateMasterLog?: {
     __typename: "MasterLog",
     id: string,
     applicationID: string,
@@ -12884,7 +12885,7 @@ export type OnUpdateMasterLogSubscription = {
     dateTime?: string | null,
     snapshot?: string | null,
     reason?: string | null,
-    student?:  {
+    student?: {
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -12902,7 +12903,7 @@ export type OnUpdateMasterLogSubscription = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -12921,7 +12922,7 @@ export type OnUpdateMasterLogSubscription = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -12956,7 +12957,7 @@ export type OnDeleteMasterLogSubscriptionVariables = {
 };
 
 export type OnDeleteMasterLogSubscription = {
-  onDeleteMasterLog?:  {
+  onDeleteMasterLog?: {
     __typename: "MasterLog",
     id: string,
     applicationID: string,
@@ -12964,7 +12965,7 @@ export type OnDeleteMasterLogSubscription = {
     dateTime?: string | null,
     snapshot?: string | null,
     reason?: string | null,
-    student?:  {
+    student?: {
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -12982,7 +12983,7 @@ export type OnDeleteMasterLogSubscription = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -13001,7 +13002,7 @@ export type OnDeleteMasterLogSubscription = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -13036,13 +13037,13 @@ export type OnCreateBahrainUniversitiesSubscriptionVariables = {
 };
 
 export type OnCreateBahrainUniversitiesSubscription = {
-  onCreateBahrainUniversities?:  {
+  onCreateBahrainUniversities?: {
     __typename: "BahrainUniversities",
     id: string,
     universityName?: string | null,
     universityNameAr?: string | null,
     isDeactivated?: boolean | null,
-    students?:  {
+    students?: {
       __typename: "ModelStudentConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -13061,13 +13062,13 @@ export type OnUpdateBahrainUniversitiesSubscriptionVariables = {
 };
 
 export type OnUpdateBahrainUniversitiesSubscription = {
-  onUpdateBahrainUniversities?:  {
+  onUpdateBahrainUniversities?: {
     __typename: "BahrainUniversities",
     id: string,
     universityName?: string | null,
     universityNameAr?: string | null,
     isDeactivated?: boolean | null,
-    students?:  {
+    students?: {
       __typename: "ModelStudentConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -13086,13 +13087,13 @@ export type OnDeleteBahrainUniversitiesSubscriptionVariables = {
 };
 
 export type OnDeleteBahrainUniversitiesSubscription = {
-  onDeleteBahrainUniversities?:  {
+  onDeleteBahrainUniversities?: {
     __typename: "BahrainUniversities",
     id: string,
     universityName?: string | null,
     universityNameAr?: string | null,
     isDeactivated?: boolean | null,
-    students?:  {
+    students?: {
       __typename: "ModelStudentConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -13111,28 +13112,28 @@ export type OnCreateMasterApplicationSubscriptionVariables = {
 };
 
 export type OnCreateMasterApplicationSubscription = {
-  onCreateMasterApplication?:  {
+  onCreateMasterApplication?: {
     __typename: "MasterApplication",
     id: string,
     gpa?: number | null,
     verifiedGPA?: number | null,
     status?: Status | null,
-    adminLogs?:  {
+    adminLogs?: {
       __typename: "ModelAdminLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    masterLogs?:  {
+    masterLogs?: {
       __typename: "ModelMasterLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    studentLogs?:  {
+    studentLogs?: {
       __typename: "ModelStudentLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    attachment?:  {
+    attachment?: {
       __typename: "MasterAttachment",
       id: string,
       cprDoc?: string | null,
@@ -13152,7 +13153,7 @@ export type OnCreateMasterApplicationSubscription = {
     isEmailSent?: boolean | null,
     nationalityCategory?: Nationality | null,
     universityID: string,
-    university?:  {
+    university?: {
       __typename: "MasterAppliedUniversities",
       id: string,
       universityName: string,
@@ -13167,7 +13168,7 @@ export type OnCreateMasterApplicationSubscription = {
     } | null,
     studentCPR: string,
     studentName?: string | null,
-    student?:  {
+    student?: {
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -13185,7 +13186,7 @@ export type OnCreateMasterApplicationSubscription = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -13204,7 +13205,7 @@ export type OnCreateMasterApplicationSubscription = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -13249,28 +13250,28 @@ export type OnUpdateMasterApplicationSubscriptionVariables = {
 };
 
 export type OnUpdateMasterApplicationSubscription = {
-  onUpdateMasterApplication?:  {
+  onUpdateMasterApplication?: {
     __typename: "MasterApplication",
     id: string,
     gpa?: number | null,
     verifiedGPA?: number | null,
     status?: Status | null,
-    adminLogs?:  {
+    adminLogs?: {
       __typename: "ModelAdminLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    masterLogs?:  {
+    masterLogs?: {
       __typename: "ModelMasterLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    studentLogs?:  {
+    studentLogs?: {
       __typename: "ModelStudentLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    attachment?:  {
+    attachment?: {
       __typename: "MasterAttachment",
       id: string,
       cprDoc?: string | null,
@@ -13290,7 +13291,7 @@ export type OnUpdateMasterApplicationSubscription = {
     isEmailSent?: boolean | null,
     nationalityCategory?: Nationality | null,
     universityID: string,
-    university?:  {
+    university?: {
       __typename: "MasterAppliedUniversities",
       id: string,
       universityName: string,
@@ -13305,7 +13306,7 @@ export type OnUpdateMasterApplicationSubscription = {
     } | null,
     studentCPR: string,
     studentName?: string | null,
-    student?:  {
+    student?: {
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -13323,7 +13324,7 @@ export type OnUpdateMasterApplicationSubscription = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -13342,7 +13343,7 @@ export type OnUpdateMasterApplicationSubscription = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -13387,28 +13388,28 @@ export type OnDeleteMasterApplicationSubscriptionVariables = {
 };
 
 export type OnDeleteMasterApplicationSubscription = {
-  onDeleteMasterApplication?:  {
+  onDeleteMasterApplication?: {
     __typename: "MasterApplication",
     id: string,
     gpa?: number | null,
     verifiedGPA?: number | null,
     status?: Status | null,
-    adminLogs?:  {
+    adminLogs?: {
       __typename: "ModelAdminLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    masterLogs?:  {
+    masterLogs?: {
       __typename: "ModelMasterLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    studentLogs?:  {
+    studentLogs?: {
       __typename: "ModelStudentLogConnection",
       nextToken?: string | null,
       startedAt?: number | null,
     } | null,
-    attachment?:  {
+    attachment?: {
       __typename: "MasterAttachment",
       id: string,
       cprDoc?: string | null,
@@ -13428,7 +13429,7 @@ export type OnDeleteMasterApplicationSubscription = {
     isEmailSent?: boolean | null,
     nationalityCategory?: Nationality | null,
     universityID: string,
-    university?:  {
+    university?: {
       __typename: "MasterAppliedUniversities",
       id: string,
       universityName: string,
@@ -13443,7 +13444,7 @@ export type OnDeleteMasterApplicationSubscription = {
     } | null,
     studentCPR: string,
     studentName?: string | null,
-    student?:  {
+    student?: {
       __typename: "Student",
       cpr: string,
       cprDoc?: string | null,
@@ -13461,7 +13462,7 @@ export type OnDeleteMasterApplicationSubscription = {
       studentOrderAmongSiblings?: number | null,
       familyIncome?: FamilyIncome | null,
       familyIncomeProofDoc?: string | null,
-      familyIncomeProofDocs?: Array< string | null > | null,
+      familyIncomeProofDocs?: Array<string | null> | null,
       preferredLanguage?: Language | null,
       graduationDate?: string | null,
       address?: string | null,
@@ -13480,7 +13481,7 @@ export type OnDeleteMasterApplicationSubscription = {
       m_graduationYear?: string | null,
       m_universityID?: string | null,
       m_oldProgram?: string | null,
-      m_applicantType?: Array< ApplicantType | null > | null,
+      m_applicantType?: Array<ApplicantType | null> | null,
       m_isEmployed?: boolean | null,
       m_placeOfEmployment?: string | null,
       m_income?: Income | null,
@@ -13525,7 +13526,7 @@ export type OnCreateMasterStatisticsSubscriptionVariables = {
 };
 
 export type OnCreateMasterStatisticsSubscription = {
-  onCreateMasterStatistics?:  {
+  onCreateMasterStatistics?: {
     __typename: "MasterStatistics",
     id: number,
     batch: number,
@@ -13541,7 +13542,7 @@ export type OnCreateMasterStatisticsSubscription = {
     students?: string | null,
     applications?: string | null,
     today?: string | null,
-    participatingUniversities?: Array< string | null > | null,
+    participatingUniversities?: Array<string | null> | null,
     applicationPerGenderHistogram?: string | null,
     registerAccountsPerGender?: string | null,
     majorsPerGenderHistogram?: string | null,
@@ -13559,7 +13560,7 @@ export type OnUpdateMasterStatisticsSubscriptionVariables = {
 };
 
 export type OnUpdateMasterStatisticsSubscription = {
-  onUpdateMasterStatistics?:  {
+  onUpdateMasterStatistics?: {
     __typename: "MasterStatistics",
     id: number,
     batch: number,
@@ -13575,7 +13576,7 @@ export type OnUpdateMasterStatisticsSubscription = {
     students?: string | null,
     applications?: string | null,
     today?: string | null,
-    participatingUniversities?: Array< string | null > | null,
+    participatingUniversities?: Array<string | null> | null,
     applicationPerGenderHistogram?: string | null,
     registerAccountsPerGender?: string | null,
     majorsPerGenderHistogram?: string | null,
@@ -13593,7 +13594,7 @@ export type OnDeleteMasterStatisticsSubscriptionVariables = {
 };
 
 export type OnDeleteMasterStatisticsSubscription = {
-  onDeleteMasterStatistics?:  {
+  onDeleteMasterStatistics?: {
     __typename: "MasterStatistics",
     id: number,
     batch: number,
@@ -13609,7 +13610,7 @@ export type OnDeleteMasterStatisticsSubscription = {
     students?: string | null,
     applications?: string | null,
     today?: string | null,
-    participatingUniversities?: Array< string | null > | null,
+    participatingUniversities?: Array<string | null> | null,
     applicationPerGenderHistogram?: string | null,
     registerAccountsPerGender?: string | null,
     majorsPerGenderHistogram?: string | null,
@@ -13627,7 +13628,7 @@ export type OnCreateMasterAttachmentSubscriptionVariables = {
 };
 
 export type OnCreateMasterAttachmentSubscription = {
-  onCreateMasterAttachment?:  {
+  onCreateMasterAttachment?: {
     __typename: "MasterAttachment",
     id: string,
     cprDoc?: string | null,
@@ -13649,7 +13650,7 @@ export type OnUpdateMasterAttachmentSubscriptionVariables = {
 };
 
 export type OnUpdateMasterAttachmentSubscription = {
-  onUpdateMasterAttachment?:  {
+  onUpdateMasterAttachment?: {
     __typename: "MasterAttachment",
     id: string,
     cprDoc?: string | null,
@@ -13671,7 +13672,7 @@ export type OnDeleteMasterAttachmentSubscriptionVariables = {
 };
 
 export type OnDeleteMasterAttachmentSubscription = {
-  onDeleteMasterAttachment?:  {
+  onDeleteMasterAttachment?: {
     __typename: "MasterAttachment",
     id: string,
     cprDoc?: string | null,
@@ -13693,13 +13694,13 @@ export type OnCreateMasterAppliedUniversitiesSubscriptionVariables = {
 };
 
 export type OnCreateMasterAppliedUniversitiesSubscription = {
-  onCreateMasterAppliedUniversities?:  {
+  onCreateMasterAppliedUniversities?: {
     __typename: "MasterAppliedUniversities",
     id: string,
     universityName: string,
     universityNameAr: string,
     isDeactivated?: boolean | null,
-    applications?:  {
+    applications?: {
       __typename: "ModelMasterApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -13718,13 +13719,13 @@ export type OnUpdateMasterAppliedUniversitiesSubscriptionVariables = {
 };
 
 export type OnUpdateMasterAppliedUniversitiesSubscription = {
-  onUpdateMasterAppliedUniversities?:  {
+  onUpdateMasterAppliedUniversities?: {
     __typename: "MasterAppliedUniversities",
     id: string,
     universityName: string,
     universityNameAr: string,
     isDeactivated?: boolean | null,
-    applications?:  {
+    applications?: {
       __typename: "ModelMasterApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -13743,13 +13744,13 @@ export type OnDeleteMasterAppliedUniversitiesSubscriptionVariables = {
 };
 
 export type OnDeleteMasterAppliedUniversitiesSubscription = {
-  onDeleteMasterAppliedUniversities?:  {
+  onDeleteMasterAppliedUniversities?: {
     __typename: "MasterAppliedUniversities",
     id: string,
     universityName: string,
     universityNameAr: string,
     isDeactivated?: boolean | null,
-    applications?:  {
+    applications?: {
       __typename: "ModelMasterApplicationConnection",
       nextToken?: string | null,
       startedAt?: number | null,
@@ -13768,14 +13769,14 @@ export type OnCreateMasterScholarshipSubscriptionVariables = {
 };
 
 export type OnCreateMasterScholarshipSubscription = {
-  onCreateMasterScholarship?:  {
+  onCreateMasterScholarship?: {
     __typename: "MasterScholarship",
     id: string,
     status?: ScholarshipStatus | null,
     applicationID: string,
     batch?: number | null,
     isConfirmed?: boolean | null,
-    application?:  {
+    application?: {
       __typename: "MasterApplication",
       id: string,
       gpa?: number | null,
@@ -13830,14 +13831,14 @@ export type OnUpdateMasterScholarshipSubscriptionVariables = {
 };
 
 export type OnUpdateMasterScholarshipSubscription = {
-  onUpdateMasterScholarship?:  {
+  onUpdateMasterScholarship?: {
     __typename: "MasterScholarship",
     id: string,
     status?: ScholarshipStatus | null,
     applicationID: string,
     batch?: number | null,
     isConfirmed?: boolean | null,
-    application?:  {
+    application?: {
       __typename: "MasterApplication",
       id: string,
       gpa?: number | null,
@@ -13892,14 +13893,14 @@ export type OnDeleteMasterScholarshipSubscriptionVariables = {
 };
 
 export type OnDeleteMasterScholarshipSubscription = {
-  onDeleteMasterScholarship?:  {
+  onDeleteMasterScholarship?: {
     __typename: "MasterScholarship",
     id: string,
     status?: ScholarshipStatus | null,
     applicationID: string,
     batch?: number | null,
     isConfirmed?: boolean | null,
-    application?:  {
+    application?: {
       __typename: "MasterApplication",
       id: string,
       gpa?: number | null,

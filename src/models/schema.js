@@ -3792,6 +3792,7 @@ export const schema = {
                 "ELIGIBLE",
                 "REVIEW",
                 "NOT_COMPLETED",
+                "NOT_COMPLETED_MARKED_BY_ADMIN",
                 "REJECTED",
                 "WITHDRAWN"
             ]
