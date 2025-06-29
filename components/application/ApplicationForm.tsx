@@ -125,24 +125,24 @@ export const ApplicationForm: FC<TApplicationForm> = ({
     // upload new docs if selected
     const acceptanceLetterKey = values.acceptanceLetterFile
       ? uploadFile(
-          values.acceptanceLetterFile,
-          DocType.PRIMARY_PROGRAM_ACCEPTANCE,
-          application.studentCPR
-        )
+        values.acceptanceLetterFile,
+        DocType.PRIMARY_PROGRAM_ACCEPTANCE,
+        application.studentCPR
+      )
       : Promise.resolve(programChoice?.acceptanceLetterDoc);
     const transcriptKey = values.transcriptFile
       ? uploadFile(
-          values.transcriptFile,
-          DocType.TRANSCRIPT,
-          application.studentCPR
-        )
+        values.transcriptFile,
+        DocType.TRANSCRIPT,
+        application.studentCPR
+      )
       : Promise.resolve(application.attachment?.transcriptDoc);
     const schoolCertificateKey = values.schoolCertificateFile
       ? uploadFile(
-          values.schoolCertificateFile,
-          DocType.SCHOOL_CERTIFICATE,
-          application.studentCPR
-        )
+        values.schoolCertificateFile,
+        DocType.SCHOOL_CERTIFICATE,
+        application.studentCPR
+      )
       : Promise.resolve(application.attachment?.schoolCertificate);
     // replace the storage keys with the old ones
     const [acceptanceLetter, transcript, schoolCertificate] = await Promise.all(
@@ -417,7 +417,7 @@ export const ApplicationForm: FC<TApplicationForm> = ({
                     <SelectTrigger className="overflow-visible focus:ring-1 focus:ring-blue-800">
                       <SelectValue placeholder="Status" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="bg-white">
                       {Object.values(Status).map((value, i) => (
                         <SelectItem key={i} value={value}>
                           {t(value)}
@@ -499,8 +499,8 @@ export const ApplicationForm: FC<TApplicationForm> = ({
                             .sort((a, b) =>
                               a.university?.name && b.university?.name
                                 ? a.university!.name!.localeCompare(
-                                    b.university!.name!
-                                  )
+                                  b.university!.name!
+                                )
                                 : 0
                             )
                             .map((program) => (
@@ -544,8 +544,8 @@ export const ApplicationForm: FC<TApplicationForm> = ({
                       type="text"
                       {...field}
                       placeholder="-"
-                      // value={field.value}
-                      // onChange={field.onChange}
+                    // value={field.value}
+                    // onChange={field.onChange}
                     />
                   </FormControl>
                   <FormMessage />
@@ -617,7 +617,7 @@ export const ApplicationForm: FC<TApplicationForm> = ({
                       required={false}
                       storageKeys={[
                         application.programs?.items[0]?.acceptanceLetterDoc ??
-                          null,
+                        null,
                       ]}
                       onFiles={(files) => {
                         field.onChange(files.length > 0 ? files[0] : undefined);
@@ -635,17 +635,15 @@ export const ApplicationForm: FC<TApplicationForm> = ({
                   )}
                 </FormControl>
                 <FormDescription>
-                  <p>{`${tL("acceptationLetterD")} ${
-                    locale === "ar"
+                  <p>{`${tL("acceptationLetterD")} ${locale === "ar"
                       ? application.programs?.items[0]?.program?.nameAr
                       : application.programs?.items[0]?.program?.name
-                  }-${
-                    locale === "ar"
+                    }-${locale === "ar"
                       ? application.programs?.items[0]?.program?.university
-                          ?.nameAr
+                        ?.nameAr
                       : application.programs?.items[0]?.program?.university
-                          ?.name
-                  }`}</p>
+                        ?.name
+                    }`}</p>
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -772,8 +770,7 @@ function createChangeSnapshot(oldData: any, newData: any): string {
   }
   if (!compareValues(oldData.adminPoints, newData.adminPoints)) {
     changes.push(
-      `Admin points from "${oldData.adminPoints ?? ""}" to "${
-        newData.adminPoints ?? ""
+      `Admin points from "${oldData.adminPoints ?? ""}" to "${newData.adminPoints ?? ""
       }"`
     );
   }
@@ -784,15 +781,13 @@ function createChangeSnapshot(oldData: any, newData: any): string {
     )
   ) {
     changes.push(
-      `Family income verification from "${
-        oldData.isFamilyIncomeVerified ? "yes" : "no"
+      `Family income verification from "${oldData.isFamilyIncomeVerified ? "yes" : "no"
       }" to "${newData.isFamilyIncomeVerified ? "yes" : "no"}"`
     );
   }
   if (!compareValues(oldData.verifiedGPA, newData.verifiedGPA)) {
     changes.push(
-      `Verified GPA from "${oldData.verifiedGPA ?? ""}" to "${
-        newData.verifiedGPA ?? ""
+      `Verified GPA from "${oldData.verifiedGPA ?? ""}" to "${newData.verifiedGPA ?? ""
       }"`
     );
   }
@@ -801,15 +796,13 @@ function createChangeSnapshot(oldData: any, newData: any): string {
   }
   if (!compareValues(oldData.reason, newData.reason)) {
     changes.push(
-      `Student reason from "${oldData.reason ?? ""}" to "${
-        newData.reason ?? ""
+      `Student reason from "${oldData.reason ?? ""}" to "${newData.reason ?? ""
       }"`
     );
   }
   if (!compareValues(oldData.programId, newData.programId)) {
     changes.push(
-      `Program from "${oldData.program?.name ?? oldData.programId ?? ""}" to "${
-        newData.program?.name ?? newData.programId ?? ""
+      `Program from "${oldData.program?.name ?? oldData.programId ?? ""}" to "${newData.program?.name ?? newData.programId ?? ""
       }"`
     );
   }
@@ -818,8 +811,7 @@ function createChangeSnapshot(oldData: any, newData: any): string {
     !compareValues(oldData.allProgramsTextOption, newData.allProgramsTextOption)
   ) {
     changes.push(
-      `All programs from "${oldData.allProgramsTextOption ?? "-"}" to "${
-        newData.allProgramsTextOption ?? "-"
+      `All programs from "${oldData.allProgramsTextOption ?? "-"}" to "${newData.allProgramsTextOption ?? "-"
       }"`
     );
   }
