@@ -94,7 +94,7 @@ export const InfiniteApplications = () => {
           <DataTableColumnHeader
             column={column}
             title={t("student")}
-            // className="min-w-[13rem]"
+          // className="min-w-[13rem]"
           />
         ),
         cell: ({ row }) => (
@@ -112,6 +112,7 @@ export const InfiniteApplications = () => {
       },
       {
         accessorKey: "status",
+        size: 300,
         enableSorting: false,
         enableHiding: false,
         header: ({ column }) => (
@@ -136,23 +137,22 @@ export const InfiniteApplications = () => {
                 //   : "outline"
                 "outline"
               }
-              className={`flex h-fit w-fit items-center justify-start ${
-                (status.value === Status.WITHDRAWN ||
-                  status.value === Status.NOT_COMPLETED) &&
+              className={`flex h-fit w-fit items-center justify-start ${(status.value === Status.WITHDRAWN ||
+                status.value === Status.NOT_COMPLETED) &&
                 "bg-slate-200"
-              } ${
-                status.value === Status.REVIEW &&
+                }  ${status.value === Status.REVIEW &&
                 "bg-amber-100 border-amber-300 "
-              } ${
-                status.value === Status.REJECTED &&
+                } ${status.value === Status.REJECTED &&
                 "border-red-300 text-red-600 bg-red-50"
-              } ${
-                status.value === Status.ELIGIBLE &&
+                } ${status.value === Status.ELIGIBLE &&
                 "border-blue-300 text-blue-600 bg-blue-50"
-              } ${
-                status.value === Status.APPROVED &&
+                } ${status.value === Status.APPROVED &&
                 "border-green-400 bg-green-50 text-green-600"
-              }`}
+                }
+              ${status.value === Status.NOT_COMPLETED_MARKED_BY_ADMIN &&
+                "border-orange-500 bg-orange-200 text-orange-500"
+                }
+              `}
             >
               {status.icon && <status.icon className="w-6 h-6 p-1 me-2" />}
               <span className="min-w-fit">
@@ -179,8 +179,8 @@ export const InfiniteApplications = () => {
             <div className="flex w-full space-x-2">
               <span className="font-medium truncate ">
                 {!row.original.isFamilyIncomeVerified ||
-                !row.original.verifiedGPA ||
-                !row.original.adminPoints ? (
+                  !row.original.verifiedGPA ||
+                  !row.original.adminPoints ? (
                   <FiAlertCircle className="text-warning" />
                 ) : (
                   <FiCircle className="text-gray-300" />
@@ -453,7 +453,7 @@ export const InfiniteApplications = () => {
     //measure dynamic row height, except in firefox because it measures table border height incorrectly
     measureElement:
       typeof window !== "undefined" &&
-      navigator.userAgent.indexOf("Firefox") === -1
+        navigator.userAgent.indexOf("Firefox") === -1
         ? (element) => element?.getBoundingClientRect().height
         : undefined,
     overscan: 5,

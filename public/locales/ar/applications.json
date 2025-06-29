@@ -79,6 +79,7 @@
   "REVIEW": "تحت المراجعة",
   "WITHDRAWN": "منسحب",
   "NOT_COMPLETED": "غير مكتمل",
+  "NOT_COMPLETED_MARKED_BY_ADMIN": "لم يتم وضع علامة مكتملة بواسطة المشرف",
   "PUBLIC": "عامة",
   "PRIVATE": "خاصة",
   "apply": "تطبيق",

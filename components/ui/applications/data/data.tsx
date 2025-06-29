@@ -7,6 +7,7 @@ import {
   StopwatchIcon,
   PlusCircledIcon,
   MinusCircledIcon,
+  ExclamationTriangleIcon
 } from "@radix-ui/react-icons";
 import { ScholarshipStatus, SchoolType, Status } from "../../../../src/API";
 
@@ -34,6 +35,12 @@ export const statuses = [
     label: "Not Completed",
     arLabel: "غير مكتمل",
     icon: QuestionMarkCircledIcon,
+  },
+  {
+    value: Status.NOT_COMPLETED_MARKED_BY_ADMIN,
+    label: "Not Completed - Marked by Admin",
+    arLabel: "لم يتم وضع علامة مكتملة بواسطة المشرف",
+    icon: ExclamationTriangleIcon,
   },
   {
     value: Status.WITHDRAWN,
