@@ -244,6 +244,8 @@ export function getStatusOrder(status: Status) {
       return 0.7;
     case Status.REVIEW:
       return 0.5;
+    case Status.NOT_COMPLETED_MARKED_BY_ADMIN:
+      return 0.4;
     case Status.NOT_COMPLETED:
       return 0.3;
     case Status.REJECTED:
@@ -324,8 +326,8 @@ export function formatDateTime(date: Date): string {
   const formattedDateTime: string = `${year.toString().slice(-2)}-${month
     .toString()
     .padStart(2, "0")}-${day.toString().padStart(2, "0")} ${formattedHours
-    .toString()
-    .padStart(2, "0")}:${minutes.toString().padStart(2, "0")} ${ampm}`;
+      .toString()
+      .padStart(2, "0")}:${minutes.toString().padStart(2, "0")} ${ampm}`;
 
   return formattedDateTime;
 }
