@@ -78,7 +78,7 @@ export const GenerateScholarshipForm: FC<TGenerateScholarshipForm> = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      startDate: undefined,
+      startDate: "2025-09-15",
       scholarshipPeriod: undefined,
       // numberOfSemesters: undefined,
       applicationID:
@@ -157,6 +157,7 @@ export const GenerateScholarshipForm: FC<TGenerateScholarshipForm> = ({
                 <FormLabel htmlFor="startDate">{t("startDate")}</FormLabel>
                 <FormControl>
                   <DatePicker
+                    disabled
                     className={cn("px-3 py-1 rounded-md border border-input")}
                     dayPlaceholder="dd"
                     monthPlaceholder="mm"
